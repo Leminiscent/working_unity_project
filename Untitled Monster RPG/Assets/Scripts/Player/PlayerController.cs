@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
 
     public LayerMask solidObjectsLayer;
+
+    public LayerMask encountersLayer;
     private bool isMoving;
     private Vector2 input;
 
@@ -64,6 +66,8 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+
+        CheckForEncounters();
     }
 
     private bool isWalkable(Vector3 targetPos)
@@ -73,5 +77,13 @@ public class PlayerController : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    private void CheckForEncounters()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.1f, encountersLayer) != null)
+        {
+            Debug.Log("Encounter!");
+        }
     }
 }
