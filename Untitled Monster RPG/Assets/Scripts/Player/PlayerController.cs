@@ -83,7 +83,10 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transform.position, 0.1f, encountersLayer) != null)
         {
-            Debug.Log("Encounter!");
+            if (Random.Range(1, 101) <= 10)
+            {
+                Debug.Log("Encounter!");
+            }
         }
     }
 }
