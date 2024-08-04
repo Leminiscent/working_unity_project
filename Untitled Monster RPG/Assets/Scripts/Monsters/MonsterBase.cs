@@ -68,7 +68,6 @@ public class MonsterBase : ScriptableObject
 
 public enum MonsterType
 {
-    None,
     Beast,
     Dragon,
     Fiend,
@@ -78,5 +77,6 @@ public enum MonsterType
     Machine,
     Plant,
     Stone,
-    Undead
+    Undead,
+    None
 }
