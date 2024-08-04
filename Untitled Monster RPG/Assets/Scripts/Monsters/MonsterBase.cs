@@ -51,6 +51,7 @@ public class MonsterBase : ScriptableObject
     public int Evasion => Agility + Luck;
     public int MagicDefense => Intelligence + Stamina;
     public int MagicEvasion => Agility + (Luck / 2);
+    public int Speed => Agility + (Luck / 4);
 
     // Method to Level Up and Recalculate Stats
     public void LevelUp(int level)
