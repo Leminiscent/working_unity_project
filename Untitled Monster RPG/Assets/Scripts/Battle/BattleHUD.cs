@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleHUD : MonoBehaviour
 {
-    [SerializeField] Text nameText;
-    [SerializeField] Text levelText;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] HPBar hpBar;
 
     public void SetData(Monster monster)

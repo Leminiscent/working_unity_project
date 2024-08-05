@@ -15,7 +15,7 @@ public class Monster
     {
         Base = mBase;
         Level = mLevel;
-        HP = Base.MaxHp;
+        HP = MaxHp;
 
         Moves = new List<Move>();
         foreach (var move in Base.LearnableMoves)
