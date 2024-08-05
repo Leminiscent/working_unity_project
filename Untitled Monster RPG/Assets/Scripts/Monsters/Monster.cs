@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Monster
 {
-    MonsterBase _base;
-    int level;
+    public MonsterBase Base { get; set; }
+    public int Level { get; set; }
 
     public int HP { get; set; }
 
@@ -13,14 +13,14 @@ public class Monster
 
     public Monster(MonsterBase mBase, int mLevel)
     {
-        _base = mBase;
-        level = mLevel;
-        HP = _base.MaxHp;
+        Base = mBase;
+        Level = mLevel;
+        HP = Base.MaxHp;
 
         Moves = new List<Move>();
-        foreach (var move in _base.LearnableMoves)
+        foreach (var move in Base.LearnableMoves)
         {
-            if (move.Level <= level)
+            if (move.Level <= Level)
             {
                 Moves.Add(new Move(move.Base));
             }
@@ -31,10 +31,10 @@ public class Monster
         }
     }
 
-    public int MaxHp => Mathf.FloorToInt((_base.MaxHp * level) / 100f) + 10;
-    public int Attack => Mathf.FloorToInt((_base.Attack * level) / 100f) + 5;
-    public int Defense => Mathf.FloorToInt((_base.Defense * level) / 100f) + 5;
-    public int SpAttack => Mathf.FloorToInt((_base.SpAttack * level) / 100f) + 5;
-    public int SpDefense => Mathf.FloorToInt((_base.SpDefense * level) / 100f) + 5;
-    public int Speed => Mathf.FloorToInt((_base.Speed * level) / 100f) + 5;
+    public int MaxHp => Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10;
+    public int Attack => Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5;
+    public int Defense => Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5;
+    public int SpAttack => Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5;
+    public int SpDefense => Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5;
+    public int Speed => Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5;
 }

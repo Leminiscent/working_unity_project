@@ -154,10 +154,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 879891247}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -154.04, y: 0}
-  m_SizeDelta: {x: 12.235, y: 8}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 7.443001, y: 0.0000053653}
+  m_SizeDelta: {x: 14.150002, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &111813380
 MonoBehaviour:
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1400,7 +1400,7 @@ GameObject:
   - component: {fileID: 565175986}
   - component: {fileID: 565175985}
   m_Layer: 0
-  m_Name: HPBarBackground
+  m_Name: HPBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,8 +1422,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 5.089966, y: 0}
-  m_SizeDelta: {x: -14.279999, y: 54}
+  m_AnchoredPosition: {x: 6.050003, y: 0}
+  m_SizeDelta: {x: -16.2, y: 54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &565175985
 MonoBehaviour:
@@ -1920,6 +1920,7 @@ GameObject:
   - component: {fileID: 879891247}
   - component: {fileID: 879891249}
   - component: {fileID: 879891248}
+  - component: {fileID: 879891250}
   m_Layer: 0
   m_Name: HPBar
   m_TagString: Untagged
@@ -1946,8 +1947,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.41, y: -5}
-  m_SizeDelta: {x: 160.15, y: 8}
+  m_AnchoredPosition: {x: -0.000032634, y: -4}
+  m_SizeDelta: {x: 179.264, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879891248
 MonoBehaviour:
@@ -1987,6 +1988,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879891246}
   m_CullTransparentMesh: 1
+--- !u!114 &879891250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879891246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c84e845e2be6864781d1f4307aed82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 1207624366}
 --- !u!1 &981821759
 GameObject:
   m_ObjectHideFlags: 0
@@ -4166,7 +4180,7 @@ GameObject:
   - component: {fileID: 1207624369}
   - component: {fileID: 1207624368}
   m_Layer: 0
-  m_Name: HPBarForeground
+  m_Name: HPForeground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4188,8 +4202,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 12.22998, y: 0.0000076293945}
-  m_SizeDelta: {x: -14.279999, y: 54}
+  m_AnchoredPosition: {x: 14.150002, y: 0.0000076293945}
+  m_SizeDelta: {x: -16.2, y: 54}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1207624368
 MonoBehaviour:
