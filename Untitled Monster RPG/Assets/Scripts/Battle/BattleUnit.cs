@@ -20,7 +20,7 @@ public class BattleUnit : MonoBehaviour
         }
         else
         {
-            GetComponent<SpriteRenderer>().sprite = Monster.Base.FrontSprite;
+            GetComponent<Image>().sprite = Monster.Base.FrontSprite;
         }
     }
 }
