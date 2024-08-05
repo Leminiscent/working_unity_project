@@ -22,6 +22,8 @@ public class MonsterBase : ScriptableObject
     [SerializeField] int spDefense;
     [SerializeField] int speed;
 
+    [SerializeField] List<LearnableMove> learnableMoves;
+
     // Properties
     public string Name => name;
     public string Description => description;
@@ -35,6 +37,17 @@ public class MonsterBase : ScriptableObject
     public int SpAttack => spAttack;
     public int SpDefense => spDefense;
     public int Speed => speed;
+    public List<LearnableMove> LearnableMoves => learnableMoves;
+}
+
+[System.Serializable]
+public class LearnableMove
+{
+    [SerializeField] MoveBase moveBase;
+    [SerializeField] int level;
+
+    public MoveBase Base => moveBase;
+    public int Level => level;
 }
 
 public enum MonsterType
