@@ -14,7 +14,7 @@ public class MoveBase : ScriptableObject
     // Base Stats
     [SerializeField] int power;
     [SerializeField] int accuracy;
-    [SerializeField] int pp;
+    [SerializeField] int pP;
 
     // Properties
     public string Name => name;
@@ -22,5 +22,5 @@ public class MoveBase : ScriptableObject
     public MonsterType Type => type;
     public int Power => power;
     public int Accuracy => accuracy;
-    public int PP => pp;
+    public int PP => pP;
 }

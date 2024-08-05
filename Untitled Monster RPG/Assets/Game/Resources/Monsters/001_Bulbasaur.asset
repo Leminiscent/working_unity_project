@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: 001_Bulbasaur
+  m_EditorClassIdentifier: 
+  name: Bulbasaur
+  description: For some time after its birth, it uses the nutrients that are packed
+    into the seed on its back in order to grow.
+  frontSprite: {fileID: 21300000, guid: 332918537ea94bd488fbbbd1e4d39782, type: 3}
+  backSprite: {fileID: 21300000, guid: fce6866623d329d43a984bf40d09576c, type: 3}
+  type1: 5
+  type2: 8
+  maxHp: 45
+  attack: 49
+  defense: 49
+  spAttack: 65
+  spDefense: 65
+  speed: 45
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 32dd14d8cd2be254a9566abe7ce07dd2, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: b047eb20730e5d447a0df61869158cba, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: de2681db1df3deb4e9692cdecab5d178, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: 18517b688096c5d4390e2e2b2fc1c2c6, type: 2}
+    level: 6
