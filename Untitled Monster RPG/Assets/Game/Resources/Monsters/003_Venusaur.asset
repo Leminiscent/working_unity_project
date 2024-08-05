@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: 003_Venusaur
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
-  type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  learnableMoves: []
+  name: Venusaur
+  description: While it basks in the sun, it can convert the light into energy. As
+    a result, it is more powerful in the summertime.
+  frontSprite: {fileID: 21300000, guid: d1de1e506d9758549bd31ed339cef15a, type: 3}
+  backSprite: {fileID: 21300000, guid: 613c5951cf4a69743be3a8553f752f78, type: 3}
+  type1: 5
+  type2: 8
+  maxHp: 80
+  attack: 82
+  defense: 83
+  spAttack: 100
+  spDefense: 100
+  speed: 80
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 32dd14d8cd2be254a9566abe7ce07dd2, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: b047eb20730e5d447a0df61869158cba, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: de2681db1df3deb4e9692cdecab5d178, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 18517b688096c5d4390e2e2b2fc1c2c6, type: 2}
+    level: 1

@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: 007_Squirtle
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
+  name: Squirtle
+  description: After birth, its back swells and hardens into a shell. It sprays a
+    potent foam from its mouth.
+  frontSprite: {fileID: 21300000, guid: f6923d3b08ba21b4fb7a337bdbcaf6f8, type: 3}
+  backSprite: {fileID: 21300000, guid: 72b40eedba294e946a017eeb35d3246f, type: 3}
+  type1: 3
   type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  learnableMoves: []
+  maxHp: 44
+  attack: 48
+  defense: 65
+  spAttack: 50
+  spDefense: 64
+  speed: 43
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 32dd14d8cd2be254a9566abe7ce07dd2, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 30925435d5798604e926eeb1538dd4b1, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 4f2a6e08d9721cb49bf2324d7125e7cb, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: a9addf6862a257b4a8e8180ab6c737ee, type: 2}
+    level: 6

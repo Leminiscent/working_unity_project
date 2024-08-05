@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: 006_Charizard
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
-  type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  learnableMoves: []
+  name: Charizard
+  description: If Charizard becomes truly angered, the flame at the tip of its tail
+    burns in a light blue shade.
+  frontSprite: {fileID: 21300000, guid: 41f7218a417499e4599aeb3e89fa8d8f, type: 3}
+  backSprite: {fileID: 21300000, guid: e762892b306ffa147bc99a7df87f55f1, type: 3}
+  type1: 2
+  type2: 10
+  maxHp: 78
+  attack: 84
+  defense: 78
+  spAttack: 109
+  spDefense: 85
+  speed: 100
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 5285a9132be48f545a662e2e409eae40, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: b047eb20730e5d447a0df61869158cba, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 50aa10a9b4a1c214d8867ab5a53746ec, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: fd273ec7fa620264d8753ef018f1320d, type: 2}
+    level: 1
