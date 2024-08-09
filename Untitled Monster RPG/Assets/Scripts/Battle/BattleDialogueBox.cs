@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class BattleDialogueBox : MonoBehaviour
 {
     [SerializeField] int lettersPerSecond;
-    [SerializeField] Color highlightedColor;
+    [SerializeField] Color activeColor;
+    [SerializeField] Color inactiveColor;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
@@ -54,11 +55,11 @@ public class BattleDialogueBox : MonoBehaviour
         {
             if (i == selectedAction)
             {
-                actionTexts[i].color = highlightedColor;
+                actionTexts[i].color = activeColor;
             }
             else
             {
-                actionTexts[i].color = Color.white;
+                actionTexts[i].color = inactiveColor;
             }
         }
     }
