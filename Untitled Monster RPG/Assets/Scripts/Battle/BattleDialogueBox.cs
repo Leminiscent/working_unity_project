@@ -63,4 +63,37 @@ public class BattleDialogueBox : MonoBehaviour
             }
         }
     }
+
+    public void UpdateMoveSelction(int selectedMove, Move move)
+    {
+        for (int i = 0; i < moveTexts.Count; ++i)
+        {
+            if (i == selectedMove)
+            {
+                moveTexts[i].color = activeColor;
+            }
+            else
+            {
+                moveTexts[i].color = inactiveColor;
+            }
+        }
+
+        ppText.text = $"PP {move.PP}/{move.Base.PP}";
+        typeText.text = move.Base.Type.ToString();
+    }
+
+    public void SetMoveNames(List<Move> moves)
+    {
+        for (int i = 0; i < moveTexts.Count; ++i)
+        {
+            if (i < moves.Count)
+            {
+                moveTexts[i].text = moves[i].Base.Name;
+            }
+            else
+            {
+                moveTexts[i].text = "-";
+            }
+        }
+    }
 }
