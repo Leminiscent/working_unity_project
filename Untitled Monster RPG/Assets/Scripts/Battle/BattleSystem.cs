@@ -13,6 +13,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleDialogueBox dialogueBox;
 
     BattleState state;
+    int currentAction;
 
     void Start()
     {
@@ -37,5 +38,29 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.PlayerAction;
         StartCoroutine(dialogueBox.TypeDialogue("Choose an action"));
         dialogueBox.EnableActionSelector(true);
+    }
+
+    private void Update()
+    {
+        if (state == BattleState.PlayerAction)
+        {
+            HandleActionSelection();
+        }
+    }
+
+    void HandleActionSelection()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentAction < 1)
+                ++currentAction;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (currentAction > 0)
+                --currentAction;
+        }
+
+        dialogueBox.UpdateActionSelection(currentAction);
     }
 }
