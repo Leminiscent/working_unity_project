@@ -115,5 +115,7 @@ public class BattleSystem : MonoBehaviour
             if (currentMove > 1)
                 currentMove -= 2;
         }
+
+        dialogueBox.UpdateMoveSelction(currentMove, playerUnit.Monster.Moves[currentMove]);
     }
 }
