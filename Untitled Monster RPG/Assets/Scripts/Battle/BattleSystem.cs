@@ -43,6 +43,50 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableActionSelector(true);
     }
 
+    IEnumerator PerformPlayerMove()
+    {
+        state = BattleState.Busy;
+
+        var move = playerUnit.Monster.Moves[currentMove];
+
+        yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " used " + move.Base.Name);
+        yield return new WaitForSeconds(1f);
+
+        bool isDefeated = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
+        yield return enemyHUD.UpdateHP();
+
+        if (isDefeated)
+        {
+            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " has been defeated");
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
+    }
+
+    IEnumerator EnemyMove()
+    {
+        state = BattleState.EnemyMove;
+
+        var move = enemyUnit.Monster.GetRandomMove();
+
+        yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " used " + move.Base.Name);
+        yield return new WaitForSeconds(1f);
+
+        bool isDefeated = playerUnit.Monster.TakeDamage(move, enemyUnit.Monster);
+        yield return playerHUD.UpdateHP();
+
+        if (isDefeated)
+        {
+            yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " has been defeated");
+        }
+        else
+        {
+            PlayerAction();
+        }
+    }
+
     void PlayerMove()
     {
         state = BattleState.PlayerMove;
@@ -117,5 +161,12 @@ public class BattleSystem : MonoBehaviour
         }
 
         dialogueBox.UpdateMoveSelction(currentMove, playerUnit.Monster.Moves[currentMove]);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            dialogueBox.EnableMoveSelector(false);
+            dialogueBox.EnableDialogueText(true);
+            StartCoroutine(PerformPlayerMove());
+        }
     }
 }
