@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum BattleState { Start, PlayerAction, PlayerMove, EnemyMove, Busy, PartyScreen }
+public enum BattleState { Start, ActionSelection, MoveSelection, PerformMove, Busy, PartyScreen, BattleOver }
 
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
-    [SerializeField] BattleHUD playerHUD;
     [SerializeField] BattleUnit enemyUnit;
-    [SerializeField] BattleHUD enemyHUD;
     [SerializeField] BattleDialogueBox dialogueBox;
     [SerializeField] PartyScreen partyScreen;
 
@@ -36,8 +34,6 @@ public class BattleSystem : MonoBehaviour
     {
         playerUnit.Setup(playerParty.GetHealthyMonster());
         enemyUnit.Setup(wildMonster);
-        playerHUD.SetData(playerUnit.Monster);
-        enemyHUD.SetData(enemyUnit.Monster);
 
         partyScreen.Init();
 
@@ -45,12 +41,12 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogueBox.TypeDialogue("A wild " + enemyUnit.Monster.Base.Name + " appeared!");
 
-        PlayerAction();
+        ActionSelection();
     }
 
-    void PlayerAction()
+    void ActionSelection()
     {
-        state = BattleState.PlayerAction;
+        state = BattleState.ActionSelection;
         dialogueBox.EnableDialogueText(true);
         dialogueBox.SetDialogue("Choose an action!");
         dialogueBox.EnableActionSelector(true);
@@ -63,34 +59,14 @@ public class BattleSystem : MonoBehaviour
         partyScreen.gameObject.SetActive(true);
     }
 
-    IEnumerator PerformPlayerMove()
+    IEnumerator PlayerMove()
     {
-        state = BattleState.Busy;
+        state = BattleState.PerformMove;
 
         var move = playerUnit.Monster.Moves[currentMove];
-        move.PP--;
 
-        yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
-
-        playerUnit.PlayAttackAnimation();
-        yield return new WaitForSeconds(1f);
-
-        enemyUnit.PlayHitAnimation();
-
-        var damageDetails = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
-
-        yield return enemyHUD.UpdateHP();
-        yield return ShowDamageDetails(damageDetails);
-
-        if (damageDetails.Defeated)
-        {
-            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " has been defeated!");
-            enemyUnit.PlayDefeatAnimation();
-
-            yield return new WaitForSeconds(2f);
-            OnBattleOver(true);
-        }
-        else
+        yield return RunMove(playerUnit, enemyUnit, move);
+        if (state == BattleState.PerformMove)
         {
             StartCoroutine(EnemyMove());
         }
@@ -98,30 +74,53 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyMove()
     {
-        state = BattleState.EnemyMove;
+        state = BattleState.PerformMove;
 
         var move = enemyUnit.Monster.GetRandomMove();
+
+        yield return RunMove(enemyUnit, playerUnit, move);
+        if (state == BattleState.PerformMove)
+        {
+            ActionSelection();
+        }
+    }
+
+    void BattleOver(bool won)
+    {
+        state = BattleState.BattleOver;
+        OnBattleOver(won);
+    }
+
+    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
+    {
         move.PP--;
 
-        yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
+        yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
 
-        enemyUnit.PlayAttackAnimation();
+        sourceUnit.PlayAttackAnimation();
         yield return new WaitForSeconds(1f);
 
-        playerUnit.PlayHitAnimation();
+        targetUnit.PlayHitAnimation();
 
-        var damageDetails = playerUnit.Monster.TakeDamage(move, enemyUnit.Monster);
+        var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
 
-        yield return playerHUD.UpdateHP();
+        yield return targetUnit.Hud.UpdateHP();
         yield return ShowDamageDetails(damageDetails);
 
         if (damageDetails.Defeated)
         {
-            yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " has been defeated!");
-            playerUnit.PlayDefeatAnimation();
-
+            yield return dialogueBox.TypeDialogue(targetUnit.Monster.Base.Name + " has been defeated!");
+            targetUnit.PlayDefeatAnimation();
             yield return new WaitForSeconds(2f);
 
+            CheckForBattleOver(targetUnit);
+        }
+    }
+
+    void CheckForBattleOver(BattleUnit defeatedUnit)
+    {
+        if (defeatedUnit.IsPlayerUnit)
+        {
             var nextMonster = playerParty.GetHealthyMonster();
             if (nextMonster != null)
             {
@@ -129,22 +128,21 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                OnBattleOver(false);
+                BattleOver(false);
             }
         }
         else
         {
-            PlayerAction();
+            BattleOver(true);
         }
     }
 
-    void PlayerMove()
+    void MoveSelection()
     {
-        state = BattleState.PlayerMove;
+        state = BattleState.MoveSelection;
         dialogueBox.EnableActionSelector(false);
         dialogueBox.EnableDialogueText(false);
         dialogueBox.EnableMoveSelector(true);
-        dialogueBox.enabled = true;
     }
 
     IEnumerator ShowDamageDetails(DamageDetails damageDetails)
@@ -166,11 +164,11 @@ public class BattleSystem : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if (state == BattleState.PlayerAction)
+        if (state == BattleState.ActionSelection)
         {
             HandleActionSelection();
         }
-        else if (state == BattleState.PlayerMove)
+        else if (state == BattleState.MoveSelection)
         {
             HandleMoveSelection();
         }
@@ -208,7 +206,7 @@ public class BattleSystem : MonoBehaviour
             if (currentAction == 0)
             {
                 // Fight
-                PlayerMove();
+                MoveSelection();
             }
             else if (currentAction == 1)
             {
@@ -253,13 +251,13 @@ public class BattleSystem : MonoBehaviour
         {
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogueText(true);
-            StartCoroutine(PerformPlayerMove());
+            StartCoroutine(PlayerMove());
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableActionSelector(true);
-            PlayerAction();
+            ActionSelection();
         }
     }
 
@@ -307,7 +305,7 @@ public class BattleSystem : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.X))
         {
             partyScreen.gameObject.SetActive(false);
-            PlayerAction();
+            ActionSelection();
         }
     }
 
@@ -321,7 +319,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         playerUnit.Setup(newMonster);
-        playerHUD.SetData(newMonster);
         dialogueBox.SetMoveNames(newMonster.Moves);
 
         yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
