@@ -50,7 +50,13 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " used " + move.Base.Name);
 
+        playerUnit.PlayAttackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        enemyUnit.PlayHitAnimation();
+
         var damageDetails = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
+
         yield return enemyHUD.UpdateHP();
         yield return ShowDamageDetails(damageDetails);
 
@@ -72,7 +78,13 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " used " + move.Base.Name);
 
+        enemyUnit.PlayAttackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        playerUnit.PlayHitAnimation();
+
         var damageDetails = playerUnit.Monster.TakeDamage(move, enemyUnit.Monster);
+
         yield return playerHUD.UpdateHP();
         yield return ShowDamageDetails(damageDetails);
 
