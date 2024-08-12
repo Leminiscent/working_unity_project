@@ -19,15 +19,20 @@ public class BattleSystem : MonoBehaviour
     int currentAction;
     int currentMove;
 
-    public void StartBattle()
+    MonsterParty playerParty;
+    Monster wildMonster;
+
+    public void StartBattle(MonsterParty playerParty, Monster wildMonster)
     {
+        this.playerParty = playerParty;
+        this.wildMonster = wildMonster;
         StartCoroutine(SetupBattle());
     }
 
     public IEnumerator SetupBattle()
     {
-        playerUnit.Setup();
-        enemyUnit.Setup();
+        playerUnit.Setup(playerParty.GetHealthyMonster());
+        enemyUnit.Setup(wildMonster);
         playerHUD.SetData(playerUnit.Monster);
         enemyHUD.SetData(enemyUnit.Monster);
 
@@ -50,6 +55,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
 
         var move = playerUnit.Monster.Moves[currentMove];
+        move.PP--;
 
         yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " used " + move.Base.Name);
 
@@ -82,6 +88,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.EnemyMove;
 
         var move = enemyUnit.Monster.GetRandomMove();
+        move.PP--;
 
         yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " used " + move.Base.Name);
 
@@ -101,7 +108,20 @@ public class BattleSystem : MonoBehaviour
             playerUnit.PlayDefeatAnimation();
 
             yield return new WaitForSeconds(2f);
-            OnBattleOver(false);
+
+            var nextMonster = playerParty.GetHealthyMonster();
+            if (nextMonster != null)
+            {
+                playerUnit.Setup(nextMonster);
+                playerHUD.SetData(nextMonster);
+                dialogueBox.SetMoveNames(nextMonster.Moves);
+                yield return dialogueBox.TypeDialogue("Go " + nextMonster.Base.Name);
+                PlayerAction();
+            }
+            else
+            {
+                OnBattleOver(false);
+            }
         }
         else
         {

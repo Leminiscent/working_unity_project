@@ -1231,6 +1231,7 @@ GameObject:
   - component: {fileID: 298095514}
   - component: {fileID: 298095513}
   - component: {fileID: 298095516}
+  - component: {fileID: 298095517}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1346,6 +1347,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &298095517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298095512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c610d9942153048930ee23f51158ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsters:
+  - _base: {fileID: 11400000, guid: 65207b8aec95dfb41a33c3f1da74b0bf, type: 2}
+    level: 7
+  - _base: {fileID: 11400000, guid: b92c4060caaa0b14489779cd3daf8d05, type: 2}
+    level: 3
 --- !u!1 &327435381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,8 +1452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 11400000, guid: 65207b8aec95dfb41a33c3f1da74b0bf, type: 2}
-  level: 5
   isPlayerUnit: 0
 --- !u!1 &381684537
 GameObject:
@@ -1525,8 +1541,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 11400000, guid: 561e3c8621721d444b005a5819b3af91, type: 2}
-  level: 7
   isPlayerUnit: 1
 --- !u!1 &475908989
 GameObject:
@@ -2593,6 +2607,7 @@ GameObject:
   m_Component:
   - component: {fileID: 762224732}
   - component: {fileID: 762224731}
+  - component: {fileID: 762224733}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -2634,6 +2649,23 @@ Transform:
   - {fileID: 153543455}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &762224733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762224730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aea56ece668cc346a19ac3e6b6b1440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wildMonsters:
+  - _base: {fileID: 11400000, guid: b92c4060caaa0b14489779cd3daf8d05, type: 2}
+    level: 5
+  - _base: {fileID: 11400000, guid: b92c4060caaa0b14489779cd3daf8d05, type: 2}
+    level: 7
 --- !u!1 &868532637
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Monster
 {
-    public MonsterBase Base { get; set; }
-    public int Level { get; set; }
+    [SerializeField] MonsterBase _base;
+    [SerializeField] int level;
+
+    public MonsterBase Base => _base;
+    public int Level => level;
 
     public int HP { get; set; }
 
     public List<Move> Moves { get; set; }
 
-    public Monster(MonsterBase mBase, int mLevel)
+    public void Init()
     {
-        Base = mBase;
-        Level = mLevel;
         HP = MaxHp;
 
         Moves = new List<Move>();
