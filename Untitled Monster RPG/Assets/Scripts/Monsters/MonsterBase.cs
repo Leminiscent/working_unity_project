@@ -73,6 +73,17 @@ public enum MonsterType
     Fairy
 }
 
+public enum Stat
+{
+    Attack,
+    Defense,
+    SpAttack,
+    SpDefense,
+    Speed,
+    Accuracy,
+    Evasion
+}
+
 public class TypeChart
 {
     static float[][] chart =

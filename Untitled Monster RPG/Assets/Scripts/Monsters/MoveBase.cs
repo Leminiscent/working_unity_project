@@ -10,7 +10,9 @@ public class MoveBase : ScriptableObject
     [TextArea]
     [SerializeField] string description;
     [SerializeField] MonsterType type;
-    [SerializeField] bool isSpecial;
+    [SerializeField] MoveCategory category;
+    [SerializeField] MoveEffects effects;
+    [SerializeField] MoveTarget target;
 
     // Base Stats
     [SerializeField] int power;
@@ -24,5 +26,35 @@ public class MoveBase : ScriptableObject
     public int Power => power;
     public int Accuracy => accuracy;
     public int PP => pP;
-    public bool IsSpecial => isSpecial;
+    public MoveCategory Category => category;
+    public MoveEffects Effects => effects;
+    public MoveTarget Target => target;
+}
+
+[System.Serializable]
+public class MoveEffects
+{
+    [SerializeField] List<StatBoost> boosts;
+
+    public List<StatBoost> Boosts => boosts;
+}
+
+[System.Serializable]
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
+}
+
+public enum MoveCategory
+{
+    Physical,
+    Special,
+    Status
+}
+
+public enum MoveTarget
+{
+    Enemy,
+    Self
 }

@@ -99,15 +99,31 @@ public class BattleSystem : MonoBehaviour
 
         sourceUnit.PlayAttackAnimation();
         yield return new WaitForSeconds(1f);
-
         targetUnit.PlayHitAnimation();
 
-        var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
+        if (move.Base.Category == MoveCategory.Status)
+        {
+            var effects = move.Base.Effects;
+            if (effects.Boosts != null)
+            {
+                if (move.Base.Target == MoveTarget.Self)
+                {
+                    sourceUnit.Monster.ApplyBoosts(effects.Boosts);
+                }
+                else
+                {
+                    targetUnit.Monster.ApplyBoosts(effects.Boosts);
+                }
+            }
+        }
+        else
+        {
+            var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
+            yield return targetUnit.Hud.UpdateHP();
+            yield return ShowDamageDetails(damageDetails);
+        }
 
-        yield return targetUnit.Hud.UpdateHP();
-        yield return ShowDamageDetails(damageDetails);
-
-        if (damageDetails.Defeated)
+        if (targetUnit.Monster.HP <= 0)
         {
             yield return dialogueBox.TypeDialogue(targetUnit.Monster.Base.Name + " has been defeated!");
             targetUnit.PlayDefeatAnimation();
