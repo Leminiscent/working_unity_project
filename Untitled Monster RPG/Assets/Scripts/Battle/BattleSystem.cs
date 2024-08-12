@@ -31,7 +31,6 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
 
         yield return dialogueBox.TypeDialogue("A wild " + enemyUnit.Monster.Base.Name + " appeared!");
-        yield return new WaitForSeconds(1f);
 
         PlayerAction();
     }
@@ -50,12 +49,12 @@ public class BattleSystem : MonoBehaviour
         var move = playerUnit.Monster.Moves[currentMove];
 
         yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " used " + move.Base.Name);
-        yield return new WaitForSeconds(1f);
 
-        bool isDefeated = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
+        var damageDetails = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
         yield return enemyHUD.UpdateHP();
+        yield return ShowDamageDetails(damageDetails);
 
-        if (isDefeated)
+        if (damageDetails.Defeated)
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " has been defeated");
         }
@@ -72,12 +71,12 @@ public class BattleSystem : MonoBehaviour
         var move = enemyUnit.Monster.GetRandomMove();
 
         yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " used " + move.Base.Name);
-        yield return new WaitForSeconds(1f);
 
-        bool isDefeated = playerUnit.Monster.TakeDamage(move, enemyUnit.Monster);
+        var damageDetails = playerUnit.Monster.TakeDamage(move, enemyUnit.Monster);
         yield return playerHUD.UpdateHP();
+        yield return ShowDamageDetails(damageDetails);
 
-        if (isDefeated)
+        if (damageDetails.Defeated)
         {
             yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " has been defeated");
         }
@@ -94,6 +93,23 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableDialogueText(false);
         dialogueBox.EnableMoveSelector(true);
         dialogueBox.enabled = true;
+    }
+
+    IEnumerator ShowDamageDetails(DamageDetails damageDetails)
+    {
+        if (damageDetails.Critical > 1f)
+        {
+            yield return dialogueBox.TypeDialogue("A critical hit!");
+        }
+
+        if (damageDetails.TypeEffectiveness > 1f)
+        {
+            yield return dialogueBox.TypeDialogue("It's super effective!");
+        }
+        else if (damageDetails.TypeEffectiveness < 1f)
+        {
+            yield return dialogueBox.TypeDialogue("It's not very effective!");
+        }
     }
 
     private void Update()

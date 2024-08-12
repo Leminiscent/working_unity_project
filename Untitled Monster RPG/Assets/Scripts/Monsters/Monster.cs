@@ -38,9 +38,23 @@ public class Monster
     public int SpDefense => Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5;
     public int Speed => Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5;
 
-    public bool TakeDamage(Move move, Monster attacker)
+    public DamageDetails TakeDamage(Move move, Monster attacker)
     {
-        float modifiers = Random.Range(0.85f, 1f);
+        float critical = 1f;
+
+        if (Random.value * 100f <= 6.25f)
+        {
+            critical = 2f;
+        }
+
+        float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
+        var damageDetails = new DamageDetails()
+        {
+            TypeEffectiveness = type,
+            Critical = critical,
+            Defeated = false
+        };
+        float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * ((float)attacker.Attack / Defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
@@ -49,10 +63,10 @@ public class Monster
         if (HP <= 0)
         {
             HP = 0;
-            return true;
+            damageDetails.Defeated = true;
         }
 
-        return false;
+        return damageDetails;
     }
 
     public Move GetRandomMove()
@@ -60,4 +74,11 @@ public class Monster
         int randomIndex = Random.Range(0, Moves.Count);
         return Moves[randomIndex];
     }
+}
+
+public class DamageDetails
+{
+    public bool Defeated { get; set; }
+    public float Critical { get; set; }
+    public float TypeEffectiveness { get; set; }
 }
