@@ -10,6 +10,7 @@ public class MoveBase : ScriptableObject
     [TextArea]
     [SerializeField] string description;
     [SerializeField] MonsterType type;
+    [SerializeField] bool isSpecial;
 
     // Base Stats
     [SerializeField] int power;
@@ -23,4 +24,5 @@ public class MoveBase : ScriptableObject
     public int Power => power;
     public int Accuracy => accuracy;
     public int PP => pP;
+    public bool IsSpecial => isSpecial;
 }
