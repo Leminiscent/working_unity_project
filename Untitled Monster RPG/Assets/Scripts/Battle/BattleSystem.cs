@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,13 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHUD enemyHUD;
     [SerializeField] BattleDialogueBox dialogueBox;
 
+    public event Action<bool> OnBattleOver;
+
     BattleState state;
     int currentAction;
     int currentMove;
 
-    void Start()
+    public void StartBattle()
     {
         StartCoroutine(SetupBattle());
     }
@@ -64,6 +67,9 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " has been defeated");
             enemyUnit.PlayDefeatAnimation();
+
+            yield return new WaitForSeconds(2f);
+            OnBattleOver(true);
         }
         else
         {
@@ -93,6 +99,9 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " has been defeated");
             playerUnit.PlayDefeatAnimation();
+
+            yield return new WaitForSeconds(2f);
+            OnBattleOver(false);
         }
         else
         {
@@ -126,7 +135,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void HandleUpdate()
     {
         if (state == BattleState.PlayerAction)
         {
