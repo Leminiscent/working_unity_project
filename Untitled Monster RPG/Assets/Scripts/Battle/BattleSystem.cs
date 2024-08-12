@@ -81,13 +81,26 @@ public class BattleSystem : MonoBehaviour
         yield return RunMove(enemyUnit, playerUnit, move);
         if (state == BattleState.PerformMove)
         {
+            DecideFirstTurn();
+        }
+    }
+
+    void DecideFirstTurn()
+    {
+        if (playerUnit.Monster.Speed >= enemyUnit.Monster.Speed)
+        {
             ActionSelection();
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
         }
     }
 
     void BattleOver(bool won)
     {
         state = BattleState.BattleOver;
+        playerParty.Monsters.ForEach(m => m.OnBattleOver());
         OnBattleOver(won);
     }
 
@@ -103,18 +116,7 @@ public class BattleSystem : MonoBehaviour
 
         if (move.Base.Category == MoveCategory.Status)
         {
-            var effects = move.Base.Effects;
-            if (effects.Boosts != null)
-            {
-                if (move.Base.Target == MoveTarget.Self)
-                {
-                    sourceUnit.Monster.ApplyBoosts(effects.Boosts);
-                }
-                else
-                {
-                    targetUnit.Monster.ApplyBoosts(effects.Boosts);
-                }
-            }
+            yield return RunMoveEffects(move, sourceUnit.Monster, targetUnit.Monster);
         }
         else
         {
@@ -130,6 +132,33 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
 
             CheckForBattleOver(targetUnit);
+        }
+    }
+
+    IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
+    {
+        var effects = move.Base.Effects;
+        if (effects.Boosts != null)
+        {
+            if (move.Base.Target == MoveTarget.Self)
+            {
+                source.ApplyBoosts(effects.Boosts);
+            }
+            else
+            {
+                target.ApplyBoosts(effects.Boosts);
+            }
+        }
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
+    }
+
+    IEnumerator ShowStatusChanges(Monster monster)
+    {
+        while (monster.StatusChanges.Count > 0)
+        {
+            var message = monster.StatusChanges.Dequeue();
+            yield return dialogueBox.TypeDialogue(message);
         }
     }
 
@@ -327,6 +356,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SwitchMonster(Monster newMonster)
     {
+        bool currentMonsterDefeated = true;
         if (playerUnit.Monster.HP > 0)
         {
             yield return dialogueBox.TypeDialogue("Come back " + playerUnit.Monster.Base.Name + "!");
@@ -336,9 +366,15 @@ public class BattleSystem : MonoBehaviour
 
         playerUnit.Setup(newMonster);
         dialogueBox.SetMoveNames(newMonster.Moves);
-
         yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
 
-        StartCoroutine(EnemyMove());
+        if (currentMonsterDefeated)
+        {
+            DecideFirstTurn();
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [System.Serializable]
@@ -14,6 +15,7 @@ public class Monster
     public List<Move> Moves { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
+    public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
 
     public void Init()
     {
@@ -31,15 +33,7 @@ public class Monster
         }
         CalculateStats();
         HP = MaxHp;
-
-        StatBoosts = new Dictionary<Stat, int>()
-        {
-            { Stat.Attack, 0 },
-            { Stat.Defense, 0 },
-            { Stat.SpAttack, 0 },
-            { Stat.SpDefense, 0 },
-            { Stat.Speed, 0 },
-        };
+        ResetStatBoosts();
     }
 
     void CalculateStats()
@@ -52,6 +46,18 @@ public class Monster
         Stats.Add(Stat.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5);
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
+    }
+
+    void ResetStatBoosts()
+    {
+        StatBoosts = new Dictionary<Stat, int>()
+        {
+            { Stat.Attack, 0 },
+            { Stat.Defense, 0 },
+            { Stat.SpAttack, 0 },
+            { Stat.SpDefense, 0 },
+            { Stat.Speed, 0 },
+        };
     }
 
     int GetStat(Stat stat)
@@ -80,6 +86,15 @@ public class Monster
             var boost = statBoost.boost;
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+
+            if (boost > 0)
+            {
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} rose!");
+            }
+            else
+            {
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} fell!");
+            }
         }
     }
 
@@ -106,10 +121,8 @@ public class Monster
             Critical = critical,
             Defeated = false
         };
-
         float attack = (move.Base.Category == MoveCategory.Special) ? attacker.SpAttack : attacker.Attack;
         float defense = (move.Base.Category == MoveCategory.Special) ? SpDefense : Defense;
-
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * ((float)attack / defense) + 2;
@@ -129,6 +142,11 @@ public class Monster
     {
         int randomIndex = Random.Range(0, Moves.Count);
         return Moves[randomIndex];
+    }
+
+    public void OnBattleOver()
+    {
+        ResetStatBoosts();
     }
 }
 
