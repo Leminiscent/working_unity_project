@@ -63,6 +63,7 @@ public class BattleSystem : MonoBehaviour
         if (damageDetails.Defeated)
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " has been defeated");
+            enemyUnit.PlayDefeatAnimation();
         }
         else
         {
@@ -91,6 +92,7 @@ public class BattleSystem : MonoBehaviour
         if (damageDetails.Defeated)
         {
             yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " has been defeated");
+            playerUnit.PlayDefeatAnimation();
         }
         else
         {
