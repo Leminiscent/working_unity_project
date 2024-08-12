@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BattleHUD : MonoBehaviour
+public class PartyMemberUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI levelText;
@@ -18,10 +18,5 @@ public class BattleHUD : MonoBehaviour
         nameText.text = monster.Base.Name;
         levelText.text = "Lvl " + monster.Level;
         hpBar.SetHP((float)monster.HP / monster.MaxHp);
-    }
-
-    public IEnumerator UpdateHP()
-    {
-        yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHp);
     }
 }
