@@ -7,6 +7,7 @@ public class PartyScreen : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI messageText;
     PartyMemberUI[] memberSlots;
+    List<Monster> monsters;
 
     public void Init()
     {
@@ -15,6 +16,8 @@ public class PartyScreen : MonoBehaviour
 
     public void SetPartyData(List<Monster> monsters)
     {
+        this.monsters = monsters;
+        
         for (int i = 0; i < memberSlots.Length; ++i)
         {
             if (i < monsters.Count)
@@ -26,5 +29,27 @@ public class PartyScreen : MonoBehaviour
                 memberSlots[i].gameObject.SetActive(false);
             }
         }
+
+        messageText.text = "Choose a Monster!";
+    }
+
+    public void UpdateMemberSelection(int selectedMember)
+    {
+        for (int i = 0; i < memberSlots.Length; ++i)
+        {
+            if (i == selectedMember)
+            {
+                memberSlots[i].SetSelected(true);
+            }
+            else
+            {
+                memberSlots[i].SetSelected(false);
+            }
+        }
+    }
+
+    public void SetMessageText(string message)
+    {
+        messageText.text = message;
     }
 }

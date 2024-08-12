@@ -8,6 +8,8 @@ public class PartyMemberUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] HPBar hpBar;
+    [SerializeField] Color activeColor;
+    [SerializeField] Color inactiveColor;
 
     Monster _monster;
 
@@ -18,5 +20,10 @@ public class PartyMemberUI : MonoBehaviour
         nameText.text = monster.Base.Name;
         levelText.text = "Lvl " + monster.Level;
         hpBar.SetHP((float)monster.HP / monster.MaxHp);
+    }
+
+    public void SetSelected(bool selected)
+    {
+        nameText.color = selected ? activeColor : inactiveColor;
     }
 }
