@@ -63,7 +63,7 @@ public class ConditionsDB : MonoBehaviour
                         return true;
                     }
                     monster.StatusTime--;
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is still asleep!");
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is fast asleep!");
                     return false;
                 }
             }
@@ -106,11 +106,48 @@ public class ConditionsDB : MonoBehaviour
                     }
                 }
             }
+        },
+        {
+            ConditionID.confusion,
+            new Condition
+            {
+                Name = "Confusion",
+                StartMessage = "has been confused!",
+                OnStart = (Monster monster) =>
+                {
+                    monster.VolatileStatusTime = Random.Range(2, 5);
+                },
+                OnBeginningofTurn = (Monster monster) =>
+                {
+                    if (monster.VolatileStatusTime == 0)
+                    {
+                        monster.CureVolatileStatus();
+                        monster.StatusChanges.Enqueue($"{monster.Base.Name} snapped out of confusion!");
+                        return true;
+                    }
+                    monster.VolatileStatusTime--;
+
+                    if (Random.Range(1, 4) == 1)
+                    {
+                        monster.StatusChanges.Enqueue($"{monster.Base.Name} is confused!");
+                        monster.UpdateHP(Mathf.FloorToInt((2 * monster.Level + 10) / 250f * 40 * (((float)monster.Attack / monster.Defense) + 2) * Random.Range(0.85f, 1f)));
+                        monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself in its confusion!");
+                        return false;
+                    }
+                    return true;
+                }
+            }
         }
     };
 }
 
 public enum ConditionID
 {
-    none, psn, brn, slp, par, frz
+    none,
+    psn,
+    brn,
+    slp,
+    par,
+    frz,
+    confusion
 }

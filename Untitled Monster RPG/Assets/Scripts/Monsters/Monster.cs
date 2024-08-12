@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ public class Monster
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Condition Status { get; private set; }
     public int StatusTime { get; set; }
+    public Condition VolatileStatus { get; private set; }
+    public int VolatileStatusTime { get; set; }
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
     public event System.Action OnStatusChanged;
@@ -36,9 +39,13 @@ public class Monster
                 break;
             }
         }
+
         CalculateStats();
         HP = MaxHp;
+
         ResetStatBoosts();
+        Status = null;
+        VolatileStatus = null;
     }
 
     void CalculateStats()
@@ -161,6 +168,20 @@ public class Monster
         OnStatusChanged?.Invoke();
     }
 
+    public void SetVolatileStatus(ConditionID conditionId)
+    {
+        if (VolatileStatus != null) return;
+
+        VolatileStatus = ConditionsDB.Conditions[conditionId];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name} {VolatileStatus.StartMessage}");
+    }
+
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
+    }
+
     public Move GetRandomMove()
     {
         int randomIndex = Random.Range(0, Moves.Count);
@@ -169,20 +190,35 @@ public class Monster
 
     public bool OnStartOfTurn()
     {
+        bool canPerformMove = true;
+
         if (Status?.OnBeginningofTurn != null)
         {
-            return Status.OnBeginningofTurn(this);
+            if (!Status.OnBeginningofTurn(this))
+            {
+                canPerformMove = false;
+            }
         }
-        return true;
+        if (VolatileStatus?.OnBeginningofTurn != null)
+        {
+            if (!VolatileStatus.OnBeginningofTurn(this))
+            {
+                canPerformMove = false;
+            }
+        }
+
+        return canPerformMove;
     }
 
     public void OnEndOfTurn()
     {
         Status?.OnEndOfTurn?.Invoke(this);
+        VolatileStatus?.OnEndOfTurn?.Invoke(this);
     }
 
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoosts();
     }
 }
