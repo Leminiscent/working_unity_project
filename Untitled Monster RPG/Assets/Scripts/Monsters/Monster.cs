@@ -15,7 +15,10 @@ public class Monster
     public List<Move> Moves { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
+    public Condition Status { get; private set; }
+    public int StatusTime { get; set; }
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
+    public bool HpChanged { get; set; }
 
     public void Init()
     {
@@ -128,20 +131,47 @@ public class Monster
         float d = a * move.Base.Power * ((float)attack / defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
 
-        HP -= damage;
-        if (HP <= 0)
-        {
-            HP = 0;
-            damageDetails.Defeated = true;
-        }
+        UpdateHP(damage);
 
         return damageDetails;
+    }
+
+    public void UpdateHP(int damage)
+    {
+        HP = Mathf.Clamp(HP - damage, 0, MaxHp);
+        HpChanged = true;
+    }
+
+    public void SetStatus(ConditionID conditionId)
+    {
+        Status = ConditionsDB.Conditions[conditionId];
+        Status?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+    }
+
+    public void CureStatus()
+    {
+        Status = null;
     }
 
     public Move GetRandomMove()
     {
         int randomIndex = Random.Range(0, Moves.Count);
         return Moves[randomIndex];
+    }
+
+    public bool OnStartOfTurn()
+    {
+        if (Status?.OnBeginningofTurn != null)
+        {
+            return Status.OnBeginningofTurn(this);
+        }
+        return true;
+    }
+
+    public void OnEndOfTurn()
+    {
+        Status?.OnEndOfTurn?.Invoke(this);
     }
 
     public void OnBattleOver()

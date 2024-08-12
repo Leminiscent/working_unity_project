@@ -16,6 +16,13 @@ MonoBehaviour:
   description: The user releases an obscuring cloud of smoke or ink. This lowers
     the target's accuracy.
   type: 1
+  category: 2
+  effects:
+    boosts:
+    - stat: 5
+      boost: -1
+    status: 0
+  target: 0
   power: 0
   accuracy: 100
   pP: 20

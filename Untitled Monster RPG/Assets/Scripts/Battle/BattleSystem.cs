@@ -106,6 +106,14 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
+        bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
+        if (!canRunMove)
+        {
+            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield break;
+        }
+        yield return ShowStatusChanges(sourceUnit.Monster);
+
         move.PP--;
 
         yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
@@ -133,11 +141,26 @@ public class BattleSystem : MonoBehaviour
 
             CheckForBattleOver(targetUnit);
         }
+
+        // Status Effects
+        sourceUnit.Monster.OnEndOfTurn();
+        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return sourceUnit.Hud.UpdateHP();
+        if (sourceUnit.Monster.HP <= 0)
+        {
+            yield return dialogueBox.TypeDialogue(targetUnit.Monster.Base.Name + " has been defeated!");
+            targetUnit.PlayDefeatAnimation();
+            yield return new WaitForSeconds(2f);
+
+            CheckForBattleOver(targetUnit);
+        }
     }
 
     IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
     {
         var effects = move.Base.Effects;
+
+        // Stat Boosts
         if (effects.Boosts != null)
         {
             if (move.Base.Target == MoveTarget.Self)
@@ -149,6 +172,13 @@ public class BattleSystem : MonoBehaviour
                 target.ApplyBoosts(effects.Boosts);
             }
         }
+
+        // Status Condition
+        if (effects.Status != ConditionID.none)
+        {
+            target.SetStatus(effects.Status);
+        }
+
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
