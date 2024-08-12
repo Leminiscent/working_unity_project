@@ -1,9 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class ConditionsDB : MonoBehaviour
 {
+    public static void Init()
+    {
+        foreach (var kvp in Conditions)
+        {
+            var condition = kvp.Value;
+            var conditionId = kvp.Key;
+
+            condition.ID = conditionId;
+        }
+    }
+
     public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>()
     {
         {
