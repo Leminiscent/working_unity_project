@@ -130,7 +130,7 @@ public class ConditionsDB : MonoBehaviour
                     if (Random.Range(1, 4) == 1)
                     {
                         monster.StatusChanges.Enqueue($"{monster.Base.Name} is confused!");
-                        monster.UpdateHP(Mathf.FloorToInt((2 * monster.Level + 10) / 250f * 40 * (((float)monster.Attack / monster.Defense) + 2) * Random.Range(0.85f, 1f)));
+                        monster.UpdateHP(Mathf.FloorToInt(monster.MaxHp / 8));
                         monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself in its confusion!");
                         return false;
                     }
