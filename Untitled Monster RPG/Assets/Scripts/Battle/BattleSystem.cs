@@ -107,43 +107,62 @@ public class BattleSystem : MonoBehaviour
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
         bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
+
         if (!canRunMove)
         {
             yield return ShowStatusChanges(sourceUnit.Monster);
             yield return sourceUnit.Hud.UpdateHP();
             yield break;
         }
+
         yield return ShowStatusChanges(sourceUnit.Monster);
-
         move.PP--;
-
         yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
 
-        sourceUnit.PlayAttackAnimation();
-        yield return new WaitForSeconds(1f);
-        targetUnit.PlayHitAnimation();
-
-        if (move.Base.Category == MoveCategory.Status)
+        if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
         {
-            yield return RunMoveEffects(move, sourceUnit.Monster, targetUnit.Monster);
+            sourceUnit.PlayAttackAnimation();
+            yield return new WaitForSeconds(1f);
+            targetUnit.PlayHitAnimation();
+
+            if (move.Base.Category == MoveCategory.Status)
+            {
+                yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
+            }
+            else
+            {
+                var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
+                yield return targetUnit.Hud.UpdateHP();
+                yield return ShowDamageDetails(damageDetails);
+            }
+
+            if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.HP > 0)
+            {
+                foreach (var effect in move.Base.SecondaryEffects)
+                {
+                    var rnd = UnityEngine.Random.Range(1, 101);
+                    if (rnd <= effect.Chance)
+                    {
+                        yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                    }
+                }
+            }
+
+            if (targetUnit.Monster.HP <= 0)
+            {
+                yield return dialogueBox.TypeDialogue(targetUnit.Monster.Base.Name + " has been defeated!");
+                targetUnit.PlayDefeatAnimation();
+                yield return new WaitForSeconds(2f);
+
+                CheckForBattleOver(targetUnit);
+            }
         }
         else
         {
-            var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
-            yield return targetUnit.Hud.UpdateHP();
-            yield return ShowDamageDetails(damageDetails);
+            yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + "'s attack missed!");
         }
 
-        if (targetUnit.Monster.HP <= 0)
-        {
-            yield return dialogueBox.TypeDialogue(targetUnit.Monster.Base.Name + " has been defeated!");
-            targetUnit.PlayDefeatAnimation();
-            yield return new WaitForSeconds(2f);
-
-            CheckForBattleOver(targetUnit);
-        }
-
-        // Status Effects
+        // End of Turn Effects
         sourceUnit.Monster.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit.Monster);
         yield return sourceUnit.Hud.UpdateHP();
@@ -157,14 +176,12 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
+    IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)
     {
-        var effects = move.Base.Effects;
-
         // Stat Boosts
         if (effects.Boosts != null)
         {
-            if (move.Base.Target == MoveTarget.Self)
+            if (moveTarget == MoveTarget.Self)
             {
                 source.ApplyBoosts(effects.Boosts);
             }
@@ -186,6 +203,39 @@ public class BattleSystem : MonoBehaviour
 
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
+    }
+
+    bool CheckIfMoveHits(Move move, Monster source, Monster target)
+    {
+        if (move.Base.AlwaysHits)
+        {
+            return true;
+        }
+
+        float moveAccuracy = move.Base.Accuracy;
+        int accuracy = source.StatBoosts[Stat.Accuracy];
+        int evasion = target.StatBoosts[Stat.Evasion];
+        var boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
+
+        if (accuracy > 0)
+        {
+            moveAccuracy *= boostValues[accuracy];
+        }
+        else
+        {
+            moveAccuracy /= boostValues[-accuracy];
+        }
+
+        if (evasion > 0)
+        {
+            moveAccuracy /= boostValues[evasion];
+        }
+        else
+        {
+            moveAccuracy *= boostValues[-evasion];
+        }
+
+        return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
     }
 
     IEnumerator ShowStatusChanges(Monster monster)
