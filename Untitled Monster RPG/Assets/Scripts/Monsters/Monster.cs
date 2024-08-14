@@ -187,8 +187,10 @@ public class Monster
 
     public Move GetRandomMove()
     {
-        int randomIndex = Random.Range(0, Moves.Count);
-        return Moves[randomIndex];
+        var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
+        int randomIndex = Random.Range(0, movesWithPP.Count);
+
+        return movesWithPP[randomIndex];
     }
 
     public bool OnStartOfTurn()
