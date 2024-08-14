@@ -70,7 +70,19 @@ public class BattleSystem : MonoBehaviour
             playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves[currentMove];
             enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove();
 
-            bool playerGoesFirst = playerUnit.Monster.Speed >= enemyUnit.Monster.Speed;
+            int playerMovePriority = playerUnit.Monster.CurrentMove.Base.Priority;
+            int enemyMovePriority = enemyUnit.Monster.CurrentMove.Base.Priority;
+            bool playerGoesFirst = true;
+
+            if (enemyMovePriority > playerMovePriority)
+            {
+                playerGoesFirst = false;
+            }
+            else if (enemyMovePriority == playerMovePriority)
+            {
+                playerGoesFirst = playerUnit.Monster.Speed >= enemyUnit.Monster.Speed;
+            }
+
             var firstUnit = playerGoesFirst ? playerUnit : enemyUnit;
             var secondUnit = playerGoesFirst ? enemyUnit : playerUnit;
             var secondMonster = secondUnit.Monster;

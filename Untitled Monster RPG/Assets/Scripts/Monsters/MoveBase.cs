@@ -18,6 +18,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] int accuracy;
     [SerializeField] bool alwaysHits;
     [SerializeField] int pP;
+    [SerializeField] int priority;
 
     // Properties
     public string Name => name;
@@ -27,6 +28,7 @@ public class MoveBase : ScriptableObject
     public int Accuracy => accuracy;
     public bool AlwaysHits => alwaysHits;
     public int PP => pP;
+    public int Priority => priority;
     public MoveCategory Category => category;
     public MoveEffects Effects => effects;
     public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
