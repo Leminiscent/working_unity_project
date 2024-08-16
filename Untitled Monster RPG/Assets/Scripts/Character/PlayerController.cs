@@ -12,11 +12,11 @@ public class PlayerController : MonoBehaviour
     public event Action OnEncountered;
     private bool isMoving;
     private Vector2 input;
-    private Animator animator;
+    private CharacterAnimator animator;
 
     void Awake()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponent<CharacterAnimator>();
     }
 
     // Update is called once per frame
@@ -32,8 +32,8 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero)
             {
-                animator.SetFloat("moveX", input.x);
-                animator.SetFloat("moveY", input.y);
+                animator.MoveX = input.x;
+                animator.MoveY = input.y;
 
                 var targetPos = transform.position;
                 targetPos.x += input.x;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        animator.SetBool("isMoving", isMoving);
+        animator.IsMoving = isMoving;
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var facingDir = new Vector3(animator.MoveX, animator.MoveY);
         var interactPos = transform.position + facingDir;
         var collider = Physics2D.OverlapCircle(interactPos, 0.1f, interactablesLayer);
 
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
         {
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                animator.SetBool("isMoving", false);
+                animator.IsMoving = false;
                 OnEncountered();
             }
         }
