@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, BattleOver }
 public enum BattleAction { Fight, UseItem, SwitchMonster, Run }
@@ -13,6 +14,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] BattleDialogueBox dialogueBox;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] Image playerImage;
+    [SerializeField] Image enemyImage;
 
     public event Action<bool> OnBattleOver;
 
@@ -23,26 +26,73 @@ public class BattleSystem : MonoBehaviour
     int currentMember;
 
     MonsterParty playerParty;
+    MonsterParty enemyParty;
     Monster wildMonster;
+    bool isMasterBattle = false;
+    PlayerController player;
+    MasterController enemy;
 
-    public void StartBattle(MonsterParty playerParty, Monster wildMonster)
+    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster)
     {
         this.playerParty = playerParty;
         this.wildMonster = wildMonster;
         StartCoroutine(SetupBattle());
     }
 
+    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty)
+    {
+        isMasterBattle = true;
+        this.playerParty = playerParty;
+        this.enemyParty = enemyParty;
+        player = playerParty.GetComponent<PlayerController>();
+        enemy = enemyParty.GetComponent<MasterController>();
+        StartCoroutine(SetupBattle());
+    }
+
     public IEnumerator SetupBattle()
     {
-        playerUnit.Setup(playerParty.GetHealthyMonster());
-        enemyUnit.Setup(wildMonster);
+        playerUnit.Clear();
+        enemyUnit.Clear();
+
+        if (!isMasterBattle)
+        {
+            playerUnit.Setup(playerParty.GetHealthyMonster());
+            enemyUnit.Setup(wildMonster);
+
+            dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
+            yield return dialogueBox.TypeDialogue("A wild " + enemyUnit.Monster.Base.Name + " appeared!");
+        }
+        else
+        {
+            playerUnit.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(false);
+
+            playerImage.gameObject.SetActive(true);
+            enemyImage.gameObject.SetActive(true);
+            playerImage.sprite = player.Sprite;
+            enemyImage.sprite = enemy.Sprite;
+
+            yield return dialogueBox.TypeDialogue(enemy.Name + " wants to battle!");
+
+            enemyImage.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(true);
+
+            var enemyMonster = enemyParty.GetHealthyMonster();
+
+            enemyUnit.Setup(enemyMonster);
+            yield return dialogueBox.TypeDialogue(enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
+
+            playerImage.gameObject.SetActive(false);
+            playerUnit.gameObject.SetActive(true);
+
+            var playerMonster = playerParty.GetHealthyMonster();
+
+            playerUnit.Setup(playerMonster);
+            yield return dialogueBox.TypeDialogue("Go " + playerMonster.Base.Name + "!");
+            dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
+        }
 
         partyScreen.Init();
-
-        dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
-
-        yield return dialogueBox.TypeDialogue("A wild " + enemyUnit.Monster.Base.Name + " appeared!");
-
         ActionSelection();
     }
 
@@ -230,6 +280,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
 
             CheckForBattleOver(sourceUnit);
+            yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
 
@@ -291,7 +342,22 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            BattleOver(true);
+            if (!isMasterBattle)
+            {
+                BattleOver(true);
+            }
+            else
+            {
+                var nextMonster = enemyParty.GetHealthyMonster();
+                if (nextMonster != null)
+                {
+                    StartCoroutine(SendNextMasterMonster());
+                }
+                else
+                {
+                    BattleOver(true);
+                }
+            }
         }
     }
 
@@ -474,6 +540,11 @@ public class BattleSystem : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
+            if (playerUnit.Monster.HP <= 0)
+            {
+                partyScreen.SetMessageText("You have to choose a monster!");
+                return;
+            }
             partyScreen.gameObject.SetActive(false);
             ActionSelection();
         }
@@ -492,6 +563,17 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.SetMoveNames(newMonster.Moves);
         yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
 
+        state = BattleState.RunningTurn;
+    }
+
+    IEnumerator SendNextMasterMonster()
+    {
+        state = BattleState.Busy;
+
+        var nextMonster = enemyParty.GetHealthyMonster();
+
+        enemyUnit.Setup(nextMonster);
+        yield return dialogueBox.TypeDialogue(enemy.Name + " sent out " + nextMonster.Base.Name + "!");
         state = BattleState.RunningTurn;
     }
 }

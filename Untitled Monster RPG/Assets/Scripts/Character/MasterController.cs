@@ -1,12 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MasterController : MonoBehaviour
+public class MasterController : MonoBehaviour, Interactable
 {
+    [SerializeField] new string name;
+    [SerializeField] Sprite sprite;
     [SerializeField] Dialogue dialogue;
+    [SerializeField] Dialogue postBattleDialogue;
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject los;
+    bool battleLost = false;
     Character character;
 
     private void Awake()
@@ -17,6 +22,27 @@ public class MasterController : MonoBehaviour
     private void Start()
     {
         SetLosRotation(character.Animator.DefaultDirection);
+    }
+
+    private void Update()
+    {
+        character.HandleUpdate();
+    }
+
+    public void Interact(Transform initiator)
+    {
+        character.LookTowards(initiator.position);
+        if (!battleLost)
+        {
+            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
+            {
+                GameController.Instance.StartMasterBattle(this);
+            }));
+        }
+        else
+        {
+            StartCoroutine(DialogueManager.Instance.ShowDialogue(postBattleDialogue));
+        }
     }
 
     public IEnumerator TriggerBattle(PlayerController player)
@@ -33,14 +59,20 @@ public class MasterController : MonoBehaviour
 
         StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
         {
-
+            GameController.Instance.StartMasterBattle(this);
         }));
+    }
+
+    public void BattleLost()
+    {
+        battleLost = true;
+        los.gameObject.SetActive(false);
     }
 
     public void SetLosRotation(FacingDirections dir)
     {
         float angle = 0f;
-        
+
         if (dir == FacingDirections.Right)
         {
             angle = 90f;
@@ -55,4 +87,7 @@ public class MasterController : MonoBehaviour
         }
         los.transform.eulerAngles = new Vector3(0f, 0f, angle);
     }
+
+    public string Name => name;
+    public Sprite Sprite => sprite;
 }

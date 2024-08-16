@@ -11,15 +11,17 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     GameState state;
+    public static GameController Instance { get; private set; }
 
     private void Awake()
     {
+        Instance = this;
         ConditionsDB.Init();
     }
 
     private void Start()
     {
-        playerController.OnEncountered += StartBattle;
+        playerController.OnEncountered += StartWildBattle;
         battleSystem.OnBattleOver += EndBattle;
         playerController.OnEnterLOS += (Collider2D masterCollider) =>
         {
@@ -41,7 +43,7 @@ public class GameController : MonoBehaviour
         };
     }
 
-    void StartBattle()
+    void StartWildBattle()
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
@@ -50,11 +52,31 @@ public class GameController : MonoBehaviour
         var playerParty = playerController.GetComponent<MonsterParty>();
         var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
 
-        battleSystem.StartBattle(playerParty, wildMonster);
+        battleSystem.StartWildBattle(playerParty, wildMonster);
+    }
+
+    MasterController master;
+
+    public void StartMasterBattle(MasterController master)
+    {
+        state = GameState.Battle;
+        battleSystem.gameObject.SetActive(true);
+        worldCamera.gameObject.SetActive(false);
+        this.master = master;
+
+        var playerParty = playerController.GetComponent<MonsterParty>();
+        var enemyParty = master.GetComponent<MonsterParty>();
+
+        battleSystem.StartMasterBattle(playerParty, enemyParty);
     }
 
     void EndBattle(bool won)
     {
+        if (master != null && won == true)
+        {
+            master.BattleLost();
+            master = null;
+        }
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);
