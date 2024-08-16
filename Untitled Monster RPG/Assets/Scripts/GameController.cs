@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Dialogue }
+public enum GameState { FreeRoam, Battle, Dialogue, Cutscene }
 
 public class GameController : MonoBehaviour
 {
@@ -21,6 +21,16 @@ public class GameController : MonoBehaviour
     {
         playerController.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
+        playerController.OnEnterLOS += (Collider2D masterCollider) =>
+        {
+            var master = masterCollider.GetComponentInParent<MasterController>();
+
+            if (master != null)
+            {
+                state = GameState.Cutscene;
+                StartCoroutine(master.TriggerBattle(playerController));
+            }
+        };
         DialogueManager.Instance.OnShowDialogue += () => state = GameState.Dialogue;
         DialogueManager.Instance.OnCloseDialogue += () =>
         {

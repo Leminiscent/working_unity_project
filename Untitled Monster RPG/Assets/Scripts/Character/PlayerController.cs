@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public event Action OnEncountered;
+    public event Action<Collider2D> OnEnterLOS;
     private Vector2 input;
     private Character character;
 
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero)
             {
-                StartCoroutine(character.Move(input, CheckForEncounters));
+                StartCoroutine(character.Move(input, OnMoveOver));
             }
         }
 
@@ -47,8 +48,14 @@ public class PlayerController : MonoBehaviour
 
         if (collider != null)
         {
-            collider.GetComponent<Interactable>()?.Interact();
+            collider.GetComponent<Interactable>()?.Interact(transform);
         }
+    }
+
+    private void OnMoveOver()
+    {
+        CheckForEncounters();
+        CheckIfInLOS();
     }
 
     private void CheckForEncounters()
@@ -60,6 +67,17 @@ public class PlayerController : MonoBehaviour
                 character.Animator.IsMoving = false;
                 OnEncountered();
             }
+        }
+    }
+
+    public void CheckIfInLOS()
+    {
+        var collider = Physics2D.OverlapCircle(transform.position, 0.1f, GameLayers.Instance.LOSLayer);
+
+        if (collider != null)
+        {
+            character.Animator.IsMoving = false;
+            OnEnterLOS?.Invoke(collider);
         }
     }
 }
