@@ -27,14 +27,7 @@ public class BattleUnit : MonoBehaviour
     public void Setup(Monster monster)
     {
         Monster = monster;
-        if (isPlayerUnit)
-        {
-            image.sprite = Monster.Base.BackSprite;
-        }
-        else
-        {
-            image.sprite = Monster.Base.FrontSprite;
-        }
+        image.sprite = Monster.Base.Sprite;
         hud.gameObject.SetActive(true);
         hud.SetData(monster);
         image.color = originalColor;

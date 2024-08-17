@@ -9,8 +9,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] new string name;
     [TextArea]
     [SerializeField] string description;
-    [SerializeField] Sprite frontSprite;
-    [SerializeField] Sprite backSprite;
+    [SerializeField] Sprite sprite;
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
 
@@ -27,8 +26,7 @@ public class MonsterBase : ScriptableObject
     // Properties
     public string Name => name;
     public string Description => description;
-    public Sprite FrontSprite => frontSprite;
-    public Sprite BackSprite => backSprite;
+    public Sprite Sprite => sprite;
     public MonsterType Type1 => type1;
     public MonsterType Type2 => type2;
     public int MaxHp => maxHp;
