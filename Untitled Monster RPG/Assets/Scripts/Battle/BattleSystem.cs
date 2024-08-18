@@ -415,14 +415,14 @@ public class BattleSystem : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            currentAction += 2;
+            currentAction += 3;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            currentAction -= 2;
+            currentAction -= 3;
         }
 
-        currentAction = Mathf.Clamp(currentAction, 0, 3);
+        currentAction = Mathf.Clamp(currentAction, 0, 5);
 
         dialogueBox.UpdateActionSelection(currentAction);
 
@@ -435,15 +435,23 @@ public class BattleSystem : MonoBehaviour
             }
             else if (currentAction == 1)
             {
-                // Inventory
+                // Talk
             }
             else if (currentAction == 2)
             {
-                // Monster
+                // Item
+            }
+            else if (currentAction == 3)
+            {
+                // Guard
+            }
+            else if (currentAction == 4)
+            {
+                // Switch
                 prevState = state;
                 OpenPartyScreen();
             }
-            else if (currentAction == 3)
+            else if (currentAction == 5)
             {
                 // Run
             }
