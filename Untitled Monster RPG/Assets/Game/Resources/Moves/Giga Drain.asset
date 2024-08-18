@@ -12,18 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Giga Drain
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  type: 0
-  category: 0
+  name: Giga Drain
+  description: "The user drains the target\u2019s energy, restoring its own health
+    in the process."
+  type: 5
+  category: 1
   effects:
     boosts: []
     status: 0
     volatileStatus: 0
-  secondaryEffects: []
+  secondaryEffects:
+  - boosts: []
+    status: 0
+    volatileStatus: 8
+    chance: 100
+    target: 0
   target: 0
-  power: 0
-  accuracy: 0
+  power: 75
+  accuracy: 100
   alwaysHits: 0
-  pP: 0
+  pP: 10
   priority: 0

@@ -12,18 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Spore Burst
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  type: 0
-  category: 0
+  name: Spore Burst
+  description: The user releases a burst of spores in all directions, potentially
+    putting targets to sleep.
+  type: 5
+  category: 1
   effects:
     boosts: []
     status: 0
     volatileStatus: 0
-  secondaryEffects: []
+  secondaryEffects:
+  - boosts: []
+    status: 4
+    volatileStatus: 0
+    chance: 20
+    target: 0
   target: 0
-  power: 0
-  accuracy: 0
+  power: 60
+  accuracy: 100
   alwaysHits: 0
-  pP: 0
+  pP: 15
   priority: 0

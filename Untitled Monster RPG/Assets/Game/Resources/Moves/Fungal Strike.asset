@@ -12,18 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Fungal Strike
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  type: 0
+  name: Fungal Strike
+  description: The user strikes the target with a vine covered in toxic fungi, potentially
+    poisoning it.
+  type: 5
   category: 0
   effects:
     boosts: []
     status: 0
     volatileStatus: 0
-  secondaryEffects: []
+  secondaryEffects:
+  - boosts: []
+    status: 1
+    volatileStatus: 0
+    chance: 10
+    target: 0
   target: 0
-  power: 0
-  accuracy: 0
+  power: 85
+  accuracy: 90
   alwaysHits: 0
-  pP: 0
+  pP: 10
   priority: 0
