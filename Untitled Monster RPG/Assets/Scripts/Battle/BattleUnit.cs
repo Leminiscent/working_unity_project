@@ -28,6 +28,25 @@ public class BattleUnit : MonoBehaviour
     {
         Monster = monster;
         image.sprite = Monster.Base.Sprite;
+
+        float scaleFactor = 1.0f;
+
+        switch (Monster.Base.Size)
+        {
+            case MonsterSize.Medium:
+                scaleFactor = 1.5f;
+                break;
+            case MonsterSize.Large:
+                scaleFactor = 2.0f;
+                break;
+        }
+
+        float originalSize = image.rectTransform.rect.height;
+        float newSize = originalSize * scaleFactor;
+
+        originalPos.y = (newSize - originalSize) / 2;
+        image.transform.localPosition = new Vector3(originalPos.x, originalPos.y);
+        image.transform.localScale = Vector3.one * scaleFactor;
         hud.gameObject.SetActive(true);
         hud.SetData(monster);
         image.color = originalColor;
@@ -73,11 +92,11 @@ public class BattleUnit : MonoBehaviour
 
         if (isPlayerUnit)
         {
-            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x + 75f, originalPos.y + 25f), 0.25f));
+            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x + 75f, originalPos.y), 0.25f));
         }
         else
         {
-            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x - 75f, originalPos.y - 25f), 0.25f));
+            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x - 75f, originalPos.y), 0.25f));
         }
 
         sequence.Append(image.transform.DOLocalMove(originalPos, 0.25f));
@@ -89,11 +108,11 @@ public class BattleUnit : MonoBehaviour
 
         if (isPlayerUnit)
         {
-            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x - 15f, originalPos.y - 5f), 0.25f));
+            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x - 15f, originalPos.y), 0.25f));
         }
         else
         {
-            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x + 15f, originalPos.y + 5f), 0.25f));
+            sequence.Append(image.transform.DOLocalMove(new Vector3(originalPos.x + 15f, originalPos.y), 0.25f));
         }
         sequence.Join(image.DOColor(Color.gray, 0.1f));
 

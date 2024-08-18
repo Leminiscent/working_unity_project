@@ -34,6 +34,7 @@ public class BattleSystem : MonoBehaviour
 
     public void StartWildBattle(MonsterParty playerParty, Monster wildMonster)
     {
+        isMasterBattle = false;
         this.playerParty = playerParty;
         this.wildMonster = wildMonster;
         StartCoroutine(SetupBattle());

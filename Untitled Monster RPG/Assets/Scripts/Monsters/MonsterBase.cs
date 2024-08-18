@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
@@ -12,6 +13,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] Sprite sprite;
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
+    [SerializeField] MonsterSize size;
 
     // Base Stats
     [SerializeField] int maxHp;
@@ -29,6 +31,7 @@ public class MonsterBase : ScriptableObject
     public Sprite Sprite => sprite;
     public MonsterType Type1 => type1;
     public MonsterType Type2 => type2;
+    public MonsterSize Size => size;
     public int MaxHp => maxHp;
     public int Attack => attack;
     public int Defense => defense;
@@ -80,6 +83,13 @@ public enum Stat
     Speed,
     Accuracy,
     Evasion
+}
+
+public enum MonsterSize
+{
+    Small,
+    Medium,
+    Large,
 }
 
 public class TypeChart
