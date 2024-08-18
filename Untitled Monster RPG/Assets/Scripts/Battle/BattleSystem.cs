@@ -526,12 +526,12 @@ public class BattleSystem : MonoBehaviour
             var selectedMember = playerParty.Monsters[currentMember];
             if (selectedMember.HP <= 0)
             {
-                partyScreen.SetMessageText("You can't send out an unconscious monster!");
+                partyScreen.SetMessageText("{selectedMember.Base.Name} is unable to fight!");
                 return;
             }
             if (selectedMember == playerUnit.Monster)
             {
-                partyScreen.SetMessageText("You can't switch to the same monster!");
+                partyScreen.SetMessageText("{selectedMember.Base.Name} is already in battle!");
                 return;
             }
 
