@@ -5,14 +5,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, BattleOver }
-public enum BattleAction { Fight, UseItem, SwitchMonster, Run }
+public enum BattleState { Start, ActionSelection, MoveSelection, Recruitment, RunningTurn, Busy, PartyScreen, BattleOver }
+public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
 
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] BattleDialogueBox dialogueBox;
+    [SerializeField] Slider affectionBar;
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage;
     [SerializeField] Image enemyImage;
@@ -23,6 +24,7 @@ public class BattleSystem : MonoBehaviour
     BattleState? prevState;
     int currentAction;
     int currentMove;
+    int currentAnswer;
     int currentMember;
 
     MonsterParty playerParty;
@@ -401,6 +403,10 @@ public class BattleSystem : MonoBehaviour
         {
             HandlePartySelection();
         }
+        else if (state == BattleState.Recruitment)
+        {
+            // HandleRecruitment
+        }
     }
 
     void HandleActionSelection()
@@ -478,7 +484,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Monster.Moves.Count - 1);
-
         dialogueBox.UpdateMoveSelction(currentMove, playerUnit.Monster.Moves[currentMove]);
 
         if (Input.GetKeyDown(KeyCode.Z))

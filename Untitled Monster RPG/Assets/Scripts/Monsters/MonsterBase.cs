@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
@@ -24,6 +25,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] int speed;
 
     [SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField] List<RecruitmentQuestions> recruitmentQuestions;
 
     // Properties
     public string Name => name;
@@ -39,6 +41,7 @@ public class MonsterBase : ScriptableObject
     public int SpDefense => spDefense;
     public int Speed => speed;
     public List<LearnableMove> LearnableMoves => learnableMoves;
+    public List<RecruitmentQuestions> RecruitmentQuestions => recruitmentQuestions;
 }
 
 [System.Serializable]
@@ -49,6 +52,26 @@ public class LearnableMove
 
     public MoveBase Base => moveBase;
     public int Level => level;
+}
+
+[System.Serializable]
+public class RecruitmentQuestions
+{
+    [SerializeField] string question;
+    [SerializeField] List<RecruitmentAnswers> answers;
+
+    public string Question => question;
+    public List<RecruitmentAnswers> Answers => answers;
+}
+
+[System.Serializable]
+public class RecruitmentAnswers
+{
+    [SerializeField] string answer;
+    [SerializeField] int affection;
+
+    public string Answer => answer;
+    public int Affection => affection;
 }
 
 public enum MonsterType

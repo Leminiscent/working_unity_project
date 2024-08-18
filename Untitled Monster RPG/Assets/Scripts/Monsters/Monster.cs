@@ -24,6 +24,7 @@ public class Monster
     public int VolatileStatusTime { get; set; }
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
+    public int AffectionLevel { get; set; }
     public event System.Action OnStatusChanged;
 
     public void Init()
@@ -47,6 +48,8 @@ public class Monster
         ResetStatBoosts();
         Status = null;
         VolatileStatus = null;
+
+        AffectionLevel = 0;
     }
 
     void CalculateStats()
@@ -153,6 +156,11 @@ public class Monster
     {
         HP = Mathf.Clamp(HP - damage, 0, MaxHp);
         HpChanged = true;
+    }
+
+    public void UpdateAffectionLevel(int affection)
+    {
+        AffectionLevel = Mathf.Clamp(AffectionLevel + affection, 0, 6);
     }
 
     public void SetStatus(ConditionID conditionId)

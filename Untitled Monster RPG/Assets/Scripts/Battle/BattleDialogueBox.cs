@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleDialogueBox : MonoBehaviour
 {
@@ -13,9 +14,11 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
     [SerializeField] GameObject moveDetails;
+    [SerializeField] GameObject answerSelector;
     [SerializeField] GameObject choiceBox;
     [SerializeField] List<TextMeshProUGUI> actionTexts;
     [SerializeField] List<TextMeshProUGUI> moveTexts;
+    [SerializeField] List<TextMeshProUGUI> answerTexts;
     [SerializeField] TextMeshProUGUI ppText;
     [SerializeField] TextMeshProUGUI typeText;
     [SerializeField] TextMeshProUGUI yesText;
@@ -52,6 +55,11 @@ public class BattleDialogueBox : MonoBehaviour
     {
         moveSelector.SetActive(enabled);
         moveDetails.SetActive(enabled);
+    }
+
+    public void EnableAnswerSelector(bool enabled)
+    {
+        answerSelector.SetActive(enabled);
     }
 
     public void EnableChoiceBox(bool enabled)
@@ -111,6 +119,36 @@ public class BattleDialogueBox : MonoBehaviour
             else
             {
                 moveTexts[i].text = "-";
+            }
+        }
+    }
+
+    public void UpdateAnswerSelection(int selectedAnswer)
+    {
+        for (int i = 0; i < answerTexts.Count; ++i)
+        {
+            if (i == selectedAnswer)
+            {
+                answerTexts[i].color = activeColor;
+            }
+            else
+            {
+                answerTexts[i].color = inactiveColor;
+            }
+        }
+    }
+
+    public void SetAnswers(List<RecruitmentAnswers> answers)
+    {
+        for (int i = 0; i < answerTexts.Count; ++i)
+        {
+            if (i < answers.Count)
+            {
+                answerTexts[i].text = answers[i].Answer;
+            }
+            else
+            {
+                answerTexts[i].text = "";
             }
         }
     }
