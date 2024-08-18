@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BattleDialogueBox : MonoBehaviour
 {
@@ -138,7 +137,7 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    public void SetAnswers(List<RecruitmentAnswers> answers)
+    public void SetAnswers(List<RecruitmentAnswer> answers)
     {
         for (int i = 0; i < answerTexts.Count; ++i)
         {

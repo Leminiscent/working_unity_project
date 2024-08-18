@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
@@ -25,7 +22,8 @@ public class MonsterBase : ScriptableObject
     [SerializeField] int speed;
 
     [SerializeField] List<LearnableMove> learnableMoves;
-    [SerializeField] List<RecruitmentQuestions> recruitmentQuestions;
+    [SerializeField] int recruitRate;
+    [SerializeField] List<RecruitmentQuestion> recruitmentQuestions;
 
     // Properties
     public string Name => name;
@@ -41,7 +39,8 @@ public class MonsterBase : ScriptableObject
     public int SpDefense => spDefense;
     public int Speed => speed;
     public List<LearnableMove> LearnableMoves => learnableMoves;
-    public List<RecruitmentQuestions> RecruitmentQuestions => recruitmentQuestions;
+    public int RecruitRate => recruitRate;
+    public List<RecruitmentQuestion> RecruitmentQuestions => recruitmentQuestions;
 }
 
 [System.Serializable]
@@ -55,23 +54,23 @@ public class LearnableMove
 }
 
 [System.Serializable]
-public class RecruitmentQuestions
+public class RecruitmentQuestion
 {
     [SerializeField] string question;
-    [SerializeField] List<RecruitmentAnswers> answers;
+    [SerializeField] List<RecruitmentAnswer> answers;
 
     public string Question => question;
-    public List<RecruitmentAnswers> Answers => answers;
+    public List<RecruitmentAnswer> Answers => answers;
 }
 
 [System.Serializable]
-public class RecruitmentAnswers
+public class RecruitmentAnswer
 {
     [SerializeField] string answer;
-    [SerializeField] int affection;
+    [SerializeField] int affectionScore;
 
     public string Answer => answer;
-    public int Affection => affection;
+    public int AffectionScore => affectionScore;
 }
 
 public enum MonsterType

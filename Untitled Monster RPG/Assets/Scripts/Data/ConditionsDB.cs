@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class ConditionsDB : MonoBehaviour
 {
@@ -27,6 +25,27 @@ public class ConditionsDB : MonoBehaviour
                 OnEndOfTurn = (Monster monster) =>
                 {
                     monster.UpdateHP(monster.MaxHp / 8);
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by poison!");
+                }
+            }
+        },
+        {
+            ConditionID.tox,
+            new Condition
+            {
+                Name = "Bad Poison",
+                StartMessage = "has been badly poisoned!",
+                OnStart = (Monster monster) =>
+                {
+                    monster.StatusBuildup = 2;
+                },
+                OnEndOfTurn = (Monster monster) =>
+                {
+                    if (monster.StatusBuildup < 15)
+                    {
+                        monster.StatusBuildup++;
+                    }
+                    monster.UpdateHP(monster.StatusBuildup * (monster.MaxHp / 16));
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by poison!");
                 }
             }
@@ -137,17 +156,54 @@ public class ConditionsDB : MonoBehaviour
                     return true;
                 }
             }
+        },
+        {
+            ConditionID.leech,
+            new Condition
+            {
+                Name = "Leech",
+                StartMessage = "has been seeded!",
+                OnEndOfTurn = (Monster monster) =>
+                {
+                    int damage = Mathf.FloorToInt(monster.MaxHp / 8);
+
+                    monster.UpdateHP(damage);
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is drained by leech seed!");
+                }
+            }
         }
     };
+
+    public static float GetStatusBonus(Condition condition)
+    {
+        if (condition == null)
+        {
+            return 1f;
+        }
+        else if (condition.ID == ConditionID.slp || condition.ID == ConditionID.frz)
+        {
+            return 2f;
+        }
+        else if (condition.ID == ConditionID.psn || condition.ID == ConditionID.tox || condition.ID == ConditionID.brn || condition.ID == ConditionID.par)
+        {
+            return 1.5f;
+        }
+        else
+        {
+            return 1f;
+        }
+    }
 }
 
 public enum ConditionID
 {
     none,
     psn,
+    tox,
     brn,
     slp,
     par,
     frz,
-    confusion
+    confusion,
+    leech
 }

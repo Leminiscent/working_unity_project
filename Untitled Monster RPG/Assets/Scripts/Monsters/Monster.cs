@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using JetBrains.Annotations;
 using UnityEngine;
 
 [System.Serializable]
@@ -22,6 +19,7 @@ public class Monster
     public int StatusTime { get; set; }
     public Condition VolatileStatus { get; private set; }
     public int VolatileStatusTime { get; set; }
+    public int StatusBuildup { get; set; }
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
     public int AffectionLevel { get; set; }
@@ -48,6 +46,7 @@ public class Monster
         ResetStatBoosts();
         Status = null;
         VolatileStatus = null;
+        StatusBuildup = 0;
 
         AffectionLevel = 0;
     }
@@ -232,6 +231,7 @@ public class Monster
     public void OnBattleOver()
     {
         VolatileStatus = null;
+        StatusBuildup = 0;
         ResetStatBoosts();
     }
 }

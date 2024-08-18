@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections;
 using UnityEngine;
 
 public class MonsterParty : MonoBehaviour
@@ -21,5 +19,17 @@ public class MonsterParty : MonoBehaviour
     public Monster GetHealthyMonster()
     {
         return monsters.Where(x => x.HP > 0).FirstOrDefault();
+    }
+
+    public void AddMonster(Monster newMonster)
+    {
+        if (monsters.Count < 6)
+        {
+            monsters.Add(newMonster);
+        }
+        else
+        {
+            // TODO: Implement Monster Storage
+        }
     }
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BattleHUD : MonoBehaviour
 {
@@ -30,6 +29,7 @@ public class BattleHUD : MonoBehaviour
         statusColors = new Dictionary<ConditionID, Color>()
         {
             { ConditionID.psn, psnColor },
+            { ConditionID.tox, psnColor },
             { ConditionID.brn, brnColor },
             { ConditionID.slp, slpColor },
             { ConditionID.par, parColor },

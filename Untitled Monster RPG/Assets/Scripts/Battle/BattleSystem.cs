@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -160,6 +159,16 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.Busy;
                 yield return SwitchMonster(selectedMonster);
             }
+            else if (playerAction == BattleAction.UseItem)
+            {
+                dialogueBox.EnableActionSelector(false);
+                yield return dialogueBox.TypeDialogue("No items yet!");
+            }
+            else if (playerAction == BattleAction.Talk)
+            {
+                dialogueBox.EnableActionSelector(false);
+                yield return RunRecruitment();
+            }
 
             var enemyMove = enemyUnit.Monster.GetRandomMove();
             yield return RunMove(enemyUnit, playerUnit, enemyMove);
@@ -266,6 +275,98 @@ public class BattleSystem : MonoBehaviour
 
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
+    }
+
+    IEnumerator RunRecruitment()
+    {
+        state = BattleState.Recruitment;
+        yield return dialogueBox.TypeDialogue("You want to talk?");
+        yield return dialogueBox.TypeDialogue("Alright, let's talk!");
+
+        var questions = enemyUnit.Monster.Base.RecruitmentQuestions;
+        List<RecruitmentQuestion> selectedQuestions = new List<RecruitmentQuestion>();
+
+        while (selectedQuestions.Count < 3)
+        {
+            var question = questions[UnityEngine.Random.Range(0, questions.Count)];
+
+            if (!selectedQuestions.Contains(question))
+            {
+                selectedQuestions.Add(question);
+            }
+        }
+
+        int questionIndex = 0;
+
+        foreach (var question in selectedQuestions)
+        {
+            yield return dialogueBox.TypeDialogue(question.Question);
+
+            // Display the possible answers
+            dialogueBox.SetAnswers(question.Answers);
+            dialogueBox.EnableAnswerSelector(true);
+
+            state = BattleState.Recruitment;
+            currentAnswer = 0;
+            while (state == BattleState.Recruitment)
+            {
+                HandleRecruitmentSelection(question, ref questionIndex);
+                yield return null;
+            }
+        }
+    }
+
+    IEnumerator AttemptRecruitment(Monster targetMonster)
+    {
+        // Calculate recruitment chance
+        float a = (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
+        bool isRecruited;
+
+        if (a >= 255)
+        {
+            isRecruited = true;
+        }
+        else
+        {
+            float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
+
+            isRecruited = UnityEngine.Random.Range(0, 65536) < b;
+        }
+
+        if (isRecruited)
+        {
+            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party. Will you accept?");
+            dialogueBox.EnableChoiceBox(true);
+
+            bool choiceMade = false;
+            bool accept = true;
+
+            while (!choiceMade)
+            {
+                HandleChoiceSelection(ref accept, ref choiceMade);
+                yield return null;
+            }
+
+            dialogueBox.EnableChoiceBox(false);
+
+            if (accept)
+            {
+                yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was recruited!");
+                playerParty.AddMonster(enemyUnit.Monster);
+                BattleOver(true);
+            }
+            else
+            {
+                yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was rejected.");
+                state = BattleState.RunningTurn;
+            }
+        }
+        else
+        {
+            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
+            state = BattleState.RunningTurn;
+        }
+
     }
 
     IEnumerator RunAfterTurn(BattleUnit sourceUnit)
@@ -442,10 +543,12 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 1)
             {
                 // Talk
+                StartCoroutine(RunTurns(BattleAction.Talk));
             }
             else if (currentAction == 2)
             {
                 // Item
+                StartCoroutine(RunTurns(BattleAction.UseItem));
             }
             else if (currentAction == 3)
             {
@@ -500,6 +603,50 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableActionSelector(true);
             ActionSelection();
+        }
+    }
+
+    void HandleRecruitmentSelection(RecruitmentQuestion question, ref int questionIndex)
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            ++currentAnswer;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            --currentAnswer;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && currentAnswer < 2)
+        {
+            currentAnswer += 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && currentAnswer > 1)
+        {
+            currentAnswer -= 2;
+        }
+        currentAnswer = Mathf.Clamp(currentAnswer, 0, 3);
+        dialogueBox.UpdateAnswerSelection(currentAnswer);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            state = BattleState.Busy;
+
+            var selectedAnswer = question.Answers[currentAnswer];
+
+            enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
+            affectionBar.value = enemyUnit.Monster.AffectionLevel;
+            StartCoroutine(dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffectionScore)));
+            if (questionIndex < 2)
+            {
+                state = BattleState.Recruitment;
+                questionIndex++;
+                currentAnswer = 0;
+            }
+            else
+            {
+                state = BattleState.Busy;
+                StartCoroutine(AttemptRecruitment(enemyUnit.Monster));
+            }
         }
     }
 
@@ -564,6 +711,20 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    void HandleChoiceSelection(ref bool accept, ref bool choiceMade)
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            accept = !accept;
+            dialogueBox.UpdateChoiceBox(accept);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            choiceMade = true;
+        }
+    }
+
     IEnumerator SwitchMonster(Monster newMonster)
     {
         if (playerUnit.Monster.HP > 0)
@@ -589,5 +750,25 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.Setup(nextMonster);
         yield return dialogueBox.TypeDialogue(enemy.Name + " sent out " + nextMonster.Base.Name + "!");
         state = BattleState.RunningTurn;
+    }
+
+    string GenerateReaction(int affectionScore)
+    {
+        if (affectionScore == 2)
+        {
+            return enemyUnit.Monster.Base.Name + " seems to love your answer!";
+        }
+        else if (affectionScore == 1)
+        {
+            return enemyUnit.Monster.Base.Name + " seems to like your answer.";
+        }
+        else if (affectionScore == -1)
+        {
+            return enemyUnit.Monster.Base.Name + " seems to dislike your answer....";
+        }
+        else
+        {
+            return enemyUnit.Monster.Base.Name + " seems to hate your answer!";
+        }
     }
 }
