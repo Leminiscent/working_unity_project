@@ -315,7 +315,7 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetAnswers(question.Answers);
             dialogueBox.EnableAnswerSelector(true);
             state = BattleState.RecruitmentSelection;
-            yield return null;
+            yield return new WaitUntil(() => state == BattleState.Busy);
         }
     }
 
@@ -628,23 +628,30 @@ public class BattleSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            var selectedAnswer = currentQuestion.Answers[currentAnswer];
-
             dialogueBox.EnableAnswerSelector(false);
-            enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
-            affectionBar.value = enemyUnit.Monster.AffectionLevel;
-            dialogueBox.EnableDialogueText(true);
-            StartCoroutine(dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffectionScore)));
-            if (questionIndex < 2)
-            {
-                questionIndex++;
-                currentAnswer = 0;
-                state = BattleState.Busy;
-            }
-            else
-            {
-                StartCoroutine(AttemptRecruitment(enemyUnit.Monster));
-            }
+            StartCoroutine(ProcessAnswerSelection());
+        }
+    }
+
+    IEnumerator ProcessAnswerSelection()
+    {
+        var selectedAnswer = currentQuestion.Answers[currentAnswer];
+
+        enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
+        affectionBar.value = enemyUnit.Monster.AffectionLevel;
+
+        dialogueBox.EnableDialogueText(true);
+        yield return dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffectionScore));
+
+        if (questionIndex < 2)
+        {
+            questionIndex++;
+            currentAnswer = 0;
+            state = BattleState.Busy;
+        }
+        else
+        {
+            StartCoroutine(AttemptRecruitment(enemyUnit.Monster));
         }
     }
 
