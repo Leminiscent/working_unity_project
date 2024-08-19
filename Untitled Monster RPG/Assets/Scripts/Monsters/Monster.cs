@@ -128,6 +128,16 @@ public class Monster
         }
     }
 
+    public bool CheckForLevelUp()
+    {
+        if (Exp >= Base.GetExpForLevel(Level + 1))
+        {
+            ++level;
+            return true;
+        }
+        return false;
+    }
+
     public int MaxHp { get; private set; }
     public int Attack => GetStat(Stat.Attack);
     public int Defense => GetStat(Stat.Defense);

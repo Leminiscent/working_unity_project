@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
+    const float offestY = 0.3f;
     public event Action OnEncountered;
     public event Action<Collider2D> OnEnterLOS;
     private Vector2 input;
@@ -62,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckForEncounters()
     {
-        if (Physics2D.OverlapCircle(transform.position, 0.1f, GameLayers.Instance.EncountersLayer) != null)
+        if (Physics2D.OverlapCircle(transform.position - new Vector3(0, offestY), 0.2f, GameLayers.Instance.EncountersLayer) != null)
         {
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
@@ -74,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
     public void CheckIfInLOS()
     {
-        var collider = Physics2D.OverlapCircle(transform.position, 0.1f, GameLayers.Instance.LOSLayer);
+        var collider = Physics2D.OverlapCircle(transform.position - new Vector3(0, offestY), 0.2f, GameLayers.Instance.LOSLayer);
 
         if (collider != null)
         {

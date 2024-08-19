@@ -34,7 +34,7 @@ public class BattleSystem : MonoBehaviour
     MonsterParty playerParty;
     MonsterParty enemyParty;
     Monster wildMonster;
-    bool isMasterBattle = false;
+    bool isMasterBattle;
     PlayerController player;
     MasterController enemy;
 
@@ -491,6 +491,12 @@ public class BattleSystem : MonoBehaviour
             playerUnit.Monster.Exp += expGain;
             yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " gained " + expGain + " experience!");
             yield return playerUnit.Hud.SetExpSmooth();
+            while (playerUnit.Monster.CheckForLevelUp())
+            {
+                playerUnit.Hud.SetLevel();
+                yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " grew to level " + playerUnit.Monster.Level + "!");
+                yield return playerUnit.Hud.SetExpSmooth(true);
+            }
             yield return new WaitForSeconds(1f);
         }
 
