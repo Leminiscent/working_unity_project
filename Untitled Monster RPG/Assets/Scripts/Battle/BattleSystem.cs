@@ -291,6 +291,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return dialogueBox.TypeDialogue("You want to talk?");
         yield return dialogueBox.TypeDialogue("Alright, let's talk!");
+        EnableAffectionBar(true);
 
         List<RecruitmentQuestion> questions = enemyUnit.Monster.Base.RecruitmentQuestions;
         List<RecruitmentQuestion> selectedQuestions = new List<RecruitmentQuestion>();
@@ -314,12 +315,14 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetAnswers(question.Answers);
             dialogueBox.EnableAnswerSelector(true);
             state = BattleState.RecruitmentSelection;
+            yield return null;
         }
     }
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
     {
         state = BattleState.Busy;
+        EnableAffectionBar(false);
 
         // Calculate recruitment chance
         float a = Mathf.Min(Mathf.Max(targetMonster.AffectionLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
@@ -340,7 +343,6 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party. Will you accept?");
             ChoiceSelection();
-            dialogueBox.EnableChoiceBox(false);
 
             if (currentChoice)
             {
@@ -628,8 +630,10 @@ public class BattleSystem : MonoBehaviour
         {
             var selectedAnswer = currentQuestion.Answers[currentAnswer];
 
+            dialogueBox.EnableAnswerSelector(false);
             enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
             affectionBar.value = enemyUnit.Monster.AffectionLevel;
+            dialogueBox.EnableDialogueText(true);
             StartCoroutine(dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffectionScore)));
             if (questionIndex < 2)
             {
@@ -715,6 +719,7 @@ public class BattleSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            dialogueBox.EnableChoiceBox(false);
             state = BattleState.Busy;
         }
     }
