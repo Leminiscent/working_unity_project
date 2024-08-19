@@ -51,8 +51,9 @@ public class GameController : MonoBehaviour
 
         var playerParty = playerController.GetComponent<MonsterParty>();
         var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
+        var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
 
-        battleSystem.StartWildBattle(playerParty, wildMonster);
+        battleSystem.StartWildBattle(playerParty, wildMonsterCopy);
     }
 
     MasterController master;

@@ -9,6 +9,13 @@ public class Monster
     [SerializeField] MonsterBase _base;
     [SerializeField] int level;
 
+    public Monster(MonsterBase pBase, int pLevel)
+    {
+        _base = pBase;
+        level = pLevel;
+
+        Init();
+    }
     public MonsterBase Base => _base;
     public int Level => level;
     public int HP { get; set; }
@@ -21,7 +28,7 @@ public class Monster
     public Condition VolatileStatus { get; private set; }
     public int VolatileStatusTime { get; set; }
     public int StatusBuildup { get; set; }
-    public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
+    public Queue<string> StatusChanges { get; private set; }
     public bool HpChanged { get; set; }
     public int AffectionLevel { get; set; }
     public event System.Action OnStatusChanged;
@@ -44,6 +51,7 @@ public class Monster
         CalculateStats();
         HP = MaxHp;
 
+        StatusChanges = new Queue<string>();
         ResetStatBoosts();
         Status = null;
         VolatileStatus = null;

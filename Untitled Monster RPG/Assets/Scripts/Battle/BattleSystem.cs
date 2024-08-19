@@ -178,6 +178,7 @@ public class BattleSystem : MonoBehaviour
             else if (playerAction == BattleAction.Talk)
             {
                 dialogueBox.EnableActionSelector(false);
+                state = BattleState.Busy;
                 yield return RunRecruitment();
             }
 
@@ -290,6 +291,13 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunRecruitment()
     {
+        if (isMasterBattle)
+        {
+            yield return dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
+            state = BattleState.RunningTurn;
+            yield break;
+        }
+
         yield return dialogueBox.TypeDialogue("You want to talk?");
         yield return dialogueBox.TypeDialogue("Alright, let's talk!");
         EnableAffectionBar(true);
