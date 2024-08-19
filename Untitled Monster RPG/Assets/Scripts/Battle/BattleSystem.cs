@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, Recruitment, RunningTurn, Busy, PartyScreen, BattleOver }
+public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningTurn, Busy, PartyScreen, ChoiceSelection, BattleOver }
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
 
 public class BattleSystem : MonoBehaviour
@@ -23,8 +24,11 @@ public class BattleSystem : MonoBehaviour
     BattleState? prevState;
     int currentAction;
     int currentMove;
+    RecruitmentQuestion currentQuestion;
+    int questionIndex;
     int currentAnswer;
     int currentMember;
+    bool currentChoice;
 
     MonsterParty playerParty;
     MonsterParty enemyParty;
@@ -104,6 +108,12 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableDialogueText(true);
         dialogueBox.SetDialogue("Choose an action!");
         dialogueBox.EnableActionSelector(true);
+    }
+
+    void ChoiceSelection()
+    {
+        state = BattleState.ChoiceSelection;
+        dialogueBox.EnableChoiceBox(true);
     }
 
     void OpenPartyScreen()
@@ -279,11 +289,10 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunRecruitment()
     {
-        state = BattleState.Recruitment;
         yield return dialogueBox.TypeDialogue("You want to talk?");
         yield return dialogueBox.TypeDialogue("Alright, let's talk!");
 
-        var questions = enemyUnit.Monster.Base.RecruitmentQuestions;
+        List<RecruitmentQuestion> questions = enemyUnit.Monster.Base.RecruitmentQuestions;
         List<RecruitmentQuestion> selectedQuestions = new List<RecruitmentQuestion>();
 
         while (selectedQuestions.Count < 3)
@@ -296,30 +305,24 @@ public class BattleSystem : MonoBehaviour
             }
         }
 
-        int questionIndex = 0;
-
+        questionIndex = 0;
         foreach (var question in selectedQuestions)
         {
+            currentQuestion = question;
             yield return dialogueBox.TypeDialogue(question.Question);
-
-            // Display the possible answers
+            dialogueBox.EnableDialogueText(false);
             dialogueBox.SetAnswers(question.Answers);
             dialogueBox.EnableAnswerSelector(true);
-
-            state = BattleState.Recruitment;
-            currentAnswer = 0;
-            while (state == BattleState.Recruitment)
-            {
-                HandleRecruitmentSelection(question, ref questionIndex);
-                yield return null;
-            }
+            state = BattleState.RecruitmentSelection;
         }
     }
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
     {
+        state = BattleState.Busy;
+
         // Calculate recruitment chance
-        float a = (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
+        float a = Mathf.Min(Mathf.Max(targetMonster.AffectionLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
         bool isRecruited;
 
         if (a >= 255)
@@ -336,20 +339,10 @@ public class BattleSystem : MonoBehaviour
         if (isRecruited)
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party. Will you accept?");
-            dialogueBox.EnableChoiceBox(true);
-
-            bool choiceMade = false;
-            bool accept = true;
-
-            while (!choiceMade)
-            {
-                HandleChoiceSelection(ref accept, ref choiceMade);
-                yield return null;
-            }
-
+            ChoiceSelection();
             dialogueBox.EnableChoiceBox(false);
 
-            if (accept)
+            if (currentChoice)
             {
                 yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was recruited!");
                 playerParty.AddMonster(enemyUnit.Monster);
@@ -504,9 +497,13 @@ public class BattleSystem : MonoBehaviour
         {
             HandlePartySelection();
         }
-        else if (state == BattleState.Recruitment)
+        else if (state == BattleState.RecruitmentSelection)
         {
-            // HandleRecruitment
+            HandleRecruitmentSelection();
+        }
+        else if (state == BattleState.ChoiceSelection)
+        {
+            HandleChoiceSelection();
         }
     }
 
@@ -606,7 +603,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    void HandleRecruitmentSelection(RecruitmentQuestion question, ref int questionIndex)
+    void HandleRecruitmentSelection()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -629,22 +626,19 @@ public class BattleSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            state = BattleState.Busy;
-
-            var selectedAnswer = question.Answers[currentAnswer];
+            var selectedAnswer = currentQuestion.Answers[currentAnswer];
 
             enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
             affectionBar.value = enemyUnit.Monster.AffectionLevel;
             StartCoroutine(dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffectionScore)));
             if (questionIndex < 2)
             {
-                state = BattleState.Recruitment;
                 questionIndex++;
                 currentAnswer = 0;
+                state = BattleState.Busy;
             }
             else
             {
-                state = BattleState.Busy;
                 StartCoroutine(AttemptRecruitment(enemyUnit.Monster));
             }
         }
@@ -711,17 +705,17 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    void HandleChoiceSelection(ref bool accept, ref bool choiceMade)
+    void HandleChoiceSelection()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            accept = !accept;
-            dialogueBox.UpdateChoiceBox(accept);
+            currentChoice = !currentChoice;
+            dialogueBox.UpdateChoiceBox(currentChoice);
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            choiceMade = true;
+            state = BattleState.Busy;
         }
     }
 
@@ -770,5 +764,10 @@ public class BattleSystem : MonoBehaviour
         {
             return enemyUnit.Monster.Base.Name + " seems to hate your answer!";
         }
+    }
+
+    public void EnableAffectionBar(bool enabled)
+    {
+        affectionBar.gameObject.SetActive(enabled);
     }
 }
