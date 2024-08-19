@@ -313,6 +313,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialogue(question.Question);
             dialogueBox.EnableDialogueText(false);
             dialogueBox.SetAnswers(question.Answers);
+            currentAnswer = 0;
             dialogueBox.EnableAnswerSelector(true);
             state = BattleState.RecruitmentSelection;
             yield return new WaitUntil(() => state == BattleState.Busy);
