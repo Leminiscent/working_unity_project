@@ -355,11 +355,13 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was rejected.");
+                state = BattleState.RunningTurn;
             }
         }
         else
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
+            state = BattleState.RunningTurn;
         }
 
     }
@@ -652,10 +654,6 @@ public class BattleSystem : MonoBehaviour
         else
         {
             yield return AttemptRecruitment(enemyUnit.Monster);
-            if (state != BattleState.BattleOver)
-            {
-                state = BattleState.RunningTurn;
-            }
         }
     }
 
