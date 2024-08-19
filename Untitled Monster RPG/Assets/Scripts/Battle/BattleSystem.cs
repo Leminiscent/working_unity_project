@@ -318,11 +318,11 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.RecruitmentSelection;
             yield return new WaitUntil(() => state == BattleState.Busy);
         }
+        yield return new WaitUntil(() => state == BattleState.RunningTurn);
     }
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
     {
-        state = BattleState.Busy;
         EnableAffectionBar(false);
 
         // Calculate recruitment chance
