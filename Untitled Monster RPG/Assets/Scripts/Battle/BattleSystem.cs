@@ -486,10 +486,12 @@ public class BattleSystem : MonoBehaviour
             int expYield = defeatedUnit.Monster.Base.ExpYield;
             int enemyLevel = defeatedUnit.Monster.Level;
             float masterBonus = isMasterBattle ? 1.5f : 1f;
-            int expGain = Mathf.FloorToInt((expYield * enemyLevel * masterBonus) / 7);
+            int expGain = Mathf.FloorToInt(expYield * enemyLevel * masterBonus / 7);
 
             playerUnit.Monster.Exp += expGain;
             yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " gained " + expGain + " experience!");
+            yield return playerUnit.Hud.SetExpSmooth();
+            yield return new WaitForSeconds(1f);
         }
 
         CheckForBattleOver(defeatedUnit);

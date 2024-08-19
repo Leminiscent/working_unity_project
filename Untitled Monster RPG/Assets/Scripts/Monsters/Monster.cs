@@ -155,7 +155,7 @@ public class Monster
         float defense = (move.Base.Category == MoveCategory.Special) ? SpDefense : Defense;
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
-        float d = a * move.Base.Power * ((float)attack / defense) + 2;
+        float d = a * move.Base.Power * (((float)attack / defense) + 2) * 1.2f;
         int damage = Mathf.FloorToInt(d * modifiers);
 
         UpdateHP(damage);
