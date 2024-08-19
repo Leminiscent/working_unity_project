@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningTurn, Busy, PartyScreen, ChoiceSelection, BattleOver }
+public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, PartyScreen, ChoiceSelection, BattleOver }
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
 
 public class BattleSystem : MonoBehaviour
@@ -112,9 +112,10 @@ public class BattleSystem : MonoBehaviour
 
     void ChoiceSelection()
     {
-        state = BattleState.ChoiceSelection;
+        prevState = state;
         currentChoice = true;
         dialogueBox.EnableChoiceBox(true);
+        state = BattleState.ChoiceSelection;
     }
 
     void OpenPartyScreen()
@@ -178,7 +179,6 @@ public class BattleSystem : MonoBehaviour
             else if (playerAction == BattleAction.Talk)
             {
                 dialogueBox.EnableActionSelector(false);
-                state = BattleState.Busy;
                 yield return RunRecruitment();
             }
 
@@ -291,6 +291,8 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunRecruitment()
     {
+        state = BattleState.RunningRecruitment;
+
         if (isMasterBattle)
         {
             yield return dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
@@ -325,13 +327,15 @@ public class BattleSystem : MonoBehaviour
             currentAnswer = 0;
             dialogueBox.EnableAnswerSelector(true);
             state = BattleState.RecruitmentSelection;
-            yield return new WaitUntil(() => state == BattleState.Busy);
+            yield return new WaitUntil(() => state == BattleState.RunningRecruitment);
         }
-        yield return new WaitUntil(() => state == BattleState.RunningTurn);
+
+        state = BattleState.RunningTurn;
     }
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
     {
+        state = BattleState.Busy;
         EnableAffectionBar(false);
 
         // Calculate recruitment chance
@@ -656,14 +660,14 @@ public class BattleSystem : MonoBehaviour
         {
             questionIndex++;
             currentAnswer = 0;
-            state = BattleState.Busy;
+            state = BattleState.RunningRecruitment;
         }
         else
         {
             yield return AttemptRecruitment(enemyUnit.Monster);
             if (state != BattleState.BattleOver)
             {
-                state = BattleState.RunningTurn;
+                state = BattleState.RunningRecruitment;
             }
         }
     }
@@ -740,7 +744,8 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             dialogueBox.EnableChoiceBox(false);
-            state = BattleState.Busy;
+            state = prevState.Value;
+            prevState = null;
         }
     }
 
