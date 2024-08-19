@@ -113,6 +113,7 @@ public class BattleSystem : MonoBehaviour
     void ChoiceSelection()
     {
         state = BattleState.ChoiceSelection;
+        currentChoice = true;
         dialogueBox.EnableChoiceBox(true);
     }
 
