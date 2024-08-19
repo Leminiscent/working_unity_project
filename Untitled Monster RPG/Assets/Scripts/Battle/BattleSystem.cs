@@ -335,10 +335,8 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
     {
-        state = BattleState.Busy;
         EnableAffectionBar(false);
 
-        // Calculate recruitment chance
         float a = Mathf.Min(Mathf.Max(targetMonster.AffectionLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
         bool isRecruited;
 
@@ -368,11 +366,13 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was rejected.");
+                state = BattleState.RunningRecruitment;
             }
         }
         else
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
+            state = BattleState.RunningRecruitment;
         }
 
     }
@@ -648,6 +648,8 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator ProcessAnswerSelection()
     {
+        state = BattleState.Busy;
+
         var selectedAnswer = currentQuestion.Answers[currentAnswer];
 
         enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
@@ -665,10 +667,6 @@ public class BattleSystem : MonoBehaviour
         else
         {
             yield return AttemptRecruitment(enemyUnit.Monster);
-            if (state != BattleState.BattleOver)
-            {
-                state = BattleState.RunningRecruitment;
-            }
         }
     }
 
@@ -692,7 +690,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         currentMember = Mathf.Clamp(currentMember, 0, playerParty.Monsters.Count - 1);
-
         partyScreen.UpdateMemberSelection(currentMember);
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -738,8 +735,9 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             currentChoice = !currentChoice;
-            dialogueBox.UpdateChoiceBox(currentChoice);
         }
+
+        dialogueBox.UpdateChoiceBox(currentChoice);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
