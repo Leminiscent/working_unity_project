@@ -18,6 +18,7 @@ public class Monster
     }
     public MonsterBase Base => _base;
     public int Level => level;
+    public int Exp { get; set; }
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
@@ -47,6 +48,8 @@ public class Monster
                 break;
             }
         }
+
+        Exp = Base.GetExpForLevel(Level);
 
         CalculateStats();
         HP = MaxHp;

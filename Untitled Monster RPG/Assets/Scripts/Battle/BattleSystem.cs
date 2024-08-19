@@ -255,11 +255,7 @@ public class BattleSystem : MonoBehaviour
 
             if (targetUnit.Monster.HP <= 0)
             {
-                yield return dialogueBox.TypeDialogue(targetUnit.Monster.Base.Name + " has been defeated!");
-                targetUnit.PlayDefeatAnimation();
-                yield return new WaitForSeconds(2f);
-
-                CheckForBattleOver(targetUnit);
+                yield return HandleMonsterDefeat(targetUnit);
             }
         }
         else
@@ -432,11 +428,7 @@ public class BattleSystem : MonoBehaviour
         yield return sourceUnit.Hud.UpdateHP();
         if (sourceUnit.Monster.HP <= 0)
         {
-            yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " has been defeated!");
-            sourceUnit.PlayDefeatAnimation();
-            yield return new WaitForSeconds(2f);
-
-            CheckForBattleOver(sourceUnit);
+            yield return HandleMonsterDefeat(sourceUnit);
             yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
@@ -481,6 +473,26 @@ public class BattleSystem : MonoBehaviour
             var message = monster.StatusChanges.Dequeue();
             yield return dialogueBox.TypeDialogue(message);
         }
+    }
+
+    IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
+    {
+        yield return dialogueBox.TypeDialogue(defeatedUnit.Monster.Base.Name + " has been defeated!");
+        defeatedUnit.PlayDefeatAnimation();
+        yield return new WaitForSeconds(2f);
+
+        if (!defeatedUnit.IsPlayerUnit)
+        {
+            int expYield = defeatedUnit.Monster.Base.ExpYield;
+            int enemyLevel = defeatedUnit.Monster.Level;
+            float masterBonus = isMasterBattle ? 1.5f : 1f;
+            int expGain = Mathf.FloorToInt((expYield * enemyLevel * masterBonus) / 7);
+
+            playerUnit.Monster.Exp += expGain;
+            yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " gained " + expGain + " experience!");
+        }
+
+        CheckForBattleOver(defeatedUnit);
     }
 
     void CheckForBattleOver(BattleUnit defeatedUnit)

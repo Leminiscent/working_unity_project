@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
 public class MonsterBase : ScriptableObject
 {
-    // Attributes
     [SerializeField] new string name;
     [TextArea]
     [SerializeField] string description;
@@ -13,20 +12,47 @@ public class MonsterBase : ScriptableObject
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
     [SerializeField] MonsterSize size;
-
-    // Base Stats
     [SerializeField] int maxHp;
     [SerializeField] int attack;
     [SerializeField] int defense;
     [SerializeField] int spAttack;
     [SerializeField] int spDefense;
     [SerializeField] int speed;
-
     [SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField] int expYield;
+    [SerializeField] GrowthRate growthRate;
     [SerializeField] int recruitRate;
     [SerializeField] List<RecruitmentQuestion> recruitmentQuestions;
 
-    // Properties
+    public int GetExpForLevel(int level)
+    {
+        switch (growthRate)
+        {
+            case GrowthRate.Erratic:
+                if (level < 50)
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (100 - level) / 50);
+                if (level < 68)
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (150 - level) / 100);
+                if (level < 98)
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (1911 - 10 * level) / 3 / 500);
+                return Mathf.FloorToInt(Mathf.Pow(level, 3) * (160 - level) / 100);
+            case GrowthRate.Fast:
+                return Mathf.FloorToInt(4 * Mathf.Pow(level, 3) / 5);
+            case GrowthRate.MediumFast:
+                return Mathf.FloorToInt(Mathf.Pow(level, 3));
+            case GrowthRate.MediumSlow:
+                return Mathf.FloorToInt(6f / 5 * Mathf.Pow(level, 3) - 15 * Mathf.Pow(level, 2) + 100 * level - 140);
+            case GrowthRate.Slow:
+                return Mathf.FloorToInt(5 * Mathf.Pow(level, 3) / 4);
+            case GrowthRate.Fluctuating:
+                if (level < 15)
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level + 1) / 3 + 24) / 50);
+                if (level < 36)
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level + 14) / 50);
+                return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level / 2 + 32) / 50);
+        }
+        return -1;
+    }
     public string Name => name;
     public string Description => description;
     public Sprite Sprite => sprite;
@@ -40,6 +66,8 @@ public class MonsterBase : ScriptableObject
     public int SpDefense => spDefense;
     public int Speed => speed;
     public List<LearnableMove> LearnableMoves => learnableMoves;
+    public int ExpYield => expYield;
+    public GrowthRate GrowthRate => growthRate;
     public int RecruitRate => recruitRate;
     public List<RecruitmentQuestion> RecruitmentQuestions => recruitmentQuestions;
 }
@@ -95,6 +123,16 @@ public enum MonsterType
     Dark,
     Steel,
     Fairy
+}
+
+public enum GrowthRate
+{
+    Erratic,
+    Fast,
+    MediumFast,
+    MediumSlow,
+    Slow,
+    Fluctuating
 }
 
 public enum Stat
