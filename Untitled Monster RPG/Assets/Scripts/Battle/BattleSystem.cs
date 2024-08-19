@@ -29,6 +29,7 @@ public class BattleSystem : MonoBehaviour
     int currentAnswer;
     int currentMember;
     bool currentChoice;
+    int escapeAttempts;
 
     MonsterParty playerParty;
     MonsterParty enemyParty;
@@ -98,6 +99,8 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
         }
 
+        affectionBar.value = 0;
+        escapeAttempts = 0;
         partyScreen.Init();
         ActionSelection();
     }
@@ -168,7 +171,7 @@ public class BattleSystem : MonoBehaviour
             {
                 var selectedMonster = playerParty.Monsters[currentMember];
 
-                state = BattleState.Busy;
+                dialogueBox.EnableActionSelector(false);
                 yield return SwitchMonster(selectedMonster);
             }
             else if (playerAction == BattleAction.UseItem)
@@ -180,6 +183,11 @@ public class BattleSystem : MonoBehaviour
             {
                 dialogueBox.EnableActionSelector(false);
                 yield return RunRecruitment();
+            }
+            else if (playerAction == BattleAction.Run)
+            {
+                dialogueBox.EnableActionSelector(false);
+                yield return AttemptEscape();
             }
 
             var enemyMove = enemyUnit.Monster.GetRandomMove();
@@ -374,7 +382,44 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
             state = BattleState.RunningRecruitment;
         }
+    }
 
+    IEnumerator AttemptEscape()
+    {
+        state = BattleState.Busy;
+
+        if (isMasterBattle)
+        {
+            yield return dialogueBox.TypeDialogue("You can't run from a Master battle!");
+            state = BattleState.RunningTurn;
+            yield break;
+        }
+
+        ++escapeAttempts;
+
+        int playerSpeed = playerUnit.Monster.Speed;
+        int enemySpeed = enemyUnit.Monster.Speed;
+
+        if (playerSpeed >= enemySpeed)
+        {
+            yield return dialogueBox.TypeDialogue("You got away safely!");
+            BattleOver(true);
+        }
+        else
+        {
+            float f = ((playerSpeed * 128) / enemySpeed + 30 * escapeAttempts) % 256;
+
+            if (UnityEngine.Random.Range(0, 256) < f)
+            {
+                yield return dialogueBox.TypeDialogue("You got away safely!");
+                BattleOver(true);
+            }
+            else
+            {
+                yield return dialogueBox.TypeDialogue("You couldn't get away!");
+                state = BattleState.RunningTurn;
+            }
+        }
     }
 
     IEnumerator RunAfterTurn(BattleUnit sourceUnit)
@@ -575,6 +620,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 5)
             {
                 // Run
+                StartCoroutine(RunTurns(BattleAction.Run));
             }
         }
     }
@@ -697,12 +743,12 @@ public class BattleSystem : MonoBehaviour
             var selectedMember = playerParty.Monsters[currentMember];
             if (selectedMember.HP <= 0)
             {
-                partyScreen.SetMessageText("{selectedMember.Base.Name} is unable to fight!");
+                partyScreen.SetMessageText(selectedMember.Base.Name + " is unable to fight!");
                 return;
             }
             if (selectedMember == playerUnit.Monster)
             {
-                partyScreen.SetMessageText("{selectedMember.Base.Name} is already in battle!");
+                partyScreen.SetMessageText(selectedMember.Base.Name + " is already in battle!");
                 return;
             }
 
@@ -749,6 +795,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SwitchMonster(Monster newMonster)
     {
+        state = BattleState.Busy;
         if (playerUnit.Monster.HP > 0)
         {
             yield return dialogueBox.TypeDialogue("Come back " + playerUnit.Monster.Base.Name + "!");
@@ -786,7 +833,7 @@ public class BattleSystem : MonoBehaviour
         }
         else if (affectionScore == -1)
         {
-            return enemyUnit.Monster.Base.Name + " seems to dislike your answer....";
+            return enemyUnit.Monster.Base.Name + " seems to dislike your answer...";
         }
         else
         {
