@@ -344,6 +344,7 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party. Will you accept?");
             ChoiceSelection();
+            yield return new WaitUntil(() => state == BattleState.Busy);
 
             if (currentChoice)
             {
@@ -354,13 +355,11 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was rejected.");
-                state = BattleState.RunningTurn;
             }
         }
         else
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
-            state = BattleState.RunningTurn;
         }
 
     }
@@ -652,7 +651,11 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            StartCoroutine(AttemptRecruitment(enemyUnit.Monster));
+            yield return AttemptRecruitment(enemyUnit.Monster);
+            if (state != BattleState.BattleOver)
+            {
+                state = BattleState.RunningTurn;
+            }
         }
     }
 
