@@ -13,7 +13,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] BattleDialogueBox dialogueBox;
-    [SerializeField] Slider affectionBar;
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage;
     [SerializeField] Image enemyImage;
@@ -99,7 +98,6 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
         }
 
-        affectionBar.value = 0;
         escapeAttempts = 0;
         partyScreen.Init();
         ActionSelection();
@@ -306,7 +304,6 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogueBox.TypeDialogue("You want to talk?");
         yield return dialogueBox.TypeDialogue("Alright, let's talk!");
-        EnableAffectionBar(true);
 
         List<RecruitmentQuestion> questions = enemyUnit.Monster.Base.RecruitmentQuestions;
         List<RecruitmentQuestion> selectedQuestions = new List<RecruitmentQuestion>();
@@ -339,9 +336,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
     {
-        EnableAffectionBar(false);
-
-        float a = Mathf.Min(Mathf.Max(targetMonster.AffectionLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
+        float a = Mathf.Min(Mathf.Max(targetMonster.AffinityLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
         bool isRecruited;
 
         if (a >= 255)
@@ -718,11 +713,11 @@ public class BattleSystem : MonoBehaviour
 
         var selectedAnswer = currentQuestion.Answers[currentAnswer];
 
-        enemyUnit.Monster.UpdateAffectionLevel(selectedAnswer.AffectionScore);
-        affectionBar.value = enemyUnit.Monster.AffectionLevel;
+        enemyUnit.Monster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
+        yield return enemyUnit.Hud.SetAffinitySmooth();
 
         dialogueBox.EnableDialogueText(true);
-        yield return dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffectionScore));
+        yield return dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
 
         if (questionIndex < 2)
         {
@@ -841,17 +836,17 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.RunningTurn;
     }
 
-    string GenerateReaction(int affectionScore)
+    string GenerateReaction(int affinityScore)
     {
-        if (affectionScore == 2)
+        if (affinityScore == 2)
         {
             return enemyUnit.Monster.Base.Name + " seems to love your answer!";
         }
-        else if (affectionScore == 1)
+        else if (affinityScore == 1)
         {
             return enemyUnit.Monster.Base.Name + " seems to like your answer.";
         }
-        else if (affectionScore == -1)
+        else if (affinityScore == -1)
         {
             return enemyUnit.Monster.Base.Name + " seems to dislike your answer...";
         }
@@ -859,10 +854,5 @@ public class BattleSystem : MonoBehaviour
         {
             return enemyUnit.Monster.Base.Name + " seems to hate your answer!";
         }
-    }
-
-    public void EnableAffectionBar(bool enabled)
-    {
-        affectionBar.gameObject.SetActive(enabled);
     }
 }

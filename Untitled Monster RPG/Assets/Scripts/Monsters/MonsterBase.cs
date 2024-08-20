@@ -96,10 +96,10 @@ public class RecruitmentQuestion
 public class RecruitmentAnswer
 {
     [SerializeField] string answer;
-    [SerializeField] int affectionScore;
+    [SerializeField] int affinityScore;
 
     public string Answer => answer;
-    public int AffectionScore => affectionScore;
+    public int AffinityScore => affinityScore;
 }
 
 public enum MonsterType

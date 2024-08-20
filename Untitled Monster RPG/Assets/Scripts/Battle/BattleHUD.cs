@@ -11,6 +11,7 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] TextMeshProUGUI statusText;
     [SerializeField] HPBar hpBar;
     [SerializeField] GameObject expBar;
+    [SerializeField] GameObject affinityBar;
     [SerializeField] Color psnColor;
     [SerializeField] Color brnColor;
     [SerializeField] Color slpColor;
@@ -28,6 +29,7 @@ public class BattleHUD : MonoBehaviour
         SetLevel();
         hpBar.SetHP((float)monster.HP / monster.MaxHp);
         SetExp();
+        SetAffinity();
 
         statusColors = new Dictionary<ConditionID, Color>()
         {
@@ -91,6 +93,31 @@ public class BattleHUD : MonoBehaviour
         float normalizedExp = (float)(_monster.Exp - currLevelExp) / (nextLevelExp - currLevelExp);
 
         return Mathf.Clamp01(normalizedExp);
+    }
+
+    public void SetAffinity()
+    {
+        if (affinityBar == null) return;
+
+        float normalizedAffinity = GetNormalizedAffinity();
+
+        affinityBar.transform.localScale = new Vector3(normalizedAffinity, 1, 1);
+    }
+
+    public IEnumerator SetAffinitySmooth()
+    {
+        if (affinityBar == null) yield break;
+
+        float normalizedAffinity = GetNormalizedAffinity();
+
+        yield return affinityBar.transform.DOScaleX(normalizedAffinity, 1.5f).WaitForCompletion();
+    }
+
+    float GetNormalizedAffinity()
+    {
+        float normalizedAffinity = (float)_monster.AffinityLevel / 6;
+
+        return Mathf.Clamp01(normalizedAffinity);
     }
 
     public IEnumerator UpdateHP()

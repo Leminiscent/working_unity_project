@@ -31,7 +31,7 @@ public class Monster
     public int StatusBuildup { get; set; }
     public Queue<string> StatusChanges { get; private set; }
     public bool HpChanged { get; set; }
-    public int AffectionLevel { get; set; }
+    public int AffinityLevel { get; set; }
     public event System.Action OnStatusChanged;
 
     public void Init()
@@ -60,7 +60,7 @@ public class Monster
         VolatileStatus = null;
         StatusBuildup = 0;
 
-        AffectionLevel = 0;
+        AffinityLevel = 0;
     }
 
     void CalculateStats()
@@ -179,9 +179,9 @@ public class Monster
         HpChanged = true;
     }
 
-    public void UpdateAffectionLevel(int affection)
+    public void UpdateAffinityLevel(int affinity)
     {
-        AffectionLevel = Mathf.Clamp(AffectionLevel + affection, 0, 6);
+        AffinityLevel = Mathf.Clamp(AffinityLevel + affinity, 0, 6);
     }
 
     public void SetStatus(ConditionID conditionId)
