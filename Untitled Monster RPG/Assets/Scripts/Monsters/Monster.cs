@@ -43,7 +43,7 @@ public class Monster
             {
                 Moves.Add(new Move(move.Base));
             }
-            if (Moves.Count >= 4)
+            if (Moves.Count >= MonsterBase.MaxMoveCount)
             {
                 break;
             }
@@ -138,6 +138,17 @@ public class Monster
         return false;
     }
 
+    public LearnableMove GetLearnableMoveAtCurrentLevel()
+    {
+        return Base.LearnableMoves.Where(x => x.Level == level).FirstOrDefault();
+    }
+
+    public void LearnMove(LearnableMove moveToLearn)
+    {
+        if (Moves.Count > MonsterBase.MaxMoveCount) return;
+        Moves.Add(new Move(moveToLearn.Base));
+    }
+
     public int MaxHp { get; private set; }
     public int Attack => GetStat(Stat.Attack);
     public int Defense => GetStat(Stat.Defense);
@@ -165,7 +176,7 @@ public class Monster
         float defense = (move.Base.Category == MoveCategory.Special) ? SpDefense : Defense;
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
-        float d = a * move.Base.Power * (((float)attack / defense) + 2) * 1.2f;
+        float d = a * move.Base.Power * (((float)attack / defense) + 2);
         int damage = Mathf.FloorToInt(d * modifiers);
 
         UpdateHP(damage);

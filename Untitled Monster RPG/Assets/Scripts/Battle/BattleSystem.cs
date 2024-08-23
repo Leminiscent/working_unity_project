@@ -490,6 +490,22 @@ public class BattleSystem : MonoBehaviour
             {
                 playerUnit.Hud.SetLevel();
                 yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " grew to level " + playerUnit.Monster.Level + "!");
+
+                var newMove = playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
+
+                if (newMove != null)
+                {
+                    if (playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
+                    {
+                        playerUnit.Monster.LearnMove(newMove);
+                        yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " learned " + newMove.Base.Name + "!");
+                        dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
+                    }
+                    else
+                    {
+
+                    }
+                }
                 yield return playerUnit.Hud.SetExpSmooth(true);
             }
             yield return new WaitForSeconds(1f);
