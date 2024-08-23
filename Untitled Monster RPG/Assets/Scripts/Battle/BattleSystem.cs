@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, PartyScreen, ChoiceSelection, BattleOver }
+public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
 
 public class BattleSystem : MonoBehaviour
@@ -16,6 +18,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage;
     [SerializeField] Image enemyImage;
+    [SerializeField] MoveSelectionUI moveSelectionUI;
 
     public event Action<bool> OnBattleOver;
 
@@ -29,7 +32,7 @@ public class BattleSystem : MonoBehaviour
     int currentMember;
     bool currentChoice;
     int escapeAttempts;
-
+    MoveBase moveToLearn;
     MonsterParty playerParty;
     MonsterParty enemyParty;
     Monster wildMonster;
@@ -503,7 +506,11 @@ public class BattleSystem : MonoBehaviour
                     }
                     else
                     {
-
+                        yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " is trying to learn " + newMove.Base.Name + "!");
+                        yield return dialogueBox.TypeDialogue("But it already knows four moves!");
+                        yield return ChooseMoveToForget(playerUnit.Monster, newMove.Base);
+                        yield return new WaitUntil(() => state != BattleState.ForgettingMove);
+                        yield return new WaitForSeconds(2f);
                     }
                 }
                 yield return playerUnit.Hud.SetExpSmooth(true);
@@ -557,6 +564,17 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableMoveSelector(true);
     }
 
+    IEnumerator ChooseMoveToForget(Monster monster, MoveBase newMove)
+    {
+        state = BattleState.Busy;
+        yield return dialogueBox.TypeDialogue($"Choose a move for {monster.Base.Name} to forget.");
+        moveSelectionUI.gameObject.SetActive(true);
+        moveSelectionUI.SetMoveData(monster.Moves.Select(x => x.Base).ToList(), newMove);
+        moveToLearn = newMove;
+
+        state = BattleState.ForgettingMove;
+    }
+
     IEnumerator ShowDamageDetails(DamageDetails damageDetails)
     {
         if (damageDetails.Critical > 1f)
@@ -595,6 +613,30 @@ public class BattleSystem : MonoBehaviour
         else if (state == BattleState.ChoiceSelection)
         {
             HandleChoiceSelection();
+        }
+        else if (state == BattleState.ForgettingMove)
+        {
+            Action<int> onMoveSelected = (moveIndex) =>
+            {
+                moveSelectionUI.gameObject.SetActive(false);
+                if (moveIndex == MonsterBase.MaxMoveCount)
+                {
+                    StartCoroutine(dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} did not learn {moveToLearn.Name}!"));
+                }
+                else
+                {
+                    var selectedMove = playerUnit.Monster.Moves[moveIndex].Base;
+
+                    StartCoroutine(dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} forgot {selectedMove.Name} and learned {moveToLearn.Name}!"));
+                    playerUnit.Monster.Moves[moveIndex] = new Move(moveToLearn);
+                    dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
+                }
+
+                moveToLearn = null;
+                state = BattleState.RunningTurn;
+            };
+
+            moveSelectionUI.HandleMoveSelection(onMoveSelected);
         }
     }
 
