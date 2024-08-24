@@ -60,7 +60,6 @@ public class PlayerController : MonoBehaviour
 
             if (triggerable != null)
             {
-                character.Animator.IsMoving = false;
                 triggerable.OnPlayerTriggered(this);
                 break;
             }

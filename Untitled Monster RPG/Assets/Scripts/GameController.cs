@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public enum GameState { FreeRoam, Battle, Dialogue, Cutscene, Paused }
@@ -12,6 +13,9 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
     GameState state;
     GameState prevState;
+
+    public SceneDetails CurrentScene { get; private set; }
+    public SceneDetails PreviousScene { get; private set; }
     public static GameController Instance { get; private set; }
 
     private void Awake()
@@ -53,7 +57,7 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(false);
 
         var playerParty = playerController.GetComponent<MonsterParty>();
-        var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
+        var wildMonster = CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
         var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
 
         battleSystem.StartWildBattle(playerParty, wildMonsterCopy);
@@ -106,5 +110,11 @@ public class GameController : MonoBehaviour
         {
             DialogueManager.Instance.HandleUpdate();
         }
+    }
+
+    public void SetCurrentScene(SceneDetails scene)
+    {
+        PreviousScene = CurrentScene;
+        CurrentScene = scene;
     }
 }
