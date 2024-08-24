@@ -21,18 +21,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        playerController.OnEncountered += StartWildBattle;
         battleSystem.OnBattleOver += EndBattle;
-        playerController.OnEnterLOS += (Collider2D masterCollider) =>
-        {
-            var master = masterCollider.GetComponentInParent<MasterController>();
-
-            if (master != null)
-            {
-                state = GameState.Cutscene;
-                StartCoroutine(master.TriggerBattle(playerController));
-            }
-        };
         DialogueManager.Instance.OnShowDialogue += () => state = GameState.Dialogue;
         DialogueManager.Instance.OnCloseDialogue += () =>
         {
@@ -43,7 +32,7 @@ public class GameController : MonoBehaviour
         };
     }
 
-    void StartWildBattle()
+    public void StartWildBattle()
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
@@ -69,6 +58,12 @@ public class GameController : MonoBehaviour
         var enemyParty = master.GetComponent<MonsterParty>();
 
         battleSystem.StartMasterBattle(playerParty, enemyParty);
+    }
+
+    public void OnEnterMasterView(MasterController master)
+    {
+        state = GameState.Cutscene;
+        StartCoroutine(master.TriggerBattle(playerController));
     }
 
     void EndBattle(bool won)

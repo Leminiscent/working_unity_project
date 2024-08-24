@@ -9,6 +9,7 @@ public class GameLayers : MonoBehaviour
     [SerializeField] LayerMask interactablesLayer;
     [SerializeField] LayerMask playerLayer;
     [SerializeField] LayerMask losLayer;
+    [SerializeField] LayerMask portalLayer;
     
     public static GameLayers Instance { get; set; }
 
@@ -22,4 +23,6 @@ public class GameLayers : MonoBehaviour
     public LayerMask InteractablesLayer => interactablesLayer;
     public LayerMask PlayerLayer => playerLayer;
     public LayerMask LOSLayer => losLayer;
+    public LayerMask PortalLayer => portalLayer;
+    public LayerMask TriggerableLayers => encountersLayer | losLayer | portalLayer;
 }

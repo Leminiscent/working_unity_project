@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
     const float offestY = 0.3f;
-    public event Action OnEncountered;
-    public event Action<Collider2D> OnEnterLOS;
     private Vector2 input;
     private Character character;
 
@@ -18,7 +16,6 @@ public class PlayerController : MonoBehaviour
         character = GetComponent<Character>();
     }
 
-    // Update is called once per frame
     public void HandleUpdate()
     {
         if (!character.IsMoving)
@@ -26,7 +23,6 @@ public class PlayerController : MonoBehaviour
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
-            // Prevent diagonal movement
             if (input.x != 0) input.y = 0;
 
             if (input != Vector2.zero)
@@ -57,30 +53,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnMoveOver()
     {
-        CheckForEncounters();
-        CheckIfInLOS();
-    }
+        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, offestY), 0.2f, GameLayers.Instance.TriggerableLayers);
 
-    private void CheckForEncounters()
-    {
-        if (Physics2D.OverlapCircle(transform.position - new Vector3(0, offestY), 0.2f, GameLayers.Instance.EncountersLayer) != null)
+        foreach (var collider in colliders)
         {
-            if (UnityEngine.Random.Range(1, 101) <= 10)
+            var triggerable = collider.GetComponent<IPlayerTriggerable>();
+
+            if (triggerable != null)
             {
                 character.Animator.IsMoving = false;
-                OnEncountered();
+                triggerable.OnPlayerTriggered(this);
+                break;
             }
-        }
-    }
-
-    public void CheckIfInLOS()
-    {
-        var collider = Physics2D.OverlapCircle(transform.position - new Vector3(0, offestY), 0.2f, GameLayers.Instance.LOSLayer);
-
-        if (collider != null)
-        {
-            character.Animator.IsMoving = false;
-            OnEnterLOS?.Invoke(collider);
         }
     }
 
