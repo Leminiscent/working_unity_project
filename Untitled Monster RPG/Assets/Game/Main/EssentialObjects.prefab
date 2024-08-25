@@ -2794,6 +2794,7 @@ GameObject:
   - component: {fileID: 2357618713915678302}
   - component: {fileID: 5198859637509064487}
   - component: {fileID: 3890276541353296424}
+  - component: {fileID: 7428171737727562100}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2876,6 +2877,18 @@ MonoBehaviour:
   portalLayer:
     serializedVersion: 2
     m_Bits: 8192
+--- !u!114 &7428171737727562100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ddb908fa7c729419f05867d9550daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2452659476306165220
 GameObject:
   m_ObjectHideFlags: 0
@@ -8400,6 +8413,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2808156341160974150}
     m_Modifications:
+    - target: {fileID: 1401619852097729857, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: monsters.Array.data[0].level
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1401619852097729857, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: monsters.Array.data[1]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+    - target: {fileID: 1401619852097729857, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: monsters.Array.data[1].level
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1401619852097729857, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: monsters.Array.data[2]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
+    - target: {fileID: 1401619852097729857, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: monsters.Array.data[2].level
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2578888366133796218, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5

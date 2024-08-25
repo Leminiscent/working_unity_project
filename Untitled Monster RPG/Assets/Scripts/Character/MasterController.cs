@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MasterController : MonoBehaviour, Interactable
+public class MasterController : MonoBehaviour, Interactable, ISavable
 {
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
@@ -85,6 +85,21 @@ public class MasterController : MonoBehaviour, Interactable
             angle = 270f;
         }
         los.transform.eulerAngles = new Vector3(0f, 0f, angle);
+    }
+
+    public object CaptureState()
+    {
+        return battleLost;
+    }
+
+    public void RestoreState(object state)
+    {
+        battleLost = (bool)state;
+
+        if (battleLost)
+        {
+            los.gameObject.SetActive(false);
+        }
     }
 
     public string Name => name;
