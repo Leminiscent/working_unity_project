@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +9,11 @@ public class PartyScreen : MonoBehaviour
     [SerializeField] TextMeshProUGUI messageText;
     PartyMemberUI[] memberSlots;
     List<Monster> monsters;
+    int selection = 0;
+
+    public Monster SelectedMember => monsters[selection];
+
+    public BattleState? CalledFrom { get; set; }
 
     public void Init()
     {
@@ -17,7 +23,7 @@ public class PartyScreen : MonoBehaviour
     public void SetPartyData(List<Monster> monsters)
     {
         this.monsters = monsters;
-        
+
         for (int i = 0; i < memberSlots.Length; ++i)
         {
             if (i < monsters.Count)
@@ -31,7 +37,47 @@ public class PartyScreen : MonoBehaviour
             }
         }
 
+        UpdateMemberSelection(selection);
+
         messageText.text = "Choose a Monster!";
+    }
+
+    public void HandleUpdate(Action onSelected, Action onBack)
+    {
+        var prevSelection = selection;
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            ++selection;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            --selection;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && selection < monsters.Count - 2)
+        {
+            selection += 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && selection > 1)
+        {
+            selection -= 2;
+        }
+
+        selection = Mathf.Clamp(selection, 0, monsters.Count - 1);
+
+        if (prevSelection != selection)
+        {
+            UpdateMemberSelection(selection);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            onSelected?.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            onBack?.Invoke();
+        }
     }
 
     public void UpdateMemberSelection(int selectedMember)

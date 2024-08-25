@@ -228,6 +228,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345d602fa4a96df499d5f0e5b00d5234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &325430975 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5594825060633519777, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+  m_PrefabInstance: {fileID: 941806575}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b571687027e5b74b82f11cb24e63cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &602683145 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8130068610937024761, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -361,6 +372,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EssentialObjects
       objectReference: {fileID: 0}
+    - target: {fileID: 2357618713915678302, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: partyScreen
+      value: 
+      objectReference: {fileID: 325430975}
     - target: {fileID: 2452659476306165220, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: m_Name
       value: APText
@@ -482,16 +497,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: monsters.Array.data[0]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
+    - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[0].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: monsters.Array.data[1]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
+    - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: monsters.Array.data[1].level
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
-      propertyPath: monsters.Array.data[1].level
-      value: 30
-      objectReference: {fileID: 0}
+      propertyPath: monsters.Array.data[2]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[2].level
-      value: 10
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7064429769284499524, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: orthographic size
+      value: 5.625
       objectReference: {fileID: 0}
     - target: {fileID: 7631720624729158860, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: m_AnchorMax.y

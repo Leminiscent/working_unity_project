@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,13 +6,14 @@ using UnityEditor;
 using UnityEditor.SearchService;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Dialogue, Menu, Cutscene, Paused }
+public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Cutscene, Paused }
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
+    [SerializeField] PartyScreen partyScreen;
     GameState state;
     GameState prevState;
 
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         battleSystem.OnBattleOver += EndBattle;
+        partyScreen.Init();
         DialogueManager.Instance.OnShowDialogue += () => state = GameState.Dialogue;
         DialogueManager.Instance.OnCloseDialogue += () =>
         {
@@ -132,6 +135,21 @@ public class GameController : MonoBehaviour
         {
             menuController.HandleUpdate();
         }
+        else if (state == GameState.PartyScreen)
+        {
+            Action onSelected = () =>
+            {
+                // TODO
+            };
+
+            Action onBack = () =>
+            {
+                partyScreen.gameObject.SetActive(false);
+                state = GameState.FreeRoam;
+            };
+
+            partyScreen.HandleUpdate(onSelected, onBack);
+        }
     }
 
     public void SetCurrentScene(SceneDetails scene)
@@ -144,6 +162,9 @@ public class GameController : MonoBehaviour
     {
         if (selectedItem == 0)
         {
+            partyScreen.gameObject.SetActive(true);
+            partyScreen.SetPartyData(playerController.GetComponent<MonsterParty>().Monsters);
+            state = GameState.PartyScreen;
         }
         else if (selectedItem == 1)
         {
@@ -151,12 +172,12 @@ public class GameController : MonoBehaviour
         else if (selectedItem == 2)
         {
             SavingSystem.i.Save("saveSlot1");
+            state = GameState.FreeRoam;
         }
         else if (selectedItem == 3)
         {
             SavingSystem.i.Load("saveSlot1");
+            state = GameState.FreeRoam;
         }
-
-        state = GameState.FreeRoam;
     }
 }

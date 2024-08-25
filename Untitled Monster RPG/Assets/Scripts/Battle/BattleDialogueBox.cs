@@ -20,6 +20,8 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] TextMeshProUGUI yesText;
     [SerializeField] TextMeshProUGUI noText;
 
+    public BattleState? CalledFrom { get; set; }
+
     public void SetDialogue(string dialogue)
     {
         dialogueText.text = dialogue;

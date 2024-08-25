@@ -23,13 +23,11 @@ public class BattleSystem : MonoBehaviour
     public event Action<bool> OnBattleOver;
 
     BattleState state;
-    BattleState? prevState;
     int currentAction;
     int currentMove;
     RecruitmentQuestion currentQuestion;
     int questionIndex;
     int currentAnswer;
-    int currentMember;
     bool currentChoice;
     int escapeAttempts;
     MoveBase moveToLearn;
@@ -116,7 +114,7 @@ public class BattleSystem : MonoBehaviour
 
     void ChoiceSelection()
     {
-        prevState = state;
+        dialogueBox.CalledFrom = state;
         currentChoice = true;
         dialogueBox.EnableChoiceBox(true);
         state = BattleState.ChoiceSelection;
@@ -124,6 +122,7 @@ public class BattleSystem : MonoBehaviour
 
     void OpenPartyScreen()
     {
+        partyScreen.CalledFrom = state;
         state = BattleState.PartyScreen;
         partyScreen.SetPartyData(playerParty.Monsters);
         partyScreen.gameObject.SetActive(true);
@@ -170,7 +169,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (playerAction == BattleAction.SwitchMonster)
             {
-                var selectedMonster = playerParty.Monsters[currentMember];
+                var selectedMonster = partyScreen.SelectedMember;
 
                 dialogueBox.EnableActionSelector(false);
                 yield return SwitchMonster(selectedMonster);
@@ -687,7 +686,6 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 4)
             {
                 // Switch
-                prevState = state;
                 OpenPartyScreen();
             }
             else if (currentAction == 5)
@@ -791,29 +789,10 @@ public class BattleSystem : MonoBehaviour
 
     void HandlePartySelection()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        Action onSelected = () =>
         {
-            ++currentMember;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            --currentMember;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && currentMember < playerParty.Monsters.Count - 2)
-        {
-            currentMember += 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && currentMember > 1)
-        {
-            currentMember -= 2;
-        }
-
-        currentMember = Mathf.Clamp(currentMember, 0, playerParty.Monsters.Count - 1);
-        partyScreen.UpdateMemberSelection(currentMember);
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            var selectedMember = playerParty.Monsters[currentMember];
+            var selectedMember = partyScreen.SelectedMember;
+            
             if (selectedMember.HP <= 0)
             {
                 partyScreen.SetMessageText(selectedMember.Base.Name + " is unable to fight!");
@@ -826,9 +805,8 @@ public class BattleSystem : MonoBehaviour
             }
 
             partyScreen.gameObject.SetActive(false);
-            if (prevState == BattleState.ActionSelection)
+            if (partyScreen.CalledFrom == BattleState.ActionSelection)
             {
-                prevState = null;
                 StartCoroutine(RunTurns(BattleAction.SwitchMonster));
             }
             else
@@ -836,8 +814,10 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.Busy;
                 StartCoroutine(SwitchMonster(selectedMember));
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
+            partyScreen.CalledFrom = null;
+        };
+
+        Action onBack = () =>
         {
             if (playerUnit.Monster.HP <= 0)
             {
@@ -846,7 +826,10 @@ public class BattleSystem : MonoBehaviour
             }
             partyScreen.gameObject.SetActive(false);
             ActionSelection();
-        }
+            partyScreen.CalledFrom = null;
+        };
+
+        partyScreen.HandleUpdate(onSelected, onBack);
     }
 
     void HandleChoiceSelection()
@@ -861,8 +844,8 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             dialogueBox.EnableChoiceBox(false);
-            state = prevState.Value;
-            prevState = null;
+            state = dialogueBox.CalledFrom.Value;
+            dialogueBox.CalledFrom = null;
         }
     }
 
