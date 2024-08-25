@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ISavable
@@ -68,19 +69,32 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        float[] position = new float[] { transform.position.x, transform.position.y };
+        var saveData = new PlayerSaveData
+        {
+            position = new float[] { transform.position.x, transform.position.y },
+            monsters = GetComponent<MonsterParty>().Monsters.Select(m => m.GetSaveData()).ToList()
+        };
 
-        return position;
+        return saveData;
     }
 
     public void RestoreState(object state)
     {
-        var position = (float[])state;
+        var saveData = (PlayerSaveData)state;
+        var pos = saveData.position;
 
-        transform.position = new Vector3(position[0], position[1]);
+        transform.position = new Vector3(pos[0], pos[1]);
+        GetComponent<MonsterParty>().Monsters = saveData.monsters.Select(s => new Monster(s)).ToList();
     }
 
     public string Name => name;
     public Sprite Sprite => sprite;
     public Character Character => character;
+}
+
+[Serializable]
+public class PlayerSaveData
+{
+    public float[] position;
+    public List<MonsterSaveData> monsters;
 }

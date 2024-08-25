@@ -222,7 +222,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
-        move.PP--;
+        move.AP--;
         yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
 
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
@@ -724,7 +724,7 @@ public class BattleSystem : MonoBehaviour
         {
             var move = playerUnit.Monster.Moves[currentMove];
 
-            if (move.PP == 0) return;
+            if (move.AP == 0) return;
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogueText(true);
             StartCoroutine(RunTurns(BattleAction.Fight));

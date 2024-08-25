@@ -353,9 +353,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1709421182686544671, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: apText
+      value: 
+      objectReference: {fileID: 1572337165}
     - target: {fileID: 1805966050730252670, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: m_Name
       value: EssentialObjects
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452659476306165220, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: m_Name
+      value: APText
       objectReference: {fileID: 0}
     - target: {fileID: 2808156341160974150, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -401,31 +409,23 @@ PrefabInstance:
       propertyPath: uniqueId
       value: 39c86a9d-5567-4808-8ccd-6be7a742649d
       objectReference: {fileID: 0}
+    - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: monsters.Array.data[0].level
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: monsters.Array.data[1].level
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+      propertyPath: monsters.Array.data[2].level
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2322723301919392697, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 941806577}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
---- !u!1 &941806576 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2322723301919392697, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
-  m_PrefabInstance: {fileID: 941806575}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &941806577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941806576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ddb908fa7c729419f05867d9550daf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1216362080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -534,6 +534,17 @@ MonoBehaviour:
   wildMonsters:
   - _base: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
     level: 38
+--- !u!114 &1572337165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4783408867842976872, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
+  m_PrefabInstance: {fileID: 941806575}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1647700579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}

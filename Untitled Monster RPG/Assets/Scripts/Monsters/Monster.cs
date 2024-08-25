@@ -63,6 +63,41 @@ public class Monster
         AffinityLevel = 0;
     }
 
+    public Monster(MonsterSaveData saveData)
+    {
+        _base = MonsterDB.GetMonsterByName(saveData.name);
+        HP = saveData.hp;
+        level = saveData.level;
+        Exp = saveData.exp;
+
+        if (saveData.statusId != null)
+        {
+            Status = ConditionsDB.Conditions[saveData.statusId.Value];
+        }
+        else Status = null;
+
+        Moves = saveData.moves.Select(s => new Move(s)).ToList();
+        CalculateStats();
+        StatusChanges = new Queue<string>();
+        ResetStatBoosts();
+        VolatileStatus = null;
+    }
+
+    public MonsterSaveData GetSaveData()
+    {
+        var saveData = new MonsterSaveData()
+        {
+            name = Base.Name,
+            hp = HP,
+            level = Level,
+            exp = Exp,
+            statusId = Status?.ID,
+            moves = Moves.Select(m => m.GetSaveData()).ToList()
+        };
+
+        return saveData;
+    }
+
     void CalculateStats()
     {
         MaxHp = Mathf.FloorToInt(Base.MaxHp * Level / 100f) + 10 + Level;
@@ -227,10 +262,10 @@ public class Monster
 
     public Move GetRandomMove()
     {
-        var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
-        int randomIndex = Random.Range(0, movesWithPP.Count);
+        var movesWithAP = Moves.Where(x => x.AP > 0).ToList();
+        int randomIndex = Random.Range(0, movesWithAP.Count);
 
-        return movesWithPP[randomIndex];
+        return movesWithAP[randomIndex];
     }
 
     public bool OnStartOfTurn()
@@ -274,4 +309,15 @@ public class DamageDetails
     public bool Defeated { get; set; }
     public float Critical { get; set; }
     public float TypeEffectiveness { get; set; }
+}
+
+[System.Serializable]
+public class MonsterSaveData
+{
+    public string name;
+    public int hp;
+    public int level;
+    public int exp;
+    public ConditionID? statusId;
+    public List<MoveSaveData> moves;
 }

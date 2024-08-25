@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        MonsterDB.Init();
+        MoveDB.Init();
         ConditionsDB.Init();
     }
 

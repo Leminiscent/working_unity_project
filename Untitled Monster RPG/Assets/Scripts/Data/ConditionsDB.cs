@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConditionsDB : MonoBehaviour
+public class ConditionsDB
 {
     public static void Init()
     {

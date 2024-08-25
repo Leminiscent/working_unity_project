@@ -8,7 +8,7 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] int lettersPerSecond;
     [SerializeField] Color activeColor;
     [SerializeField] Color inactiveColor;
-    [SerializeField] Color noPpColor;
+    [SerializeField] Color noApColor;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
@@ -18,7 +18,7 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> actionTexts;
     [SerializeField] List<TextMeshProUGUI> moveTexts;
     [SerializeField] List<TextMeshProUGUI> answerTexts;
-    [SerializeField] TextMeshProUGUI ppText;
+    [SerializeField] TextMeshProUGUI apText;
     [SerializeField] TextMeshProUGUI typeText;
     [SerializeField] TextMeshProUGUI yesText;
     [SerializeField] TextMeshProUGUI noText;
@@ -95,15 +95,15 @@ public class BattleDialogueBox : MonoBehaviour
             }
         }
 
-        ppText.text = $"PP {move.PP}/{move.Base.PP}";
+        apText.text = $"AP {move.AP}/{move.Base.AP}";
         typeText.text = move.Base.Type.ToString();
-        if (move.PP == 0)
+        if (move.AP == 0)
         {
-            ppText.color = noPpColor;
+            apText.color = noApColor;
         }
         else
         {
-            ppText.color = Color.white;
+            apText.color = Color.white;
         }
     }
 
