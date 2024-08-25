@@ -8,8 +8,6 @@ using Unity.VisualScripting;
 public class MoveSelectionUI : MonoBehaviour
 {
     [SerializeField] List<TextMeshProUGUI> moveTexts;
-    [SerializeField] Color activeColor;
-    [SerializeField] Color inactiveColor;
     int currentSelection = 0;
 
     public void SetMoveData(List<MoveBase> currentMoves, MoveBase newMove)
@@ -47,11 +45,11 @@ public class MoveSelectionUI : MonoBehaviour
         {
             if (i == selection)
             {
-                moveTexts[i].color = activeColor;
+                moveTexts[i].color = GlobalSettings.Instance.ActiveColor;
             }
             else
             {
-                moveTexts[i].color = inactiveColor;
+                moveTexts[i].color = GlobalSettings.Instance.InactiveColor;
             }
         }
     }

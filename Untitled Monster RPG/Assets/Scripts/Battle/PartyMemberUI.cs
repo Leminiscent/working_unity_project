@@ -8,8 +8,6 @@ public class PartyMemberUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] HPBar hpBar;
-    [SerializeField] Color activeColor;
-    [SerializeField] Color inactiveColor;
 
     Monster _monster;
 
@@ -24,6 +22,6 @@ public class PartyMemberUI : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
-        nameText.color = selected ? activeColor : inactiveColor;
+        nameText.color = selected ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
     }
 }

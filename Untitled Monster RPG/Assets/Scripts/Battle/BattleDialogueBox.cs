@@ -6,9 +6,6 @@ using UnityEngine;
 public class BattleDialogueBox : MonoBehaviour
 {
     [SerializeField] int lettersPerSecond;
-    [SerializeField] Color activeColor;
-    [SerializeField] Color inactiveColor;
-    [SerializeField] Color noApColor;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
@@ -72,11 +69,11 @@ public class BattleDialogueBox : MonoBehaviour
         {
             if (i == selectedAction)
             {
-                actionTexts[i].color = activeColor;
+                actionTexts[i].color = GlobalSettings.Instance.ActiveColor;
             }
             else
             {
-                actionTexts[i].color = inactiveColor;
+                actionTexts[i].color = GlobalSettings.Instance.InactiveColor;
             }
         }
     }
@@ -87,11 +84,11 @@ public class BattleDialogueBox : MonoBehaviour
         {
             if (i == selectedMove)
             {
-                moveTexts[i].color = activeColor;
+                moveTexts[i].color = GlobalSettings.Instance.ActiveColor;
             }
             else
             {
-                moveTexts[i].color = inactiveColor;
+                moveTexts[i].color = GlobalSettings.Instance.InactiveColor;
             }
         }
 
@@ -99,11 +96,11 @@ public class BattleDialogueBox : MonoBehaviour
         typeText.text = move.Base.Type.ToString();
         if (move.AP == 0)
         {
-            apText.color = noApColor;
+            apText.color = GlobalSettings.Instance.EmptyColor;
         }
         else
         {
-            apText.color = Color.white;
+            apText.color = GlobalSettings.Instance.InactiveColor;
         }
     }
 
@@ -128,11 +125,11 @@ public class BattleDialogueBox : MonoBehaviour
         {
             if (i == selectedAnswer)
             {
-                answerTexts[i].color = activeColor;
+                answerTexts[i].color = GlobalSettings.Instance.ActiveColor;
             }
             else
             {
-                answerTexts[i].color = inactiveColor;
+                answerTexts[i].color = GlobalSettings.Instance.InactiveColor;
             }
         }
     }
@@ -156,13 +153,13 @@ public class BattleDialogueBox : MonoBehaviour
     {
         if (yesSelected)
         {
-            yesText.color = activeColor;
-            noText.color = inactiveColor;
+            yesText.color = GlobalSettings.Instance.ActiveColor;
+            noText.color = GlobalSettings.Instance.InactiveColor;
         }
         else
         {
-            yesText.color = inactiveColor;
-            noText.color = activeColor;
+            yesText.color = GlobalSettings.Instance.InactiveColor;
+            noText.color = GlobalSettings.Instance.ActiveColor;
         }
     }
 }

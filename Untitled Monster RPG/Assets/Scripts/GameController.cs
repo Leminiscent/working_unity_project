@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.SearchService;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Dialogue, Cutscene, Paused }
+public enum GameState { FreeRoam, Battle, Dialogue, Menu, Cutscene, Paused }
 
 public class GameController : MonoBehaviour
 {
@@ -16,11 +17,13 @@ public class GameController : MonoBehaviour
 
     public SceneDetails CurrentScene { get; private set; }
     public SceneDetails PreviousScene { get; private set; }
+    MenuController menuController;
     public static GameController Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
+        menuController = GetComponent<MenuController>();
         MonsterDB.Init();
         MoveDB.Init();
         ConditionsDB.Init();
@@ -37,6 +40,13 @@ public class GameController : MonoBehaviour
                 state = GameState.FreeRoam;
             }
         };
+
+        menuController.OnBack += () =>
+        {
+            menuController.CloseMenu();
+            state = GameState.FreeRoam;
+        };
+        menuController.OnMenuSelected += OnMenuSelected;
     }
 
     public void PauseGame(bool pause)
@@ -104,13 +114,10 @@ public class GameController : MonoBehaviour
         {
             playerController.HandleUpdate();
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                SavingSystem.i.Save("saveSlot1");
-            }
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                SavingSystem.i.Load("saveSlot1");
+                menuController.OpenMenu();
+                state = GameState.Menu;
             }
         }
         else if (state == GameState.Battle)
@@ -121,11 +128,35 @@ public class GameController : MonoBehaviour
         {
             DialogueManager.Instance.HandleUpdate();
         }
+        else if (state == GameState.Menu)
+        {
+            menuController.HandleUpdate();
+        }
     }
 
     public void SetCurrentScene(SceneDetails scene)
     {
         PreviousScene = CurrentScene;
         CurrentScene = scene;
+    }
+
+    void OnMenuSelected(int selectedItem)
+    {
+        if (selectedItem == 0)
+        {
+        }
+        else if (selectedItem == 1)
+        {
+        }
+        else if (selectedItem == 2)
+        {
+            SavingSystem.i.Save("saveSlot1");
+        }
+        else if (selectedItem == 3)
+        {
+            SavingSystem.i.Load("saveSlot1");
+        }
+
+        state = GameState.FreeRoam;
     }
 }
