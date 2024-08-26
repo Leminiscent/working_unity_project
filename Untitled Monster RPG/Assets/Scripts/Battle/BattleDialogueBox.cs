@@ -15,7 +15,7 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> actionTexts;
     [SerializeField] List<TextMeshProUGUI> moveTexts;
     [SerializeField] List<TextMeshProUGUI> answerTexts;
-    [SerializeField] TextMeshProUGUI apText;
+    [SerializeField] TextMeshProUGUI spText;
     [SerializeField] TextMeshProUGUI typeText;
     [SerializeField] TextMeshProUGUI yesText;
     [SerializeField] TextMeshProUGUI noText;
@@ -94,15 +94,15 @@ public class BattleDialogueBox : MonoBehaviour
             }
         }
 
-        apText.text = $"AP {move.AP}/{move.Base.AP}";
+        spText.text = $"SP {move.SP}/{move.Base.SP}";
         typeText.text = move.Base.Type.ToString();
-        if (move.AP == 0)
+        if (move.SP == 0)
         {
-            apText.color = GlobalSettings.Instance.EmptyColor;
+            spText.color = GlobalSettings.Instance.EmptyColor;
         }
         else
         {
-            apText.color = GlobalSettings.Instance.InactiveColor;
+            spText.color = GlobalSettings.Instance.InactiveColor;
         }
     }
 

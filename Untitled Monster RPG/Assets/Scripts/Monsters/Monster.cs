@@ -28,9 +28,7 @@ public class Monster
     public int StatusTime { get; set; }
     public Condition VolatileStatus { get; private set; }
     public int VolatileStatusTime { get; set; }
-    public int StatusBuildup { get; set; }
     public Queue<string> StatusChanges { get; private set; }
-    public bool HpChanged { get; set; }
     public int AffinityLevel { get; set; }
     public event System.Action OnStatusChanged;
     public event System.Action OnHPChanged;
@@ -59,8 +57,6 @@ public class Monster
         ResetStatBoosts();
         Status = null;
         VolatileStatus = null;
-        StatusBuildup = 0;
-
         AffinityLevel = 0;
     }
 
@@ -224,14 +220,12 @@ public class Monster
     {
         HP = Mathf.Clamp(HP - damage, 0, MaxHp);
         OnHPChanged?.Invoke();
-        HpChanged = true;
     }
 
     public void IncreaseHP(int heal)
     {
         HP = Mathf.Clamp(HP + heal, 0, MaxHp);
         OnHPChanged?.Invoke();
-        HpChanged = true;
     }
 
     public void UpdateAffinityLevel(int affinity)
@@ -271,10 +265,10 @@ public class Monster
 
     public Move GetRandomMove()
     {
-        var movesWithAP = Moves.Where(x => x.AP > 0).ToList();
-        int randomIndex = Random.Range(0, movesWithAP.Count);
+        var movesWithSP = Moves.Where(x => x.SP > 0).ToList();
+        int randomIndex = Random.Range(0, movesWithSP.Count);
 
-        return movesWithAP[randomIndex];
+        return movesWithSP[randomIndex];
     }
 
     public bool OnStartOfTurn()
@@ -308,7 +302,6 @@ public class Monster
     public void OnBattleOver()
     {
         VolatileStatus = null;
-        StatusBuildup = 0;
         ResetStatBoosts();
     }
 }

@@ -31,27 +31,6 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.tox,
-            new Condition
-            {
-                Name = "Bad Poison",
-                StartMessage = "has been badly poisoned!",
-                OnStart = (Monster monster) =>
-                {
-                    monster.StatusBuildup = 2;
-                },
-                OnEndOfTurn = (Monster monster) =>
-                {
-                    if (monster.StatusBuildup < 15)
-                    {
-                        monster.StatusBuildup++;
-                    }
-                    monster.DecreaseHP(monster.StatusBuildup * (monster.MaxHp / 16));
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by poison!");
-                }
-            }
-        },
-        {
             ConditionID.brn,
             new Condition
             {
@@ -158,21 +137,6 @@ public class ConditionsDB
                 }
             }
         },
-        {
-            ConditionID.leech,
-            new Condition
-            {
-                Name = "Leech",
-                StartMessage = "has been seeded!",
-                OnEndOfTurn = (Monster monster) =>
-                {
-                    int damage = Mathf.FloorToInt(monster.MaxHp / 8);
-
-                    monster.DecreaseHP(damage);
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is drained by leech seed!");
-                }
-            }
-        }
     };
 
     public static float GetStatusBonus(Condition condition)
@@ -185,7 +149,7 @@ public class ConditionsDB
         {
             return 2f;
         }
-        else if (condition.ID == ConditionID.psn || condition.ID == ConditionID.tox || condition.ID == ConditionID.brn || condition.ID == ConditionID.par)
+        else if (condition.ID == ConditionID.psn || condition.ID == ConditionID.brn || condition.ID == ConditionID.par)
         {
             return 1.5f;
         }
@@ -200,11 +164,9 @@ public enum ConditionID
 {
     none,
     psn,
-    tox,
     brn,
     slp,
     par,
     frz,
     confusion,
-    leech
 }

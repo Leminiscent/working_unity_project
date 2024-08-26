@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
+public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, Inventory, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
 
 public class BattleSystem : MonoBehaviour
@@ -19,6 +19,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Image playerImage;
     [SerializeField] Image enemyImage;
     [SerializeField] MoveSelectionUI moveSelectionUI;
+    [SerializeField] InventoryUI inventoryUI;
 
     public event Action<bool> OnBattleOver;
 
@@ -112,6 +113,12 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableActionSelector(true);
     }
 
+    void OpenInventory()
+    {
+        state = BattleState.Inventory;
+        inventoryUI.gameObject.SetActive(true);
+    }
+
     void ChoiceSelection()
     {
         dialogueBox.CalledFrom = state;
@@ -176,7 +183,6 @@ public class BattleSystem : MonoBehaviour
             else if (playerAction == BattleAction.UseItem)
             {
                 dialogueBox.EnableActionSelector(false);
-                yield return dialogueBox.TypeDialogue("No items yet!");
             }
             else if (playerAction == BattleAction.Talk)
             {
@@ -215,12 +221,12 @@ public class BattleSystem : MonoBehaviour
         if (!canRunMove)
         {
             yield return ShowStatusChanges(sourceUnit.Monster);
-            yield return sourceUnit.Hud.UpdateHP();
+            yield return sourceUnit.Hud.WaitForHPUpdate();
             yield break;
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
-        move.AP--;
+        move.SP--;
         yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
 
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
@@ -236,7 +242,7 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
-                yield return targetUnit.Hud.UpdateHP();
+                yield return targetUnit.Hud.WaitForHPUpdate();
                 yield return ShowDamageDetails(damageDetails);
             }
 
@@ -421,7 +427,7 @@ public class BattleSystem : MonoBehaviour
 
         sourceUnit.Monster.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit.Monster);
-        yield return sourceUnit.Hud.UpdateHP();
+        yield return sourceUnit.Hud.WaitForHPUpdate();
         if (sourceUnit.Monster.HP <= 0)
         {
             yield return HandleMonsterDefeat(sourceUnit);
@@ -608,6 +614,23 @@ public class BattleSystem : MonoBehaviour
         {
             HandleRecruitmentSelection();
         }
+        else if (state == BattleState.Inventory)
+        {
+            Action onBack = () =>
+            {
+                inventoryUI.gameObject.SetActive(false);
+                state = BattleState.ActionSelection;
+            };
+
+            Action onItemUsed = () =>
+            {
+                state = BattleState.Busy;
+                inventoryUI.gameObject.SetActive(false);
+                StartCoroutine(RunTurns(BattleAction.UseItem));
+            };
+
+            inventoryUI.HandleUpdate(onBack, onItemUsed);
+        }
         else if (state == BattleState.ChoiceSelection)
         {
             HandleChoiceSelection();
@@ -676,7 +699,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 2)
             {
                 // Item
-                StartCoroutine(RunTurns(BattleAction.UseItem));
+                OpenInventory();
             }
             else if (currentAction == 3)
             {
@@ -721,7 +744,7 @@ public class BattleSystem : MonoBehaviour
         {
             var move = playerUnit.Monster.Moves[currentMove];
 
-            if (move.AP == 0) return;
+            if (move.SP == 0) return;
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogueText(true);
             StartCoroutine(RunTurns(BattleAction.Fight));
@@ -791,7 +814,7 @@ public class BattleSystem : MonoBehaviour
         Action onSelected = () =>
         {
             var selectedMember = partyScreen.SelectedMember;
-            
+
             if (selectedMember.HP <= 0)
             {
                 partyScreen.SetMessageText(selectedMember.Base.Name + " is unable to fight!");

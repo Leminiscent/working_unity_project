@@ -9,9 +9,9 @@ public class RecoveryItem : ItemBase
     [SerializeField] int hpAmount;
     [SerializeField] bool restoreMaxHP;
 
-    [Header("AP")]
-    [SerializeField] int apAmount;
-    [SerializeField] bool restoreMaxAP;
+    [Header("SP")]
+    [SerializeField] int spAmount;
+    [SerializeField] bool restoreMaxSP;
 
     [Header("Status Conditions")]
     [SerializeField] ConditionID status;

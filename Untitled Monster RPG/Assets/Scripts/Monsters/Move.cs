@@ -5,18 +5,18 @@ using UnityEngine;
 public class Move
 {
     public MoveBase Base { get; set; }
-    public int AP { get; set; }
+    public int SP { get; set; }
 
     public Move(MoveBase mBase)
     {
         Base = mBase;
-        AP = mBase.AP;
+        SP = mBase.SP;
     }
 
     public Move(MoveSaveData saveData)
     {
         Base = MoveDB.GetMoveByName(saveData.name);
-        AP = saveData.ap;
+        SP = saveData.sp;
     }
 
     public MoveSaveData GetSaveData()
@@ -24,7 +24,7 @@ public class Move
         var saveData = new MoveSaveData
         {
             name = Base.Name,
-            ap = AP
+            sp = SP
         };
         return saveData;
     }
@@ -34,5 +34,5 @@ public class Move
 public class MoveSaveData
 {
     public string name;
-    public int ap;
+    public int sp;
 }

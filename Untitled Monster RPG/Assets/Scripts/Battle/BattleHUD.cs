@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleHUD : MonoBehaviour
@@ -23,6 +24,12 @@ public class BattleHUD : MonoBehaviour
 
     public void SetData(Monster monster)
     {
+        if (_monster != null)
+        {
+            _monster.OnStatusChanged -= SetStatusText;
+            _monster.OnHPChanged -= UpdateHP;
+        }
+
         _monster = monster;
 
         nameText.text = monster.Base.Name;
@@ -34,7 +41,6 @@ public class BattleHUD : MonoBehaviour
         statusColors = new Dictionary<ConditionID, Color>()
         {
             { ConditionID.psn, psnColor },
-            { ConditionID.tox, psnColor },
             { ConditionID.brn, brnColor },
             { ConditionID.slp, slpColor },
             { ConditionID.par, parColor },
@@ -43,6 +49,7 @@ public class BattleHUD : MonoBehaviour
 
         SetStatusText();
         _monster.OnStatusChanged += SetStatusText;
+        _monster.OnHPChanged += UpdateHP;
     }
 
     void SetStatusText()
@@ -120,12 +127,18 @@ public class BattleHUD : MonoBehaviour
         return Mathf.Clamp01(normalizedAffinity);
     }
 
-    public IEnumerator UpdateHP()
+    public void UpdateHP()
     {
-        if (_monster.HpChanged)
-        {
-            yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHp);
-            _monster.HpChanged = false;
-        }
+        StartCoroutine(UpdateHPAsync());
+    }
+
+    public IEnumerator UpdateHPAsync()
+    {
+        yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHp);
+    }
+
+    public IEnumerator WaitForHPUpdate()
+    {
+        yield return new WaitUntil(() => !hpBar.IsUpdating);
     }
 }
