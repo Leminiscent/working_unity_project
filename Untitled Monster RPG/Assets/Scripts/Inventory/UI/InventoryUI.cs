@@ -12,6 +12,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] ItemSlotUI itemSlotUI;
     [SerializeField] Image itemIcon;
     [SerializeField] TextMeshProUGUI itemDescription;
+    [SerializeField] Image upArrow;
+    [SerializeField] Image downArrow;
     int selectedItem = 0;
     const int itemsInViewport = 8;
     List<ItemSlotUI> slotUIList;
@@ -98,7 +100,12 @@ public class InventoryUI : MonoBehaviour
     void HandleScrolling()
     {
         float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, selectedItem) * slotUIList[0].Height;
+        bool showUpArrow = selectedItem > itemsInViewport / 2;
+        bool showDownArrow = selectedItem + itemsInViewport / 2 < inventory.Slots.Count;
 
         itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
+        upArrow.gameObject.SetActive(showUpArrow);
+        downArrow.gameObject.SetActive(showDownArrow);
+
     }
 }
