@@ -13,12 +13,15 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Image itemIcon;
     [SerializeField] TextMeshProUGUI itemDescription;
     int selectedItem = 0;
+    const int itemsInViewport = 8;
     List<ItemSlotUI> slotUIList;
     Inventory inventory;
+    RectTransform itemListRect;
 
     private void Awake()
     {
         inventory = Inventory.GetInventory();
+        itemListRect = itemList.GetComponent<RectTransform>();
     }
 
     private void Start()
@@ -88,5 +91,14 @@ public class InventoryUI : MonoBehaviour
 
         itemIcon.sprite = item.Icon;
         itemDescription.text = item.Description;
+
+        HandleScrolling();
+    }
+
+    void HandleScrolling()
+    {
+        float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, selectedItem) * slotUIList[0].Height;
+
+        itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
     }
 }
