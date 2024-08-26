@@ -25,7 +25,7 @@ public class ConditionsDB
                 StartMessage = "has been poisoned!",
                 OnEndOfTurn = (Monster monster) =>
                 {
-                    monster.UpdateHP(monster.MaxHp / 8);
+                    monster.DecreaseHP(monster.MaxHp / 8);
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by poison!");
                 }
             }
@@ -46,7 +46,7 @@ public class ConditionsDB
                     {
                         monster.StatusBuildup++;
                     }
-                    monster.UpdateHP(monster.StatusBuildup * (monster.MaxHp / 16));
+                    monster.DecreaseHP(monster.StatusBuildup * (monster.MaxHp / 16));
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by poison!");
                 }
             }
@@ -59,7 +59,7 @@ public class ConditionsDB
                 StartMessage = "has been burned!",
                 OnEndOfTurn = (Monster monster) =>
                 {
-                    monster.UpdateHP(monster.MaxHp / 16);
+                    monster.DecreaseHP(monster.MaxHp / 16);
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by its burn!");
                 }
             }
@@ -150,7 +150,7 @@ public class ConditionsDB
                     if (Random.Range(1, 4) == 1)
                     {
                         monster.StatusChanges.Enqueue($"{monster.Base.Name} is confused!");
-                        monster.UpdateHP(Mathf.FloorToInt(monster.MaxHp / 8));
+                        monster.DecreaseHP(Mathf.FloorToInt(monster.MaxHp / 8));
                         monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself in its confusion!");
                         return false;
                     }
@@ -168,7 +168,7 @@ public class ConditionsDB
                 {
                     int damage = Mathf.FloorToInt(monster.MaxHp / 8);
 
-                    monster.UpdateHP(damage);
+                    monster.DecreaseHP(damage);
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} is drained by leech seed!");
                 }
             }

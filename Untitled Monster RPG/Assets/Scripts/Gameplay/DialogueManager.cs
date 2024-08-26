@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -25,16 +26,29 @@ public class DialogueManager : MonoBehaviour
     int currentLine = 0;
     bool isTyping;
 
-    public bool isShowing { get; private set; }
+    public bool IsShowing { get; private set; }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue, Action onFnished = null)
+    public IEnumerator ShowDialogueText(string text, bool waitForInput = true)
+    {
+        IsShowing = true;
+        dialogueBox.SetActive(true);
+        yield return TypeDialogue(text);
+        if (waitForInput)
+        {
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Z));
+        }
+        dialogueBox.SetActive(false);
+        IsShowing = false;
+    }
+
+    public IEnumerator ShowDialogue(Dialogue dialogue, Action onFinished = null)
     {
         yield return new WaitForEndOfFrame();
 
         OnShowDialogue?.Invoke();
-        isShowing = true;
+        IsShowing = true;
         this.dialogue = dialogue;
-        onDialogueFinished = onFnished;
+        onDialogueFinished = onFinished;
         dialogueBox.SetActive(true);
         StartCoroutine(TypeDialogue(dialogue.Lines[0]));
     }
@@ -52,7 +66,7 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 currentLine = 0;
-                isShowing = false;
+                IsShowing = false;
                 dialogueBox.SetActive(false);
                 onDialogueFinished?.Invoke();
                 OnCloseDialogue?.Invoke();

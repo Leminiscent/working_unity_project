@@ -33,6 +33,7 @@ public class Monster
     public bool HpChanged { get; set; }
     public int AffinityLevel { get; set; }
     public event System.Action OnStatusChanged;
+    public event System.Action OnHPChanged;
 
     public void Init()
     {
@@ -214,14 +215,22 @@ public class Monster
         float d = a * move.Base.Power * (((float)attack / defense) + 2);
         int damage = Mathf.FloorToInt(d * modifiers);
 
-        UpdateHP(damage);
+        DecreaseHP(damage);
 
         return damageDetails;
     }
 
-    public void UpdateHP(int damage)
+    public void DecreaseHP(int damage)
     {
         HP = Mathf.Clamp(HP - damage, 0, MaxHp);
+        OnHPChanged?.Invoke();
+        HpChanged = true;
+    }
+
+    public void IncreaseHP(int heal)
+    {
+        HP = Mathf.Clamp(HP + heal, 0, MaxHp);
+        OnHPChanged?.Invoke();
         HpChanged = true;
     }
 

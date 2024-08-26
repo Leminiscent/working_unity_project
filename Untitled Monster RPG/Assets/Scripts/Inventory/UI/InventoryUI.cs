@@ -33,6 +33,7 @@ public class InventoryUI : MonoBehaviour
     private void Start()
     {
         UpdateItemList();
+        inventory.OnUpdated += UpdateItemList;
     }
 
     void UpdateItemList()
@@ -88,6 +89,7 @@ public class InventoryUI : MonoBehaviour
         {
             Action onSelected = () =>
             {
+                StartCoroutine(UseItem());
             };
 
             Action onBackPartyScreen = () =>
@@ -97,6 +99,24 @@ public class InventoryUI : MonoBehaviour
 
             partyScreen.HandleUpdate(onSelected, onBackPartyScreen);
         }
+    }
+
+    IEnumerator UseItem()
+    {
+        state = InventoryUIState.Busy;
+
+        var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember);
+
+        if (usedItem != null)
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
+        }
+        else
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {partyScreen.SelectedMember.Base.Name}!");
+        }
+        ClosePartyScreen();
     }
 
     void UpdateItemSelection()
@@ -125,14 +145,14 @@ public class InventoryUI : MonoBehaviour
     {
         if (slotUIList.Count <= itemsInViewport) return;
 
-        float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, selectedItem) * slotUIList[0].Height;
+        int maxScrollIndex = slotUIList.Count - itemsInViewport;
+        float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, maxScrollIndex) * slotUIList[0].Height;
         bool showUpArrow = selectedItem > itemsInViewport / 2;
-        bool showDownArrow = selectedItem + itemsInViewport / 2 < inventory.Slots.Count;
+        bool showDownArrow = selectedItem < maxScrollIndex + itemsInViewport / 2;
 
         itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
         upArrow.gameObject.SetActive(showUpArrow);
         downArrow.gameObject.SetActive(showDownArrow);
-
     }
 
     void OpenPartyScreen()

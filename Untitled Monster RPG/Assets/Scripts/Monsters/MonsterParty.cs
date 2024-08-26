@@ -10,7 +10,15 @@ public class MonsterParty : MonoBehaviour
 
     public event Action OnUpdated;
 
-    public List<Monster> Monsters { get => monsters; set => monsters = value; }
+    public List<Monster> Monsters
+    {
+        get => monsters;
+        set
+        {
+            monsters = value;
+            OnUpdated?.Invoke();
+        }
+    }
 
     private void Start()
     {
