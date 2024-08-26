@@ -9,6 +9,7 @@ public class PartyScreen : MonoBehaviour
     [SerializeField] TextMeshProUGUI messageText;
     PartyMemberUI[] memberSlots;
     List<Monster> monsters;
+    MonsterParty party;
     int selection = 0;
 
     public Monster SelectedMember => monsters[selection];
@@ -18,12 +19,15 @@ public class PartyScreen : MonoBehaviour
     public void Init()
     {
         memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+        party = MonsterParty.GetPlayerParty();
+        SetPartyData();
+        party.OnUpdated += SetPartyData;
     }
 
-    public void SetPartyData(List<Monster> monsters)
+    public void SetPartyData()
     {
-        this.monsters = monsters;
-
+        monsters = party.Monsters;
+        
         for (int i = 0; i < memberSlots.Length; ++i)
         {
             if (i < monsters.Count)
@@ -54,11 +58,11 @@ public class PartyScreen : MonoBehaviour
         {
             --selection;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && selection < monsters.Count - 2)
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             selection += 2;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && selection > 1)
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             selection -= 2;
         }

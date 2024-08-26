@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,8 @@ using UnityEngine;
 public class MonsterParty : MonoBehaviour
 {
     [SerializeField] List<Monster> monsters;
+
+    public event Action OnUpdated;
 
     public List<Monster> Monsters { get => monsters; set => monsters = value; }
 
@@ -27,10 +30,16 @@ public class MonsterParty : MonoBehaviour
         if (monsters.Count < 6)
         {
             monsters.Add(newMonster);
+            OnUpdated?.Invoke();
         }
         else
         {
             // TODO: Implement Monster Storage
         }
+    }
+
+    public static MonsterParty GetPlayerParty()
+    {
+        return FindObjectOfType<PlayerController>().GetComponent<MonsterParty>();
     }
 }

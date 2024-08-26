@@ -124,7 +124,6 @@ public class BattleSystem : MonoBehaviour
     {
         partyScreen.CalledFrom = state;
         state = BattleState.PartyScreen;
-        partyScreen.SetPartyData(playerParty.Monsters);
         partyScreen.gameObject.SetActive(true);
     }
 

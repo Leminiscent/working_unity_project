@@ -222,7 +222,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Test Message
+  m_text: Choose a Monster!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 093c683568e31f84483dc6828bbc8e2d, type: 2}
   m_sharedMaterial: {fileID: 8031262119377472717, guid: 093c683568e31f84483dc6828bbc8e2d, type: 2}
@@ -379,9 +379,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4029600878521993495, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_text
+      value: Lvl 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
       propertyPath: m_Name
       value: PartyMember1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872665502864390161, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_text
+      value: Mycosaur
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872665502864390161, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -481,6 +493,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4029600878521993495, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_text
+      value: Lvl 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
       propertyPath: m_Name
       value: PartyMember2
@@ -488,6 +504,10 @@ PrefabInstance:
     - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872665502864390161, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_text
+      value: Myconidra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -587,9 +607,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4029600878521993495, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_text
+      value: Lvl 30
+      objectReference: {fileID: 0}
     - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
       propertyPath: m_Name
       value: PartyMember3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872665502864390161, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_text
+      value: Mycovine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -693,6 +721,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PartyMember4
       objectReference: {fileID: 0}
+    - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -795,6 +827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PartyMember6
       objectReference: {fileID: 0}
+    - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -896,6 +932,10 @@ PrefabInstance:
     - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
       propertyPath: m_Name
       value: PartyMember5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5546372873038220720, guid: 062f7478baae02046a326a16e3a344d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
