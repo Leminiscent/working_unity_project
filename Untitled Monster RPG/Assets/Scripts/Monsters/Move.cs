@@ -28,6 +28,11 @@ public class Move
         };
         return saveData;
     }
+
+    public void RestoreSP(int amount)
+    {
+        SP = Mathf.Clamp(SP + amount, 0, Base.SP);
+    }
 }
 
 [System.Serializable]

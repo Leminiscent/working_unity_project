@@ -23,13 +23,84 @@ public class RecoveryItem : ItemBase
 
     public override bool Use(Monster monster)
     {
-        if (hpAmount > 0)
+        if (revive || maxRevive)
+        {
+            if (monster.HP > 0)
+            {
+                return false;
+            }
+
+            if (revive)
+            {
+                monster.IncreaseHP(monster.MaxHp / 2);
+            }
+            else
+            {
+                monster.IncreaseHP(monster.MaxHp);
+            }
+
+            monster.CureStatus();
+            return true;
+        }
+
+        if (monster.HP == 0)
+        {
+            return false;
+        }
+
+        if (restoreMaxHP || hpAmount > 0)
         {
             if (monster.HP == monster.MaxHp)
             {
                 return false;
             }
-            monster.IncreaseHP(hpAmount);
+
+            if (restoreMaxHP)
+            {
+                monster.IncreaseHP(monster.MaxHp);
+            }
+            else
+            {
+                monster.IncreaseHP(hpAmount);
+            }
+        }
+
+        if (recoverAllStatus || status != ConditionID.none)
+        {
+            if (monster.Status == null && monster.VolatileStatus == null)
+            {
+                return false;
+            }
+
+            if (recoverAllStatus)
+            {
+                monster.CureStatus();
+                monster.CureVolatileStatus();
+            }
+            else
+            {
+                if (monster.Status.ID == status)
+                {
+                    monster.CureStatus();
+                }
+                else if (monster.VolatileStatus.ID == status)
+                {
+                    monster.CureVolatileStatus();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (restoreMaxSP)
+        {
+            monster.Moves.ForEach(m => m.RestoreSP(m.Base.SP));
+        }
+        else if (spAmount > 0)
+        {
+            monster.Moves.ForEach(m => m.RestoreSP(spAmount));
         }
 
         return true;
