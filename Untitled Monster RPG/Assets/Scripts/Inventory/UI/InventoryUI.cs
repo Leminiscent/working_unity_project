@@ -18,7 +18,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Image upArrow;
     [SerializeField] Image downArrow;
     [SerializeField] PartyScreen partyScreen;
-    Action OnItemUsed;
+    Action<ItemBase> OnItemUsed;
     int selectedItem = 0;
     int selectedCategory = 0;
     InventoryUIState state;
@@ -58,7 +58,7 @@ public class InventoryUI : MonoBehaviour
         UpdateItemSelection();
     }
 
-    public void HandleUpdate(Action onBack, Action onItemUsed = null)
+    public void HandleUpdate(Action onBack, Action<ItemBase> onItemUsed = null)
     {
         this.OnItemUsed = onItemUsed;
 
@@ -108,7 +108,7 @@ public class InventoryUI : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                OpenPartyScreen();
+                ItemSelected();
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
@@ -131,6 +131,18 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    void ItemSelected()
+    {
+        if (selectedCategory == (int)ItemCategory.Scrolls)
+        {
+            StartCoroutine(UseItem());
+        }
+        else
+        {
+            OpenPartyScreen();
+        }
+    }
+
     IEnumerator UseItem()
     {
         state = InventoryUIState.Busy;
@@ -139,9 +151,12 @@ public class InventoryUI : MonoBehaviour
 
         if (usedItem != null)
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
-            yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
-            OnItemUsed?.Invoke();
+            if (usedItem is not Scroll)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
+            }
+            OnItemUsed?.Invoke(usedItem);
         }
         else
         {
