@@ -154,6 +154,7 @@ public class InventoryUI : MonoBehaviour
     {
         var slots = inventory.GetSlotsByCategory(selectedCategory);
 
+        selectedItem = Mathf.Clamp(selectedItem, 0, slots.Count - 1);
         for (int i = 0; i < slotUIList.Count; i++)
         {
             if (i == selectedItem)
@@ -165,7 +166,6 @@ public class InventoryUI : MonoBehaviour
                 slotUIList[i].NameText.color = GlobalSettings.Instance.InactiveColor;
             }
         }
-        selectedItem = Mathf.Clamp(selectedItem, 0, slots.Count - 1);
 
         if (slots.Count > 0)
         {
