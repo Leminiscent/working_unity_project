@@ -361,7 +361,7 @@ public class BattleSystem : MonoBehaviour
 
         if (isRecruited)
         {
-            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party. Will you accept?");
+            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party! Will you accept?");
             ChoiceSelection();
             yield return new WaitUntil(() => state == BattleState.Busy);
 
