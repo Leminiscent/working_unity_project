@@ -20,7 +20,7 @@ public class MonsterParty : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         foreach (var monster in monsters)
         {
