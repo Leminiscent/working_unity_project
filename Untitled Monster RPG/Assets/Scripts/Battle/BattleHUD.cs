@@ -26,8 +26,7 @@ public class BattleHUD : MonoBehaviour
     {
         if (_monster != null)
         {
-            _monster.OnStatusChanged -= SetStatusText;
-            _monster.OnHPChanged -= UpdateHP;
+            ClearData();
         }
 
         _monster = monster;
@@ -140,5 +139,11 @@ public class BattleHUD : MonoBehaviour
     public IEnumerator WaitForHPUpdate()
     {
         yield return new WaitUntil(() => !hpBar.IsUpdating);
+    }
+
+    public void ClearData()
+    {
+        _monster.OnStatusChanged -= SetStatusText;
+        _monster.OnHPChanged -= UpdateHP;
     }
 }
