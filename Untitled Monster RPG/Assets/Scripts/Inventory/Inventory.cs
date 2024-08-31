@@ -35,14 +35,15 @@ public class Inventory : MonoBehaviour
         return allSlots[categoryIndex];
     }
 
-    public ItemBase UseItem(int itemIndex, Monster selectedMonster)
+    public ItemBase UseItem(int itemIndex, Monster selectedMonster, int selectedCategory)
     {
-        var item = slots[itemIndex].Item;
+        var currentSlots = GetSlotsByCategory(selectedCategory);
+        var item = currentSlots[itemIndex].Item;
         bool itemUsed = item.Use(selectedMonster);
 
         if (itemUsed)
         {
-            RemoveItem(item);
+            RemoveItem(item, selectedCategory);
             return item;
         }
         else
@@ -51,14 +52,15 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void RemoveItem(ItemBase item)
+    public void RemoveItem(ItemBase item, int categoryIndex)
     {
-        var itemSlot = slots.First(slot => slot.Item == item);
+        var currentSlots = GetSlotsByCategory(categoryIndex);
+        var itemSlot = currentSlots.First(slot => slot.Item == item);
 
         itemSlot.Count--;
         if (itemSlot.Count == 0)
         {
-            slots.Remove(itemSlot);
+            currentSlots.Remove(itemSlot);
         }
         OnUpdated?.Invoke();
     }
