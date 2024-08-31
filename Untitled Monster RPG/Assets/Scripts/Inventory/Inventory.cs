@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] List<ItemSlot> slots;
+    [SerializeField] List<ItemSlot> recoveryItemSlots;
     [SerializeField] List<ItemSlot> monsterPartSlots;
+    [SerializeField] List<ItemSlot> scrollSlots;
     [SerializeField] List<ItemSlot> skillBookSlots;
     List<List<ItemSlot>> allSlots;
 
@@ -17,16 +18,18 @@ public class Inventory : MonoBehaviour
     {
         allSlots = new List<List<ItemSlot>>()
         {
-            slots,
+            recoveryItemSlots,
             monsterPartSlots,
+            scrollSlots,
             skillBookSlots
         };
     }
 
     public static List<string> ItemCategories { get; set; } = new List<string>()
     {
-        "ITEMS",
+        "RECOVERY ITEMS",
         "MONSTER PARTS",
+        "SCROLLS",
         "SKILL BOOKS"
     };
 
