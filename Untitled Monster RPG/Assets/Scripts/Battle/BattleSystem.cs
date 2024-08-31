@@ -422,21 +422,12 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator UseScroll(Scroll scroll)
-    {
-        state = BattleState.Busy;
-        yield return dialogueBox.TypeDialogue($"{player.Name} used {scroll.Name}!");
-    }
-
     IEnumerator OnItemUsed(ItemBase usedItem)
     {
         state = BattleState.Busy;
         inventoryUI.gameObject.SetActive(false);
-        if (usedItem is Scroll)
-        {
-            yield return UseScroll(usedItem as Scroll);
-        }
-        StartCoroutine(RunTurns(BattleAction.UseItem));
+        
+        yield return StartCoroutine(RunTurns(BattleAction.UseItem));
     }
 
     IEnumerator RunAfterTurn(BattleUnit sourceUnit)

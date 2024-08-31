@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Create new monster part")]
 public class MonsterPart : ItemBase
 {
-    
+    // To be implemented
 }

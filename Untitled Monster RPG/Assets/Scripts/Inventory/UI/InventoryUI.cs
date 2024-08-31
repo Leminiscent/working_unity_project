@@ -133,14 +133,7 @@ public class InventoryUI : MonoBehaviour
 
     void ItemSelected()
     {
-        if (selectedCategory == (int)ItemCategory.Scrolls)
-        {
-            StartCoroutine(UseItem());
-        }
-        else
-        {
-            OpenPartyScreen();
-        }
+        OpenPartyScreen();
     }
 
     IEnumerator UseItem()
@@ -151,11 +144,8 @@ public class InventoryUI : MonoBehaviour
 
         if (usedItem != null)
         {
-            if (usedItem is not Scroll)
-            {
-                yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
-                yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
-            }
+            yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
             OnItemUsed?.Invoke(usedItem);
         }
         else

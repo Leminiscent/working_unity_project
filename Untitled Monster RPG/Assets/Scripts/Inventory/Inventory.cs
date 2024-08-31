@@ -16,7 +16,6 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] List<ItemSlot> recoveryItemSlots;
     [SerializeField] List<ItemSlot> monsterPartSlots;
-    [SerializeField] List<ItemSlot> scrollSlots;
     [SerializeField] List<ItemSlot> skillBookSlots;
     List<List<ItemSlot>> allSlots;
 
@@ -28,7 +27,6 @@ public class Inventory : MonoBehaviour
         {
             recoveryItemSlots,
             monsterPartSlots,
-            scrollSlots,
             skillBookSlots
         };
     }
@@ -37,7 +35,6 @@ public class Inventory : MonoBehaviour
     {
         "RECOVERY ITEMS",
         "MONSTER PARTS",
-        "SCROLLS",
         "SKILL BOOKS"
     };
 
