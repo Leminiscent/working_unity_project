@@ -43,10 +43,16 @@ public class Inventory : MonoBehaviour
         return allSlots[categoryIndex];
     }
 
+    public ItemBase GetItem(int itemIndex, int categoryIndex)
+    {
+        var currentSlots = GetSlotsByCategory(categoryIndex);
+
+        return currentSlots[itemIndex].Item;
+    }
+
     public ItemBase UseItem(int itemIndex, Monster selectedMonster, int selectedCategory)
     {
-        var currentSlots = GetSlotsByCategory(selectedCategory);
-        var item = currentSlots[itemIndex].Item;
+        var item = GetItem(itemIndex, selectedCategory);
         bool itemUsed = item.Use(selectedMonster);
 
         if (itemUsed)

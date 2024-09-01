@@ -139,6 +139,7 @@ public class InventoryUI : MonoBehaviour
     IEnumerator UseItem()
     {
         state = InventoryUIState.Busy;
+        yield return HandleSkillBooks();
 
         var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember, selectedCategory);
 
@@ -153,6 +154,24 @@ public class InventoryUI : MonoBehaviour
             yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {partyScreen.SelectedMember.Base.Name}!");
         }
         ClosePartyScreen();
+    }
+
+    IEnumerator HandleSkillBooks()
+    {
+        var skillBook = inventory.GetItem(selectedItem, selectedCategory) as SkillBook;
+
+        if (skillBook == null)
+        {
+            yield break;
+        }
+
+        var monster = partyScreen.SelectedMember;
+
+        if (monster.Moves.Count < MonsterBase.MaxMoveCount)
+        {
+            monster.LearnMove(skillBook.Move);
+            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} learned {skillBook.Move.Name}!");
+        }
     }
 
     void UpdateItemSelection()

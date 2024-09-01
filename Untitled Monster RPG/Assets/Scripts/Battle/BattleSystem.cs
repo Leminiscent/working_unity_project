@@ -514,14 +514,14 @@ public class BattleSystem : MonoBehaviour
                 {
                     if (playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
                     {
-                        playerUnit.Monster.LearnMove(newMove);
+                        playerUnit.Monster.LearnMove(newMove.Base);
                         yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " learned " + newMove.Base.Name + "!");
                         dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
                     }
                     else
                     {
                         yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " is trying to learn " + newMove.Base.Name + "!");
-                        yield return dialogueBox.TypeDialogue("But it already knows four moves!");
+                        yield return dialogueBox.TypeDialogue($"But it already knows {MonsterBase.MaxMoveCount} moves!");
                         yield return ChooseMoveToForget(playerUnit.Monster, newMove.Base);
                         yield return new WaitUntil(() => state != BattleState.ForgettingMove);
                         yield return new WaitForSeconds(2f);
