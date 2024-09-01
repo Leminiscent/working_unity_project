@@ -136,7 +136,7 @@ public class InventoryUI : MonoBehaviour
         {
             Action<int> onMoveSelected = (moveIndex) =>
             {
-                
+                StartCoroutine(OnMoveToForgetSelection(moveIndex));
             };
 
             moveSelectionUI.HandleMoveSelection(onMoveSelected);
@@ -199,7 +199,7 @@ public class InventoryUI : MonoBehaviour
     IEnumerator ChooseMoveToForget(Monster monster, MoveBase newMove)
     {
         state = InventoryUIState.Busy;
-        yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.");
+        yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", true, false);
         moveSelectionUI.gameObject.SetActive(true);
         moveSelectionUI.SetMoveData(monster.Moves.Select(x => x.Base).ToList(), newMove);
         moveToLearn = newMove;
@@ -267,5 +267,27 @@ public class InventoryUI : MonoBehaviour
     {
         state = InventoryUIState.ItemSelection;
         partyScreen.gameObject.SetActive(false);
+    }
+
+    IEnumerator OnMoveToForgetSelection(int moveIndex)
+    {
+        var monster = partyScreen.SelectedMember;
+
+        DialogueManager.Instance.CloseDialogue();
+        moveSelectionUI.gameObject.SetActive(false);
+        if (moveIndex == MonsterBase.MaxMoveCount)
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} did not learn {moveToLearn.Name}!");
+        }
+        else
+        {
+            var selectedMove = monster.Moves[moveIndex];
+
+            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} forgot {selectedMove.Base.Name} and learned {moveToLearn.Name}!");
+            monster.Moves[moveIndex] = new Move(moveToLearn);
+        }
+
+        moveToLearn = null;
+        state = InventoryUIState.ItemSelection;
     }
 }
