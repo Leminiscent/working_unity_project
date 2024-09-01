@@ -145,8 +145,11 @@ public class InventoryUI : MonoBehaviour
 
         if (usedItem != null)
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
-            yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
+            if (usedItem is RecoveryItem)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
+            }
             OnItemUsed?.Invoke(usedItem);
         }
         else
