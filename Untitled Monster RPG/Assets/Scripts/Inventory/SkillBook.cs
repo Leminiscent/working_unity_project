@@ -11,6 +11,6 @@ public class SkillBook : ItemBase
 
     public override bool Use(Monster monster)
     {
-        return true;
+        return monster.HasMove(move);
     }
 }

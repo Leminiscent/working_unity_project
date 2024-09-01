@@ -181,6 +181,11 @@ public class Monster
         Moves.Add(new Move(moveToLearn));
     }
 
+    public bool HasMove(MoveBase move)
+    {
+        return Moves.Count(m => m.Base == move) > 0;
+    }
+
     public int MaxHp { get; private set; }
     public int Attack => GetStat(Stat.Attack);
     public int Defense => GetStat(Stat.Defense);
