@@ -520,8 +520,8 @@ public class BattleSystem : MonoBehaviour
                     }
                     else
                     {
-                        yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " is trying to learn " + newMove.Base.Name + "!");
-                        yield return dialogueBox.TypeDialogue($"But it already knows {MonsterBase.MaxMoveCount} moves!");
+                        yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
+                        yield return dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
                         yield return ChooseMoveToForget(playerUnit.Monster, newMove.Base);
                         yield return new WaitUntil(() => state != BattleState.ForgettingMove);
                         yield return new WaitForSeconds(2f);

@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum InventoryUIState { ItemSelection, PartySelection, Busy }
+public enum InventoryUIState { ItemSelection, PartySelection, ForgettingMove, Busy }
 
 public class InventoryUI : MonoBehaviour
 {
@@ -18,9 +19,11 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Image upArrow;
     [SerializeField] Image downArrow;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] MoveSelectionUI moveSelectionUI;
     Action<ItemBase> OnItemUsed;
     int selectedItem = 0;
     int selectedCategory = 0;
+    MoveBase moveToLearn;
     InventoryUIState state;
     const int itemsInViewport = 8;
     List<ItemSlotUI> slotUIList;
@@ -129,6 +132,15 @@ public class InventoryUI : MonoBehaviour
 
             partyScreen.HandleUpdate(onSelected, onBackPartyScreen);
         }
+        else if (state == InventoryUIState.ForgettingMove)
+        {
+            Action<int> onMoveSelected = (moveIndex) =>
+            {
+                
+            };
+
+            moveSelectionUI.HandleMoveSelection(onMoveSelected);
+        }
     }
 
     void ItemSelected()
@@ -175,6 +187,23 @@ public class InventoryUI : MonoBehaviour
             monster.LearnMove(skillBook.Move);
             yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} learned {skillBook.Move.Name}!");
         }
+        else
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is trying to learn {skillBook.Move.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"But {monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
+            yield return ChooseMoveToForget(monster, skillBook.Move);
+            yield return new WaitUntil(() => state != InventoryUIState.ForgettingMove);
+        }
+    }
+
+    IEnumerator ChooseMoveToForget(Monster monster, MoveBase newMove)
+    {
+        state = InventoryUIState.Busy;
+        yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.");
+        moveSelectionUI.gameObject.SetActive(true);
+        moveSelectionUI.SetMoveData(monster.Moves.Select(x => x.Base).ToList(), newMove);
+        moveToLearn = newMove;
+        state = InventoryUIState.ForgettingMove;
     }
 
     void UpdateItemSelection()
