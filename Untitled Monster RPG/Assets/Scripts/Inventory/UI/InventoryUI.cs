@@ -111,7 +111,7 @@ public class InventoryUI : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                ItemSelected();
+                StartCoroutine(ItemSelected());
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
@@ -143,8 +143,31 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    void ItemSelected()
+    IEnumerator ItemSelected()
     {
+        state = InventoryUIState.Busy;
+
+        var item = inventory.GetItem(selectedItem, selectedCategory);
+
+        if (GameController.Instance.State == GameState.Battle)
+        {
+            if (!item.UsableInBattle)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText("This item cannot be used in battle!");
+                state = InventoryUIState.ItemSelection;
+                yield break;
+            }
+        }
+        else
+        {
+            if (!item.UsableOutsideBattle)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText("This item cannot be used outside of battle!");
+                state = InventoryUIState.ItemSelection;
+                yield break;
+            }
+        }
+
         OpenPartyScreen();
     }
 
@@ -166,8 +189,12 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {partyScreen.SelectedMember.Base.Name}!");
+            if (usedItem is RecoveryItem)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {partyScreen.SelectedMember.Base.Name}!");
+            }
         }
+        
         ClosePartyScreen();
     }
 
@@ -181,6 +208,18 @@ public class InventoryUI : MonoBehaviour
         }
 
         var monster = partyScreen.SelectedMember;
+
+        if (monster.HasMove(skillBook.Move))
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} already knows {skillBook.Move.Name}!");
+            yield break;
+        }
+
+        if (!skillBook.CanBeLearned(monster))
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} cannot learn {skillBook.Move.Name}!");
+            yield break;
+        }
 
         if (monster.Moves.Count < MonsterBase.MaxMoveCount)
         {

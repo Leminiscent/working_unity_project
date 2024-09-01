@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Create new monster part")]
 public class MonsterPart : ItemBase
 {
-    // To be implemented
+    public override bool UsableInBattle => false;
+    public override bool UsableOutsideBattle => false;
 }

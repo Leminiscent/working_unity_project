@@ -19,6 +19,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] int spDefense;
     [SerializeField] int speed;
     [SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField] List<MoveBase> learnableBySkillBook;
     public static int MaxMoveCount { get; set; } = 4;
     [SerializeField] int expYield;
     [SerializeField] GrowthRate growthRate;
@@ -67,6 +68,7 @@ public class MonsterBase : ScriptableObject
     public int SpDefense => spDefense;
     public int Speed => speed;
     public List<LearnableMove> LearnableMoves => learnableMoves;
+    public List<MoveBase> LearnableBySkillBook => learnableBySkillBook;
     public int ExpYield => expYield;
     public GrowthRate GrowthRate => growthRate;
     public int RecruitRate => recruitRate;

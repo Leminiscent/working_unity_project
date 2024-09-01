@@ -9,9 +9,13 @@ public class ItemBase : ScriptableObject
     [SerializeField] string message;
     [SerializeField] Sprite icon;
 
-    public string Name => name;
-    public string Description => description;
+    public virtual string Name => name;
+    public virtual string Description => description;
     public string Message => message;
     public Sprite Icon => icon;
     public virtual bool Use(Monster monster) => false;
+
+    public virtual bool IsReusable => false;
+    public virtual bool UsableInBattle => true;
+    public virtual bool UsableOutsideBattle => true;
 }
