@@ -99,8 +99,26 @@ public class PartyScreen : MonoBehaviour
         }
     }
 
+    public void ShowSkillBookUsability(SkillBook skillBook)
+    {
+        for (int i = 0; i < monsters.Count; ++i)
+        {
+            string message = skillBook.CanBeLearned(monsters[i]) ? "Learnable" : "Not Learnable";
+
+            memberSlots[i].SetMessage(message);
+        }
+    }
+
     public void SetMessageText(string message)
     {
         messageText.text = message;
+    }
+
+    public void ClearMessageText()
+    {
+        for (int i = 0; i < monsters.Count; ++i)
+        {
+            memberSlots[i].SetMessage("");
+        }
     }
 }

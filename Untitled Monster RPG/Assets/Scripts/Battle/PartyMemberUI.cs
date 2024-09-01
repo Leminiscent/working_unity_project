@@ -7,6 +7,7 @@ public class PartyMemberUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI levelText;
+    [SerializeField] TextMeshProUGUI messageText;
     [SerializeField] HPBar hpBar;
 
     Monster _monster;
@@ -15,6 +16,7 @@ public class PartyMemberUI : MonoBehaviour
     {
         _monster = monster;
         UpdateData();
+        SetMessage("");
         _monster.OnHPChanged += UpdateData;
     }
 
@@ -28,5 +30,10 @@ public class PartyMemberUI : MonoBehaviour
     public void SetSelected(bool selected)
     {
         nameText.color = selected ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
+    }
+
+    public void SetMessage(string message)
+    {
+        messageText.text = message;
     }
 }

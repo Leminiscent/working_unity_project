@@ -169,6 +169,10 @@ public class InventoryUI : MonoBehaviour
         }
 
         OpenPartyScreen();
+        if (item is SkillBook)
+        {
+            partyScreen.ShowSkillBookUsability(item as SkillBook);
+        }
     }
 
     IEnumerator UseItem()
@@ -194,7 +198,7 @@ public class InventoryUI : MonoBehaviour
                 yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {partyScreen.SelectedMember.Base.Name}!");
             }
         }
-        
+
         ClosePartyScreen();
     }
 
@@ -305,6 +309,7 @@ public class InventoryUI : MonoBehaviour
     void ClosePartyScreen()
     {
         state = InventoryUIState.ItemSelection;
+        partyScreen.ClearMessageText();
         partyScreen.gameObject.SetActive(false);
     }
 
