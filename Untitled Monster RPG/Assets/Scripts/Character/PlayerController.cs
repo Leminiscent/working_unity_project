@@ -35,11 +35,11 @@ public class PlayerController : MonoBehaviour, ISavable
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Interact();
+            StartCoroutine(Interact());
         }
     }
 
-    void Interact()
+    IEnumerator Interact()
     {
         var facingDir = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
         var interactPos = transform.position + facingDir;
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
         if (collider != null)
         {
-            collider.GetComponent<Interactable>()?.Interact(transform);
+            yield return collider.GetComponent<Interactable>()?.Interact(transform);
         }
     }
 

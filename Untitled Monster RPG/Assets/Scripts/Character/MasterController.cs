@@ -28,19 +28,17 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         character.HandleUpdate();
     }
 
-    public void Interact(Transform initiator)
+    public IEnumerator Interact(Transform initiator)
     {
         character.LookTowards(initiator.position);
         if (!battleLost)
         {
-            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
-            {
-                GameController.Instance.StartMasterBattle(this);
-            }));
+            yield return DialogueManager.Instance.ShowDialogue(dialogue);
+            GameController.Instance.StartMasterBattle(this);
         }
         else
         {
-            StartCoroutine(DialogueManager.Instance.ShowDialogue(postBattleDialogue));
+            yield return DialogueManager.Instance.ShowDialogue(postBattleDialogue);
         }
     }
 
@@ -55,11 +53,9 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         moveVector = new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
 
         yield return character.Move(moveVector);
-
-        StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
-        {
-            GameController.Instance.StartMasterBattle(this);
-        }));
+        
+        yield return DialogueManager.Instance.ShowDialogue(dialogue);
+        GameController.Instance.StartMasterBattle(this);
     }
 
     public void BattleLost()

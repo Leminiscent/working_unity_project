@@ -17,17 +17,15 @@ public class NPCController : MonoBehaviour, Interactable
         character = GetComponent<Character>();
     }
 
-    public void Interact(Transform initiator)
+    public IEnumerator Interact(Transform initiator)
     {
         if (state == NPCState.Idle)
         {
             state = NPCState.Talking;
             character.LookTowards(initiator.position);
-            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
-            {
-                idleTimer = 0f;
-                state = NPCState.Idle;
-            }));
+            yield return DialogueManager.Instance.ShowDialogue(dialogue);
+            idleTimer = 0f;
+            state = NPCState.Idle;
         }
     }
 
