@@ -140,6 +140,13 @@ public class Inventory : MonoBehaviour, ISavable
         monsterPartSlots = saveData.monsterParts.Select(data => new ItemSlot(data)).ToList();
         skillBookSlots = saveData.skillBooks.Select(data => new ItemSlot(data)).ToList();
 
+        allSlots = new List<List<ItemSlot>>()
+        {
+            recoveryItemSlots,
+            monsterPartSlots,
+            skillBookSlots
+        };
+
         OnUpdated?.Invoke();
     }
 }
