@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour
         Cursor.visible = false;
         MonsterDB.Init();
         MoveDB.Init();
+        ItemDB.Init();
         ConditionsDB.Init();
     }
 

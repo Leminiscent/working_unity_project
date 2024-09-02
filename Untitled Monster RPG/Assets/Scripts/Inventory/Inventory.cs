@@ -11,7 +11,7 @@ public enum ItemCategory
     SkillBooks
 }
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISavable
 {
     [SerializeField] List<ItemSlot> recoveryItemSlots;
     [SerializeField] List<ItemSlot> monsterPartSlots;
@@ -119,14 +119,71 @@ public class Inventory : MonoBehaviour
     {
         return FindObjectOfType<PlayerController>().GetComponent<Inventory>();
     }
+
+    public object CaptureState()
+    {
+        var saveData = new InventorySaveData
+        {
+            recoveryItems = recoveryItemSlots.Select(slot => slot.GetSaveData()).ToList(),
+            monsterParts = monsterPartSlots.Select(slot => slot.GetSaveData()).ToList(),
+            skillBooks = skillBookSlots.Select(slot => slot.GetSaveData()).ToList()
+        };
+
+        return saveData;
+    }
+
+    public void RestoreState(object state)
+    {
+        var saveData = state as InventorySaveData;
+
+        recoveryItemSlots = saveData.recoveryItems.Select(data => new ItemSlot(data)).ToList();
+        monsterPartSlots = saveData.monsterParts.Select(data => new ItemSlot(data)).ToList();
+        skillBookSlots = saveData.skillBooks.Select(data => new ItemSlot(data)).ToList();
+
+        OnUpdated?.Invoke();
+    }
 }
 
-[System.Serializable]
+[Serializable]
 public class ItemSlot
 {
     [SerializeField] ItemBase item;
     [SerializeField] int count;
 
+    public ItemSlot() { }
+
+    public ItemSlot(ItemSaveData saveData)
+    {
+        item = ItemDB.GetItemByName(saveData.name);
+        count = saveData.count;
+    }
+
+    public ItemSaveData GetSaveData()
+    {
+        var saveData = new ItemSaveData
+        {
+            name = item.Name,
+            count = count
+        };
+
+        return saveData;
+    }
+
     public ItemBase Item { get => item; set => item = value; }
     public int Count { get => count; set => count = value; }
+}
+
+[Serializable]
+public class ItemSaveData
+{
+    public string name;
+    public int count;
+}
+
+[Serializable]
+public class InventorySaveData
+{
+    public List<ItemSaveData> recoveryItems;
+    public List<ItemSaveData> monsterParts;
+    public List<ItemSaveData> skillBooks;
 }
