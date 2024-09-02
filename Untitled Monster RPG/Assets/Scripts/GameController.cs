@@ -38,12 +38,12 @@ public class GameController : MonoBehaviour
     {
         battleSystem.OnBattleOver += EndBattle;
         partyScreen.Init();
-        DialogueManager.Instance.OnShowDialogue += () => state = GameState.Dialogue;
-        DialogueManager.Instance.OnCloseDialogue += () =>
+        DialogueManager.Instance.OnShowDialogue += () => { prevState = state; state = GameState.Dialogue; };
+        DialogueManager.Instance.OnDialogueFinished += () =>
         {
             if (state == GameState.Dialogue)
             {
-                state = GameState.FreeRoam;
+                state = prevState;
             }
         };
 

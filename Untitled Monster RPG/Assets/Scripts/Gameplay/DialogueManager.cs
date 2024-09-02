@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float lettersPerSecond;
 
     public event Action OnShowDialogue;
-    public event Action OnCloseDialogue;
+    public event Action OnDialogueFinished;
 
     public static DialogueManager Instance { get; private set; }
 
@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
 
     public IEnumerator ShowDialogueText(string text, bool waitForInput = true, bool autoClose = true)
     {
+        OnShowDialogue?.Invoke();
         IsShowing = true;
         dialogueBox.SetActive(true);
         yield return TypeDialogue(text);
@@ -38,6 +39,7 @@ public class DialogueManager : MonoBehaviour
         {
             CloseDialogue();
         }
+        OnDialogueFinished?.Invoke();
     }
 
     public void CloseDialogue()
@@ -60,7 +62,7 @@ public class DialogueManager : MonoBehaviour
         }
         dialogueBox.SetActive(false);
         IsShowing = false;
-        OnCloseDialogue?.Invoke();
+        OnDialogueFinished?.Invoke();
     }
 
     public void HandleUpdate()
