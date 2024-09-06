@@ -5,10 +5,15 @@ using UnityEngine;
 public class NPCController : MonoBehaviour, Interactable
 {
     [SerializeField] Dialogue dialogue;
+
+    [Header("Quests")]
     [SerializeField] QuestBase questToStart;
     [SerializeField] QuestBase questToComplete;
+
+    [Header("Movement")]
     [SerializeField] List<Vector2> movementPattern;
     [SerializeField] float patternRate;
+    
     NPCState state;
     float idleTimer = 0f;
     int currentPattern = 0;
@@ -30,7 +35,7 @@ public class NPCController : MonoBehaviour, Interactable
         {
             state = NPCState.Talking;
             character.LookTowards(initiator.position);
-            
+
             if (questToComplete != null)
             {
                 var quest = new Quest(questToComplete);
