@@ -12,6 +12,7 @@ public class MonsterGiver : MonoBehaviour, ISavable
     public IEnumerator GiveMonster(PlayerController player)
     {
         yield return DialogueManager.Instance.ShowDialogue(dialogue);
+        monster.Init();
         player.GetComponent<MonsterParty>().AddMonster(monster);
         used = true;
         yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {monster.Base.Name}!");

@@ -6,6 +6,7 @@ public class NPCController : MonoBehaviour, Interactable
 {
     [SerializeField] Dialogue dialogue;
     [SerializeField] QuestBase questToStart;
+    [SerializeField] QuestBase questToComplete;
     [SerializeField] List<Vector2> movementPattern;
     [SerializeField] float patternRate;
     NPCState state;
@@ -29,6 +30,15 @@ public class NPCController : MonoBehaviour, Interactable
         {
             state = NPCState.Talking;
             character.LookTowards(initiator.position);
+            
+            if (questToComplete != null)
+            {
+                var quest = new Quest(questToComplete);
+
+                yield return quest.CompleteQuest(initiator);
+                questToComplete = null;
+            }
+
             if (itemGiver != null && itemGiver.CanBeGiven())
             {
                 yield return itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
@@ -65,6 +75,7 @@ public class NPCController : MonoBehaviour, Interactable
             {
                 yield return DialogueManager.Instance.ShowDialogue(dialogue);
             }
+
             idleTimer = 0f;
             state = NPCState.Idle;
         }
