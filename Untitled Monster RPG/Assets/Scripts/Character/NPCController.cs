@@ -14,11 +14,13 @@ public class NPCController : MonoBehaviour, Interactable
     Quest activeQuest;
     Character character;
     ItemGiver itemGiver;
+    MonsterGiver monsterGiver;
 
     private void Awake()
     {
         character = GetComponent<Character>();
         itemGiver = GetComponent<ItemGiver>();
+        monsterGiver = GetComponent<MonsterGiver>();
     }
 
     public IEnumerator Interact(Transform initiator)
@@ -31,11 +33,21 @@ public class NPCController : MonoBehaviour, Interactable
             {
                 yield return itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
             }
+            else if (monsterGiver != null && monsterGiver.CanBeGiven())
+            {
+                yield return monsterGiver.GiveMonster(initiator.GetComponent<PlayerController>());
+            }
             else if (questToStart != null)
             {
                 activeQuest = new Quest(questToStart);
                 yield return activeQuest.StartQuest();
                 questToStart = null;
+
+                if (activeQuest.CanBeCompleted())
+                {
+                    yield return activeQuest.CompleteQuest(initiator);
+                    activeQuest = null;
+                }
             }
             else if (activeQuest != null)
             {
