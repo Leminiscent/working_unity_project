@@ -12,4 +12,6 @@ public class Encounters : MonoBehaviour, IPlayerTriggerable
             GameController.Instance.StartWildBattle();
         }
     }
+
+    public bool TriggerRepeatedly => true;
 }

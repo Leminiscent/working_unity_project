@@ -9,4 +9,6 @@ public class MasterLOS : MonoBehaviour, IPlayerTriggerable
         player.Character.Animator.IsMoving = false;
         GameController.Instance.OnEnterMasterView(GetComponentInParent<MasterController>());
     }
+
+    public bool TriggerRepeatedly => false;
 }
