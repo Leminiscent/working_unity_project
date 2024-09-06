@@ -35,7 +35,7 @@ public class Quest
 
             string playerName = player.GetComponent<PlayerController>().Name;
 
-            DialogueManager.Instance.ShowDialogueText($"{playerName} received {Base.RewardItem.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{playerName} received {Base.RewardItem.Name}!");
         }
     }
 

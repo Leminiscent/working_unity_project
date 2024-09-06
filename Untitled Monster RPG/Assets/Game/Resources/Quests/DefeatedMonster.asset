@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25058945bd2154b4c9fe24fe3cd52867, type: 3}
+  m_Name: DefeatedMonster
+  m_EditorClassIdentifier: 
+  name: Defeated Monster
+  description: 
+  startDialogue:
+    lines:
+    - Help! My monster's been defeated, could you spare us a potion?
+  inProgressDialogue:
+    lines:
+    - Please hurry!
+  completedDialogue:
+    lines:
+    - Thank you so much! We're both in your debt.
+  requiredItem: {fileID: 11400000, guid: 70c2a977dc3d97f45b3b022a7584555d, type: 2}
+  rewardItem: {fileID: 11400000, guid: 68a33e7c81800154e8825f35d183d28c, type: 2}
