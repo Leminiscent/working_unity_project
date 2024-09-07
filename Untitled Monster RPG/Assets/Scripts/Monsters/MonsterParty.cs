@@ -54,8 +54,7 @@ public class MonsterParty : MonoBehaviour
 
             if (transformation != null)
             {
-                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} transformed into {transformation.TransformsInto.Name}!");
-                monster.Transform(transformation);
+                yield return TransformationManager.Instance.Transform(monster, transformation);
             }
         }
 

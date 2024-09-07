@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.SearchService;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Inventory, Cutscene, Paused }
+public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Inventory, Cutscene, Paused, Transformation }
 
 public class GameController : MonoBehaviour
 {
@@ -55,6 +55,9 @@ public class GameController : MonoBehaviour
             state = GameState.FreeRoam;
         };
         menuController.OnMenuSelected += OnMenuSelected;
+
+        TransformationManager.Instance.OnStartTransformation += () => { state = GameState.Transformation; };
+        TransformationManager.Instance.OnEndTransformation += () => { state = GameState.FreeRoam; };
     }
 
     public void PauseGame(bool pause)
