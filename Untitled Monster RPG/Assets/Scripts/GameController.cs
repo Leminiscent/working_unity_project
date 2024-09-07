@@ -62,7 +62,11 @@ public class GameController : MonoBehaviour
             stateBeforeTransformation = state;
             state = GameState.Transformation;
         };
-        TransformationManager.Instance.OnEndTransformation += () => state = stateBeforeTransformation;
+        TransformationManager.Instance.OnEndTransformation += () => 
+        {
+            partyScreen.SetPartyData();
+            state = stateBeforeTransformation;
+        };
     }
 
     public void PauseGame(bool pause)
@@ -119,6 +123,7 @@ public class GameController : MonoBehaviour
             master.BattleLost();
             master = null;
         }
+        partyScreen.SetPartyData();
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);

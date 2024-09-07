@@ -57,8 +57,6 @@ public class MonsterParty : MonoBehaviour
                 yield return TransformationManager.Instance.Transform(monster, transformation);
             }
         }
-
-        OnUpdated?.Invoke();
     }
 
     public static MonsterParty GetPlayerParty()

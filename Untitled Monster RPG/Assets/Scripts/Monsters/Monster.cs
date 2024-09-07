@@ -97,7 +97,10 @@ public class Monster
 
     void CalculateStats()
     {
+        int prevMaxHp = MaxHp;
+
         MaxHp = Mathf.FloorToInt(Base.MaxHp * Level / 100f) + 10 + Level;
+        HP += MaxHp - prevMaxHp;
         Stats = new Dictionary<Stat, int>()
         {
             { Stat.Attack, Mathf.FloorToInt(Base.Attack * Level / 100f) + 5 },
@@ -165,6 +168,7 @@ public class Monster
         if (Exp >= Base.GetExpForLevel(Level + 1))
         {
             ++level;
+            CalculateStats();
             return true;
         }
         return false;
@@ -188,7 +192,7 @@ public class Monster
 
     public Transformation CheckForTransformation()
     {
-        return Base.Transformations.FirstOrDefault(t => t.RequiredLevel == Level);
+        return Base.Transformations.FirstOrDefault(t => t.RequiredLevel <= Level);
     }
 
     public Transformation CheckForTransformation(ItemBase item)
