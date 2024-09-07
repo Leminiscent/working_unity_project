@@ -188,7 +188,7 @@ public class Monster
 
     public Transformation CheckForTransformation()
     {
-        return Base.Transformations.FirstOrDefault(t => t.RequiredLevel <= Level);
+        return Base.Transformations.FirstOrDefault(t => t.RequiredLevel == Level);
     }
 
     public Transformation CheckForTransformation(ItemBase item)
