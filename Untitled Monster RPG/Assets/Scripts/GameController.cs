@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour
         MonsterDB.Init();
         MoveDB.Init();
         ItemDB.Init();
+        QuestDB.Init();
         ConditionsDB.Init();
     }
 

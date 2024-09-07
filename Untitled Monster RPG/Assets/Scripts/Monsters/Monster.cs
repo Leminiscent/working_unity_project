@@ -62,7 +62,7 @@ public class Monster
 
     public Monster(MonsterSaveData saveData)
     {
-        _base = MonsterDB.GetMonsterByName(saveData.name);
+        _base = MonsterDB.GetObjectByName(saveData.name);
         HP = saveData.hp;
         level = saveData.level;
         Exp = saveData.exp;
@@ -84,7 +84,7 @@ public class Monster
     {
         var saveData = new MonsterSaveData()
         {
-            name = Base.Name,
+            name = Base.name,
             hp = HP,
             level = Level,
             exp = Exp,
