@@ -8,6 +8,7 @@ public enum ItemCategory
 {
     RecoveryItems,
     MonsterParts,
+    TransformationItems,
     SkillBooks
 }
 
@@ -15,6 +16,7 @@ public class Inventory : MonoBehaviour, ISavable
 {
     [SerializeField] List<ItemSlot> recoveryItemSlots;
     [SerializeField] List<ItemSlot> monsterPartSlots;
+    [SerializeField] List<ItemSlot> transformationItemSlots;
     [SerializeField] List<ItemSlot> skillBookSlots;
     List<List<ItemSlot>> allSlots;
 
@@ -26,6 +28,7 @@ public class Inventory : MonoBehaviour, ISavable
         {
             recoveryItemSlots,
             monsterPartSlots,
+            transformationItemSlots,
             skillBookSlots
         };
     }
@@ -34,6 +37,7 @@ public class Inventory : MonoBehaviour, ISavable
     {
         "RECOVERY ITEMS",
         "MONSTER PARTS",
+        "TRANSFORMATION ITEMS",
         "SKILL BOOKS"
     };
 
@@ -117,6 +121,10 @@ public class Inventory : MonoBehaviour, ISavable
         else if (item is MonsterPart)
         {
             return ItemCategory.MonsterParts;
+        }
+        else if (item is TransformationItem)
+        {
+            return ItemCategory.TransformationItems;
         }
         else
         {

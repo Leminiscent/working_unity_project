@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -180,14 +179,33 @@ public class InventoryUI : MonoBehaviour
         state = InventoryUIState.Busy;
         yield return HandleSkillBooks();
 
-        var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember, selectedCategory);
+        var item = inventory.GetItem(selectedItem, selectedCategory);
+        var monster = partyScreen.SelectedMember;
+
+        if (item is TransformationItem)
+        {
+            var transformation = monster.CheckForTransformation(item);
+
+            if (transformation != null)
+            {
+                yield return TransformationManager.Instance.Transform(monster, transformation);
+            }
+            else
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
+                ClosePartyScreen();
+                yield break;
+            }
+        }
+
+        var usedItem = inventory.UseItem(selectedItem, monster, selectedCategory);
 
         if (usedItem != null)
         {
             if (usedItem is RecoveryItem)
             {
-                yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {partyScreen.SelectedMember.Base.Name}!");
-                yield return DialogueManager.Instance.ShowDialogueText($"{partyScreen.SelectedMember.Base.Name} {usedItem.Message}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {monster.Base.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} {usedItem.Message}!");
             }
             OnItemUsed?.Invoke(usedItem);
         }
@@ -195,7 +213,7 @@ public class InventoryUI : MonoBehaviour
         {
             if (selectedCategory == (int)ItemCategory.RecoveryItems)
             {
-                yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {partyScreen.SelectedMember.Base.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
             }
         }
 

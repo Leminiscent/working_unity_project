@@ -92,9 +92,11 @@ public class Transformation
 {
     [SerializeField] MonsterBase transformsInto;
     [SerializeField] int requiredLevel;
+    [SerializeField] TransformationItem requiredItem;
 
     public MonsterBase TransformsInto => transformsInto;
     public int RequiredLevel => requiredLevel;
+    public TransformationItem RequiredItem => requiredItem;
 }
 
 [System.Serializable]

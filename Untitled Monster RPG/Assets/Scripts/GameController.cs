@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField] InventoryUI inventoryUI;
     GameState state;
     GameState prevState;
+    GameState stateBeforeTransformation;
 
     public SceneDetails CurrentScene { get; private set; }
     public SceneDetails PreviousScene { get; private set; }
@@ -56,8 +57,12 @@ public class GameController : MonoBehaviour
         };
         menuController.OnMenuSelected += OnMenuSelected;
 
-        TransformationManager.Instance.OnStartTransformation += () => { state = GameState.Transformation; };
-        TransformationManager.Instance.OnEndTransformation += () => { state = GameState.FreeRoam; };
+        TransformationManager.Instance.OnStartTransformation += () =>
+        {
+            stateBeforeTransformation = state;
+            state = GameState.Transformation;
+        };
+        TransformationManager.Instance.OnEndTransformation += () => state = stateBeforeTransformation;
     }
 
     public void PauseGame(bool pause)
