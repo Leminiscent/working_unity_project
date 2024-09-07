@@ -48,7 +48,10 @@ MonoBehaviour:
     level: 33
   learnableBySkillBook:
   - {fileID: 11400000, guid: 33c0e645b37c08f4cbfce04083ba02c3, type: 2}
-  expYield: 64
+  transformations:
+  - transformsInto: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+    requiredLevel: 16
+  expYield: 6400
   growthRate: 3
   recruitRate: 45
   recruitmentQuestions:

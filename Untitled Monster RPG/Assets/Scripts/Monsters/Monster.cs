@@ -186,6 +186,17 @@ public class Monster
         return Moves.Count(m => m.Base == move) > 0;
     }
 
+    public Transformation CheckForTransformation()
+    {
+        return Base.Transformations.FirstOrDefault(t => t.RequiredLevel <= Level);
+    }
+
+    public void Transform(Transformation transformation)
+    {
+        _base = transformation.TransformsInto;
+        CalculateStats();
+    }
+
     public int MaxHp { get; private set; }
     public int Attack => GetStat(Stat.Attack);
     public int Defense => GetStat(Stat.Defense);

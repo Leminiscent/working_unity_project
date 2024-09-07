@@ -46,6 +46,22 @@ public class MonsterParty : MonoBehaviour
         }
     }
 
+    public IEnumerator CheckForTransformations()
+    {
+        foreach (var monster in monsters)
+        {
+            var transformation = monster.CheckForTransformation();
+
+            if (transformation != null)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} transformed into {transformation.TransformsInto.Name}!");
+                monster.Transform(transformation);
+            }
+        }
+
+        OnUpdated?.Invoke();
+    }
+
     public static MonsterParty GetPlayerParty()
     {
         return FindObjectOfType<PlayerController>().GetComponent<MonsterParty>();
