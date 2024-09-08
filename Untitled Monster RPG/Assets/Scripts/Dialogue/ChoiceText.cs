@@ -13,5 +13,10 @@ public class ChoiceText : MonoBehaviour
         text = GetComponent<TextMeshProUGUI>();
     }
 
+    public void SetSelected(bool selected)
+    {
+        text.color = selected ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
+    }
+
     public TextMeshProUGUI TextField => text;
 }
