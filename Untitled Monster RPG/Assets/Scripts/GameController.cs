@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
             stateBeforeTransformation = state;
             state = GameState.Transformation;
         };
-        TransformationManager.Instance.OnEndTransformation += () => 
+        TransformationManager.Instance.OnEndTransformation += () =>
         {
             partyScreen.SetPartyData();
             state = stateBeforeTransformation;
@@ -217,6 +217,20 @@ public class GameController : MonoBehaviour
         {
             SavingSystem.i.Load("saveSlot1");
             state = GameState.FreeRoam;
+        }
+    }
+
+    public IEnumerator MoveCamera(Vector2 moveOffset, bool waitForFadeOut = false)
+    {
+        yield return Fader.Instance.FadeIn(0.5f);
+        worldCamera.transform.position += new Vector3(moveOffset.x, moveOffset.y);
+        if (waitForFadeOut)
+        {
+            yield return Fader.Instance.FadeOut(0.5f);
+        }
+        else
+        {
+            StartCoroutine(Fader.Instance.FadeOut(0.5f));
         }
     }
 

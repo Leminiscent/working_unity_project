@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wallet : MonoBehaviour
+public class Wallet : MonoBehaviour, ISavable
 {
     [SerializeField] float money;
 
@@ -31,6 +31,16 @@ public class Wallet : MonoBehaviour
     public bool HasEnoughMoney(float amount)
     {
         return money >= amount;
+    }
+
+    public object CaptureState()
+    {
+        return money;
+    }
+
+    public void RestoreState(object state)
+    {
+        money = (float)state;
     }
 
     public float Money => money;
