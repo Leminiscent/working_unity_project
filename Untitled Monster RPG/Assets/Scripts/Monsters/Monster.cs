@@ -100,7 +100,11 @@ public class Monster
         int prevMaxHp = MaxHp;
 
         MaxHp = Mathf.FloorToInt(Base.MaxHp * Level / 100f) + 10 + Level;
-        HP += MaxHp - prevMaxHp;
+        if (prevMaxHp != 0)
+        {
+            HP += MaxHp - prevMaxHp;
+        }
+
         Stats = new Dictionary<Stat, int>()
         {
             { Stat.Attack, Mathf.FloorToInt(Base.Attack * Level / 100f) + 5 },
@@ -204,6 +208,12 @@ public class Monster
     {
         _base = transformation.TransformsInto;
         CalculateStats();
+    }
+
+    public void Heal()
+    {
+        HP = MaxHp;
+        OnHPChanged?.Invoke();
     }
 
     public int MaxHp { get; private set; }

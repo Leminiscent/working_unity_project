@@ -59,6 +59,11 @@ public class MonsterParty : MonoBehaviour
         }
     }
 
+    public void PartyUpdated()
+    {
+        OnUpdated?.Invoke();
+    }
+
     public static MonsterParty GetPlayerParty()
     {
         return FindObjectOfType<PlayerController>().GetComponent<MonsterParty>();
