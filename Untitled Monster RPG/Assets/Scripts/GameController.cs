@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.SearchService;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Inventory, Cutscene, Paused, Transformation }
+public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Inventory, Cutscene, Paused, Transformation, Shop }
 
 public class GameController : MonoBehaviour
 {
@@ -67,6 +67,9 @@ public class GameController : MonoBehaviour
             partyScreen.SetPartyData();
             state = stateBeforeTransformation;
         };
+
+        ShopController.Instance.OnStart += () => state = GameState.Shop;
+        ShopController.Instance.OnFinish += () => state = GameState.FreeRoam;
     }
 
     public void PauseGame(bool pause)
@@ -180,6 +183,10 @@ public class GameController : MonoBehaviour
             };
 
             inventoryUI.HandleUpdate(onBack);
+        }
+        else if (state == GameState.Shop)
+        {
+            ShopController.Instance.HandleUpdate();
         }
     }
 

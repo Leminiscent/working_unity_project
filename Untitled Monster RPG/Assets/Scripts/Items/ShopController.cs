@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ShopState { Menu, Buying, Selling, Busy }
@@ -8,6 +8,11 @@ public enum ShopState { Menu, Buying, Selling, Busy }
 public class ShopController : MonoBehaviour
 {
     [SerializeField] InventoryUI playerInventoryUI;
+    [SerializeField] WalletUI walletUI;
+
+    public event Action OnStart;
+    public event Action OnFinish;
+
     ShopState state = ShopState.Menu;
 
     public static ShopController Instance { get; private set; }
@@ -17,8 +22,16 @@ public class ShopController : MonoBehaviour
         Instance = this;
     }
 
+    Inventory playerInventory;
+
+    private void Start()
+    {
+        playerInventory = Inventory.GetInventory();
+    }
+
     public IEnumerator StartTrading(Merchant merchant)
     {
+        OnStart?.Invoke();
         yield return StartMenu();
     }
 
@@ -46,6 +59,7 @@ public class ShopController : MonoBehaviour
         else if (selectedChoice == 2)
         {
             // Leave
+            OnFinish?.Invoke();
             yield break;
         }
     }
@@ -54,7 +68,7 @@ public class ShopController : MonoBehaviour
     {
         if (state == ShopState.Selling)
         {
-            playerInventoryUI.HandleUpdate(OnBackFromSelling, (selectedItem) => { });
+            playerInventoryUI.HandleUpdate(OnBackFromSelling, (selectedItem) => StartCoroutine(SellItem(selectedItem)));
         }
     }
 
@@ -62,5 +76,34 @@ public class ShopController : MonoBehaviour
     {
         playerInventoryUI.gameObject.SetActive(false);
         StartCoroutine(StartMenu());
+    }
+
+    IEnumerator SellItem(ItemBase item)
+    {
+        state = ShopState.Busy;
+        if (!item.IsSellable)
+        {
+            yield return DialogueManager.Instance.ShowDialogueText("I'm sorry, I can't buy this item from you.");
+            state = ShopState.Selling;
+            yield break;
+        }
+        walletUI.Show();
+
+        float sellingPrice = Mathf.Round(item.Price * 0.5f);
+        int selectedChoice = 0;
+
+        yield return DialogueManager.Instance.ShowDialogueText($"I can buy this {item.Name} from you for {sellingPrice} gold. Do we have a deal?",
+            waitForInput: false,
+            choices: new List<string> { "Yes", "No" },
+            onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);
+
+        if (selectedChoice == 0)
+        {
+            playerInventory.RemoveItem(item);
+            Wallet.Instance.AddMoney(sellingPrice);
+            yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
+        }
+        walletUI.Close();
+        state = ShopState.Selling;
     }
 }
