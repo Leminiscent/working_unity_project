@@ -214,6 +214,7 @@ public class Monster
     {
         HP = MaxHp;
         OnHPChanged?.Invoke();
+        CureStatus();
     }
 
     public int MaxHp { get; private set; }
