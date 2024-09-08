@@ -8,12 +8,15 @@ public enum ShopState { Menu, Buying, Selling, Busy }
 public class ShopController : MonoBehaviour
 {
     [SerializeField] InventoryUI playerInventoryUI;
+    [SerializeField] ShopUI shopUI;
     [SerializeField] WalletUI walletUI;
+    [SerializeField] CountSelectorUI countSelectorUI;
 
     public event Action OnStart;
     public event Action OnFinish;
 
-    ShopState state = ShopState.Menu;
+    ShopState state;
+    Merchant merchant;
 
     public static ShopController Instance { get; private set; }
 
@@ -31,6 +34,8 @@ public class ShopController : MonoBehaviour
 
     public IEnumerator StartTrading(Merchant merchant)
     {
+        this.merchant = merchant;
+
         OnStart?.Invoke();
         yield return StartMenu();
     }
@@ -49,6 +54,9 @@ public class ShopController : MonoBehaviour
         if (selectedChoice == 0)
         {
             // Buy
+            state = ShopState.Buying;
+            walletUI.Show();
+            shopUI.Show(merchant.ItemsForSale);
         }
         else if (selectedChoice == 1)
         {
@@ -70,6 +78,10 @@ public class ShopController : MonoBehaviour
         {
             playerInventoryUI.HandleUpdate(OnBackFromSelling, (selectedItem) => StartCoroutine(SellItem(selectedItem)));
         }
+        else if (state == ShopState.Buying)
+        {
+            shopUI.HandleUpdate();
+        }
     }
 
     public void OnBackFromSelling()
@@ -90,6 +102,21 @@ public class ShopController : MonoBehaviour
         walletUI.Show();
 
         float sellingPrice = Mathf.Round(item.Price * 0.5f);
+        int countToSell = 1;
+        int itemCount = playerInventory.GetItemCount(item);
+
+        if (itemCount > 1)
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name} would you like to sell?",
+                waitForInput: false, autoClose: false);
+            
+            yield return countSelectorUI.ShowSelector(itemCount, sellingPrice, 
+                selectedCount => countToSell = selectedCount);
+
+            DialogueManager.Instance.CloseDialogue();
+        }
+        sellingPrice *= countToSell;
+
         int selectedChoice = 0;
 
         yield return DialogueManager.Instance.ShowDialogueText($"I can buy this {item.Name} from you for {sellingPrice} gold. Do we have a deal?",
@@ -99,7 +126,7 @@ public class ShopController : MonoBehaviour
 
         if (selectedChoice == 0)
         {
-            playerInventory.RemoveItem(item);
+            playerInventory.RemoveItem(item, countToSell);
             Wallet.Instance.AddMoney(sellingPrice);
             yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
         }
