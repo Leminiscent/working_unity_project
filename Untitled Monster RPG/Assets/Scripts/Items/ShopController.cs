@@ -56,7 +56,7 @@ public class ShopController : MonoBehaviour
             // Buy
             state = ShopState.Buying;
             walletUI.Show();
-            shopUI.Show(merchant.ItemsForSale);
+            shopUI.Show(merchant.ItemsForSale, (item) => StartCoroutine(BuyItem(item)), OnBackFromBuying);
         }
         else if (selectedChoice == 1)
         {
@@ -87,6 +87,13 @@ public class ShopController : MonoBehaviour
     public void OnBackFromSelling()
     {
         playerInventoryUI.gameObject.SetActive(false);
+        StartCoroutine(StartMenu());
+    }
+
+    public void OnBackFromBuying()
+    {
+        shopUI.Close();
+        walletUI.Close();
         StartCoroutine(StartMenu());
     }
 
@@ -132,5 +139,43 @@ public class ShopController : MonoBehaviour
         }
         walletUI.Close();
         state = ShopState.Selling;
+    }
+
+    IEnumerator BuyItem(ItemBase item)
+    {
+        state = ShopState.Busy;
+        yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}'s would you like?",
+            waitForInput: false, autoClose: false);
+        
+        int countToBuy = 1;
+
+        yield return countSelectorUI.ShowSelector(99, item.Price, 
+            selectedCount => countToBuy = selectedCount);
+
+        DialogueManager.Instance.CloseDialogue();
+
+        float totalPrice = item.Price * countToBuy;
+
+        if (Wallet.Instance.HasEnoughMoney(totalPrice))
+        {
+            int selectedChoice = 0;
+
+            yield return DialogueManager.Instance.ShowDialogueText($"That will be {totalPrice} gold. Do we have a deal?",
+                waitForInput: false,
+                choices: new List<string> { "Yes", "No" },
+                onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);
+
+            if (selectedChoice == 0)
+            {
+                Wallet.Instance.SpendMoney(totalPrice);
+                playerInventory.AddItem(item, countToBuy);
+                yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
+            }
+        }
+        else
+        {
+            yield return DialogueManager.Instance.ShowDialogueText("You don't have enough money for that.");
+        }
+        state = ShopState.Buying;
     }
 }
