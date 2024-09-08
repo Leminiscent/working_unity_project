@@ -49,7 +49,7 @@ public class DialogueManager : MonoBehaviour
         IsShowing = false;
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue, List<string> choices = null)
+    public IEnumerator ShowDialogue(Dialogue dialogue, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
         yield return new WaitForEndOfFrame();
 
@@ -64,7 +64,7 @@ public class DialogueManager : MonoBehaviour
 
         if (choices != null && choices.Count > 1)
         {
-            yield return choiceBox.ShowChoices(choices);
+            yield return choiceBox.ShowChoices(choices, onChoiceSelected);
         }
 
         dialogueBox.SetActive(false);
