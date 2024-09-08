@@ -8,7 +8,7 @@ public class Healer : MonoBehaviour
     {
         int selectedChoice = 0;
 
-        yield return DialogueManager.Instance.ShowDialogue(dialogue, new List<string> { "Yes", "No" }, (choiceIndex) => selectedChoice = choiceIndex);
+        yield return DialogueManager.Instance.ShowDialogueText("You look tired! Would you like to rest here?", choices: new List<string> { "Yes", "No" }, onChoiceSelected: (choiceIndex) => selectedChoice = choiceIndex);
         if (selectedChoice == 0)
         {
             yield return Fader.Instance.FadeIn(0.5f);
