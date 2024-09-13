@@ -20,7 +20,7 @@ public class SceneDetails : MonoBehaviour
 
             if (sceneMusic != null)
             {
-                AudioManager.Instance.PlayMusic(sceneMusic);
+                AudioManager.Instance.PlayMusic(sceneMusic, fade: true);
             }
 
             foreach (var scene in connectedScenes)
@@ -83,4 +83,6 @@ public class SceneDetails : MonoBehaviour
 
         return savableEntities;
     }
+
+    public AudioClip SceneMusic => sceneMusic;
 }

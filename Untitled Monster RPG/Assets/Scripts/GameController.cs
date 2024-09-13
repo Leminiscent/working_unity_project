@@ -66,6 +66,7 @@ public class GameController : MonoBehaviour
         {
             partyScreen.SetPartyData();
             state = stateBeforeTransformation;
+            AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
         };
 
         ShopController.Instance.OnStart += () => state = GameState.Shop;
@@ -132,7 +133,16 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(true);
 
         var playerParty = playerController.GetComponent<MonsterParty>();
-        StartCoroutine(playerParty.CheckForTransformations());
+        bool hasTransformations = playerParty.CheckForTransformations();
+
+        if (hasTransformations)
+        {
+            StartCoroutine(playerParty.RunTransformations());
+        }
+        else
+        {
+            AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
+        }
     }
 
     private void Update()

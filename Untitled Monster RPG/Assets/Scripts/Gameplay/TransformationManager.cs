@@ -8,6 +8,7 @@ public class TransformationManager : MonoBehaviour
 {
     [SerializeField] GameObject transformationUI;
     [SerializeField] Image monsterImage;
+    [SerializeField] AudioClip transformationMusic;
 
     public event Action OnStartTransformation;
     public event Action OnEndTransformation;
@@ -23,6 +24,7 @@ public class TransformationManager : MonoBehaviour
     {
         OnStartTransformation?.Invoke();
         transformationUI.SetActive(true);
+        AudioManager.Instance.PlayMusic(transformationMusic);
         monsterImage.sprite = monster.Base.Sprite;
         yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is transforming!");
 

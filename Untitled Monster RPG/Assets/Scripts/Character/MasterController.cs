@@ -10,6 +10,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
     [SerializeField] Dialogue postBattleDialogue;
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject los;
+    [SerializeField] AudioClip playerDetectedClip;
     bool battleLost = false;
     Character character;
 
@@ -33,6 +34,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         character.LookTowards(initiator.position);
         if (!battleLost)
         {
+            AudioManager.Instance.PlayMusic(playerDetectedClip);
             yield return DialogueManager.Instance.ShowDialogue(dialogue);
             GameController.Instance.StartMasterBattle(this);
         }
@@ -44,6 +46,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
 
     public IEnumerator TriggerBattle(PlayerController player)
     {
+        AudioManager.Instance.PlayMusic(playerDetectedClip);
         exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         exclamation.SetActive(false);

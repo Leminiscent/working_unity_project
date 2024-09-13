@@ -21,6 +21,11 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] MoveSelectionUI moveSelectionUI;
     [SerializeField] InventoryUI inventoryUI;
 
+    [Header("Audio")]
+    [SerializeField] AudioClip wildBattleMusic;
+    [SerializeField] AudioClip masterBattleMusic;
+    [SerializeField] AudioClip battleVictoryMusic;
+
     public event Action<bool> OnBattleOver;
 
     BattleState state;
@@ -44,6 +49,7 @@ public class BattleSystem : MonoBehaviour
         isMasterBattle = false;
         this.playerParty = playerParty;
         this.wildMonster = wildMonster;
+        AudioManager.Instance.PlayMusic(wildBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
@@ -54,6 +60,7 @@ public class BattleSystem : MonoBehaviour
         this.enemyParty = enemyParty;
         player = playerParty.GetComponent<PlayerController>();
         enemy = enemyParty.GetComponent<MasterController>();
+        AudioManager.Instance.PlayMusic(masterBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
@@ -495,6 +502,17 @@ public class BattleSystem : MonoBehaviour
 
         if (!defeatedUnit.IsPlayerUnit)
         {
+            bool battleWon = true;
+
+            if (isMasterBattle)
+            {
+                battleWon = enemyParty.GetHealthyMonster() == null;
+            }
+            if (battleWon)
+            {
+                AudioManager.Instance.PlayMusic(battleVictoryMusic);
+            }
+
             int expYield = defeatedUnit.Monster.Base.ExpYield;
             int enemyLevel = defeatedUnit.Monster.Level;
             float masterBonus = isMasterBattle ? 1.5f : 1f;

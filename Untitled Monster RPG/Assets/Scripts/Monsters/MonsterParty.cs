@@ -46,7 +46,12 @@ public class MonsterParty : MonoBehaviour
         }
     }
 
-    public IEnumerator CheckForTransformations()
+    public bool CheckForTransformations()
+    {
+       return monsters.Any(m => m.CheckForTransformation() != null);
+    }
+
+    public IEnumerator RunTransformations()
     {
         foreach (var monster in monsters)
         {

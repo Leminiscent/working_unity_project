@@ -967,6 +967,9 @@ MonoBehaviour:
   enemyImage: {fileID: 3671193932747111911}
   moveSelectionUI: {fileID: 5022093076660357975}
   inventoryUI: {fileID: 4700867138342001050}
+  wildBattleMusic: {fileID: 8300000, guid: 6540af4ffc719a7448f9204396ef55d9, type: 3}
+  masterBattleMusic: {fileID: 8300000, guid: 4ba70e793d7e5ab49b6807e35f4f0678, type: 3}
+  battleVictoryMusic: {fileID: 8300000, guid: 4a3c64c1fdb50974f987b54b94e537f0, type: 3}
 --- !u!1 &734648888191256437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,6 +2542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformationUI: {fileID: 3975937471057939812}
   monsterImage: {fileID: 338043217632933256}
+  transformationMusic: {fileID: 0}
 --- !u!114 &1811481106021030545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5309,6 +5313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicPlayer: {fileID: 2301533078210172413}
   sfxPlayer: {fileID: 393484122374260675}
+  fadeDuration: 0.75
 --- !u!1 &7113663202639993184
 GameObject:
   m_ObjectHideFlags: 0
