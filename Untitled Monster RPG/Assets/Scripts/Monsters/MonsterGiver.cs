@@ -15,6 +15,7 @@ public class MonsterGiver : MonoBehaviour, ISavable
         monster.Init();
         player.GetComponent<MonsterParty>().AddMonster(monster);
         used = true;
+        AudioManager.Instance.PlaySFX(AudioID.MonsterObtained, pauseMusic: true);
         yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {monster.Base.Name}!");
     }
 

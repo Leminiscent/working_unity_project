@@ -15,6 +15,7 @@ public class ItemGiver : MonoBehaviour, ISavable
         yield return DialogueManager.Instance.ShowDialogue(dialogue);
         player.GetComponent<Inventory>().AddItem(item, count);
         used = true;
+        AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
 
         string dialogueText = $"{player.Name} received {item.Name}!";
 

@@ -19,6 +19,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] bool alwaysHits;
     [SerializeField] int sP;
     [SerializeField] int priority;
+    [SerializeField] AudioClip sound;
 
     // Properties
     public string Name => name;
@@ -33,6 +34,7 @@ public class MoveBase : ScriptableObject
     public MoveEffects Effects => effects;
     public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
     public MoveTarget Target => target;
+    public AudioClip Sound => sound;
 }
 
 [System.Serializable]

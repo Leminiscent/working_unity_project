@@ -15,9 +15,10 @@ public class Chest : MonoBehaviour, Interactable, ISavable
             initiator.GetComponent<Inventory>().AddItem(item);
             Used = true;
             GetComponent<SpriteRenderer>().sprite = usedSprite;
-            
+
             string playerName = initiator.GetComponent<PlayerController>().Name;
 
+            AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
             yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {item.Name}!");
         }
     }

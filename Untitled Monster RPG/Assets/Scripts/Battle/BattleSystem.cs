@@ -241,8 +241,10 @@ public class BattleSystem : MonoBehaviour
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
         {
             sourceUnit.PlayAttackAnimation();
+            AudioManager.Instance.PlaySFX(move.Base.Sound);
             yield return new WaitForSeconds(1f);
             targetUnit.PlayHitAnimation();
+            AudioManager.Instance.PlaySFX(AudioID.Hit);
 
             if (move.Base.Category == MoveCategory.Status)
             {
