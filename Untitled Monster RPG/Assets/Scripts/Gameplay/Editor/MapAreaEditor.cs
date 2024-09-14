@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class MapAreaEditor : MonoBehaviour
+[CustomEditor(typeof(MapArea))]
+public class MapAreaEditor : Editor
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnInspectorGUI()
     {
-        
-    }
+        base.OnInspectorGUI();
+        int totalChance = serializedObject.FindProperty("totalChance").intValue;
+        var style = new GUIStyle(GUI.skin.label);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        style.fontStyle = FontStyle.Bold;
+        GUILayout.Label($"Total spawn chance: {totalChance}%", style);
+        if (totalChance != 100)
+        {
+            EditorGUILayout.HelpBox("The total spawn chance is not 100%", MessageType.Error);
+        }
     }
 }

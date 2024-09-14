@@ -7,10 +7,12 @@ public class MapArea : MonoBehaviour
 {
     [SerializeField] List<MonsterEncounterRecord> wildMonsters;
 
+    [HideInInspector]
+    [SerializeField] int totalChance = 0;
+
     private void OnValidate()
     {
-        int totalChance = 0;
-
+        totalChance = 0;
         foreach (var record in wildMonsters)
         {
             record.chanceLower = totalChance;
