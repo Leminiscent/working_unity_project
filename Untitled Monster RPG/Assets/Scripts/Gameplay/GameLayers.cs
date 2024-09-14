@@ -11,7 +11,8 @@ public class GameLayers : MonoBehaviour
     [SerializeField] LayerMask losLayer;
     [SerializeField] LayerMask portalLayer;
     [SerializeField] LayerMask triggersLayer;
-    
+    [SerializeField] LayerMask ledgeLayer;
+
     public static GameLayers Instance { get; set; }
 
     private void Awake()
@@ -25,5 +26,6 @@ public class GameLayers : MonoBehaviour
     public LayerMask PlayerLayer => playerLayer;
     public LayerMask LOSLayer => losLayer;
     public LayerMask PortalLayer => portalLayer;
+    public LayerMask LedgeLayer => ledgeLayer;
     public LayerMask TriggerableLayers => encountersLayer | losLayer | portalLayer | triggersLayer;
 }

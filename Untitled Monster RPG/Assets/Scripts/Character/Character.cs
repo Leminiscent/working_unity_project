@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
     CharacterAnimator animator;
     public float moveSpeed;
     public bool IsMoving { get; private set; }
-    public float offestY {get; private set;} = 0.3f;
+    public float offestY { get; private set; } = 0.3f;
 
     private void Awake()
     {
@@ -29,8 +29,19 @@ public class Character : MonoBehaviour
         animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
         var targetPos = transform.position;
+        
         targetPos.x += moveVector.x;
         targetPos.y += moveVector.y;
+
+        var ledge = CheckForLedge(targetPos);
+
+        if (ledge != null)
+        {
+            if (ledge.CanJump(this, moveVector))
+            {
+                yield break;
+            }
+        }
 
         if (!IsPathClear(targetPos))
         {
@@ -75,6 +86,13 @@ public class Character : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    Ledge CheckForLedge(Vector3 targetPos)
+    {
+        var collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
+
+        return collider?.GetComponent<Ledge>();
     }
 
     public void LookTowards(Vector3 target)
