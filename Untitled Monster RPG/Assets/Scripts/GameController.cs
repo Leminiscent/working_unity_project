@@ -86,14 +86,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void StartWildBattle()
+    public void StartWildBattle(BattleTrigger trigger)
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
         var playerParty = playerController.GetComponent<MonsterParty>();
-        var wildMonster = CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
+        var wildMonster = CurrentScene.GetComponent<MapArea>().GetRandomWildMonster(trigger);
         var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
 
         battleSystem.StartWildBattle(playerParty, wildMonsterCopy);

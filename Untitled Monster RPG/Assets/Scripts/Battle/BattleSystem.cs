@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, Inventory, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
+public enum BattleTrigger { Ground, Water }
 
 public class BattleSystem : MonoBehaviour
 {

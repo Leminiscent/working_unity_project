@@ -3,12 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SailableWater : MonoBehaviour, Interactable
+public class SailableWater : MonoBehaviour, Interactable, IPlayerTriggerable
 {
     [SerializeField] ItemBase requiredItem;
+    bool isJumpingToWater = false;
+
+    public bool TriggerRepeatedly => true;
 
     public IEnumerator Interact(Transform initiator)
     {
+        var animator = initiator.GetComponent<CharacterAnimator>();
+
+        if (animator.IsSailing || isJumpingToWater)
+        {
+            yield break;
+        }
+
         yield return DialogueManager.Instance.ShowDialogueText("This water is too deep to cross on foot.");
         if (initiator.GetComponent<Inventory>().HasItem(requiredItem))
         {
@@ -23,13 +33,22 @@ public class SailableWater : MonoBehaviour, Interactable
             {
                 yield return DialogueManager.Instance.ShowDialogueText($"{playerName} is setting sail!");
 
-                var animator = initiator.GetComponent<CharacterAnimator>();
                 var dir = new Vector3(animator.MoveX, animator.MoveY);
                 var targetPos = initiator.position + dir;
 
+                isJumpingToWater = true;
                 yield return initiator.DOJump(targetPos, 0.3f, 1, 0.5f).WaitForCompletion();
+                isJumpingToWater = false;
                 animator.IsSailing = true;
             }
+        }
+    }
+
+    public void OnPlayerTriggered(PlayerController player)
+    {
+        if (Random.Range(1, 101) <= 5)
+        {
+            GameController.Instance.StartWildBattle(BattleTrigger.Water);
         }
     }
 }

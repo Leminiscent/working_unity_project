@@ -6,9 +6,13 @@ using UnityEngine;
 public class MapArea : MonoBehaviour
 {
     [SerializeField] List<MonsterEncounterRecord> wildMonsters;
+    [SerializeField] List<MonsterEncounterRecord> wildWaterMonsters;
 
     [HideInInspector]
     [SerializeField] int totalChance = 0;
+
+    [HideInInspector]
+    [SerializeField] int totalChanceWater = 0;
 
     private void OnValidate()
     {
@@ -19,6 +23,14 @@ public class MapArea : MonoBehaviour
             record.chanceUpper = totalChance + record.spawnChance;
             totalChance += record.spawnChance;
         }
+
+        totalChanceWater = 0;
+        foreach (var record in wildWaterMonsters)
+        {
+            record.chanceLower = totalChanceWater;
+            record.chanceUpper = totalChanceWater + record.spawnChance;
+            totalChanceWater += record.spawnChance;
+        }
     }
 
     private void Start()
@@ -26,10 +38,11 @@ public class MapArea : MonoBehaviour
 
     }
 
-    public Monster GetRandomWildMonster()
+    public Monster GetRandomWildMonster(BattleTrigger trigger)
     {
+        var monsterList = (trigger == BattleTrigger.Ground) ? wildMonsters : wildWaterMonsters;
         int randVal = Random.Range(1, 101);
-        var monsterRecord = wildMonsters.First(m => randVal >= m.chanceLower && randVal <= m.chanceUpper);
+        var monsterRecord = monsterList.First(m => randVal >= m.chanceLower && randVal <= m.chanceUpper);
         var levelRange = monsterRecord.levelRange;
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
         var wildMonster = new Monster(monsterRecord.monster, level);

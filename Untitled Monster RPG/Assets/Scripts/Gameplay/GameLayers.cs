@@ -29,5 +29,5 @@ public class GameLayers : MonoBehaviour
     public LayerMask PortalLayer => portalLayer;
     public LayerMask LedgeLayer => ledgeLayer;
     public LayerMask WaterLayer => waterLayer;
-    public LayerMask TriggerableLayers => encountersLayer | losLayer | portalLayer | triggersLayer;
+    public LayerMask TriggerableLayers => encountersLayer | losLayer | portalLayer | triggersLayer | waterLayer;
 }
