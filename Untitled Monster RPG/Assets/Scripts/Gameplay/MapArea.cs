@@ -16,26 +16,40 @@ public class MapArea : MonoBehaviour
 
     private void OnValidate()
     {
-        totalChance = 0;
-        foreach (var record in wildMonsters)
-        {
-            record.chanceLower = totalChance;
-            record.chanceUpper = totalChance + record.spawnChance;
-            totalChance += record.spawnChance;
-        }
-
-        totalChanceWater = 0;
-        foreach (var record in wildWaterMonsters)
-        {
-            record.chanceLower = totalChanceWater;
-            record.chanceUpper = totalChanceWater + record.spawnChance;
-            totalChanceWater += record.spawnChance;
-        }
+        CalculateSpawnChance();
     }
 
     private void Start()
     {
+        CalculateSpawnChance();
+    }
 
+    void CalculateSpawnChance()
+    {
+        totalChance = -1;
+        totalChanceWater = -1;
+
+        if (wildMonsters.Count > 0)
+        {
+            totalChance = 0;
+            foreach (var record in wildMonsters)
+            {
+                record.chanceLower = totalChance;
+                record.chanceUpper = totalChance + record.spawnChance;
+                totalChance += record.spawnChance;
+            }
+        }
+
+        if (wildWaterMonsters.Count > 0)
+        {
+            totalChanceWater = 0;
+            foreach (var record in wildWaterMonsters)
+            {
+                record.chanceLower = totalChanceWater;
+                record.chanceUpper = totalChanceWater + record.spawnChance;
+                totalChanceWater += record.spawnChance;
+            }
+        }
     }
 
     public Monster GetRandomWildMonster(BattleTrigger trigger)

@@ -9,14 +9,16 @@ public class MapAreaEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        int totalChance = serializedObject.FindProperty("totalChance").intValue;
-        var style = new GUIStyle(GUI.skin.label);
+        int totalChanceOnGround = serializedObject.FindProperty("totalChance").intValue;
+        int totalChanceInWater = serializedObject.FindProperty("totalChanceWater").intValue;
 
-        style.fontStyle = FontStyle.Bold;
-        GUILayout.Label($"Total spawn chance: {totalChance}%", style);
-        if (totalChance != 100)
+        if (totalChanceOnGround != 100 && totalChanceOnGround != -1)
         {
-            EditorGUILayout.HelpBox("The total spawn chance is not 100%", MessageType.Error);
+            EditorGUILayout.HelpBox($"The total ground spawn chance is {totalChanceOnGround}%. It should be 100%", MessageType.Error);
+        }
+        if (totalChanceInWater != 100 && totalChanceInWater != -1)
+        {
+            EditorGUILayout.HelpBox($"The total water spawn chance is {totalChanceInWater}%. It should be 100%", MessageType.Error);
         }
     }
 }

@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, Inventory, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
@@ -27,6 +25,11 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] AudioClip masterBattleMusic;
     [SerializeField] AudioClip battleVictoryMusic;
 
+    [Header("Background")]
+    [SerializeField] Image backgroundImage;
+    [SerializeField] Sprite groundBackground;
+    [SerializeField] Sprite waterBackground;
+
     public event Action<bool> OnBattleOver;
 
     BattleState state;
@@ -44,23 +47,30 @@ public class BattleSystem : MonoBehaviour
     bool isMasterBattle;
     PlayerController player;
     MasterController enemy;
+    BattleTrigger battleTrigger;
 
-    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster)
+    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger = BattleTrigger.Ground)
     {
         isMasterBattle = false;
+
         this.playerParty = playerParty;
         this.wildMonster = wildMonster;
+
+        battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(wildBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
-    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty)
+    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger = BattleTrigger.Ground)
     {
         isMasterBattle = true;
+
         this.playerParty = playerParty;
         this.enemyParty = enemyParty;
+
         player = playerParty.GetComponent<PlayerController>();
         enemy = enemyParty.GetComponent<MasterController>();
+        battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(masterBattleMusic);
         StartCoroutine(SetupBattle());
     }
@@ -69,6 +79,8 @@ public class BattleSystem : MonoBehaviour
     {
         playerUnit.Clear();
         enemyUnit.Clear();
+
+        backgroundImage.sprite = (battleTrigger == BattleTrigger.Ground) ? groundBackground : waterBackground;
 
         if (!isMasterBattle)
         {
@@ -436,7 +448,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.Busy;
         inventoryUI.gameObject.SetActive(false);
-        
+
         yield return StartCoroutine(RunTurns(BattleAction.UseItem));
     }
 
