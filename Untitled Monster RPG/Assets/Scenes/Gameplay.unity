@@ -484,7 +484,7 @@ MonoBehaviour:
     spawnChance: 40
   wildWaterMonsters: []
   totalChance: 100
-  totalChanceWater: 0
+  totalChanceWater: -1
 --- !u!114 &1647700579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -1992,10 +1992,10 @@ PrefabInstance:
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
+      objectReference: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[1].level
-      value: 15
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[2]._base
@@ -2003,28 +2003,28 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[2].level
-      value: 100
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[3]._base
       value: 
-      objectReference: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
+      objectReference: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[3].level
-      value: 100
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[4]._base
       value: 
-      objectReference: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
+      objectReference: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[4].level
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[5]._base
       value: 
-      objectReference: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+      objectReference: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
     - target: {fileID: 5977499250034067620, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: monsters.Array.data[5].level
       value: 5
