@@ -1306,6 +1306,7 @@ GameObject:
   - component: {fileID: 1276787935}
   - component: {fileID: 1276787934}
   - component: {fileID: 1276787933}
+  - component: {fileID: 1276787936}
   m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
@@ -1789,6 +1790,19 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &1276787936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276787929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6036ee0d21da6844a99598453ba6ae3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredItem: {fileID: 11400000, guid: 96f95a80b4b6b2a4b8456dfb3ada02ac, type: 2}
 --- !u!1 &1390006745
 GameObject:
   m_ObjectHideFlags: 0
