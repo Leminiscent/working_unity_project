@@ -9,7 +9,8 @@ public enum ItemCategory
     RecoveryItems,
     MonsterParts,
     TransformationItems,
-    SkillBooks
+    SkillBooks,
+    KeyItems
 }
 
 public class Inventory : MonoBehaviour, ISavable
@@ -18,6 +19,7 @@ public class Inventory : MonoBehaviour, ISavable
     [SerializeField] List<ItemSlot> monsterPartSlots;
     [SerializeField] List<ItemSlot> transformationItemSlots;
     [SerializeField] List<ItemSlot> skillBookSlots;
+    [SerializeField] List<ItemSlot> keyItemSlots;
     List<List<ItemSlot>> allSlots;
 
     public event Action OnUpdated;
@@ -29,7 +31,8 @@ public class Inventory : MonoBehaviour, ISavable
             recoveryItemSlots,
             monsterPartSlots,
             transformationItemSlots,
-            skillBookSlots
+            skillBookSlots,
+            keyItemSlots
         };
     }
 
@@ -38,7 +41,8 @@ public class Inventory : MonoBehaviour, ISavable
         "RECOVERY ITEMS",
         "MONSTER PARTS",
         "TRANSFORMATION ITEMS",
-        "SKILL BOOKS"
+        "SKILL BOOKS",
+        "KEY ITEMS"
     };
 
     public List<ItemSlot> GetSlotsByCategory(int categoryIndex)
@@ -142,9 +146,13 @@ public class Inventory : MonoBehaviour, ISavable
         {
             return ItemCategory.TransformationItems;
         }
-        else
+        else if (item is SkillBook)
         {
             return ItemCategory.SkillBooks;
+        }
+        else
+        {
+            return ItemCategory.KeyItems;
         }
     }
 
@@ -159,7 +167,9 @@ public class Inventory : MonoBehaviour, ISavable
         {
             recoveryItems = recoveryItemSlots.Select(slot => slot.GetSaveData()).ToList(),
             monsterParts = monsterPartSlots.Select(slot => slot.GetSaveData()).ToList(),
-            skillBooks = skillBookSlots.Select(slot => slot.GetSaveData()).ToList()
+            transformationItems = transformationItemSlots.Select(slot => slot.GetSaveData()).ToList(),
+            skillBooks = skillBookSlots.Select(slot => slot.GetSaveData()).ToList(),
+            keyItems = keyItemSlots.Select(slot => slot.GetSaveData()).ToList()
         };
 
         return saveData;
@@ -171,13 +181,17 @@ public class Inventory : MonoBehaviour, ISavable
 
         recoveryItemSlots = saveData.recoveryItems.Select(data => new ItemSlot(data)).ToList();
         monsterPartSlots = saveData.monsterParts.Select(data => new ItemSlot(data)).ToList();
+        transformationItemSlots = saveData.transformationItems.Select(data => new ItemSlot(data)).ToList();
         skillBookSlots = saveData.skillBooks.Select(data => new ItemSlot(data)).ToList();
+        keyItemSlots = saveData.keyItems.Select(data => new ItemSlot(data)).ToList();
 
         allSlots = new List<List<ItemSlot>>()
         {
             recoveryItemSlots,
             monsterPartSlots,
-            skillBookSlots
+            transformationItemSlots,
+            skillBookSlots,
+            keyItemSlots
         };
 
         OnUpdated?.Invoke();
@@ -225,5 +239,7 @@ public class InventorySaveData
 {
     public List<ItemSaveData> recoveryItems;
     public List<ItemSaveData> monsterParts;
+    public List<ItemSaveData> transformationItems;
     public List<ItemSaveData> skillBooks;
+    public List<ItemSaveData> keyItems;
 }

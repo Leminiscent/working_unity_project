@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
         animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
         var targetPos = transform.position;
-        
+
         targetPos.x += moveVector.x;
         targetPos.y += moveVector.y;
 
@@ -71,8 +71,9 @@ public class Character : MonoBehaviour
     {
         var diff = targetPos - transform.position;
         var dir = diff.normalized;
+        var collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer | GameLayers.Instance.WaterLayer;
 
-        if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer) == true)
+        if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer) == true)
         {
             return false;
         }
