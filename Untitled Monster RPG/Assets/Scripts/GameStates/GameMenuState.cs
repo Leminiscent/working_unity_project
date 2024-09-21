@@ -5,6 +5,7 @@ using Utils.StateMachine;
 
 public class GameMenuState : State<GameController>
 {
+    [SerializeField] MenuController menuController;
     GameController gameController;
 
     public static GameMenuState Instance { get; private set; }
@@ -17,13 +18,30 @@ public class GameMenuState : State<GameController>
     public override void Enter(GameController owner)
     {
         gameController = owner;
+        menuController.gameObject.SetActive(true);
+        menuController.OnSelected += OnMenuItemSelected;
+        menuController.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            gameController.StateMachine.Pop();
-        }
+        menuController.HandleUpdate();
+    }
+
+    public override void Exit()
+    {
+        menuController.gameObject.SetActive(false);
+        menuController.OnSelected -= OnMenuItemSelected;
+        menuController.OnBack -= OnBack;
+    }
+
+    void OnMenuItemSelected(int selection)
+    {
+        
+    }
+
+    void OnBack()
+    {
+        gameController.StateMachine.Pop();
     }
 }

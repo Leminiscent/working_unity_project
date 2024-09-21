@@ -17,8 +17,7 @@ public class GameController : MonoBehaviour
     GameState state;
     GameState prevState;
     GameState stateBeforeTransformation;
-    MenuController menuController;
-    
+
     public StateMachine<GameController> StateMachine { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
     public SceneDetails PreviousScene { get; private set; }
@@ -27,7 +26,6 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        menuController = GetComponent<MenuController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         MonsterDB.Init();
@@ -51,13 +49,6 @@ public class GameController : MonoBehaviour
                 state = prevState;
             }
         };
-
-        menuController.OnBack += () =>
-        {
-            menuController.CloseMenu();
-            state = GameState.FreeRoam;
-        };
-        menuController.OnMenuSelected += OnMenuSelected;
 
         TransformationManager.Instance.OnStartTransformation += () =>
         {
@@ -172,10 +163,6 @@ public class GameController : MonoBehaviour
         else if (state == GameState.Dialogue)
         {
             DialogueManager.Instance.HandleUpdate();
-        }
-        else if (state == GameState.Menu)
-        {
-            menuController.HandleUpdate();
         }
         else if (state == GameState.PartyScreen)
         {
