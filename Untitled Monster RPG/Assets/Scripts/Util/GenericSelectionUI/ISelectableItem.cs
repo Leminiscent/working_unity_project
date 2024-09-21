@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface ISelectableItem
 {
+    void Init();
+
     void OnSelectionChanged(bool selected);
 }

@@ -1,24 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using Utils.GenericSelectionUI;
 
-public class PartyScreen : MonoBehaviour
+public class PartyScreen : SelectionUI<TextSlot>
 {
     [SerializeField] TextMeshProUGUI messageText;
     PartyMemberUI[] memberSlots;
     List<Monster> monsters;
     MonsterParty party;
-    int selection = 0;
 
-    public Monster SelectedMember => monsters[selection];
-
-    public BattleState? CalledFrom { get; set; }
+    public Monster SelectedMember => monsters[selectedItem];
 
     public void Init()
     {
         memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+        SetSelectionSettings(SelectionType.Grid, 2);
         party = MonsterParty.GetPlayerParty();
         SetPartyData();
         party.OnUpdated += SetPartyData;
@@ -41,62 +41,11 @@ public class PartyScreen : MonoBehaviour
             }
         }
 
-        UpdateMemberSelection(selection);
+        var textSlots = memberSlots.Select(m => m.GetComponent<TextSlot>());
+
+        SetItems(textSlots.Take(monsters.Count).ToList());
 
         messageText.text = "Choose a Monster!";
-    }
-
-    public void HandleUpdate(Action onSelected, Action onBack)
-    {
-        var prevSelection = selection;
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            ++selection;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            --selection;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            selection += 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            selection -= 2;
-        }
-
-        selection = Mathf.Clamp(selection, 0, monsters.Count - 1);
-
-        if (prevSelection != selection)
-        {
-            UpdateMemberSelection(selection);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            onSelected?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            onBack?.Invoke();
-        }
-    }
-
-    public void UpdateMemberSelection(int selectedMember)
-    {
-        for (int i = 0; i < memberSlots.Length; ++i)
-        {
-            if (i == selectedMember)
-            {
-                memberSlots[i].SetSelected(true);
-            }
-            else
-            {
-                memberSlots[i].SetSelected(false);
-            }
-        }
     }
 
     public void ShowSkillBookUsability(SkillBook skillBook)

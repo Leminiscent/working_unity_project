@@ -37,7 +37,10 @@ public class GameMenuState : State<GameController>
 
     void OnMenuItemSelected(int selection)
     {
-        
+        if (selection == 0)
+        {
+            gameController.StateMachine.Push(GamePartyState.Instance);
+        }
     }
 
     void OnBack()

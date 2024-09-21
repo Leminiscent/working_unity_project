@@ -149,7 +149,7 @@ public class BattleSystem : MonoBehaviour
 
     void OpenPartyScreen()
     {
-        partyScreen.CalledFrom = state;
+        // partyScreen.CalledFrom = state;
         state = BattleState.PartyScreen;
         partyScreen.gameObject.SetActive(true);
     }
@@ -868,31 +868,31 @@ public class BattleSystem : MonoBehaviour
             }
 
             partyScreen.gameObject.SetActive(false);
-            if (partyScreen.CalledFrom == BattleState.ActionSelection)
-            {
-                StartCoroutine(RunTurns(BattleAction.SwitchMonster));
-            }
-            else
-            {
-                state = BattleState.Busy;
-                StartCoroutine(SwitchMonster(selectedMember));
-            }
-            partyScreen.CalledFrom = null;
+            // if (partyScreen.CalledFrom == BattleState.ActionSelection)
+            // {
+            //     StartCoroutine(RunTurns(BattleAction.SwitchMonster));
+            // }
+            // else
+            // {
+            //     state = BattleState.Busy;
+            //     StartCoroutine(SwitchMonster(selectedMember));
+            // }
+            // partyScreen.CalledFrom = null;
         };
 
         Action onBack = () =>
         {
-            if (playerUnit.Monster.HP <= 0)
-            {
-                partyScreen.SetMessageText("You have to choose a monster!");
-                return;
-            }
-            partyScreen.gameObject.SetActive(false);
-            ActionSelection();
-            partyScreen.CalledFrom = null;
+            // if (playerUnit.Monster.HP <= 0)
+            // {
+            //     partyScreen.SetMessageText("You have to choose a monster!");
+            //     return;
+            // }
+            // partyScreen.gameObject.SetActive(false);
+            // ActionSelection();
+            // partyScreen.CalledFrom = null;
         };
 
-        partyScreen.HandleUpdate(onSelected, onBack);
+        // partyScreen.HandleUpdate(onSelected, onBack);
     }
 
     void HandleChoiceSelection()

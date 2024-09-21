@@ -164,21 +164,6 @@ public class GameController : MonoBehaviour
         {
             DialogueManager.Instance.HandleUpdate();
         }
-        else if (state == GameState.PartyScreen)
-        {
-            Action onSelected = () =>
-            {
-                // TODO
-            };
-
-            Action onBack = () =>
-            {
-                partyScreen.gameObject.SetActive(false);
-                state = GameState.FreeRoam;
-            };
-
-            partyScreen.HandleUpdate(onSelected, onBack);
-        }
         else if (state == GameState.Inventory)
         {
             Action onBack = () =>
