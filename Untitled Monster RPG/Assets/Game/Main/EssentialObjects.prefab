@@ -2403,6 +2403,8 @@ GameObject:
   - component: {fileID: 7618749125677181748}
   - component: {fileID: 1929696814135984461}
   - component: {fileID: 1811481106021030545}
+  - component: {fileID: 8421208173127565085}
+  - component: {fileID: 6299559392987174268}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2496,7 +2498,7 @@ MonoBehaviour:
     m_Bits: 32768
   waterLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16
 --- !u!114 &7428171737727562100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2551,7 +2553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformationUI: {fileID: 3975937471057939812}
   monsterImage: {fileID: 338043217632933256}
-  transformationMusic: {fileID: 8300000, guid: 1151705e092079e4f84878293e0b10cb, type: 3}
+  transformationMusic: {fileID: 8300000, guid: 697e6f8662bfcf646b9dd5c7f267ad1f, type: 3}
 --- !u!114 &1811481106021030545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2569,6 +2571,30 @@ MonoBehaviour:
   shopUI: {fileID: 7135037369154304464}
   walletUI: {fileID: 1990720717648290519}
   countSelectorUI: {fileID: 4849388850774474072}
+--- !u!114 &8421208173127565085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f15c1a41862884cb0f7e1ac48a5f59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6299559392987174268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c441882ac53cce94fb7676301c350996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2452659476306165220
 GameObject:
   m_ObjectHideFlags: 0

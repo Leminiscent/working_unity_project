@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
+using Utils.StateMachine;
 
 public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Inventory, Cutscene, Paused, Transformation, Shop }
 
@@ -15,13 +13,15 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] InventoryUI inventoryUI;
+
     GameState state;
     GameState prevState;
     GameState stateBeforeTransformation;
-
+    MenuController menuController;
+    
+    public StateMachine<GameController> StateMachine { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
     public SceneDetails PreviousScene { get; private set; }
-    MenuController menuController;
     public static GameController Instance { get; private set; }
 
     private void Awake()
@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        StateMachine = new StateMachine<GameController>(this);
+        StateMachine.ChangeState(FreeRoamState.Instance);
         battleSystem.OnBattleOver += EndBattle;
         partyScreen.Init();
         DialogueManager.Instance.OnShowDialogue += () => { prevState = state; state = GameState.Dialogue; };
@@ -157,17 +159,9 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (state == GameState.FreeRoam)
-        {
-            playerController.HandleUpdate();
+        StateMachine.Execute();
 
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                menuController.OpenMenu();
-                state = GameState.Menu;
-            }
-        }
-        else if (state == GameState.Cutscene)
+        if (state == GameState.Cutscene)
         {
             playerController.Character.HandleUpdate();
         }
@@ -255,6 +249,18 @@ public class GameController : MonoBehaviour
         else
         {
             StartCoroutine(Fader.Instance.FadeOut(0.5f));
+        }
+    }
+
+    private void OnGUI()
+    {
+        var style = new GUIStyle();
+
+        style.fontSize = 40;
+        GUILayout.Label("STATE STACK", style);
+        foreach (var state in StateMachine.StateStack)
+        {
+            GUILayout.Label(state.GetType().ToString(), style);
         }
     }
 
