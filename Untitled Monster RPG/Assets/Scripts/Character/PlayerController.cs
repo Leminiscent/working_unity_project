@@ -10,9 +10,11 @@ public class PlayerController : MonoBehaviour, ISavable
     [SerializeField] Sprite sprite;
     private Vector2 input;
     private Character character;
+    public static PlayerController Instance { get; private set; }
 
     void Awake()
     {
+        Instance = this;
         character = GetComponent<Character>();
     }
 

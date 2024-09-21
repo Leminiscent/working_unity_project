@@ -12708,10 +12708,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1136512468}
   - component: {fileID: 1136512469}
-  m_Layer: 0
-  m_Name: TestCutscene
+  - component: {fileID: 1136512470}
+  m_Layer: 14
+  m_Name: ChestCutscene
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -12724,7 +12725,7 @@ Transform:
   m_GameObject: {fileID: 1136512467}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.89303577, y: -0.63648957, z: -0.05393588}
+  m_LocalPosition: {x: -5.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12742,10 +12743,112 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395d52fb155006d459b65f88a010be30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - rid: 8051266741032452096
+  - rid: 8051266741032452099
+  - rid: 8051266741032452100
+  - rid: 8051266741032452097
+  - rid: 8051266741032452098
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8051266741032452096
+      type: {class: MoveActorAction, ns: , asm: Assembly-CSharp}
+      data:
+        name: MoveActorAction
+        waitForCompletion: 1
+        actor:
+          isPlayer: 0
+          character: {fileID: 4853674262445503111}
+        movePatterns:
+        - {x: 0, y: 1}
+    - rid: 8051266741032452097
+      type: {class: DialogueAction, ns: , asm: Assembly-CSharp}
+      data:
+        name: DialogueAction
+        waitForCompletion: 1
+        dialogue:
+          lines:
+          - Where in the world did that come from?!
+    - rid: 8051266741032452098
+      type: {class: MoveActorAction, ns: , asm: Assembly-CSharp}
+      data:
+        name: MoveActorAction
+        waitForCompletion: 1
+        actor:
+          isPlayer: 1
+          character: {fileID: 0}
+        movePatterns:
+        - {x: 0, y: -1}
+        - {x: 3, y: 0}
+        - {x: 0, y: 2}
+        - {x: -1, y: 0}
+        - {x: 0, y: 2}
+    - rid: 8051266741032452099
+      type: {class: MoveActorAction, ns: , asm: Assembly-CSharp}
+      data:
+        name: MoveActorAction
+        waitForCompletion: 0
+        actor:
+          isPlayer: 0
+          character: {fileID: 4853674262445503111}
+        movePatterns:
+        - {x: -1, y: 0}
+    - rid: 8051266741032452100
+      type: {class: MoveActorAction, ns: , asm: Assembly-CSharp}
+      data:
+        name: MoveActorAction
+        waitForCompletion: 1
+        actor:
+          isPlayer: 1
+          character: {fileID: 0}
+        movePatterns:
+        - {x: 1, y: 0}
+--- !u!61 &1136512470
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136512467}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1214944565
 GameObject:
   m_ObjectHideFlags: 0
@@ -16881,9 +16984,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1507074992633447358, guid: c2937270f2a4f754997e72f6fba20f46, type: 3}
+      propertyPath: patternRate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1507074992633447358, guid: c2937270f2a4f754997e72f6fba20f46, type: 3}
       propertyPath: questToStart
       value: 
       objectReference: {fileID: 11400000, guid: 7938bff1904af6643a2d49ba9fce45d8, type: 2}
+    - target: {fileID: 1507074992633447358, guid: c2937270f2a4f754997e72f6fba20f46, type: 3}
+      propertyPath: movementPattern.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1507074992633447358, guid: c2937270f2a4f754997e72f6fba20f46, type: 3}
       propertyPath: dialogue.lines.Array.data[0]
       value: Hello!
@@ -16961,6 +17072,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2937270f2a4f754997e72f6fba20f46, type: 3}
+--- !u!114 &4853674262445503111 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1810711129107745403, guid: c2937270f2a4f754997e72f6fba20f46, type: 3}
+  m_PrefabInstance: {fileID: 4853674262445503110}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7394a34419024c45be59680b9314737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7444268462471248624
 PrefabInstance:
   m_ObjectHideFlags: 0
