@@ -67,19 +67,19 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         los.gameObject.SetActive(false);
     }
 
-    public void SetLosRotation(FacingDirections dir)
+    public void SetLosRotation(FacingDirection dir)
     {
         float angle = 0f;
 
-        if (dir == FacingDirections.Right)
+        if (dir == FacingDirection.Right)
         {
             angle = 90f;
         }
-        else if (dir == FacingDirections.Up)
+        else if (dir == FacingDirection.Up)
         {
             angle = 180f;
         }
-        else if (dir == FacingDirections.Left)
+        else if (dir == FacingDirection.Left)
         {
             angle = 270f;
         }

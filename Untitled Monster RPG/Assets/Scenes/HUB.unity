@@ -12745,8 +12745,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actions:
   - rid: 8051266741032452096
-  - rid: 8051266741032452099
-  - rid: 8051266741032452100
+  - rid: 8051266741032452101
+  - rid: 8051266741032452102
   - rid: 8051266741032452097
   - rid: 8051266741032452098
   references:
@@ -12784,26 +12784,24 @@ MonoBehaviour:
         - {x: 0, y: 2}
         - {x: -1, y: 0}
         - {x: 0, y: 2}
-    - rid: 8051266741032452099
-      type: {class: MoveActorAction, ns: , asm: Assembly-CSharp}
+    - rid: 8051266741032452101
+      type: {class: TurnActorAction, ns: , asm: Assembly-CSharp}
       data:
-        name: MoveActorAction
+        name: TurnActorAction
         waitForCompletion: 0
         actor:
           isPlayer: 0
           character: {fileID: 4853674262445503111}
-        movePatterns:
-        - {x: -1, y: 0}
-    - rid: 8051266741032452100
-      type: {class: MoveActorAction, ns: , asm: Assembly-CSharp}
+        direction: 2
+    - rid: 8051266741032452102
+      type: {class: TurnActorAction, ns: , asm: Assembly-CSharp}
       data:
-        name: MoveActorAction
+        name: TurnActorAction
         waitForCompletion: 1
         actor:
           isPlayer: 1
           character: {fileID: 0}
-        movePatterns:
-        - {x: 1, y: 0}
+        direction: 3
 --- !u!61 &1136512470
 BoxCollider2D:
   m_ObjectHideFlags: 0
