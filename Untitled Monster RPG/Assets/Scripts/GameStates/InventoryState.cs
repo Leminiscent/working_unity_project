@@ -17,6 +17,7 @@ public class InventoryState : State<GameController>
 
     public override void Enter(GameController owner)
     {
+        gameController = owner;
         inventoryUI.gameObject.SetActive(true);
         inventoryUI.OnSelected += OnItemSelected;
         inventoryUI.OnBack += OnBack;

@@ -10,11 +10,11 @@ namespace Utils.GenericSelectionUI
     public class SelectionUI<T> : MonoBehaviour where T : ISelectableItem
     {
         List<T> items;
-        protected int selectedItem;
+        protected int selectedItem = 0;
         SelectionType selectionType;
         int gridWidth = 2;
         float selectionTimer = 0;
-        const float selectionSpeed = 4.2f;
+        const float selectionSpeed = 5f;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
