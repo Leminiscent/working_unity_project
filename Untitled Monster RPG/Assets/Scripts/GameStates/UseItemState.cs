@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -106,8 +107,24 @@ public class UseItemState : State<GameController>
         {
             yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is trying to learn {skillBook.Move.Name}!");
             yield return DialogueManager.Instance.ShowDialogueText($"But {monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
-            // yield return ChooseMoveToForget(monster, skillBook.Move);
-            // yield return new WaitUntil(() => state != InventoryUIState.ForgettingMove);
+            yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", true, false);
+            ForgettingMoveState.Instance.NewMove = skillBook.Move;
+            ForgettingMoveState.Instance.CurrentMoves = monster.Moves.Select(m => m.Base).ToList();
+            yield return gameController.StateMachine.PushAndWait(ForgettingMoveState.Instance);
+
+            int moveIndex = ForgettingMoveState.Instance.Selection;
+
+            if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} did not learn {skillBook.Move.Name}!");
+            }
+            else
+            {
+                var selectedMove = monster.Moves[moveIndex];
+
+                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} forgot {selectedMove.Base.Name} and learned {skillBook.Move.Name}!");
+                monster.Moves[moveIndex] = new Move(skillBook.Move);
+            }
         }
     }
 }

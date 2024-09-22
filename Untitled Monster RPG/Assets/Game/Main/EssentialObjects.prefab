@@ -2407,6 +2407,7 @@ GameObject:
   - component: {fileID: 8394551682470314989}
   - component: {fileID: 8829287191826792336}
   - component: {fileID: 6207231765524564624}
+  - component: {fileID: 2210294466997181249}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2625,6 +2626,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partyScreen: {fileID: 7104375650207356888}
   inventoryUI: {fileID: 3098845066743011621}
+--- !u!114 &2210294466997181249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c9718b18e4c5d14cbe8866643fd4ca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSelectionUI: {fileID: 1597541217739628136}
 --- !u!1 &2452659476306165220
 GameObject:
   m_ObjectHideFlags: 0
@@ -9680,6 +9694,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2560447059663014627, guid: 12d8bdcaf31bde0408e96e2c115ce517, type: 3}
   m_PrefabInstance: {fileID: 3996770704264521408}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1597541217739628136 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2404071738992605352, guid: 12d8bdcaf31bde0408e96e2c115ce517, type: 3}
+  m_PrefabInstance: {fileID: 3996770704264521408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4309ff1fbbf39ad49973313c96eecb88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1913223064164319049 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3313035220793874825, guid: 12d8bdcaf31bde0408e96e2c115ce517, type: 3}
