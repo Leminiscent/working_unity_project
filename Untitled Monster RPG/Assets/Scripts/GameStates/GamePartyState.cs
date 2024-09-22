@@ -37,7 +37,20 @@ public class GamePartyState : State<GameController>
 
     void OnMonsterSelected(int selection)
     {
-        // TODO: Open Monster Summary Screen
+        if (gameController.StateMachine.GetPrevState() == InventoryState.Instance)
+        {
+            StartCoroutine(GoToUseItemState());
+        }
+        else
+        {
+            // TODO: Open Monster Summary Screen
+        }
+    }
+
+    IEnumerator GoToUseItemState()
+    {
+        yield return gameController.StateMachine.PushAndWait(UseItemState.Instance);
+        gameController.StateMachine.Pop();
     }
 
     void OnBack()

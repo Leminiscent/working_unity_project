@@ -164,16 +164,6 @@ public class GameController : MonoBehaviour
         {
             DialogueManager.Instance.HandleUpdate();
         }
-        else if (state == GameState.Inventory)
-        {
-            Action onBack = () =>
-            {
-                inventoryUI.gameObject.SetActive(false);
-                state = GameState.FreeRoam;
-            };
-
-            inventoryUI.HandleUpdate(onBack);
-        }
         else if (state == GameState.Shop)
         {
             ShopController.Instance.HandleUpdate();

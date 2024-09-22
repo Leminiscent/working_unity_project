@@ -60,6 +60,12 @@ public class Inventory : MonoBehaviour, ISavable
     public ItemBase UseItem(int itemIndex, Monster selectedMonster, int selectedCategory)
     {
         var item = GetItem(itemIndex, selectedCategory);
+        
+        return UseItem(item, selectedMonster);
+    }
+
+    public ItemBase UseItem(ItemBase item, Monster selectedMonster)
+    {
         bool itemUsed = item.Use(selectedMonster);
 
         if (itemUsed)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Utils.StateMachine
@@ -47,6 +48,19 @@ namespace Utils.StateMachine
             StateStack.Push(newState);
             CurrentState = newState;
             CurrentState.Enter(owner);
+        }
+
+        public IEnumerator PushAndWait(State<T> newState)
+        {
+            var prevState = CurrentState;
+
+            Push(newState);
+            yield return new WaitUntil(() => CurrentState == prevState);
+        }
+
+        public State<T> GetPrevState()
+        {
+            return StateStack.ElementAt(1);
         }
     }
 }

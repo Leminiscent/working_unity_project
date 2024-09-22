@@ -5,10 +5,11 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.GenericSelectionUI;
 
 public enum InventoryUIState { ItemSelection, PartySelection, ForgettingMove, Busy }
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : SelectionUI<TextSlot>
 {
     [SerializeField] GameObject itemList;
     [SerializeField] ItemSlotUI itemSlotUI;
@@ -20,7 +21,6 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] MoveSelectionUI moveSelectionUI;
     Action<ItemBase> OnItemUsed;
-    int selectedItem = 0;
     int selectedCategory = 0;
     MoveBase moveToLearn;
     InventoryUIState state;
@@ -57,89 +57,40 @@ public class InventoryUI : MonoBehaviour
             slotUIList.Add(slotUIObj);
         }
 
-        UpdateItemSelection();
+        SetItems(slotUIList.Select(s => s.GetComponent<TextSlot>()).ToList());
+        UpdateSelectionInUI();
     }
 
-    public void HandleUpdate(Action onBack, Action<ItemBase> onItemUsed = null)
+    public override void HandleUpdate()
     {
-        this.OnItemUsed = onItemUsed;
+        int prevCategory = selectedCategory;
 
-        if (state == InventoryUIState.ItemSelection)
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            int prevSelection = selectedItem;
-            int prevCategory = selectedCategory;
-
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                ++selectedItem;
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                --selectedItem;
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                ++selectedCategory;
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                --selectedCategory;
-            }
-
-            if (selectedCategory > Inventory.ItemCategories.Count - 1)
-            {
-                selectedCategory = 0;
-            }
-            else if (selectedCategory < 0)
-            {
-                selectedCategory = Inventory.ItemCategories.Count - 1;
-            }
-
-            selectedItem = Mathf.Clamp(selectedItem, 0, inventory.GetSlotsByCategory(selectedCategory).Count - 1);
-
-            if (prevCategory != selectedCategory)
-            {
-                ResetSelction();
-                categoryText.text = Inventory.ItemCategories[selectedCategory];
-                UpdateItemList();
-            }
-            else if (prevSelection != selectedItem)
-            {
-                UpdateItemSelection();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                StartCoroutine(ItemSelected());
-            }
-            else if (Input.GetKeyDown(KeyCode.X))
-            {
-                onBack?.Invoke();
-            }
+            ++selectedCategory;
         }
-        else if (state == InventoryUIState.PartySelection)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Action onSelected = () =>
-            {
-                StartCoroutine(UseItem());
-            };
-
-            Action onBackPartyScreen = () =>
-            {
-                ClosePartyScreen();
-            };
-
-            // partyScreen.HandleUpdate(onSelected, onBackPartyScreen);
+            --selectedCategory;
         }
-        else if (state == InventoryUIState.ForgettingMove)
+
+        if (selectedCategory > Inventory.ItemCategories.Count - 1)
         {
-            Action<int> onMoveSelected = (moveIndex) =>
-            {
-                StartCoroutine(OnMoveToForgetSelection(moveIndex));
-            };
-
-            moveSelectionUI.HandleMoveSelection(onMoveSelected);
+            selectedCategory = 0;
         }
+        else if (selectedCategory < 0)
+        {
+            selectedCategory = Inventory.ItemCategories.Count - 1;
+        }
+
+        if (prevCategory != selectedCategory)
+        {
+            ResetSelction();
+            categoryText.text = Inventory.ItemCategories[selectedCategory];
+            UpdateItemList();
+        }
+
+        base.HandleUpdate();
     }
 
     IEnumerator ItemSelected()
@@ -181,89 +132,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    IEnumerator UseItem()
-    {
-        state = InventoryUIState.Busy;
-        yield return HandleSkillBooks();
-
-        var item = inventory.GetItem(selectedItem, selectedCategory);
-        var monster = partyScreen.SelectedMember;
-
-        if (item is TransformationItem)
-        {
-            var transformation = monster.CheckForTransformation(item);
-
-            if (transformation != null)
-            {
-                yield return TransformationManager.Instance.Transform(monster, transformation);
-            }
-            else
-            {
-                yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
-                ClosePartyScreen();
-                yield break;
-            }
-        }
-
-        var usedItem = inventory.UseItem(selectedItem, monster, selectedCategory);
-
-        if (usedItem != null)
-        {
-            if (usedItem is RecoveryItem)
-            {
-                yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {monster.Base.Name}!");
-                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} {usedItem.Message}!");
-            }
-            OnItemUsed?.Invoke(usedItem);
-        }
-        else
-        {
-            if (selectedCategory == (int)ItemCategory.RecoveryItems)
-            {
-                yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
-            }
-        }
-
-        ClosePartyScreen();
-    }
-
-    IEnumerator HandleSkillBooks()
-    {
-        var skillBook = inventory.GetItem(selectedItem, selectedCategory) as SkillBook;
-
-        if (skillBook == null)
-        {
-            yield break;
-        }
-
-        var monster = partyScreen.SelectedMember;
-
-        if (monster.HasMove(skillBook.Move))
-        {
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} already knows {skillBook.Move.Name}!");
-            yield break;
-        }
-
-        if (!skillBook.CanBeLearned(monster))
-        {
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} cannot learn {skillBook.Move.Name}!");
-            yield break;
-        }
-
-        if (monster.Moves.Count < MonsterBase.MaxMoveCount)
-        {
-            monster.LearnMove(skillBook.Move);
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} learned {skillBook.Move.Name}!");
-        }
-        else
-        {
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is trying to learn {skillBook.Move.Name}!");
-            yield return DialogueManager.Instance.ShowDialogueText($"But {monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
-            yield return ChooseMoveToForget(monster, skillBook.Move);
-            yield return new WaitUntil(() => state != InventoryUIState.ForgettingMove);
-        }
-    }
-
     IEnumerator ChooseMoveToForget(Monster monster, MoveBase newMove)
     {
         state = InventoryUIState.Busy;
@@ -274,22 +142,9 @@ public class InventoryUI : MonoBehaviour
         state = InventoryUIState.ForgettingMove;
     }
 
-    void UpdateItemSelection()
+    public override void UpdateSelectionInUI()
     {
         var slots = inventory.GetSlotsByCategory(selectedCategory);
-
-        selectedItem = Mathf.Clamp(selectedItem, 0, slots.Count - 1);
-        for (int i = 0; i < slotUIList.Count; i++)
-        {
-            if (i == selectedItem)
-            {
-                slotUIList[i].NameText.color = GlobalSettings.Instance.ActiveColor;
-            }
-            else
-            {
-                slotUIList[i].NameText.color = GlobalSettings.Instance.InactiveColor;
-            }
-        }
 
         if (slots.Count > 0)
         {
@@ -300,6 +155,8 @@ public class InventoryUI : MonoBehaviour
         }
 
         HandleScrolling();
+
+        base.UpdateSelectionInUI();
     }
 
     void HandleScrolling()
@@ -359,4 +216,8 @@ public class InventoryUI : MonoBehaviour
         moveToLearn = null;
         state = InventoryUIState.ItemSelection;
     }
+
+    public ItemBase SelectedItem => inventory.GetItem(selectedItem, selectedCategory);
+
+    public int SelectedCategory => selectedCategory;
 }
