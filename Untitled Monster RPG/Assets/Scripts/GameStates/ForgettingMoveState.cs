@@ -5,7 +5,7 @@ using Utils.StateMachine;
 
 public class ForgettingMoveState : State<GameController>
 {
-    [SerializeField] MoveSelectionUI moveSelectionUI;
+    [SerializeField] MoveForgettingUI moveForgettingUI;
     GameController gameController;
 
     public List<MoveBase> CurrentMoves { get; set; }
@@ -22,22 +22,22 @@ public class ForgettingMoveState : State<GameController>
     {
         gameController = owner;
         Selection = 0;
-        moveSelectionUI.gameObject.SetActive(true);
-        moveSelectionUI.SetMoveData(CurrentMoves, NewMove);
-        moveSelectionUI.OnSelected += OnMoveSelected;
-        moveSelectionUI.OnBack += OnBack;
+        moveForgettingUI.gameObject.SetActive(true);
+        moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
+        moveForgettingUI.OnSelected += OnMoveSelected;
+        moveForgettingUI.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        moveSelectionUI.HandleUpdate();
+        moveForgettingUI.HandleUpdate();
     }
 
     public override void Exit()
     {
-        moveSelectionUI.gameObject.SetActive(false);
-        moveSelectionUI.OnSelected -= OnMoveSelected;
-        moveSelectionUI.OnBack -= OnBack;
+        moveForgettingUI.gameObject.SetActive(false);
+        moveForgettingUI.OnSelected -= OnMoveSelected;
+        moveForgettingUI.OnBack -= OnBack;
     }
 
     void OnMoveSelected(int selection)

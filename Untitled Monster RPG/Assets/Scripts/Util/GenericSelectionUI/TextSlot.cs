@@ -17,4 +17,9 @@ public class TextSlot : MonoBehaviour, ISelectableItem
     {
         text.color = selected ? GlobalSettings.Instance.ActiveColor : originalColor;
     }
+
+    public void SetText(string s)
+    {
+        text.text = s;
+    }
 }
