@@ -91,30 +91,16 @@ public class GameController : MonoBehaviour
 
     public void StartWildBattle(BattleTrigger trigger)
     {
-        state = GameState.Battle;
-        battleSystem.gameObject.SetActive(true);
-        worldCamera.gameObject.SetActive(false);
-
-        var playerParty = playerController.GetComponent<MonsterParty>();
-        var wildMonster = CurrentScene.GetComponent<MapArea>().GetRandomWildMonster(trigger);
-        var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
-
-        battleSystem.StartWildBattle(playerParty, wildMonsterCopy, trigger);
+        BattleState.Instance.trigger = trigger;
+        StateMachine.Push(BattleState.Instance);
     }
 
     MasterController master;
 
     public void StartMasterBattle(MasterController master)
     {
-        state = GameState.Battle;
-        battleSystem.gameObject.SetActive(true);
-        worldCamera.gameObject.SetActive(false);
-        this.master = master;
-
-        var playerParty = playerController.GetComponent<MonsterParty>();
-        var enemyParty = master.GetComponent<MonsterParty>();
-
-        battleSystem.StartMasterBattle(playerParty, enemyParty);
+        BattleState.Instance.master = master;
+        StateMachine.Push(BattleState.Instance);
     }
 
     public void OnEnterMasterView(MasterController master)
@@ -155,10 +141,6 @@ public class GameController : MonoBehaviour
         if (state == GameState.Cutscene)
         {
             playerController.Character.HandleUpdate();
-        }
-        else if (state == GameState.Battle)
-        {
-            battleSystem.HandleUpdate();
         }
         else if (state == GameState.Dialogue)
         {
@@ -227,4 +209,6 @@ public class GameController : MonoBehaviour
     }
 
     public GameState State => state;
+    public PlayerController PlayerController => playerController;
+    public Camera WorldCamera => worldCamera;
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, Inventory, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
+public enum BattleStates { Start, ActionSelection, MoveSelection, RecruitmentSelection, RunningRecruitment, RunningTurn, Busy, Inventory, PartyScreen, ChoiceSelection, ForgettingMove, BattleOver }
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
 public enum BattleTrigger { Ground, Water }
 
@@ -32,7 +32,7 @@ public class BattleSystem : MonoBehaviour
 
     public event Action<bool> OnBattleOver;
 
-    BattleState state;
+    BattleStates state;
     int currentAction;
     int currentMove;
     RecruitmentQuestion currentQuestion;
@@ -127,7 +127,7 @@ public class BattleSystem : MonoBehaviour
 
     void ActionSelection()
     {
-        state = BattleState.ActionSelection;
+        state = BattleStates.ActionSelection;
         dialogueBox.EnableDialogueText(true);
         dialogueBox.SetDialogue("Choose an action!");
         dialogueBox.EnableActionSelector(true);
@@ -135,7 +135,7 @@ public class BattleSystem : MonoBehaviour
 
     void OpenInventory()
     {
-        state = BattleState.Inventory;
+        state = BattleStates.Inventory;
         inventoryUI.gameObject.SetActive(true);
     }
 
@@ -144,19 +144,19 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.CalledFrom = state;
         currentChoice = true;
         dialogueBox.EnableChoiceBox(true);
-        state = BattleState.ChoiceSelection;
+        state = BattleStates.ChoiceSelection;
     }
 
     void OpenPartyScreen()
     {
         // partyScreen.CalledFrom = state;
-        state = BattleState.PartyScreen;
+        state = BattleStates.PartyScreen;
         partyScreen.gameObject.SetActive(true);
     }
 
     IEnumerator RunTurns(BattleAction playerAction)
     {
-        state = BattleState.RunningTurn;
+        state = BattleStates.RunningTurn;
 
         if (playerAction == BattleAction.Fight)
         {
@@ -182,13 +182,13 @@ public class BattleSystem : MonoBehaviour
 
             yield return RunMove(firstUnit, secondUnit, firstUnit.Monster.CurrentMove);
             yield return RunAfterTurn(firstUnit);
-            if (state == BattleState.BattleOver) yield break;
+            if (state == BattleStates.BattleOver) yield break;
 
             if (secondMonster.HP > 0)
             {
                 yield return RunMove(secondUnit, firstUnit, secondUnit.Monster.CurrentMove);
                 yield return RunAfterTurn(secondUnit);
-                if (state == BattleState.BattleOver) yield break;
+                if (state == BattleStates.BattleOver) yield break;
             }
         }
         else
@@ -218,10 +218,10 @@ public class BattleSystem : MonoBehaviour
             var enemyMove = enemyUnit.Monster.GetRandomMove();
             yield return RunMove(enemyUnit, playerUnit, enemyMove);
             yield return RunAfterTurn(enemyUnit);
-            if (state == BattleState.BattleOver) yield break;
+            if (state == BattleStates.BattleOver) yield break;
         }
 
-        if (state != BattleState.BattleOver)
+        if (state != BattleStates.BattleOver)
         {
             ActionSelection();
         }
@@ -229,7 +229,7 @@ public class BattleSystem : MonoBehaviour
 
     void BattleOver(bool won)
     {
-        state = BattleState.BattleOver;
+        state = BattleStates.BattleOver;
         playerParty.Monsters.ForEach(m => m.OnBattleOver());
         playerUnit.Hud.ClearData();
         enemyUnit.Hud.ClearData();
@@ -324,12 +324,12 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunRecruitment()
     {
-        state = BattleState.RunningRecruitment;
+        state = BattleStates.RunningRecruitment;
 
         if (isMasterBattle)
         {
             yield return dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
-            state = BattleState.RunningTurn;
+            state = BattleStates.RunningTurn;
             yield break;
         }
 
@@ -358,11 +358,11 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetAnswers(question.Answers);
             currentAnswer = 0;
             dialogueBox.EnableAnswerSelector(true);
-            state = BattleState.RecruitmentSelection;
-            yield return new WaitUntil(() => state == BattleState.RunningRecruitment);
+            state = BattleStates.RecruitmentSelection;
+            yield return new WaitUntil(() => state == BattleStates.RunningRecruitment);
         }
 
-        state = BattleState.RunningTurn;
+        state = BattleStates.RunningTurn;
     }
 
     IEnumerator AttemptRecruitment(Monster targetMonster)
@@ -385,7 +385,7 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party! Will you accept?");
             ChoiceSelection();
-            yield return new WaitUntil(() => state == BattleState.Busy);
+            yield return new WaitUntil(() => state == BattleStates.Busy);
 
             if (currentChoice)
             {
@@ -396,24 +396,24 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was rejected.");
-                state = BattleState.RunningRecruitment;
+                state = BattleStates.RunningRecruitment;
             }
         }
         else
         {
             yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
-            state = BattleState.RunningRecruitment;
+            state = BattleStates.RunningRecruitment;
         }
     }
 
     IEnumerator AttemptEscape()
     {
-        state = BattleState.Busy;
+        state = BattleStates.Busy;
 
         if (isMasterBattle)
         {
             yield return dialogueBox.TypeDialogue("You can't run from a Master battle!");
-            state = BattleState.RunningTurn;
+            state = BattleStates.RunningTurn;
             yield break;
         }
 
@@ -439,14 +439,14 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 yield return dialogueBox.TypeDialogue("You couldn't get away!");
-                state = BattleState.RunningTurn;
+                state = BattleStates.RunningTurn;
             }
         }
     }
 
     IEnumerator OnItemUsed(ItemBase usedItem)
     {
-        state = BattleState.Busy;
+        state = BattleStates.Busy;
         inventoryUI.gameObject.SetActive(false);
 
         yield return StartCoroutine(RunTurns(BattleAction.UseItem));
@@ -454,8 +454,8 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunAfterTurn(BattleUnit sourceUnit)
     {
-        if (state == BattleState.BattleOver) yield break;
-        yield return new WaitUntil(() => state == BattleState.RunningTurn);
+        if (state == BattleStates.BattleOver) yield break;
+        yield return new WaitUntil(() => state == BattleStates.RunningTurn);
 
         sourceUnit.Monster.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit.Monster);
@@ -463,7 +463,7 @@ public class BattleSystem : MonoBehaviour
         if (sourceUnit.Monster.HP <= 0)
         {
             yield return HandleMonsterDefeat(sourceUnit);
-            yield return new WaitUntil(() => state == BattleState.RunningTurn);
+            yield return new WaitUntil(() => state == BattleStates.RunningTurn);
         }
     }
 
@@ -556,7 +556,7 @@ public class BattleSystem : MonoBehaviour
                         yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
                         yield return dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
                         yield return ChooseMoveToForget(playerUnit.Monster, newMove.Base);
-                        yield return new WaitUntil(() => state != BattleState.ForgettingMove);
+                        yield return new WaitUntil(() => state != BattleStates.ForgettingMove);
                         yield return new WaitForSeconds(2f);
                     }
                 }
@@ -605,7 +605,7 @@ public class BattleSystem : MonoBehaviour
 
     void MoveSelection()
     {
-        state = BattleState.MoveSelection;
+        state = BattleStates.MoveSelection;
         dialogueBox.EnableActionSelector(false);
         dialogueBox.EnableDialogueText(false);
         dialogueBox.EnableMoveSelector(true);
@@ -613,13 +613,13 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator ChooseMoveToForget(Monster monster, MoveBase newMove)
     {
-        state = BattleState.Busy;
+        state = BattleStates.Busy;
         yield return dialogueBox.TypeDialogue($"Choose a move for {monster.Base.Name} to forget.");
         moveSelectionUI.gameObject.SetActive(true);
         moveSelectionUI.SetMoveData(monster.Moves.Select(x => x.Base).ToList(), newMove);
         moveToLearn = newMove;
 
-        state = BattleState.ForgettingMove;
+        state = BattleStates.ForgettingMove;
     }
 
     IEnumerator ShowDamageDetails(DamageDetails damageDetails)
@@ -641,28 +641,28 @@ public class BattleSystem : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if (state == BattleState.ActionSelection)
+        if (state == BattleStates.ActionSelection)
         {
             HandleActionSelection();
         }
-        else if (state == BattleState.MoveSelection)
+        else if (state == BattleStates.MoveSelection)
         {
             HandleMoveSelection();
         }
-        else if (state == BattleState.PartyScreen)
+        else if (state == BattleStates.PartyScreen)
         {
             HandlePartySelection();
         }
-        else if (state == BattleState.RecruitmentSelection)
+        else if (state == BattleStates.RecruitmentSelection)
         {
             HandleRecruitmentSelection();
         }
-        else if (state == BattleState.Inventory)
+        else if (state == BattleStates.Inventory)
         {
             Action onBack = () =>
             {
                 inventoryUI.gameObject.SetActive(false);
-                state = BattleState.ActionSelection;
+                state = BattleStates.ActionSelection;
             };
 
             Action<ItemBase> onItemUsed = (ItemBase usedItem) =>
@@ -672,11 +672,11 @@ public class BattleSystem : MonoBehaviour
 
             // inventoryUI.HandleUpdate(onBack, onItemUsed);
         }
-        else if (state == BattleState.ChoiceSelection)
+        else if (state == BattleStates.ChoiceSelection)
         {
             HandleChoiceSelection();
         }
-        else if (state == BattleState.ForgettingMove)
+        else if (state == BattleStates.ForgettingMove)
         {
             Action<int> onMoveSelected = (moveIndex) =>
             {
@@ -695,7 +695,7 @@ public class BattleSystem : MonoBehaviour
                 }
 
                 moveToLearn = null;
-                state = BattleState.RunningTurn;
+                state = BattleStates.RunningTurn;
             };
 
             // moveSelectionUI.HandleMoveSelection(onMoveSelected);
@@ -828,7 +828,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator ProcessAnswerSelection()
     {
-        state = BattleState.Busy;
+        state = BattleStates.Busy;
 
         var selectedAnswer = currentQuestion.Answers[currentAnswer];
 
@@ -842,7 +842,7 @@ public class BattleSystem : MonoBehaviour
         {
             questionIndex++;
             currentAnswer = 0;
-            state = BattleState.RunningRecruitment;
+            state = BattleStates.RunningRecruitment;
         }
         else
         {
@@ -868,13 +868,13 @@ public class BattleSystem : MonoBehaviour
             }
 
             partyScreen.gameObject.SetActive(false);
-            // if (partyScreen.CalledFrom == BattleState.ActionSelection)
+            // if (partyScreen.CalledFrom == BattleStates.ActionSelection)
             // {
             //     StartCoroutine(RunTurns(BattleAction.SwitchMonster));
             // }
             // else
             // {
-            //     state = BattleState.Busy;
+            //     state = BattleStates.Busy;
             //     StartCoroutine(SwitchMonster(selectedMember));
             // }
             // partyScreen.CalledFrom = null;
@@ -914,7 +914,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SwitchMonster(Monster newMonster)
     {
-        state = BattleState.Busy;
+        state = BattleStates.Busy;
         if (playerUnit.Monster.HP > 0)
         {
             yield return dialogueBox.TypeDialogue("Come back " + playerUnit.Monster.Base.Name + "!");
@@ -926,18 +926,18 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.SetMoveNames(newMonster.Moves);
         yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
 
-        state = BattleState.RunningTurn;
+        state = BattleStates.RunningTurn;
     }
 
     IEnumerator SendNextMasterMonster()
     {
-        state = BattleState.Busy;
+        state = BattleStates.Busy;
 
         var nextMonster = enemyParty.GetHealthyMonster();
 
         enemyUnit.Setup(nextMonster);
         yield return dialogueBox.TypeDialogue(enemy.Name + " sent out " + nextMonster.Base.Name + "!");
-        state = BattleState.RunningTurn;
+        state = BattleStates.RunningTurn;
     }
 
     string GenerateReaction(int affinityScore)
