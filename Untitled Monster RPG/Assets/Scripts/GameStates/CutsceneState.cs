@@ -14,6 +14,6 @@ public class CutsceneState : State<GameController>
 
     public override void Execute()
     {
-        PlayerController.Instance.HandleUpdate();
+        PlayerController.Instance.Character.HandleUpdate();
     }
 }
