@@ -28,17 +28,15 @@ public class RecruitmentState : State<BattleSystem>
         battleSystem = owner;
         enemyMonster = battleSystem.EnemyUnit.Monster;
         dialogueBox = battleSystem.DialogueBox;
-
-        selectionUI.gameObject.SetActive(true);
-        selectionUI.OnSelected += OnAnswerSelected;
-
-        // Start the recruitment process
-        battleSystem.StartCoroutine(StartRecruitment());
+        StartCoroutine(StartRecruitment());
     }
 
     public override void Execute()
     {
-        selectionUI.HandleUpdate();
+        if (selectionUI.gameObject.activeInHierarchy)
+        {
+            selectionUI.HandleUpdate();
+        }
     }
 
     public override void Exit()
@@ -52,8 +50,7 @@ public class RecruitmentState : State<BattleSystem>
         if (battleSystem.IsMasterBattle)
         {
             yield return dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
-            yield return new WaitForSeconds(1f);
-            battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
+            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
             yield break;
         }
 
@@ -61,19 +58,8 @@ public class RecruitmentState : State<BattleSystem>
         yield return dialogueBox.TypeDialogue("Alright, let's talk!");
 
         // Select 3 random questions
-        questions = enemyMonster.Base.RecruitmentQuestions;
-        selectedQuestions = new List<RecruitmentQuestion>();
-
-        while (selectedQuestions.Count < 3)
-        {
-            var question = questions[Random.Range(0, questions.Count)];
-
-            if (!selectedQuestions.Contains(question))
-            {
-                selectedQuestions.Add(question);
-            }
-        }
-
+        questions = enemyMonster.Base.RecruitmentQuestions.OrderBy(q => Random.value).ToList();
+        selectedQuestions = questions.Take(3).ToList();
         currentQuestionIndex = 0;
         yield return PresentQuestion();
     }
@@ -83,8 +69,11 @@ public class RecruitmentState : State<BattleSystem>
         var currentQuestion = selectedQuestions[currentQuestionIndex];
 
         yield return dialogueBox.TypeDialogue(currentQuestion.QuestionText);
+        
         // Set up the answer selection UI
         dialogueBox.EnableDialogueText(false);
+        selectionUI.gameObject.SetActive(true);
+        selectionUI.OnSelected += OnAnswerSelected;
         selectionUI.SetAnswers(currentQuestion.Answers);
         selectionUI.UpdateSelectionInUI();
     }
@@ -104,6 +93,9 @@ public class RecruitmentState : State<BattleSystem>
 
     IEnumerator ProcessAnswer(int selectedAnswerIndex)
     {
+        selectionUI.gameObject.SetActive(false);
+        selectionUI.OnSelected -= OnAnswerSelected;
+
         var currentQuestion = selectedQuestions[currentQuestionIndex];
         var selectedAnswer = currentQuestion.Answers[selectedAnswerIndex];
 
@@ -168,32 +160,39 @@ public class RecruitmentState : State<BattleSystem>
         if (isRecruited)
         {
             yield return dialogueBox.TypeDialogue(enemyMonster.Base.Name + " wants to join your party! Will you accept?");
+
             // Present choice to accept or reject
             isAcceptRejectPhase = true;
             dialogueBox.EnableDialogueText(false);
+            selectionUI.gameObject.SetActive(true);
+            selectionUI.OnSelected += OnAnswerSelected;
             selectionUI.SetAcceptRejectOptions();
             selectionUI.UpdateSelectionInUI();
         }
         else
         {
             yield return dialogueBox.TypeDialogue(enemyMonster.Base.Name + " refused to join you.");
-            battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
+            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }
 
     IEnumerator ProcessAcceptReject(int selection)
     {
+        selectionUI.gameObject.SetActive(false);
+        selectionUI.OnSelected -= OnAnswerSelected;
         dialogueBox.EnableDialogueText(true);
-        if (selection == 0) // Yes
+        if (selection == 0)
         {
+            // Yes
             yield return dialogueBox.TypeDialogue($"{enemyMonster.Base.Name} was recruited!");
             battleSystem.PlayerParty.AddMonster(enemyMonster);
             battleSystem.BattleOver(true);
         }
-        else // No
+        else
         {
+            // No
             yield return dialogueBox.TypeDialogue($"{enemyMonster.Base.Name} was rejected.");
-            battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
+            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }
 }
