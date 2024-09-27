@@ -102,20 +102,20 @@ public class Transformation
 [System.Serializable]
 public class RecruitmentQuestion
 {
-    [SerializeField] string question;
+    [SerializeField] string questionText;
     [SerializeField] List<RecruitmentAnswer> answers;
 
-    public string Question => question;
+    public string QuestionText => questionText;
     public List<RecruitmentAnswer> Answers => answers;
 }
 
 [System.Serializable]
 public class RecruitmentAnswer
 {
-    [SerializeField] string answer;
+    [SerializeField] string answerText;
     [SerializeField] int affinityScore;
 
-    public string Answer => answer;
+    public string AnswerText => answerText;
     public int AffinityScore => affinityScore;
 }
 

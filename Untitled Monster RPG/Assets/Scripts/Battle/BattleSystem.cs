@@ -43,11 +43,6 @@ public class BattleSystem : MonoBehaviour
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
     public MasterController Enemy { get; private set; }
-
-    RecruitmentQuestion currentQuestion;
-    int questionIndex;
-    int currentAnswer;
-    bool currentChoice;
     PlayerController player;
     BattleTrigger battleTrigger;
 
@@ -138,68 +133,9 @@ public class BattleSystem : MonoBehaviour
         OnBattleOver(won);
     }
 
-    IEnumerator AttemptRecruitment(Monster targetMonster)
-    {
-        float a = Mathf.Min(Mathf.Max(targetMonster.AffinityLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
-        bool isRecruited;
-
-        if (a >= 255)
-        {
-            isRecruited = true;
-        }
-        else
-        {
-            float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
-
-            isRecruited = UnityEngine.Random.Range(0, 65536) < b;
-        }
-
-        if (isRecruited)
-        {
-            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " wants to join your party! Will you accept?");
-            // ChoiceSelection();
-
-            if (currentChoice)
-            {
-                yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was recruited!");
-                PlayerParty.AddMonster(enemyUnit.Monster);
-                BattleOver(true);
-            }
-            else
-            {
-                yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " was rejected.");
-            }
-        }
-        else
-        {
-            yield return dialogueBox.TypeDialogue(enemyUnit.Monster.Base.Name + " refused to join you.");
-        }
-    }
-
     public void HandleUpdate()
     {
         StateMachine.Execute();
-    }
-
-    IEnumerator ProcessAnswerSelection()
-    {
-        var selectedAnswer = currentQuestion.Answers[currentAnswer];
-
-        enemyUnit.Monster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
-        yield return enemyUnit.Hud.SetAffinitySmooth();
-
-        dialogueBox.EnableDialogueText(true);
-        yield return dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
-
-        if (questionIndex < 2)
-        {
-            questionIndex++;
-            currentAnswer = 0;
-        }
-        else
-        {
-            yield return AttemptRecruitment(enemyUnit.Monster);
-        }
     }
 
     public IEnumerator SwitchMonster(Monster newMonster)
@@ -222,26 +158,6 @@ public class BattleSystem : MonoBehaviour
 
         enemyUnit.Setup(nextMonster);
         yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
-    }
-
-    string GenerateReaction(int affinityScore)
-    {
-        if (affinityScore == 2)
-        {
-            return enemyUnit.Monster.Base.Name + " seems to love your answer!";
-        }
-        else if (affinityScore == 1)
-        {
-            return enemyUnit.Monster.Base.Name + " seems to like your answer.";
-        }
-        else if (affinityScore == -1)
-        {
-            return enemyUnit.Monster.Base.Name + " seems to dislike your answer...";
-        }
-        else
-        {
-            return enemyUnit.Monster.Base.Name + " seems to hate your answer!";
-        }
     }
 
     public BattleDialogueBox DialogueBox => dialogueBox;

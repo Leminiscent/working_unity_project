@@ -142,7 +142,7 @@ public class BattleDialogueBox : MonoBehaviour
         {
             if (i < answers.Count)
             {
-                answerTexts[i].text = answers[i].Answer;
+                answerTexts[i].text = answers[i].AnswerText;
             }
             else
             {

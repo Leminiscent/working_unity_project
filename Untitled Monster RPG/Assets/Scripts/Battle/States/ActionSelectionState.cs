@@ -47,6 +47,8 @@ public class ActionSelectionState : State<BattleSystem>
         else if (selection == 1)
         {
             // Talk
+            battleSystem.SelectedAction = BattleAction.Talk;
+            battleSystem.StateMachine.ChangeState(RecruitmentState.Instance);
         }
         else if (selection == 2)
         {
@@ -73,7 +75,7 @@ public class ActionSelectionState : State<BattleSystem>
     IEnumerator GoToInventoryState()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
-        
+
         var selectedItem = InventoryState.Instance.SelectedItem;
 
         if (selectedItem != null)

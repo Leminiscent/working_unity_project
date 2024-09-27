@@ -80,11 +80,6 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return battleSystem.SwitchMonster(battleSystem.SelectedMonster);
             }
-            else if (playerAction == BattleAction.Talk)
-            {
-                dialogueBox.EnableActionSelector(false);
-                yield return RunRecruitment();
-            }
             else if (playerAction == BattleAction.Run)
             {
                 yield return AttemptEscape();
@@ -402,42 +397,6 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return dialogueBox.TypeDialogue("You couldn't get away!");
             }
-        }
-    }
-
-    IEnumerator RunRecruitment()
-    {
-        if (isMasterBattle)
-        {
-            yield return dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
-            yield break;
-        }
-
-        yield return dialogueBox.TypeDialogue("You want to talk?");
-        yield return dialogueBox.TypeDialogue("Alright, let's talk!");
-
-        List<RecruitmentQuestion> questions = enemyUnit.Monster.Base.RecruitmentQuestions;
-        List<RecruitmentQuestion> selectedQuestions = new List<RecruitmentQuestion>();
-
-        while (selectedQuestions.Count < 3)
-        {
-            var question = questions[Random.Range(0, questions.Count)];
-
-            if (!selectedQuestions.Contains(question))
-            {
-                selectedQuestions.Add(question);
-            }
-        }
-
-        // questionIndex = 0;
-        foreach (var question in selectedQuestions)
-        {
-            // currentQuestion = question;
-            yield return dialogueBox.TypeDialogue(question.Question);
-            dialogueBox.EnableDialogueText(false);
-            dialogueBox.SetAnswers(question.Answers);
-            // currentAnswer = 0;
-            dialogueBox.EnableAnswerSelector(true);
         }
     }
 }
