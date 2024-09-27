@@ -59,11 +59,26 @@ public class ActionSelectionState : State<BattleSystem>
         else if (selection == 4)
         {
             // Switch
+            StartCoroutine(GoToPartyState());
         }
         else if (selection == 5)
         {
             // Run
             battleSystem.SelectedAction = BattleAction.Run;
+            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+        }
+    }
+
+    IEnumerator GoToPartyState()
+    {
+        yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
+
+        var selectedMonster = PartyState.Instance.SelectedMonster;
+
+        if (selectedMonster != null)
+        {
+            battleSystem.SelectedAction = BattleAction.SwitchMonster;
+            battleSystem.SelectedMonster = selectedMonster;
             battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }

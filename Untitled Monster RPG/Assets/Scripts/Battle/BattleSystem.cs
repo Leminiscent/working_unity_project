@@ -37,6 +37,7 @@ public class BattleSystem : MonoBehaviour
 
     public int SelectedMove { get; set; }
     public BattleAction SelectedAction { get; set; }
+    public Monster SelectedMonster { get; set; }
     public bool BattleIsOver { get; private set; }
     public MonsterParty PlayerParty { get; private set; }
     public MonsterParty EnemyParty { get; private set; }
@@ -478,12 +479,12 @@ public class BattleSystem : MonoBehaviour
 
         Action onBack = () =>
         {
-            // if (playerUnit.Monster.HP <= 0)
-            // {
-            //     partyScreen.SetMessageText("You have to choose a monster!");
-            //     return;
-            // }
-            // partyScreen.gameObject.SetActive(false);
+            if (playerUnit.Monster.HP <= 0)
+            {
+                partyScreen.SetMessageText("You have to choose a monster!");
+                return;
+            }
+            partyScreen.gameObject.SetActive(false);
             // ActionSelection();
             // partyScreen.CalledFrom = null;
         };
@@ -508,7 +509,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator SwitchMonster(Monster newMonster)
+    public IEnumerator SwitchMonster(Monster newMonster)
     {
         state = BattleStates.Busy;
         if (playerUnit.Monster.HP > 0)
@@ -521,8 +522,6 @@ public class BattleSystem : MonoBehaviour
         playerUnit.Setup(newMonster);
         dialogueBox.SetMoveNames(newMonster.Moves);
         yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
-
-        state = BattleStates.RunningTurn;
     }
 
     IEnumerator SendNextMasterMonster()

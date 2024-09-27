@@ -39,7 +39,7 @@ public class GameMenuState : State<GameController>
     {
         if (selection == 0)
         {
-            gameController.StateMachine.Push(GamePartyState.Instance);
+            gameController.StateMachine.Push(PartyState.Instance);
         }
         else if (selection == 1)
         {

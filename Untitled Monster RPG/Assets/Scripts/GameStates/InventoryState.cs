@@ -37,7 +37,7 @@ public class InventoryState : State<GameController>
 
     void OnItemSelected(int selection)
     {
-        gameController.StateMachine.Push(GamePartyState.Instance);
+        gameController.StateMachine.Push(PartyState.Instance);
     }
 
     void OnBack()

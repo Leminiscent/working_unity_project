@@ -77,9 +77,7 @@ public class RunTurnState : State<BattleSystem>
         {
             if (playerAction == BattleAction.SwitchMonster)
             {
-                var selectedMonster = partyScreen.SelectedMember;
-
-                // yield return SwitchMonster(selectedMonster);
+                yield return battleSystem.SwitchMonster(battleSystem.SelectedMonster);
             }
             else if (playerAction == BattleAction.UseItem)
             {

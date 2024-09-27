@@ -65,4 +65,6 @@ public class BattleState : State<GameController>
 
         gameController.StateMachine.Pop();
     }
+
+    public BattleSystem BattleSystem => battleSystem;
 }
