@@ -41,14 +41,8 @@ public class GameController : MonoBehaviour
         StateMachine.ChangeState(FreeRoamState.Instance);
         battleSystem.OnBattleOver += EndBattle;
         partyScreen.Init();
-        DialogueManager.Instance.OnShowDialogue += () => { prevState = state; state = GameState.Dialogue; };
-        DialogueManager.Instance.OnDialogueFinished += () =>
-        {
-            if (state == GameState.Dialogue)
-            {
-                state = prevState;
-            }
-        };
+        DialogueManager.Instance.OnShowDialogue += () => { StateMachine.Push(DialogueState.Instance); };
+        DialogueManager.Instance.OnDialogueFinished += () => { StateMachine.Pop(); };
 
         TransformationManager.Instance.OnStartTransformation += () =>
         {
@@ -79,16 +73,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void StartCutsceneState()
-    {
-        state = GameState.Cutscene;
-    }
-
-    public void StartFreeRoamState()
-    {
-        state = GameState.FreeRoam;
-    }
-
     public void StartWildBattle(BattleTrigger trigger)
     {
         BattleState.Instance.trigger = trigger;
@@ -105,7 +89,6 @@ public class GameController : MonoBehaviour
 
     public void OnEnterMasterView(MasterController master)
     {
-        state = GameState.Cutscene;
         StartCoroutine(master.TriggerBattle(playerController));
     }
 

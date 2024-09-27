@@ -46,6 +46,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
 
     public IEnumerator TriggerBattle(PlayerController player)
     {
+        GameController.Instance.StateMachine.Push(CutsceneState.Instance);
         AudioManager.Instance.PlayMusic(playerDetectedClip);
         exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -58,6 +59,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         yield return character.Move(moveVector);
         
         yield return DialogueManager.Instance.ShowDialogue(dialogue);
+        GameController.Instance.StateMachine.Pop();
         GameController.Instance.StartMasterBattle(this);
     }
 

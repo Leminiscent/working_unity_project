@@ -32,9 +32,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Sprite waterBackground;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
-
     public event Action<bool> OnBattleOver;
-
     public int SelectedMove { get; set; }
     public BattleAction SelectedAction { get; set; }
     public Monster SelectedMonster { get; set; }
@@ -44,6 +42,7 @@ public class BattleSystem : MonoBehaviour
     public Monster WildMonster { get; private set; }
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
+    public MasterController Enemy { get; private set; }
 
     BattleStates state;
     int currentAction;
@@ -54,7 +53,6 @@ public class BattleSystem : MonoBehaviour
     bool currentChoice;
     MoveBase moveToLearn;
     PlayerController player;
-    MasterController enemy;
     BattleTrigger battleTrigger;
 
     public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger = BattleTrigger.Ground)
@@ -77,7 +75,7 @@ public class BattleSystem : MonoBehaviour
         this.EnemyParty = enemyParty;
 
         player = playerParty.GetComponent<PlayerController>();
-        enemy = enemyParty.GetComponent<MasterController>();
+        Enemy = enemyParty.GetComponent<MasterController>();
         battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(masterBattleMusic);
         StartCoroutine(SetupBattle());
@@ -107,9 +105,9 @@ public class BattleSystem : MonoBehaviour
             playerImage.gameObject.SetActive(true);
             enemyImage.gameObject.SetActive(true);
             playerImage.sprite = player.Sprite;
-            enemyImage.sprite = enemy.Sprite;
+            enemyImage.sprite = Enemy.Sprite;
 
-            yield return dialogueBox.TypeDialogue(enemy.Name + " wants to battle!");
+            yield return dialogueBox.TypeDialogue(Enemy.Name + " wants to battle!");
 
             enemyImage.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(true);
@@ -117,7 +115,7 @@ public class BattleSystem : MonoBehaviour
             var enemyMonster = EnemyParty.GetHealthyMonster();
 
             enemyUnit.Setup(enemyMonster);
-            yield return dialogueBox.TypeDialogue(enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
+            yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
 
             playerImage.gameObject.SetActive(false);
             playerUnit.gameObject.SetActive(true);
@@ -524,14 +522,14 @@ public class BattleSystem : MonoBehaviour
         yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
     }
 
-    IEnumerator SendNextMasterMonster()
+    public IEnumerator SendNextMasterMonster()
     {
         state = BattleStates.Busy;
 
         var nextMonster = EnemyParty.GetHealthyMonster();
 
         enemyUnit.Setup(nextMonster);
-        yield return dialogueBox.TypeDialogue(enemy.Name + " sent out " + nextMonster.Base.Name + "!");
+        yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
         state = BattleStates.RunningTurn;
     }
 
