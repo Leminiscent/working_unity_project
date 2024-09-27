@@ -43,19 +43,6 @@ public class GameController : MonoBehaviour
         partyScreen.Init();
         DialogueManager.Instance.OnShowDialogue += () => { StateMachine.Push(DialogueState.Instance); };
         DialogueManager.Instance.OnDialogueFinished += () => { StateMachine.Pop(); };
-
-        TransformationManager.Instance.OnStartTransformation += () =>
-        {
-            stateBeforeTransformation = state;
-            state = GameState.Transformation;
-        };
-        TransformationManager.Instance.OnEndTransformation += () =>
-        {
-            partyScreen.SetPartyData();
-            state = stateBeforeTransformation;
-            AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
-        };
-
         ShopController.Instance.OnStart += () => state = GameState.Shop;
         ShopController.Instance.OnFinish += () => state = GameState.FreeRoam;
     }
@@ -194,4 +181,5 @@ public class GameController : MonoBehaviour
     public GameState State => state;
     public PlayerController PlayerController => playerController;
     public Camera WorldCamera => worldCamera;
+    public PartyScreen PartyScreen => partyScreen;
 }

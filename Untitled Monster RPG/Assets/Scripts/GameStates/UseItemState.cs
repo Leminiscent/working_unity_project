@@ -45,7 +45,7 @@ public class UseItemState : State<GameController>
 
                 if (transformation != null)
                 {
-                    yield return TransformationManager.Instance.Transform(monster, transformation);
+                    yield return TransformationState.Instance.Transform(monster, transformation);
                 }
                 else
                 {

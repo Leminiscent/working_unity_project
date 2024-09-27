@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -144,7 +145,7 @@ public class RunTurnState : State<BattleSystem>
             moveAccuracy *= boostValues[-evasion];
         }
 
-        return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
+        return Random.Range(1, 101) <= moveAccuracy;
     }
 
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
@@ -185,7 +186,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 foreach (var effect in move.Base.SecondaryEffects)
                 {
-                    var rnd = UnityEngine.Random.Range(1, 101);
+                    var rnd = Random.Range(1, 101);
                     if (rnd <= effect.Chance)
                     {
                         yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
@@ -286,11 +287,27 @@ public class RunTurnState : State<BattleSystem>
                     }
                     else
                     {
-                        // yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
-                        // yield return dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
-                        // yield return ChooseMoveToForget(playerUnit.Monster, newMove.Base);
-                        // yield return new WaitUntil(() => state != BattleStates.ForgettingMove);
-                        // yield return new WaitForSeconds(2f);
+                        yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
+                        yield return dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
+                        yield return dialogueBox.TypeDialogue($"Choose a move to forget.");
+
+                        ForgettingMoveState.Instance.CurrentMoves = playerUnit.Monster.Moves.Select(m => m.Base).ToList();
+                        ForgettingMoveState.Instance.NewMove = newMove.Base;
+                        yield return GameController.Instance.StateMachine.PushAndWait(ForgettingMoveState.Instance);
+
+                        int moveIndex = ForgettingMoveState.Instance.Selection;
+
+                        if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
+                        {
+                            yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} did not learn {newMove.Base.Name}!");
+                        }
+                        else
+                        {
+                            var selectedMove = playerUnit.Monster.Moves[moveIndex];
+
+                            yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
+                            playerUnit.Monster.Moves[moveIndex] = new Move(newMove.Base);
+                        }
                     }
                 }
                 yield return playerUnit.Hud.SetExpSmooth(true);
@@ -374,9 +391,9 @@ public class RunTurnState : State<BattleSystem>
         }
         else
         {
-            float f = ((playerSpeed * 128) / enemySpeed + 30 * battleSystem.EscapeAttempts) % 256;
+            float f = (playerSpeed * 128 / enemySpeed + 30 * battleSystem.EscapeAttempts) % 256;
 
-            if (UnityEngine.Random.Range(0, 256) < f)
+            if (Random.Range(0, 256) < f)
             {
                 yield return dialogueBox.TypeDialogue("You got away safely!");
                 battleSystem.BattleOver(true);

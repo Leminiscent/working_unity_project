@@ -3,17 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.StateMachine;
 
-public class TransformationManager : MonoBehaviour
+public class TransformationState : State<GameController>
 {
     [SerializeField] GameObject transformationUI;
     [SerializeField] Image monsterImage;
     [SerializeField] AudioClip transformationMusic;
 
-    public event Action OnStartTransformation;
-    public event Action OnEndTransformation;
-
-    public static TransformationManager Instance { get; private set; }
+    public static TransformationState Instance { get; private set; }
 
     private void Awake()
     {
@@ -22,7 +20,7 @@ public class TransformationManager : MonoBehaviour
 
     public IEnumerator Transform(Monster monster, Transformation transformation)
     {
-        OnStartTransformation?.Invoke();
+        GameController.Instance.StateMachine.Push(this);
         transformationUI.SetActive(true);
         AudioManager.Instance.PlayMusic(transformationMusic);
         monsterImage.sprite = monster.Base.Sprite;
@@ -34,6 +32,8 @@ public class TransformationManager : MonoBehaviour
         monsterImage.sprite = monster.Base.Sprite;
         yield return DialogueManager.Instance.ShowDialogueText($"{oldMonster.Name} transformed into {monster.Base.Name}!");
         transformationUI.SetActive(false);
-        OnEndTransformation?.Invoke();
+        GameController.Instance.PartyScreen.SetPartyData();
+        AudioManager.Instance.PlayMusic(GameController.Instance.CurrentScene.SceneMusic, fade: true);
+        GameController.Instance.StateMachine.Pop();
     }
 }
