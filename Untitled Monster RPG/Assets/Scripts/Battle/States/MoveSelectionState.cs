@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils.GenericSelectionUI;
 using Utils.StateMachine;
 
 public class MoveSelectionState : State<BattleSystem>
@@ -41,6 +42,7 @@ public class MoveSelectionState : State<BattleSystem>
         battleSystem.DialogueBox.EnableDialogueText(true);
         selectionUI.OnSelected -= OnMoveSelected;
         selectionUI.OnBack -= OnBack;
+        selectionUI.ClearItems();
     }
 
     void OnMoveSelected(int selection)

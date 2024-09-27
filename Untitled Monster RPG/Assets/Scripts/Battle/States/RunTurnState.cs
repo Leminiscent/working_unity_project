@@ -302,17 +302,18 @@ public class RunTurnState : State<BattleSystem>
             yield return new WaitForSeconds(1f);
         }
 
-        CheckForBattleOver(defeatedUnit);
+        yield return CheckForBattleOver(defeatedUnit);
     }
 
-    void CheckForBattleOver(BattleUnit defeatedUnit)
+    IEnumerator CheckForBattleOver(BattleUnit defeatedUnit)
     {
         if (defeatedUnit.IsPlayerUnit)
         {
             var nextMonster = playerParty.GetHealthyMonster();
             if (nextMonster != null)
             {
-                // OpenPartyScreen();
+                yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
+                yield return battleSystem.SwitchMonster(PartyState.Instance.SelectedMonster);
             }
             else
             {

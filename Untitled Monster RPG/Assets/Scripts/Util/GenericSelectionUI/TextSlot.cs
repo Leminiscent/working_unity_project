@@ -13,6 +13,11 @@ public class TextSlot : MonoBehaviour, ISelectableItem
         originalColor = GlobalSettings.Instance.InactiveColor;
     }
 
+    public void Clear()
+    {
+        text.color = originalColor;
+    }
+
     public void OnSelectionChanged(bool selected)
     {
         text.color = selected ? GlobalSettings.Instance.ActiveColor : originalColor;
