@@ -11,6 +11,7 @@ public class UseItemState : State<GameController>
     GameController gameController;
     Inventory inventory;
 
+    public bool ItemUsed { get; private set; }
     public static UseItemState Instance { get; private set; }
 
     private void Awake()
@@ -22,6 +23,7 @@ public class UseItemState : State<GameController>
     public override void Enter(GameController owner)
     {
         gameController = owner;
+        ItemUsed = false;
 
         StartCoroutine(UseItem());
     }
@@ -57,6 +59,7 @@ public class UseItemState : State<GameController>
 
             if (usedItem != null)
             {
+                ItemUsed = true;
                 if (usedItem is RecoveryItem)
                 {
                     yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {monster.Base.Name}!");

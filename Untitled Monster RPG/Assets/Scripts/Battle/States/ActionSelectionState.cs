@@ -51,6 +51,7 @@ public class ActionSelectionState : State<BattleSystem>
         else if (selection == 2)
         {
             // Item
+            StartCoroutine(GoToInventoryState());
         }
         else if (selection == 3)
         {
@@ -65,6 +66,20 @@ public class ActionSelectionState : State<BattleSystem>
         {
             // Run
             battleSystem.SelectedAction = BattleAction.Run;
+            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+        }
+    }
+
+    IEnumerator GoToInventoryState()
+    {
+        yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
+        
+        var selectedItem = InventoryState.Instance.SelectedItem;
+
+        if (selectedItem != null)
+        {
+            battleSystem.SelectedAction = BattleAction.UseItem;
+            battleSystem.SelectedItem = selectedItem;
             battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }

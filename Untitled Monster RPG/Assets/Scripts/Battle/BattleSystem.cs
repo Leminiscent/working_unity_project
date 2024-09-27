@@ -36,6 +36,7 @@ public class BattleSystem : MonoBehaviour
     public int SelectedMove { get; set; }
     public BattleAction SelectedAction { get; set; }
     public Monster SelectedMonster { get; set; }
+    public ItemBase SelectedItem { get; set; }
     public bool BattleIsOver { get; private set; }
     public MonsterParty PlayerParty { get; private set; }
     public MonsterParty EnemyParty { get; private set; }

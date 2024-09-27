@@ -79,10 +79,6 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return battleSystem.SwitchMonster(battleSystem.SelectedMonster);
             }
-            else if (playerAction == BattleAction.UseItem)
-            {
-                dialogueBox.EnableActionSelector(false);
-            }
             else if (playerAction == BattleAction.Talk)
             {
                 dialogueBox.EnableActionSelector(false);

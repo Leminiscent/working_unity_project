@@ -7,7 +7,9 @@ public class InventoryState : State<GameController>
 {
     [SerializeField] InventoryUI inventoryUI;
     GameController gameController;
+    Inventory inventory;
 
+    public ItemBase SelectedItem { get; private set; }
     public static InventoryState Instance { get; private set; }
 
     private void Awake()
@@ -15,10 +17,16 @@ public class InventoryState : State<GameController>
         Instance = this;
     }
 
+    private void Start()
+    {
+        inventory = Inventory.GetInventory();
+    }
+
     public override void Enter(GameController owner)
     {
         gameController = owner;
         inventoryUI.gameObject.SetActive(true);
+        SelectedItem = null;
         inventoryUI.OnSelected += OnItemSelected;
         inventoryUI.OnBack += OnBack;
     }
@@ -37,11 +45,43 @@ public class InventoryState : State<GameController>
 
     void OnItemSelected(int selection)
     {
-        gameController.StateMachine.Push(PartyState.Instance);
+        SelectedItem = inventoryUI.SelectedItem;
+        StartCoroutine(SelectMonsterAndUseItem());
     }
 
     void OnBack()
     {
+        SelectedItem = null;
         gameController.StateMachine.Pop();
+    }
+
+    IEnumerator SelectMonsterAndUseItem()
+    {
+        var prevState = gameController.StateMachine.GetPrevState();
+
+        if (prevState == BattleState.Instance)
+        {
+            if (!SelectedItem.UsableInBattle)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText("This item can't be used in battle!");
+                yield break;
+            }
+            else
+            {
+                if (!SelectedItem.UsableOutsideBattle)
+                {
+                    yield return DialogueManager.Instance.ShowDialogueText("This item can't be used outside of battle!");
+                    yield break;
+                }
+            }
+        }
+        yield return gameController.StateMachine.PushAndWait(PartyState.Instance);
+        if (prevState == BattleState.Instance)
+        {
+            if (UseItemState.Instance.ItemUsed)
+            {
+                gameController.StateMachine.Pop();
+            }
+        }
     }
 }
