@@ -2527,7 +2527,6 @@ GameObject:
   - component: {fileID: 7428171737727562100}
   - component: {fileID: 7618749125677181748}
   - component: {fileID: 1929696814135984461}
-  - component: {fileID: 1811481106021030545}
   - component: {fileID: 8421208173127565085}
   - component: {fileID: 6299559392987174268}
   - component: {fileID: 8394551682470314989}
@@ -2537,6 +2536,10 @@ GameObject:
   - component: {fileID: 2376435359624943711}
   - component: {fileID: 5812762495182597729}
   - component: {fileID: 8779385195385739618}
+  - component: {fileID: 6124277936391411297}
+  - component: {fileID: 3025426105419745069}
+  - component: {fileID: 8878390781169812590}
+  - component: {fileID: 8137602079865983993}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2673,23 +2676,6 @@ MonoBehaviour:
   transformationUI: {fileID: 3975937471057939812}
   monsterImage: {fileID: 338043217632933256}
   transformationMusic: {fileID: 8300000, guid: 697e6f8662bfcf646b9dd5c7f267ad1f, type: 3}
---- !u!114 &1811481106021030545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2322723301919392697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33aeddaa4e3331e4197843030d319cd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shopCameraOffest: {x: 3.5, y: 0}
-  playerInventoryUI: {fileID: 3098845066743011621}
-  shopUI: {fileID: 7135037369154304464}
-  walletUI: {fileID: 1990720717648290519}
-  countSelectorUI: {fileID: 4849388850774474072}
 --- !u!114 &8421208173127565085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2803,6 +2789,61 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac3b912f15d2d6a4bb482cf90f245285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6124277936391411297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c63bbce2511e54b83a7c44d7cae408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3025426105419745069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ddd7bc3ecc37844ba413d1dde0fd00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopCameraOffest: {x: 3.5, y: 0}
+  shopUI: {fileID: 7135037369154304464}
+  walletUI: {fileID: 1990720717648290519}
+  countSelectorUI: {fileID: 4849388850774474072}
+--- !u!114 &8878390781169812590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5f4780a4d20714c836c3baf884585f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventoryUI: {fileID: 3098845066743011621}
+  walletUI: {fileID: 1990720717648290519}
+  countSelectorUI: {fileID: 4849388850774474072}
+--- !u!114 &8137602079865983993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322723301919392697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28cbae44817e484b9b6dd2b09ca49e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2452659476306165220

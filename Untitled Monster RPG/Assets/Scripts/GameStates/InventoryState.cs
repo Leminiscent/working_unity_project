@@ -46,7 +46,14 @@ public class InventoryState : State<GameController>
     void OnItemSelected(int selection)
     {
         SelectedItem = inventoryUI.SelectedItem;
-        StartCoroutine(SelectMonsterAndUseItem());
+        if (gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
+        {
+            StartCoroutine(SelectMonsterAndUseItem());
+        }
+        else
+        {
+            gameController.StateMachine.Pop();
+        }
     }
 
     void OnBack()
