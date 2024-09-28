@@ -90,7 +90,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-
     IEnumerator ProcessAnswer(int selectedAnswerIndex)
     {
         selectionUI.gameObject.SetActive(false);
@@ -144,20 +143,20 @@ public class RecruitmentState : State<BattleSystem>
     {
         // Calculate recruitment chance
         float a = Mathf.Min(Mathf.Max(targetMonster.AffinityLevel - 3, 0), 3) * (3 * targetMonster.MaxHp - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
-        bool isRecruited;
+        bool canRecruit;
 
         if (a >= 255)
         {
-            isRecruited = true;
+            canRecruit = true;
         }
         else
         {
             float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
 
-            isRecruited = Random.Range(0, 65536) < b;
+            canRecruit = Random.Range(0, 65536) < b;
         }
 
-        if (isRecruited)
+        if (canRecruit)
         {
             yield return dialogueBox.TypeDialogue(enemyMonster.Base.Name + " wants to join your party! Will you accept?");
 
