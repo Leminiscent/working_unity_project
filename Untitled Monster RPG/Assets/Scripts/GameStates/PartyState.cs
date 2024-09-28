@@ -41,7 +41,11 @@ public class PartyState : State<GameController>
     void OnMonsterSelected(int selection)
     {
         SelectedMonster = partyScreen.SelectedMember;
+        StartCoroutine(MonsterSelectedAction());
+    }
 
+    IEnumerator MonsterSelectedAction()
+    {
         var prevState = gameController.StateMachine.GetPrevState();
 
         if (prevState == InventoryState.Instance)
@@ -52,21 +56,58 @@ public class PartyState : State<GameController>
         {
             var battleState = prevState as BattleState;
 
-            if (SelectedMonster.HP <= 0)
+            DynamicMenuState.Instance.MenuItems = new List<string>
             {
-                partyScreen.SetMessageText(SelectedMonster.Base.Name + " is unable to fight!");
-                return;
-            }
-            if (SelectedMonster == battleState.BattleSystem.PlayerUnit.Monster)
+                "Switch",
+                "Summary",
+                "Back"
+            };
+            yield return gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
+            if (DynamicMenuState.Instance.SelectedItem == 0)
             {
-                partyScreen.SetMessageText(SelectedMonster.Base.Name + " is already in battle!");
-                return;
+                if (SelectedMonster.HP <= 0)
+                {
+                    partyScreen.SetMessageText(SelectedMonster.Base.Name + " is unable to fight!");
+                    yield break;
+                }
+                if (SelectedMonster == battleState.BattleSystem.PlayerUnit.Monster)
+                {
+                    partyScreen.SetMessageText(SelectedMonster.Base.Name + " is already in battle!");
+                    yield break;
+                }
+                
+                gameController.StateMachine.Pop();
             }
-            gameController.StateMachine.Pop();
+            else if (DynamicMenuState.Instance.SelectedItem == 1)
+            {
+                // Summary
+            }
+            else
+            {
+                yield break;
+            }
         }
         else
         {
-            // TODO: Open Monster Summary Screen
+            DynamicMenuState.Instance.MenuItems = new List<string>
+            {
+                "Summary",
+                "Switch",
+                "Back"
+            };
+            yield return gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
+            if (DynamicMenuState.Instance.SelectedItem == 0)
+            {
+                // Summary
+            }
+            else if (DynamicMenuState.Instance.SelectedItem == 1)
+            {
+                // Switch
+            }
+            else
+            {
+                yield break;
+            }
         }
     }
 
