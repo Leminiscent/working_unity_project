@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     GameState state;
     GameState prevState;
     GameState stateBeforeTransformation;
+    MasterController master;
 
     public StateMachine<GameController> StateMachine { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
@@ -65,8 +66,6 @@ public class GameController : MonoBehaviour
         BattleState.Instance.trigger = trigger;
         StateMachine.Push(BattleState.Instance);
     }
-
-    MasterController master;
 
     public void StartMasterBattle(MasterController master)
     {

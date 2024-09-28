@@ -14,7 +14,8 @@ public class RecruitmentState : State<BattleSystem>
     List<RecruitmentQuestion> questions;
     List<RecruitmentQuestion> selectedQuestions;
     int currentQuestionIndex;
-    bool isAcceptRejectPhase = false;
+    bool yesSelected;
+    float selectionTimer = 0;
 
     public static RecruitmentState Instance { get; private set; }
 
@@ -36,6 +37,10 @@ public class RecruitmentState : State<BattleSystem>
         if (selectionUI.gameObject.activeInHierarchy)
         {
             selectionUI.HandleUpdate();
+        }
+        else if (dialogueBox.IsChoiceBoxEnabled)
+        {
+            HandleChoiceBoxInput();
         }
     }
 
@@ -69,7 +74,7 @@ public class RecruitmentState : State<BattleSystem>
         var currentQuestion = selectedQuestions[currentQuestionIndex];
 
         yield return dialogueBox.TypeDialogue(currentQuestion.QuestionText);
-        
+
         // Set up the answer selection UI
         dialogueBox.EnableDialogueText(false);
         selectionUI.gameObject.SetActive(true);
@@ -80,14 +85,7 @@ public class RecruitmentState : State<BattleSystem>
 
     void OnAnswerSelected(int selection)
     {
-        if (isAcceptRejectPhase)
-        {
-            battleSystem.StartCoroutine(ProcessAcceptReject(selection));
-        }
-        else
-        {
-            battleSystem.StartCoroutine(ProcessAnswer(selection));
-        }
+        StartCoroutine(ProcessAnswer(selection));
     }
 
     IEnumerator ProcessAnswer(int selectedAnswerIndex)
@@ -161,12 +159,10 @@ public class RecruitmentState : State<BattleSystem>
             yield return dialogueBox.TypeDialogue(enemyMonster.Base.Name + " wants to join your party! Will you accept?");
 
             // Present choice to accept or reject
-            isAcceptRejectPhase = true;
             dialogueBox.EnableDialogueText(false);
-            selectionUI.gameObject.SetActive(true);
-            selectionUI.OnSelected += OnAnswerSelected;
-            selectionUI.SetAcceptRejectOptions();
-            selectionUI.UpdateSelectionInUI();
+            dialogueBox.EnableChoiceBox(true);
+            yesSelected = true;
+            dialogueBox.UpdateChoiceBox(yesSelected);
         }
         else
         {
@@ -177,8 +173,6 @@ public class RecruitmentState : State<BattleSystem>
 
     IEnumerator ProcessAcceptReject(int selection)
     {
-        selectionUI.gameObject.SetActive(false);
-        selectionUI.OnSelected -= OnAnswerSelected;
         dialogueBox.EnableDialogueText(true);
         if (selection == 0)
         {
@@ -192,6 +186,39 @@ public class RecruitmentState : State<BattleSystem>
             // No
             yield return dialogueBox.TypeDialogue($"{enemyMonster.Base.Name} was rejected.");
             battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+        }
+    }
+
+    void HandleChoiceBoxInput()
+    {
+        const float selectionSpeed = 5f;
+        float v = Input.GetAxis("Vertical");
+
+        if (selectionTimer > 0)
+        {
+            selectionTimer = Mathf.Clamp(selectionTimer - Time.deltaTime, 0, selectionTimer);
+        }
+
+        if (selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
+        {
+            yesSelected = !yesSelected;
+            selectionTimer = 1 / selectionSpeed;
+            dialogueBox.UpdateChoiceBox(yesSelected);
+        }
+
+        if (Input.GetButtonDown("Action"))
+        {
+            dialogueBox.EnableChoiceBox(false);
+
+            int selection = yesSelected ? 0 : 1;
+
+            StartCoroutine(ProcessAcceptReject(selection));
+        }
+
+        if (Input.GetButtonDown("Back"))
+        {
+            dialogueBox.EnableChoiceBox(false);
+            StartCoroutine(ProcessAcceptReject(1));
         }
     }
 }
