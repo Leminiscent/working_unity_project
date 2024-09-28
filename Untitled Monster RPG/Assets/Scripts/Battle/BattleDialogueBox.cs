@@ -121,36 +121,6 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    public void UpdateAnswerSelection(int selectedAnswer)
-    {
-        for (int i = 0; i < answerTexts.Count; ++i)
-        {
-            if (i == selectedAnswer)
-            {
-                answerTexts[i].color = GlobalSettings.Instance.ActiveColor;
-            }
-            else
-            {
-                answerTexts[i].color = GlobalSettings.Instance.InactiveColor;
-            }
-        }
-    }
-
-    public void SetAnswers(List<RecruitmentAnswer> answers)
-    {
-        for (int i = 0; i < answerTexts.Count; ++i)
-        {
-            if (i < answers.Count)
-            {
-                answerTexts[i].text = answers[i].AnswerText;
-            }
-            else
-            {
-                answerTexts[i].text = "";
-            }
-        }
-    }
-
     public void UpdateChoiceBox(bool yesSelected)
     {
         if (yesSelected)
