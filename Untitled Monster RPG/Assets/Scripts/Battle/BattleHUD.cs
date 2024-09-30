@@ -73,7 +73,7 @@ public class BattleHUD : MonoBehaviour
     {
         if (expBar == null) return;
 
-        float normalizedExp = GetNormalizedExp();
+        float normalizedExp = _monster.GetNormalizedExp();
 
         expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
     }
@@ -87,18 +87,9 @@ public class BattleHUD : MonoBehaviour
             expBar.transform.localScale = new Vector3(0, 1, 1);
         }
 
-        float normalizedExp = GetNormalizedExp();
+        float normalizedExp = _monster.GetNormalizedExp();
 
         yield return expBar.transform.DOScaleX(normalizedExp, 1.5f).WaitForCompletion();
-    }
-
-    float GetNormalizedExp()
-    {
-        int currLevelExp = _monster.Base.GetExpForLevel(_monster.Level);
-        int nextLevelExp = _monster.Base.GetExpForLevel(_monster.Level + 1);
-        float normalizedExp = (float)(_monster.Exp - currLevelExp) / (nextLevelExp - currLevelExp);
-
-        return Mathf.Clamp01(normalizedExp);
     }
 
     public void SetAffinity()

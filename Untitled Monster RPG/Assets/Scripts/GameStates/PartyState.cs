@@ -41,10 +41,10 @@ public class PartyState : State<GameController>
     void OnMonsterSelected(int selection)
     {
         SelectedMonster = partyScreen.SelectedMember;
-        StartCoroutine(MonsterSelectedAction());
+        StartCoroutine(MonsterSelectedAction(selection));
     }
 
-    IEnumerator MonsterSelectedAction()
+    IEnumerator MonsterSelectedAction(int selectedMonsterIndex)
     {
         var prevState = gameController.StateMachine.GetPrevState();
 
@@ -80,7 +80,8 @@ public class PartyState : State<GameController>
             }
             else if (DynamicMenuState.Instance.SelectedItem == 1)
             {
-                // Summary
+                SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
+                yield return gameController.StateMachine.PushAndWait(SummaryState.Instance);
             }
             else
             {
@@ -98,7 +99,8 @@ public class PartyState : State<GameController>
             yield return gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
             if (DynamicMenuState.Instance.SelectedItem == 0)
             {
-                // Summary
+                SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
+                yield return gameController.StateMachine.PushAndWait(SummaryState.Instance);
             }
             else if (DynamicMenuState.Instance.SelectedItem == 1)
             {

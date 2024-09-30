@@ -60,13 +60,15 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayEnterAnimation()
     {
+        int offsetX = 1500;
+
         if (isPlayerUnit)
         {
-            image.transform.localPosition = new Vector3(-472f, originalPos.y);
+            image.transform.localPosition = new Vector3(-offsetX, originalPos.y);
         }
         else
         {
-            image.transform.localPosition = new Vector3(472f, originalPos.y);
+            image.transform.localPosition = new Vector3(offsetX, originalPos.y);
         }
 
         image.transform.DOLocalMoveX(originalPos.x, 1f);
@@ -74,15 +76,17 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayExitAnimation()
     {
+        int offsetX = 1500;
+
         image.transform.localPosition = originalPos;
 
         if (isPlayerUnit)
         {
-            image.transform.DOLocalMoveX(-472f, 1f);
+            image.transform.DOLocalMoveX(-offsetX, 1f);
         }
         else
         {
-            image.transform.DOLocalMoveX(472f, 1f);
+            image.transform.DOLocalMoveX(offsetX, 1f);
         }
     }
 

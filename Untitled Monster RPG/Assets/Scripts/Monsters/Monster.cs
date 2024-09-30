@@ -217,6 +217,15 @@ public class Monster
         CureStatus();
     }
 
+    public float GetNormalizedExp()
+    {
+        int currLevelExp = Base.GetExpForLevel(Level);
+        int nextLevelExp = Base.GetExpForLevel(Level + 1);
+        float normalizedExp = (float)(Exp - currLevelExp) / (nextLevelExp - currLevelExp);
+
+        return Mathf.Clamp01(normalizedExp);
+    }
+
     public int MaxHp { get; private set; }
     public int Attack => GetStat(Stat.Attack);
     public int Defense => GetStat(Stat.Defense);
