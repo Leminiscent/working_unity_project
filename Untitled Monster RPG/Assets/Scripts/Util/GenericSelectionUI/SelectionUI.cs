@@ -14,7 +14,7 @@ namespace Utils.GenericSelectionUI
         SelectionType selectionType;
         int gridWidth = 2;
         float selectionTimer = 0;
-        const float selectionSpeed = 5f;
+        const float selectionSpeed = 4f;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
