@@ -14,7 +14,7 @@ namespace Utils.GenericSelectionUI
         SelectionType selectionType;
         int gridWidth = 2;
         float selectionTimer = 0;
-        const float selectionSpeed = 4f;
+        const float selectionSpeed = 5f;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
@@ -73,7 +73,7 @@ namespace Utils.GenericSelectionUI
 
         void HandleListSelection()
         {
-            float v = Input.GetAxis("Vertical");
+            float v = Input.GetAxisRaw("Vertical");
 
             if (selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
             {
@@ -84,8 +84,8 @@ namespace Utils.GenericSelectionUI
 
         void HandleGridSelection()
         {
-            float v = Input.GetAxis("Vertical");
-            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+            float h = Input.GetAxisRaw("Horizontal");
 
             if (selectionTimer == 0 && (Mathf.Abs(v) > 0.2f) || selectionTimer == 0 && (Mathf.Abs(h) > 0.2f))
             {
