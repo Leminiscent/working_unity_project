@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.GenericSelectionUI;
 
-public class SummaryScreenUI : MonoBehaviour
+public class SummaryScreenUI : SelectionUI<TextSlot>
 {
     [Header("Basic Details")]
     [SerializeField] TextMeshProUGUI nameText;
@@ -31,8 +33,41 @@ public class SummaryScreenUI : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> moveTypes;
     [SerializeField] List<TextMeshProUGUI> moveNames;
     [SerializeField] List<TextMeshProUGUI> moveSP;
+    [SerializeField] TextMeshProUGUI moveDescriptionText;
+    [SerializeField] TextMeshProUGUI movePowerText;
+    [SerializeField] TextMeshProUGUI moveAccuracyText;
+    [SerializeField] GameObject moveEffectsUI;
 
+    List<TextSlot> moveSlots;
     Monster monster;
+    bool inMoveSelection;
+
+    public bool InMoveSelection
+    {
+        get => inMoveSelection;
+        set
+        {
+            inMoveSelection = value;
+            if (inMoveSelection)
+            {
+                moveEffectsUI.SetActive(true);
+                SetItems(moveSlots.Take(monster.Moves.Count).ToList());
+            }
+            else
+            {
+                moveEffectsUI.SetActive(false);
+                moveDescriptionText.text = "";
+                ClearItems();
+            }
+        }
+    }
+
+    private void Start()
+    {
+        moveSlots = moveNames.Select(m => m.GetComponent<TextSlot>()).ToList();
+        moveEffectsUI.SetActive(false);
+        moveDescriptionText.text = "";
+    }
 
     public void SetBasicDetails(Monster monster)
     {
@@ -94,5 +129,24 @@ public class SummaryScreenUI : MonoBehaviour
                 moveSP[i].text = "-";
             }
         }
+    }
+
+    public override void HandleUpdate()
+    {
+        if (InMoveSelection)
+        {
+            base.HandleUpdate();
+        }
+    }
+
+    public override void UpdateSelectionInUI()
+    {
+        base.UpdateSelectionInUI();
+
+        var move = monster.Moves[selectedItem];
+
+        moveDescriptionText.text = move.Base.Description;
+        movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";
+        moveAccuracyText.text = move.Base.Accuracy > 0 ? move.Base.Accuracy.ToString() : "-";
     }
 }

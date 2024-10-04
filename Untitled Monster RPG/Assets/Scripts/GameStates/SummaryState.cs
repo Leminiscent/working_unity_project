@@ -32,56 +32,75 @@ public class SummaryState : State<GameController>
 
     public override void Execute()
     {
-        if (Input.GetButtonDown("Back"))
+        if (!summaryScreenUI.InMoveSelection)
         {
-            gameController.StateMachine.Pop();
-            return;
-        }
+            // Page Selection
+            int prevPage = selectedPage;
 
-        // Page Selection
-        int prevPage = selectedPage;
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            selectedPage = (selectedPage + 1) % 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            selectedPage = Mathf.Abs(selectedPage - 1) % 2;
-        }
-
-        if (prevPage != selectedPage)
-        {
-            summaryScreenUI.ShowPage(selectedPage);
-        }
-
-        // Monster Selection
-        int prevIndex = SelectedMonsterIndex;
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            SelectedMonsterIndex++;
-
-            if (SelectedMonsterIndex >= playerParty.Count)
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                SelectedMonsterIndex = 0;
+                selectedPage = (selectedPage + 1) % 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                selectedPage = Mathf.Abs(selectedPage - 1) % 2;
+            }
+
+            if (prevPage != selectedPage)
+            {
+                summaryScreenUI.ShowPage(selectedPage);
+            }
+
+            // Monster Selection
+            int prevIndex = SelectedMonsterIndex;
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                SelectedMonsterIndex++;
+
+                if (SelectedMonsterIndex >= playerParty.Count)
+                {
+                    SelectedMonsterIndex = 0;
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                SelectedMonsterIndex--;
+
+                if (SelectedMonsterIndex < 0)
+                {
+                    SelectedMonsterIndex = playerParty.Count - 1;
+                }
+            }
+
+            if (prevIndex != SelectedMonsterIndex)
+            {
+                summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
+                summaryScreenUI.ShowPage(selectedPage);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            SelectedMonsterIndex--;
 
-            if (SelectedMonsterIndex < 0)
+        if (Input.GetButtonDown("Action"))
+        {
+            if (selectedPage == 1 && !summaryScreenUI.InMoveSelection)
             {
-                SelectedMonsterIndex = playerParty.Count - 1;
+                summaryScreenUI.InMoveSelection = true;
+            }
+        }
+        else if (Input.GetButtonDown("Back"))
+        {
+            if (summaryScreenUI.InMoveSelection)
+            {
+                summaryScreenUI.InMoveSelection = false;
+            }
+            else
+            {
+                gameController.StateMachine.Pop();
+                return;
             }
         }
 
-        if (prevIndex != SelectedMonsterIndex)
-        {
-            summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
-            summaryScreenUI.ShowPage(selectedPage);
-        }
+        summaryScreenUI.HandleUpdate();
     }
 
     public override void Exit()

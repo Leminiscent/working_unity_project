@@ -35,7 +35,7 @@ namespace Utils.GenericSelectionUI
 
         public void ClearItems()
         {
-            items.ForEach(i => i.Clear());
+            items?.ForEach(i => i.Clear());
 
             this.items = null;
         }

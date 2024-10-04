@@ -7,6 +7,9 @@ public class PartyState : State<GameController>
 {
     [SerializeField] PartyScreen partyScreen;
     GameController gameController;
+    MonsterParty playerParty;
+    bool isSwitchingPosition;
+    int selectedSwitchToIndex = 0;
 
     public Monster SelectedMonster { get; private set; }
 
@@ -15,6 +18,11 @@ public class PartyState : State<GameController>
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        playerParty = PlayerController.Instance.GetComponent<MonsterParty>();
     }
 
     public override void Enter(GameController owner)
@@ -75,7 +83,7 @@ public class PartyState : State<GameController>
                     partyScreen.SetMessageText(SelectedMonster.Base.Name + " is already in battle!");
                     yield break;
                 }
-                
+
                 gameController.StateMachine.Pop();
             }
             else if (DynamicMenuState.Instance.SelectedItem == 1)
@@ -90,6 +98,20 @@ public class PartyState : State<GameController>
         }
         else
         {
+            if (isSwitchingPosition)
+            {
+                if (selectedSwitchToIndex == selectedMonsterIndex)
+                {
+                    partyScreen.SetMessageText("You can't switch with the same monster!");
+                    yield break;
+                }
+
+                isSwitchingPosition = false;
+                (playerParty.Monsters[selectedMonsterIndex], playerParty.Monsters[selectedSwitchToIndex]) = (playerParty.Monsters[selectedSwitchToIndex], playerParty.Monsters[selectedMonsterIndex]);
+                playerParty.PartyUpdated();
+                yield break;
+            }
+
             DynamicMenuState.Instance.MenuItems = new List<string>
             {
                 "Summary",
@@ -97,6 +119,7 @@ public class PartyState : State<GameController>
                 "Back"
             };
             yield return gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
+
             if (DynamicMenuState.Instance.SelectedItem == 0)
             {
                 SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
@@ -104,7 +127,9 @@ public class PartyState : State<GameController>
             }
             else if (DynamicMenuState.Instance.SelectedItem == 1)
             {
-                // Switch
+                isSwitchingPosition = true;
+                selectedSwitchToIndex = selectedMonsterIndex;
+                partyScreen.SetMessageText($"Choose a monster to switch with {playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
             }
             else
             {
