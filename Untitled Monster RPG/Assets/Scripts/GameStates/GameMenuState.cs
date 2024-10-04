@@ -47,9 +47,13 @@ public class GameMenuState : State<GameController>
         }
         else if (selection == 2)
         {
-            SavingSystem.i.Save("saveSlot1");
+            gameController.StateMachine.Push(StorageState.Instance);
         }
         else if (selection == 3)
+        {
+            SavingSystem.i.Save("saveSlot1");
+        }
+        else if (selection == 4)
         {
             SavingSystem.i.Load("saveSlot1");
         }

@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 6813441202777455123}
   - component: {fileID: 2477540922031323674}
   - component: {fileID: 986390993288586152}
+  - component: {fileID: 6913715058660160187}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -316,6 +317,7 @@ MonoBehaviour:
   - {fileID: -930756774, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
   - {fileID: 1810369372, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
   - {fileID: 1508345888, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
+  sailSprites: []
   defaultDirection: 1
 --- !u!114 &4648141534900121505
 MonoBehaviour:
@@ -428,9 +430,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recoveryItemSlots: []
-  monsterPartSlots: []
+  materialSlots: []
   transformationItemSlots: []
   skillBookSlots: []
+  keyItemSlots: []
 --- !u!114 &2477540922031323674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,3 +459,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   money: 0
+--- !u!114 &6913715058660160187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121344698676274057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a36946b15e2ea49a17a62bdae0f053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
