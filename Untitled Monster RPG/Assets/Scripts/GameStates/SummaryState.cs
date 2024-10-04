@@ -6,6 +6,7 @@ using Utils.StateMachine;
 public class SummaryState : State<GameController>
 {
     [SerializeField] SummaryScreenUI summaryScreenUI;
+    int selectedPage = 0;
     List<Monster> playerParty;
     GameController gameController;
 
@@ -25,20 +26,39 @@ public class SummaryState : State<GameController>
         gameController = owner;
         summaryScreenUI.gameObject.SetActive(true);
         summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
-        summaryScreenUI.SetStatsAndExp();
+        summaryScreenUI.ShowPage(selectedPage);
 
     }
 
     public override void Execute()
     {
-        int prevIndex = SelectedMonsterIndex;
-
         if (Input.GetButtonDown("Back"))
         {
             gameController.StateMachine.Pop();
             return;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+
+        // Page Selection
+        int prevPage = selectedPage;
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            selectedPage = (selectedPage + 1) % 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            selectedPage = Mathf.Abs(selectedPage - 1) % 2;
+        }
+
+        if (prevPage != selectedPage)
+        {
+            summaryScreenUI.ShowPage(selectedPage);
+        }
+
+        // Monster Selection
+        int prevIndex = SelectedMonsterIndex;
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             SelectedMonsterIndex++;
 
@@ -60,7 +80,7 @@ public class SummaryState : State<GameController>
         if (prevIndex != SelectedMonsterIndex)
         {
             summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
-            summaryScreenUI.SetStatsAndExp();
+            summaryScreenUI.ShowPage(selectedPage);
         }
     }
 
