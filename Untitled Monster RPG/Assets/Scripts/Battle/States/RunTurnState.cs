@@ -56,7 +56,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (enemyMovePriority == playerMovePriority)
             {
-                playerGoesFirst = playerUnit.Monster.Speed >= enemyUnit.Monster.Speed;
+                playerGoesFirst = playerUnit.Monster.Agility >= enemyUnit.Monster.Agility;
             }
 
             var firstUnit = playerGoesFirst ? playerUnit : enemyUnit;
@@ -376,17 +376,17 @@ public class RunTurnState : State<BattleSystem>
 
         ++battleSystem.EscapeAttempts;
 
-        int playerSpeed = playerUnit.Monster.Speed;
-        int enemySpeed = enemyUnit.Monster.Speed;
+        int playerAgility = playerUnit.Monster.Agility;
+        int enemyAgility = enemyUnit.Monster.Agility;
 
-        if (playerSpeed >= enemySpeed)
+        if (playerAgility >= enemyAgility)
         {
             yield return dialogueBox.TypeDialogue("You got away safely!");
             battleSystem.BattleOver(true);
         }
         else
         {
-            float f = (playerSpeed * 128 / enemySpeed + 30 * battleSystem.EscapeAttempts) % 256;
+            float f = (playerAgility * 128 / enemyAgility + 30 * battleSystem.EscapeAttempts) % 256;
 
             if (Random.Range(0, 256) < f)
             {

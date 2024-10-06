@@ -12,12 +12,12 @@ public class MonsterBase : ScriptableObject
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
     [SerializeField] MonsterSize size;
-    [SerializeField] int maxHp;
-    [SerializeField] int attack;
-    [SerializeField] int defense;
-    [SerializeField] int spAttack;
-    [SerializeField] int spDefense;
-    [SerializeField] int speed;
+    [SerializeField] int hp;
+    [SerializeField] int strength;
+    [SerializeField] int endurance;
+    [SerializeField] int intelligence;
+    [SerializeField] int fortitude;
+    [SerializeField] int agility;
     [SerializeField] List<LearnableMove> learnableMoves;
     [SerializeField] List<MoveBase> learnableBySkillBook;
     [SerializeField] List<Transformation> transformations;
@@ -62,12 +62,12 @@ public class MonsterBase : ScriptableObject
     public MonsterType Type1 => type1;
     public MonsterType Type2 => type2;
     public MonsterSize Size => size;
-    public int MaxHp => maxHp;
-    public int Attack => attack;
-    public int Defense => defense;
-    public int SpAttack => spAttack;
-    public int SpDefense => spDefense;
-    public int Speed => speed;
+    public int HP => hp;
+    public int Strength => strength;
+    public int Endurance => endurance;
+    public int Intelligence => intelligence;
+    public int Fortitude => fortitude;
+    public int Agility => agility;
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableBySkillBook => learnableBySkillBook;
     public List<Transformation> Transformations => transformations;
@@ -154,11 +154,11 @@ public enum GrowthRate
 
 public enum Stat
 {
-    Attack,
-    Defense,
-    SpAttack,
-    SpDefense,
-    Speed,
+    Strength,
+    Endurance,
+    Intelligence,
+    Fortitude,
+    Agility,
     Accuracy,
     Evasion
 }

@@ -99,7 +99,7 @@ public class Monster
     {
         int prevMaxHp = MaxHp;
 
-        MaxHp = Mathf.FloorToInt(Base.MaxHp * Level / 100f) + 10 + Level;
+        MaxHp = Mathf.FloorToInt(Base.HP * Level / 100f) + 10 + Level;
         if (prevMaxHp != 0)
         {
             HP += MaxHp - prevMaxHp;
@@ -107,11 +107,11 @@ public class Monster
 
         Stats = new Dictionary<Stat, int>()
         {
-            { Stat.Attack, Mathf.FloorToInt(Base.Attack * Level / 100f) + 5 },
-            { Stat.Defense, Mathf.FloorToInt(Base.Defense * Level / 100f) + 5 },
-            { Stat.SpAttack, Mathf.FloorToInt(Base.SpAttack * Level / 100f) + 5 },
-            { Stat.SpDefense, Mathf.FloorToInt(Base.SpDefense * Level / 100f) + 5 },
-            { Stat.Speed, Mathf.FloorToInt(Base.Speed * Level / 100f) + 5 },
+            { Stat.Strength, Mathf.FloorToInt(Base.Strength * Level / 100f) + 5 },
+            { Stat.Endurance, Mathf.FloorToInt(Base.Endurance * Level / 100f) + 5 },
+            { Stat.Intelligence, Mathf.FloorToInt(Base.Intelligence * Level / 100f) + 5 },
+            { Stat.Fortitude, Mathf.FloorToInt(Base.Fortitude * Level / 100f) + 5 },
+            { Stat.Agility, Mathf.FloorToInt(Base.Agility * Level / 100f) + 5 },
         };
     }
 
@@ -119,11 +119,11 @@ public class Monster
     {
         StatBoosts = new Dictionary<Stat, int>()
         {
-            { Stat.Attack, 0 },
-            { Stat.Defense, 0 },
-            { Stat.SpAttack, 0 },
-            { Stat.SpDefense, 0 },
-            { Stat.Speed, 0 },
+            { Stat.Strength, 0 },
+            { Stat.Endurance, 0 },
+            { Stat.Intelligence, 0 },
+            { Stat.Fortitude, 0 },
+            { Stat.Agility, 0 },
             { Stat.Accuracy, 0 },
             { Stat.Evasion, 0 }
         };
@@ -227,11 +227,11 @@ public class Monster
     }
 
     public int MaxHp { get; private set; }
-    public int Attack => GetStat(Stat.Attack);
-    public int Defense => GetStat(Stat.Defense);
-    public int SpAttack => GetStat(Stat.SpAttack);
-    public int SpDefense => GetStat(Stat.SpDefense);
-    public int Speed => GetStat(Stat.Speed);
+    public int Strength => GetStat(Stat.Strength);
+    public int Endurance => GetStat(Stat.Endurance);
+    public int Intelligence => GetStat(Stat.Intelligence);
+    public int Fortitude => GetStat(Stat.Fortitude);
+    public int Agility => GetStat(Stat.Agility);
 
     public DamageDetails TakeDamage(Move move, Monster attacker)
     {
@@ -249,8 +249,8 @@ public class Monster
             Critical = critical,
             Defeated = false
         };
-        float attack = (move.Base.Category == MoveCategory.Special) ? attacker.SpAttack : attacker.Attack;
-        float defense = (move.Base.Category == MoveCategory.Special) ? SpDefense : Defense;
+        float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
+        float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * (((float)attack / defense) + 2);

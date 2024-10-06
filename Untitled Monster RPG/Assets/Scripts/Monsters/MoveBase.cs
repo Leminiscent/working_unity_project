@@ -69,7 +69,7 @@ public class StatBoost
 public enum MoveCategory
 {
     Physical,
-    Special,
+    Magical,
     Status
 }
 

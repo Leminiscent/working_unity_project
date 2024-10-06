@@ -20,11 +20,11 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     [Header("Stats & Exp")]
     [SerializeField] TextMeshProUGUI hpText;
-    [SerializeField] TextMeshProUGUI attackText;
-    [SerializeField] TextMeshProUGUI defenseText;
-    [SerializeField] TextMeshProUGUI spAttackText;
-    [SerializeField] TextMeshProUGUI spDefenseText;
-    [SerializeField] TextMeshProUGUI speedText;
+    [SerializeField] TextMeshProUGUI strengthText;
+    [SerializeField] TextMeshProUGUI enduranceText;
+    [SerializeField] TextMeshProUGUI intelligenceText;
+    [SerializeField] TextMeshProUGUI fortitudeText;
+    [SerializeField] TextMeshProUGUI agilityText;
     [SerializeField] TextMeshProUGUI expText;
     [SerializeField] TextMeshProUGUI expToNextLevelText;
     [SerializeField] Transform expBar;
@@ -82,7 +82,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         if (index == 0)
         {
-            pageNameText.text = "Monster Skills";
+            pageNameText.text = "Monster Stats";
             skillsPage.SetActive(true);
             movesPage.SetActive(false);
             SetStatsAndExp();
@@ -99,11 +99,11 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     public void SetStatsAndExp()
     {
         hpText.text = $"{monster.HP}/{monster.MaxHp}";
-        attackText.text = "" + monster.Attack;
-        defenseText.text = "" + monster.Defense;
-        spAttackText.text = "" + monster.SpAttack;
-        spDefenseText.text = "" + monster.SpDefense;
-        speedText.text = "" + monster.Speed;
+        strengthText.text = "" + monster.Strength;
+        enduranceText.text = "" + monster.Endurance;
+        intelligenceText.text = "" + monster.Intelligence;
+        fortitudeText.text = "" + monster.Fortitude;
+        agilityText.text = "" + monster.Agility;
 
         expText.text = "" + monster.Exp;
         expToNextLevelText.text = "" + (monster.Base.GetExpForLevel(monster.Level + 1) - monster.Exp);
