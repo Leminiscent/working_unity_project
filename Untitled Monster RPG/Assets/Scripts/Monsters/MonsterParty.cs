@@ -7,6 +7,7 @@ using UnityEngine;
 public class MonsterParty : MonoBehaviour
 {
     [SerializeField] List<Monster> monsters;
+    MonsterStorage storage;
 
     public event Action OnUpdated;
 
@@ -22,6 +23,7 @@ public class MonsterParty : MonoBehaviour
 
     private void Awake()
     {
+        storage = GetComponent<MonsterStorage>();
         foreach (var monster in monsters)
         {
             monster.Init();
@@ -42,7 +44,7 @@ public class MonsterParty : MonoBehaviour
         }
         else
         {
-            // TODO: Implement Monster Storage
+            storage.AddMonsterToFirstEmptySlot(newMonster);
         }
     }
 
