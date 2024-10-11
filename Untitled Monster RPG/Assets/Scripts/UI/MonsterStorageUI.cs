@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.GenericSelectionUI;
@@ -8,6 +9,7 @@ using Utils.GenericSelectionUI;
 public class MonsterStorageUI : SelectionUI<ImageSlot>
 {
     [SerializeField] List<ImageSlot> storageSlots;
+    [SerializeField] TextMeshProUGUI depotNameText;
     [SerializeField] Image transferImage;
     List<StoragePartySlotUI> partySlots = new List<StoragePartySlotUI>();
     List<StorageSlotUI> depotSlots = new List<StorageSlotUI>();
@@ -104,6 +106,8 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();
+
+        depotNameText.text = "Depot " + (SelectedDepot + 1);
 
         if (transferImage.gameObject.activeSelf)
         {
