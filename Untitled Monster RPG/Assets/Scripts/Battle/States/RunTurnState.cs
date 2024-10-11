@@ -15,6 +15,7 @@ public class RunTurnState : State<BattleSystem>
     MonsterParty playerParty;
     MonsterParty enemyParty;
     bool isMasterBattle;
+    Field field;
 
 
     public static RunTurnState Instance { get; private set; }
@@ -35,6 +36,7 @@ public class RunTurnState : State<BattleSystem>
         playerParty = battleSystem.PlayerParty;
         enemyParty = battleSystem.EnemyParty;
         isMasterBattle = battleSystem.IsMasterBattle;
+        field = battleSystem.Field;
 
         StartCoroutine(RunTurns(battleSystem.SelectedAction));
     }
@@ -89,6 +91,27 @@ public class RunTurnState : State<BattleSystem>
             yield return RunMove(enemyUnit, playerUnit, enemyMove);
             yield return RunAfterTurn(enemyUnit);
             if (battleSystem.BattleIsOver) yield break;
+        }
+
+        if (field.Weather != null)
+        {
+            yield return dialogueBox.TypeDialogue(field.Weather.EffectMessage);
+
+            field.Weather.OnWeather?.Invoke(playerUnit.Monster);
+            yield return ShowStatusChanges(playerUnit.Monster);
+            yield return playerUnit.Hud.WaitForHPUpdate();
+            if (playerUnit.Monster.HP <= 0)
+            {
+                yield return HandleMonsterDefeat(playerUnit);
+            }
+
+            field.Weather.OnWeather?.Invoke(enemyUnit.Monster);
+            yield return ShowStatusChanges(enemyUnit.Monster);
+            yield return enemyUnit.Hud.WaitForHPUpdate();
+            if (enemyUnit.Monster.HP <= 0)
+            {
+                yield return HandleMonsterDefeat(enemyUnit);
+            }
         }
 
         if (!battleSystem.BattleIsOver)
@@ -172,7 +195,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
+                var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, field.Weather);
                 yield return targetUnit.Hud.WaitForHPUpdate();
                 yield return ShowDamageDetails(damageDetails);
             }

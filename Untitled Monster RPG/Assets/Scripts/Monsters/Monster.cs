@@ -233,7 +233,7 @@ public class Monster
     public int Fortitude => GetStat(Stat.Fortitude);
     public int Agility => GetStat(Stat.Agility);
 
-    public DamageDetails TakeDamage(Move move, Monster attacker)
+    public DamageDetails TakeDamage(Move move, Monster attacker, Condition weather)
     {
         float critical = 1f;
 
@@ -243,6 +243,7 @@ public class Monster
         }
 
         float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
+        float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
         var damageDetails = new DamageDetails()
         {
             TypeEffectiveness = type,
@@ -251,7 +252,7 @@ public class Monster
         };
         float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
         float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
-        float modifiers = Random.Range(0.85f, 1f) * type * critical;
+        float modifiers = Random.Range(0.85f, 1f) * type * critical * weatherMod;
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * (((float)attack / defense) + 2);
         int damage = Mathf.FloorToInt(d * modifiers);

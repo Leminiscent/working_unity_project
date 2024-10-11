@@ -39,6 +39,7 @@ public class BattleSystem : MonoBehaviour
     public MonsterParty PlayerParty { get; private set; }
     public MonsterParty EnemyParty { get; private set; }
     public Monster WildMonster { get; private set; }
+    public Field Field { get; private set; }
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
     public MasterController Enemy { get; private set; }
@@ -117,6 +118,7 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
         }
 
+        Field = new Field();
         BattleIsOver = false;
         EscapeAttempts = 0;
         partyScreen.Init();
