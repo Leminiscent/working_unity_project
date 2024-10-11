@@ -17,6 +17,7 @@ public class ConditionsDB
 
     public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>()
     {
+        // Non-volatile status conditions
         {
             ConditionID.psn,
             new Condition
@@ -106,6 +107,8 @@ public class ConditionsDB
                 }
             }
         },
+
+        // Volatile status conditions
         {
             ConditionID.confusion,
             new Condition
@@ -137,6 +140,66 @@ public class ConditionsDB
                 }
             }
         },
+
+        // Weather conditions
+        {
+            ConditionID.sunny,
+            new Condition()
+            {
+                Name = "Harsh Sunlight",
+                StartMessage = "The sunlight turned harsh!",
+                EffectMessage = "The sunlight is harsh!",
+                OnDamageModify = (Monster source, Monster target, Move move) =>
+                {
+                    if (move.Base.Type == MonsterType.Fire)
+                    {
+                        return 1.5f;
+                    }
+                    else if (move.Base.Type == MonsterType.Water)
+                    {
+                        return 0.5f;
+                    }
+
+                    return 1f;
+                }
+            }
+        },
+        {
+            ConditionID.rain,
+            new Condition()
+            {
+                Name = "Heavy Rain",
+                StartMessage = "It started to rain!",
+                EffectMessage = "The rain is falling!",
+                OnDamageModify = (Monster source, Monster target, Move move) =>
+                {
+                    if (move.Base.Type == MonsterType.Water)
+                    {
+                        return 1.5f;
+                    }
+                    else if (move.Base.Type == MonsterType.Fire)
+                    {
+                        return 0.5f;
+                    }
+
+                    return 1f;
+                }
+            }
+        },
+        {
+            ConditionID.sandstorm,
+            new Condition()
+            {
+                Name = "Sandstorm",
+                StartMessage = "A sandstorm kicked up!",
+                EffectMessage = "The sandstorm rages!",
+                OnWeather = (Monster monster) =>
+                {
+                    monster.DecreaseHP(Mathf.RoundToInt((float)monster.MaxHp / 16f));
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is buffeted by the sandstorm!");
+                }
+            }
+        }
     };
 
     public static float GetStatusBonus(Condition condition)
@@ -169,4 +232,7 @@ public enum ConditionID
     par,
     frz,
     confusion,
+    sunny,
+    rain,
+    sandstorm,
 }
