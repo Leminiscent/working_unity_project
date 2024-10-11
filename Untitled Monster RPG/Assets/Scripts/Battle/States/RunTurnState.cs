@@ -112,6 +112,17 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return HandleMonsterDefeat(enemyUnit);
             }
+
+            if (field.WeatherDuration != null)
+            {
+                field.WeatherDuration--;
+                if (field.WeatherDuration == 0)
+                {
+                    field.Weather = null;
+                    field.WeatherDuration = null;
+                    yield return dialogueBox.TypeDialogue("The weather has returned to normal.");
+                }
+            }
         }
 
         if (!battleSystem.BattleIsOver)
@@ -238,7 +249,7 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        // Status Condition
+        // Status Conditions
         if (effects.Status != ConditionID.none)
         {
             target.SetStatus(effects.Status);
@@ -246,6 +257,14 @@ public class RunTurnState : State<BattleSystem>
         if (effects.VolatileStatus != ConditionID.none)
         {
             target.SetVolatileStatus(effects.VolatileStatus);
+        }
+
+        // Weather
+        if (effects.Weather != ConditionID.none)
+        {
+            field.SetWeather(effects.Weather);
+            field.WeatherDuration = 5;
+            yield return dialogueBox.TypeDialogue(field.Weather.StartMessage);
         }
 
         yield return ShowStatusChanges(source);
