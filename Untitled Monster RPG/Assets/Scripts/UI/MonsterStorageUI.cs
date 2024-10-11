@@ -78,6 +78,29 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
     }
 
+    public override void HandleUpdate()
+    {
+        int prevSelectedDepot = SelectedDepot;
+
+        if (Input.GetButtonDown("Left"))
+        {
+            SelectedDepot = (SelectedDepot - 1) % storage.NumberOfDepots;
+        }
+        else if (Input.GetButtonDown("Right"))
+        {
+            SelectedDepot = (SelectedDepot + 1) % storage.NumberOfDepots;
+        }
+
+        if (prevSelectedDepot != SelectedDepot)
+        {
+            SetStorageData();
+            UpdateSelectionInUI();
+            return;
+        }
+
+        base.HandleUpdate();
+    }
+
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();

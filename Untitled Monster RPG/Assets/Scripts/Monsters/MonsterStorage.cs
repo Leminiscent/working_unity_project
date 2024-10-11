@@ -8,6 +8,9 @@ public class MonsterStorage : MonoBehaviour
     const int numberOfSlots = 48; // 6 * 8
     Monster[,] depots = new Monster[numberOfDepots, numberOfSlots];
 
+    public int NumberOfDepots => numberOfDepots;
+    public int NumberOfSlots => numberOfSlots;
+
     public void AddMonster(Monster monster, int depotIndex, int slotIndex)
     {
         depots[depotIndex, slotIndex] = monster;
