@@ -66,6 +66,8 @@ public class StorageState : State<GameController>
             if (secondMonster == null && storageUI.IsPartySlot(firstSlotIndex) && storageUI.IsPartySlot(secondSlotIndex))
             {
                 storageUI.PlaceMonsterIntoSlot(selectedSlotToMove, selectedMonsterToMove);
+                storageUI.SetStorageData();
+                storageUI.SetPartyData();
                 return;
             }
 

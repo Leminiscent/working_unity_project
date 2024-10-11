@@ -78,6 +78,17 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
     }
 
+    public override void UpdateSelectionInUI()
+    {
+        base.UpdateSelectionInUI();
+
+        if (transferImage.gameObject.activeSelf)
+        {
+            transferImage.transform.position = storageSlotImages[selectedItem].transform.position + Vector3.up * 50f;
+        }
+    
+    }
+
     public bool IsPartySlot(int slotIndex)
     {
         return slotIndex % totalColumns == 0;
