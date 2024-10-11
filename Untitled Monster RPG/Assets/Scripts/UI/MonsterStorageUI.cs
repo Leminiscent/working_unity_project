@@ -86,7 +86,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         {
             transferImage.transform.position = storageSlotImages[selectedItem].transform.position + Vector3.up * 50f;
         }
-    
+
     }
 
     public bool IsPartySlot(int slotIndex)
@@ -108,6 +108,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             }
 
             monster = party.Monsters[partyIndex];
+            if (monster == null) return null;
             party.Monsters[partyIndex] = null;
         }
         else
@@ -115,9 +116,10 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             int depotSlotIndex = slotIndex - (slotIndex / totalColumns + 1);
 
             monster = storage.GetMonster(SelectedDepot, depotSlotIndex);
+            if (monster == null) return null;
             storage.RemoveMonster(SelectedDepot, depotSlotIndex);
         }
-        
+
         transferImage.sprite = storageSlotImages[slotIndex].sprite;
         transferImage.transform.position = storageSlotImages[slotIndex].transform.position + Vector3.up * 50f;
         storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
