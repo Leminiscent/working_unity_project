@@ -14,6 +14,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] MoveEffects effects;
     [SerializeField] List<SecondaryEffects> secondaryEffects;
     [SerializeField] MoveTarget target;
+    [SerializeField] Vector2Int hitRange;
     [SerializeField] int power;
     [SerializeField] int accuracy;
     [SerializeField] bool alwaysHits;
@@ -22,6 +23,26 @@ public class MoveBase : ScriptableObject
     [SerializeField] AudioClip sound;
 
     // Properties
+    public int GetHitCount()
+    {
+        int hitCount;
+
+        if (hitRange == Vector2Int.zero)
+        {
+            hitCount = 1;
+        }
+        else if (hitRange.y == 0)
+        {
+            hitCount = hitRange.x;
+        }
+        else
+        {
+            hitCount = Random.Range(hitRange.x, hitRange.y + 1);
+        }
+
+        return hitCount;
+    }
+
     public string Name => name;
     public string Description => description;
     public MonsterType Type => type;

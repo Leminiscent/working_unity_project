@@ -194,33 +194,49 @@ public class RunTurnState : State<BattleSystem>
 
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
         {
-            sourceUnit.PlayAttackAnimation();
-            AudioManager.Instance.PlaySFX(move.Base.Sound);
-            yield return new WaitForSeconds(1f);
-            targetUnit.PlayHitAnimation();
-            AudioManager.Instance.PlaySFX(AudioID.Hit);
+            int hitCount = move.Base.GetHitCount();
+            float typeEffectiveness = 1f;
+            int hit = 1;
 
-            if (move.Base.Category == MoveCategory.Status)
+            for (int i = 1; i <= hitCount; i++)
             {
-                yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
-            }
-            else
-            {
-                var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, field.Weather);
-                yield return targetUnit.Hud.WaitForHPUpdate();
-                yield return ShowDamageDetails(damageDetails);
-            }
+                sourceUnit.PlayAttackAnimation();
+                AudioManager.Instance.PlaySFX(move.Base.Sound);
+                yield return new WaitForSeconds(1f);
+                targetUnit.PlayHitAnimation();
+                AudioManager.Instance.PlaySFX(AudioID.Hit);
 
-            if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.HP > 0)
-            {
-                foreach (var effect in move.Base.SecondaryEffects)
+                if (move.Base.Category == MoveCategory.Status)
                 {
-                    var rnd = Random.Range(1, 101);
-                    if (rnd <= effect.Chance)
+                    yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
+                }
+                else
+                {
+                    var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, field.Weather);
+                    yield return targetUnit.Hud.WaitForHPUpdate();
+                    yield return ShowDamageDetails(damageDetails);
+                    typeEffectiveness = damageDetails.TypeEffectiveness;
+                }
+
+                if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.HP > 0)
+                {
+                    foreach (var effect in move.Base.SecondaryEffects)
                     {
-                        yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                        var rnd = Random.Range(1, 101);
+                        if (rnd <= effect.Chance)
+                        {
+                            yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                        }
                     }
                 }
+                hit = i;
+                if (targetUnit.Monster.HP <= 0) break;
+            }
+            yield return ShowEffectiveness(typeEffectiveness);
+
+            if (hit > 1)
+            {
+                yield return dialogueBox.TypeDialogue($"Hit {hit} times!");
             }
 
             if (targetUnit.Monster.HP <= 0)
@@ -397,12 +413,15 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return dialogueBox.TypeDialogue("A critical hit!");
         }
+    }
 
-        if (damageDetails.TypeEffectiveness > 1f)
+    IEnumerator ShowEffectiveness(float typeEffectiveness)
+    {
+        if (typeEffectiveness > 1f)
         {
             yield return dialogueBox.TypeDialogue("It's super effective!");
         }
-        else if (damageDetails.TypeEffectiveness < 1f)
+        else if (typeEffectiveness < 1f)
         {
             yield return dialogueBox.TypeDialogue("It's not very effective!");
         }
