@@ -94,7 +94,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5742421351936295052
 RectTransform:
   m_ObjectHideFlags: 0
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0a22fbe50f3ac4694449fb1209d8e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storageUISlots:
+  storageSlots:
   - {fileID: 2947525336801817192}
   - {fileID: 8340004298955554900}
   - {fileID: 4649360447937019909}
@@ -247,6 +247,7 @@ MonoBehaviour:
   - {fileID: 2860863011269625581}
   - {fileID: 7225621899230546825}
   - {fileID: 2651832843728573659}
+  transferImage: {fileID: 4488836531441213932}
 --- !u!1 &25402941088017316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,8 +1504,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -640, y: 532.5}
-  m_SizeDelta: {x: 125, y: 125}
+  m_AnchoredPosition: {x: -643, y: 585}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5670636601672073801
 CanvasRenderer:
@@ -7188,10 +7189,10 @@ RectTransform:
   - {fileID: 3282838393892135159}
   m_Father: {fileID: 5742421351936295052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1740, y: -720}
+  m_SizeDelta: {x: 1640, y: 1440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7733183874558466030
 MonoBehaviour:
@@ -7573,10 +7574,10 @@ RectTransform:
   - {fileID: 852586500873837455}
   m_Father: {fileID: 5742421351936295052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 510, y: -720}
+  m_SizeDelta: {x: 820, y: 1440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8793348935571901360
 MonoBehaviour:
@@ -22495,10 +22496,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2008264661320614724, guid: 474eddbfadc73204aaf3be0f5635b944, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 3843545506589970367, guid: 474eddbfadc73204aaf3be0f5635b944, type: 3}
       propertyPath: m_Name
       value: StorageSlot

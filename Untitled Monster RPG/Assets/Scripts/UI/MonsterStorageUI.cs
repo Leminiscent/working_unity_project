@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.GenericSelectionUI;
 
 public class MonsterStorageUI : SelectionUI<ImageSlot>
 {
-    [SerializeField] List<ImageSlot> storageUISlots;
+    [SerializeField] List<ImageSlot> storageSlots;
+    [SerializeField] Image transferImage;
     List<StoragePartySlotUI> partySlots = new List<StoragePartySlotUI>();
-    List<StorageSlotUI> storageSlots = new List<StorageSlotUI>();
+    List<StorageSlotUI> depotSlots = new List<StorageSlotUI>();
+    List<Image> storageSlotImages = new List<Image>();
     MonsterParty party;
     MonsterStorage storage;
     int totalColumns = 9;
@@ -16,13 +20,13 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
     private void Awake()
     {
-        foreach (var slot in storageUISlots)
+        foreach (var slot in storageSlots)
         {
             var storageSlot = slot.GetComponent<StorageSlotUI>();
 
             if (storageSlot != null)
             {
-                storageSlots.Add(storageSlot);
+                depotSlots.Add(storageSlot);
             }
             else
             {
@@ -32,27 +36,29 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
         party = MonsterParty.GetPlayerParty();
         storage = MonsterStorage.GetPlayerStorage();
+        storageSlotImages = storageSlots.Select(s => s.transform.GetChild(0).GetComponent<Image>()).ToList();
+        transferImage.gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        SetItems(storageUISlots);
+        SetItems(storageSlots);
         SetSelectionSettings(SelectionType.Grid, totalColumns);
     }
 
     public void SetStorageData()
     {
-        for (int i = 0; i < storageSlots.Count; i++)
+        for (int i = 0; i < depotSlots.Count; i++)
         {
             var monster = storage.GetMonster(SelectedDepot, i);
 
             if (monster != null)
             {
-                storageSlots[i].SetData(monster);
+                depotSlots[i].SetData(monster);
             }
             else
             {
-                storageSlots[i].ClearData();
+                depotSlots[i].ClearData();
             }
         }
     }
@@ -100,6 +106,11 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             monster = storage.GetMonster(SelectedDepot, depotSlotIndex);
             storage.RemoveMonster(SelectedDepot, depotSlotIndex);
         }
+        
+        transferImage.sprite = storageSlotImages[slotIndex].sprite;
+        transferImage.transform.position = storageSlotImages[slotIndex].transform.position + Vector3.up * 50f;
+        storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
+        transferImage.gameObject.SetActive(true);
 
         return monster;
     }
@@ -126,5 +137,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             storage.AddMonster(monster, SelectedDepot, depotSlotIndex);
 
         }
+
+        transferImage.gameObject.SetActive(false);
     }
 }

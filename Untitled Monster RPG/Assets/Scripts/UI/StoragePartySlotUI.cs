@@ -15,7 +15,7 @@ public class StoragePartySlotUI : MonoBehaviour
         nameText.text = monster.Base.Name;
         levelText.text = "" + monster.Level;
         image.sprite = monster.Base.Sprite;
-        image.color = new Color(255, 255, 255, 255);
+        image.color = new Color(1, 1, 1, 1);
     }
 
     public void ClearData()
@@ -23,6 +23,6 @@ public class StoragePartySlotUI : MonoBehaviour
         nameText.text = "";
         levelText.text = "";
         image.sprite = null;
-        image.color = new Color(255, 255, 255, 0);
+        image.color = new Color(1, 1, 1, 0);
     }
 }
