@@ -51,12 +51,26 @@ public class GameMenuState : State<GameController>
         }
         else if (selection == 3)
         {
-            SavingSystem.i.Save("saveSlot1");
+            StartCoroutine(SaveSelected());
         }
         else if (selection == 4)
         {
-            SavingSystem.i.Load("saveSlot1");
+            StartCoroutine(LoadSelected());
         }
+    }
+
+    IEnumerator SaveSelected()
+    {
+        yield return Fader.Instance.FadeIn(0.5f);
+        SavingSystem.i.Save("saveSlot1");
+        yield return Fader.Instance.FadeOut(0.5f);
+    }
+
+    IEnumerator LoadSelected()
+    {
+        yield return Fader.Instance.FadeIn(0.5f);
+        SavingSystem.i.Load("saveSlot1");
+        yield return Fader.Instance.FadeOut(0.5f);
     }
 
     void OnBack()
