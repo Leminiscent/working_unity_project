@@ -78,7 +78,6 @@ public class StorageState : State<GameController>
             }
             party.Monsters.RemoveAll(m => m == null);
             party.PartyUpdated();
-
             storageUI.SetStorageData();
             storageUI.SetPartyData();
         }
@@ -90,6 +89,8 @@ public class StorageState : State<GameController>
         {
             isMovingMonster = false;
             storageUI.PlaceMonsterIntoSlot(selectedSlotToMove, selectedMonsterToMove);
+            storageUI.SetStorageData();
+            storageUI.SetPartyData();
         }
         else
         {
