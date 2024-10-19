@@ -14,6 +14,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] MoveEffects effects;
     [SerializeField] List<SecondaryEffects> secondaryEffects;
     [SerializeField] CritBehavior critBehavior;
+    [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
     [SerializeField] MoveTarget target;
     [SerializeField] Vector2Int hitRange;
     [SerializeField] int power;
@@ -48,6 +49,7 @@ public class MoveBase : ScriptableObject
     public string Description => description;
     public MonsterType Type => type;
     public CritBehavior CritBehavior => critBehavior;
+    public RecoilMoveEffect Recoil => recoil;
     public int Power => power;
     public int Accuracy => accuracy;
     public bool AlwaysHits => alwaysHits;
@@ -91,6 +93,13 @@ public class StatBoost
     public int boost;
 }
 
+[System.Serializable]
+public class RecoilMoveEffect
+{
+    public RecoilType recoilType;
+    public int recoilDamage = 0;
+}
+
 public enum MoveCategory
 {
     Physical,
@@ -110,4 +119,12 @@ public enum CritBehavior
     HighCritRatio,
     AlwaysCrits,
     NeverCrits
+}
+
+public enum RecoilType
+{
+    none,
+    RecoilByMaxHP,
+    RecoilByCurrentHP,
+    RecoilByDamage
 }

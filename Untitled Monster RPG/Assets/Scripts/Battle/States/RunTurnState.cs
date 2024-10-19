@@ -200,6 +200,8 @@ public class RunTurnState : State<BattleSystem>
 
             for (int i = 1; i <= hitCount; i++)
             {
+                var damageDetails = new DamageDetails();
+
                 sourceUnit.PlayAttackAnimation();
                 AudioManager.Instance.PlaySFX(move.Base.Sound);
                 yield return new WaitForSeconds(1f);
@@ -212,7 +214,7 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else
                 {
-                    var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, field.Weather);
+                    damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, field.Weather);
                     yield return targetUnit.Hud.WaitForHPUpdate();
                     yield return ShowDamageDetails(damageDetails);
                     typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -229,6 +231,8 @@ public class RunTurnState : State<BattleSystem>
                         }
                     }
                 }
+                yield return RunAfterMove(damageDetails, move.Base, sourceUnit.Monster, targetUnit.Monster);
+
                 hit = i;
                 if (targetUnit.Monster.HP <= 0) break;
             }
@@ -248,6 +252,42 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + "'s attack missed!");
         }
+    }
+
+    IEnumerator RunAfterMove(DamageDetails details, MoveBase move, Monster source, Monster target)
+    {
+        if (details == null)
+            yield break;
+
+        if (move.Recoil.recoilType != RecoilType.none)
+        {
+            int damage = 0;
+
+            switch (move.Recoil.recoilType)
+            {
+                case RecoilType.RecoilByMaxHP:
+                    int maxHp = source.MaxHp;
+
+                    damage = Mathf.FloorToInt(maxHp * (move.Recoil.recoilDamage / 100f));
+                    source.TakeRecoilDamage(damage);
+                    break;
+                case RecoilType.RecoilByCurrentHP:
+                    int currentHp = source.HP;
+
+                    damage = Mathf.FloorToInt(currentHp * (move.Recoil.recoilDamage / 100f));
+                    source.TakeRecoilDamage(damage);
+                    break;
+                case RecoilType.RecoilByDamage:
+                    damage = Mathf.FloorToInt(details.DamageDealt * (move.Recoil.recoilDamage / 100f));
+                    source.TakeRecoilDamage(damage);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
     }
 
     IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)

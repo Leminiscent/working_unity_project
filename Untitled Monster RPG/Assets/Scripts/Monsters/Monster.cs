@@ -272,7 +272,8 @@ public class Monster
         {
             TypeEffectiveness = type,
             Critical = critical,
-            Defeated = false
+            Defeated = false,
+            DamageDealt = 0
         };
         float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
         float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
@@ -282,8 +283,18 @@ public class Monster
         int damage = Mathf.FloorToInt(d * modifiers);
 
         DecreaseHP(damage);
-
+        damageDetails.DamageDealt = damage;
         return damageDetails;
+    }
+
+    public void TakeRecoilDamage(int damage)
+    {
+        if (damage < 1)
+        {
+            damage = 1;
+        }
+        DecreaseHP(damage);
+        StatusChanges.Enqueue($"{Base.Name} was damaged by the recoil!");
     }
 
     public void DecreaseHP(int damage)
@@ -381,6 +392,7 @@ public class DamageDetails
     public bool Defeated { get; set; }
     public float Critical { get; set; }
     public float TypeEffectiveness { get; set; }
+    public int DamageDealt { get; set; }
 }
 
 [System.Serializable]
