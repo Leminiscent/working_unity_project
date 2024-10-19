@@ -153,17 +153,22 @@ public class Monster
         {
             var stat = statBoost.stat;
             var boost = statBoost.boost;
+            bool changeIsPositive = boost > 0;
+            string riseOrFall;
+
+            if ((changeIsPositive && StatBoosts[stat] == 6) || (!changeIsPositive && StatBoosts[stat] == -6))
+            {
+                riseOrFall = changeIsPositive ? "higher" : "lower";
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} won't go any {riseOrFall}!");
+                return;
+            }
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+            riseOrFall = changeIsPositive ? "rose" : "fell";
 
-            if (boost > 0)
-            {
-                StatusChanges.Enqueue($"{Base.Name}'s {stat} rose!");
-            }
-            else
-            {
-                StatusChanges.Enqueue($"{Base.Name}'s {stat} fell!");
-            }
+            string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
+
+            StatusChanges.Enqueue($"{Base.Name}'s {stat}{bigChange}{riseOrFall}!");
         }
     }
 
