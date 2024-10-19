@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: 01_Kobold_Warrior
+  m_EditorClassIdentifier: 
+  name: Kobold Lancer
+  description: Strikes swiftly with its spear, using hit-and-run tactics to wear
+    down enemies.
+  sprite: {fileID: 21300000, guid: ce48215918750e04586e6d27dde83b77, type: 3}
+  type1: 9
+  type2: 0
+  size: 0
+  hp: 85
+  strength: 70
+  endurance: 65
+  intelligence: 55
+  fortitude: 50
+  agility: 95
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: af88d5f5e1dcb224caee0a65a8c3572f, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: c2fab8dfbf8f58c4ba4353f7b4d7298e, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: dc11ab15298034244b5ac426feeca8e5, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: 746fbb9aabf6a314fa0607ac56887f20, type: 2}
+    level: 6
+  - moveBase: {fileID: 11400000, guid: 5b5c363602cd4f94fb406ba51d763650, type: 2}
+    level: 12
+  - moveBase: {fileID: 11400000, guid: 98cd3e4c8c8e00b4aa4f1f39d4b8bf0b, type: 2}
+    level: 15
+  - moveBase: {fileID: 11400000, guid: a4586665f9b5a9844a73ffade4e03197, type: 2}
+    level: 21
+  - moveBase: {fileID: 11400000, guid: 2a70e2ef401d69a45b68c14c0f95cf6e, type: 2}
+    level: 24
+  - moveBase: {fileID: 11400000, guid: e61632e51e92c2f4dba137a8b88bb043, type: 2}
+    level: 33
+  learnableBySkillBook:
+  - {fileID: 11400000, guid: 33c0e645b37c08f4cbfce04083ba02c3, type: 2}
+  transformations:
+  - transformsInto: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+    requiredLevel: 16
+    requiredItem: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
+  expYield: 64
+  growthRate: 1
+  recruitRate: 220
+  recruitmentQuestions:
+  - questionText: Question 1
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2
+  - questionText: Question 2
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2
+  - questionText: Question 3
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2
+  - questionText: Question 4
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2
+  - questionText: Question 5
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2
+  - questionText: Question 6
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2
+  - questionText: Question 7
+    answers:
+    - answerText: Answer 1
+      affinityScore: 2
+    - answerText: Answer 2
+      affinityScore: 1
+    - answerText: Answer 3
+      affinityScore: -1
+    - answerText: Answer 4
+      affinityScore: -2

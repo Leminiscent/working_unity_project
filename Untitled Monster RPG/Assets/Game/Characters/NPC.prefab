@@ -80,12 +80,12 @@ SpriteRenderer:
   m_SortingLayerID: -1054946477
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2114887429, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
+  m_Sprite: {fileID: -1627446508, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.8, y: 1.2}
+  m_Size: {x: 0.16, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -154,8 +154,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.8, y: 1.2}
-    newSize: {x: 0.8, y: 1.2}
+    oldSize: {x: 1, y: 1.25}
+    newSize: {x: 0.16, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -177,14 +177,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     lines:
-    - Test line 1
-    - Test line 2
-  movementPattern:
-  - {x: 2, y: 0}
-  - {x: 0, y: -2}
-  - {x: -2, y: 0}
-  - {x: 0, y: 2}
-  patternRate: 3
+    - Hello!
+    - Hello?
+  questToStart: {fileID: 0}
+  questToComplete: {fileID: 0}
+  movementPattern: []
+  patternRate: 0
 --- !u!114 &1810711129107745403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,25 +209,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkDownSprites:
-  - {fileID: -2114887429, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 1040990936, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 1217203404, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: -1993171247, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
+  - {fileID: -1627446508, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: 1320016513, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: -1627446508, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: 1181327151, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   walkUpSprites:
-  - {fileID: 31432089, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: -840676606, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 385229306, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: -2143673128, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
+  - {fileID: -365134505, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: -1047201078, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: -365134505, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: -2130743824, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   walkRightSprites:
-  - {fileID: 619051164, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 1845282553, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 1275536959, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 1308391952, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
+  - {fileID: 996758465, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: -334292124, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: 996758465, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: -1178769184, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   walkLeftSprites:
-  - {fileID: -1081361861, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: -145722280, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: -733689482, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
-  - {fileID: 1698546325, guid: 6a5e12a28c9d99c4c8aae0d1534062d6, type: 3}
+  - {fileID: 1208692783, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: 418369803, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: 1208692783, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  - {fileID: 923172702, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  sailSprites: []
   defaultDirection: 1
 --- !u!114 &3369517469525453086
 MonoBehaviour:
@@ -243,10 +242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b15cf51bf8297c4b910ef93a4325610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  count: 1
+  item: {fileID: 11400000, guid: 30bcd45a212d8c54b81564d5c13e9155, type: 2}
+  count: 5
   dialogue:
-    lines: []
+    lines:
+    - Here, have some items!
 --- !u!114 &9001890826660269442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,4 +259,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueId: 
+  uniqueId: f0005eaa-b556-4d21-8d94-c0b9a9f73512
