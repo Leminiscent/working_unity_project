@@ -199,6 +199,15 @@ public class Monster
         return Moves.Count(m => m.Base == move) > 0;
     }
 
+    public bool HasType(MonsterType type)
+    {
+        if ((_base.Type1 == type) || (_base.Type2 == type))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public Transformation CheckForTransformation()
     {
         return Base.Transformations.FirstOrDefault(t => t.RequiredLevel <= Level);
