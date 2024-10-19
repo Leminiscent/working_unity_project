@@ -251,9 +251,19 @@ public class Monster
     {
         float critical = 1f;
 
-        if (Random.value * 100f <= 6.25f)
+        if (!(move.Base.CritBehavior == CritBehavior.NeverCrits))
         {
-            critical = 2f;
+            if (move.Base.CritBehavior == CritBehavior.AlwaysCrits)
+            {
+                critical = 1.5f;
+            }
+            else
+            {
+                int critChance = 0 + ((move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0); //Todo: Ability, HeldItem
+                float[] chances = new float[] { 4.167f, 12.5f, 50f, 100f };
+                if (Random.value * 100f <= chances[Mathf.Clamp(critChance, 0, 3)])
+                    critical = 1.5f;
+            }
         }
 
         float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);

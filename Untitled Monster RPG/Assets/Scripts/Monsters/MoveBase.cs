@@ -13,6 +13,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] MoveCategory category;
     [SerializeField] MoveEffects effects;
     [SerializeField] List<SecondaryEffects> secondaryEffects;
+    [SerializeField] CritBehavior critBehavior;
     [SerializeField] MoveTarget target;
     [SerializeField] Vector2Int hitRange;
     [SerializeField] int power;
@@ -46,6 +47,7 @@ public class MoveBase : ScriptableObject
     public string Name => name;
     public string Description => description;
     public MonsterType Type => type;
+    public CritBehavior CritBehavior => critBehavior;
     public int Power => power;
     public int Accuracy => accuracy;
     public bool AlwaysHits => alwaysHits;
@@ -100,4 +102,12 @@ public enum MoveTarget
 {
     Enemy,
     Self
+}
+
+public enum CritBehavior
+{
+    none,
+    HighCritRatio,
+    AlwaysCrits,
+    NeverCrits
 }
