@@ -23,10 +23,10 @@ public class HPBar : MonoBehaviour
         while (isDamaging ? (curHp - newHp > Mathf.Epsilon) : (curHp - newHp < Mathf.Epsilon))
         {
             curHp -= changeAmt * Time.deltaTime;
-            health.transform.localScale = new Vector3(curHp, 1f);
+            health.transform.localScale = new Vector3(curHp, 1f, 1f);
             yield return null;
         }
-        health.transform.localScale = new Vector3(newHp, 1f);
+        health.transform.localScale = new Vector3(newHp, 1f, 1f);
 
         IsUpdating = false;
     }
