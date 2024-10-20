@@ -4,33 +4,67 @@ using UnityEngine;
 
 public class DeputyController : MonoBehaviour
 {
-    private Character character;
-
-    public void Follow(Vector3 movePosition)
-    {
-        Vector2 moveVector = movePosition - this.transform.position;
-
-        moveVector = moveVector.Generalize();
-
-        if (!character.IsMoving)
-        {
-            StartCoroutine(this.character.Move(moveVector, null, true));
-        }
-    }
+    private CharacterAnimator animator;
+    private bool isMoving;
+    private PlayerController player;
+    private float moveSpeed;
 
     private void Start()
     {
-        character = GetComponent<Character>();
-        this.transform.position = GameController.Instance.PlayerController.transform.position;
+        player = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
+        animator = GetComponent<CharacterAnimator>();
+        SetPosition();
     }
 
-    private void Update()
+    public void Follow(Vector3 movePosition)
     {
-        if (Vector3.Distance(transform.position, GameController.Instance.PlayerController.transform.position) > 3f)
+        if (isMoving)
+            return;
+
+        moveSpeed = player.Character.moveSpeed;
+        Vector2 moveVector = movePosition - this.transform.position;
+        StartCoroutine(Move(moveVector));
+    }
+
+    public void SetPosition()
+    {
+        this.transform.position = player.transform.position;
+        this.animator.IsMoving = false;
+        isMoving = false;
+    }
+
+    public IEnumerator Move(Vector2 moveVec)
+    {
+        animator.MoveX = Mathf.Clamp(moveVec.x, -1f, 1f);
+        animator.MoveY = Mathf.Clamp(moveVec.y, -1f, 1f);
+
+        var targetPos = transform.position;
+        targetPos.x += moveVec.x;
+        targetPos.y += moveVec.y;
+
+        isMoving = true;
+        animator.IsMoving = true;
+
+        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = GameController.Instance.PlayerController.transform.position;
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            yield return null;
         }
 
-        character.HandleUpdate();
+        transform.position = targetPos;
+
+        isMoving = false;
+        yield return StandStill();
+    }
+
+    private IEnumerator StandStill()
+    {
+        Vector3 myPosition = this.transform.position;
+        yield return new WaitForFixedUpdate();
+
+        if (myPosition == transform.position)
+        {
+            animator.IsMoving = false;
+        }
     }
 }

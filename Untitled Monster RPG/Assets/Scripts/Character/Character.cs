@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
     CharacterAnimator animator;
     public float moveSpeed;
     public bool IsMoving { get; private set; }
-    public float offestY { get; private set; } = 0.3f;
+    public float OffestY { get; private set; } = 0.3f;
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
     public void SetPositionAndSnapToTile(Vector2 pos)
     {
         pos.x = Mathf.Floor(pos.x) + 0.5f;
-        pos.y = Mathf.Floor(pos.y) + 0.5f + offestY;
+        pos.y = Mathf.Floor(pos.y) + 0.5f + OffestY;
         transform.position = pos;
     }
 
@@ -67,7 +67,7 @@ public class Character : MonoBehaviour
         animator.IsMoving = IsMoving;
     }
 
-    private bool IsPathClear(Vector3 targetPos)
+    public bool IsPathClear(Vector3 targetPos)
     {
         var diff = targetPos - transform.position;
         var dir = diff.normalized;

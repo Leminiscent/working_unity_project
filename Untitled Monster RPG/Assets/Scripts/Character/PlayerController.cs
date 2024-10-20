@@ -10,12 +10,14 @@ public class PlayerController : MonoBehaviour, ISavable
     [SerializeField] Sprite sprite;
     private Vector2 input;
     private Character character;
+    private DeputyController deputy;
     public static PlayerController Instance { get; private set; }
 
     void Awake()
     {
         Instance = this;
         character = GetComponent<Character>();
+        deputy = FindObjectOfType<DeputyController>().GetComponent<DeputyController>();
     }
 
     public void HandleUpdate()
@@ -29,7 +31,10 @@ public class PlayerController : MonoBehaviour, ISavable
 
             if (input != Vector2.zero)
             {
-                GameController.Instance.DeputyController.Follow(GameController.Instance.PlayerController.transform.position);
+                if (character.IsPathClear((Vector2)this.transform.position + input))
+                {
+                    deputy.Follow(this.transform.position);
+                }
                 StartCoroutine(character.Move(input, OnMoveOver));
             }
         }
@@ -58,7 +63,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private void OnMoveOver()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, character.offestY), 0.2f, GameLayers.Instance.TriggerableLayers);
+        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, character.OffestY), 0.2f, GameLayers.Instance.TriggerableLayers);
         IPlayerTriggerable triggerable = null;
 
         foreach (var collider in colliders)
@@ -105,6 +110,7 @@ public class PlayerController : MonoBehaviour, ISavable
     public string Name => name;
     public Sprite Sprite => sprite;
     public Character Character => character;
+    public DeputyController Deputy { get => deputy; set => deputy = value; }
 }
 
 [Serializable]

@@ -39,6 +39,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         var destPortal = FindObjectsOfType<Portal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
 
         player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
+        player.Deputy.SetPosition();
         yield return fader.FadeOut(0.5f);
         GameController.Instance.PauseGame(false);
         Destroy(gameObject);
