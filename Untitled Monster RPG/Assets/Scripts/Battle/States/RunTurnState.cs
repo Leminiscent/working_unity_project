@@ -151,6 +151,29 @@ public class RunTurnState : State<BattleSystem>
             return true;
         }
 
+        if (move.Base.OneHitKO.isOneHitKO)
+        {
+            if (source.Level < target.Level)
+            {
+                return false;
+            }
+            if (target.HasType(move.Base.OneHitKO.immunityType))
+            {
+                return false;
+            }
+
+            int baseAccuracy = move.Base.Accuracy;
+
+            if (move.Base.OneHitKO.lowerOddsException)
+            {
+                baseAccuracy = source.HasType(move.Base.Type) ? baseAccuracy : baseAccuracy / 2;
+            }
+
+            int chance = source.Level - target.Level + baseAccuracy;
+
+            return Random.Range(1, 101) <= chance;
+        }
+
         float moveAccuracy = move.Base.Accuracy;
         int accuracy = source.StatBoosts[Stat.Accuracy];
         int evasion = target.StatBoosts[Stat.Evasion];

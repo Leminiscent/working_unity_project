@@ -16,6 +16,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] CritBehavior critBehavior;
     [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
     [SerializeField] int drainPercentage = 0;
+    [SerializeField] OneHitKOMoveEffect oneHitKO = new OneHitKOMoveEffect();
     [SerializeField] MoveTarget target;
     [SerializeField] Vector2Int hitRange;
     [SerializeField] int power;
@@ -52,6 +53,7 @@ public class MoveBase : ScriptableObject
     public CritBehavior CritBehavior => critBehavior;
     public RecoilMoveEffect Recoil => recoil;
     public int DrainPercentage => drainPercentage;
+    public OneHitKOMoveEffect OneHitKO => oneHitKO;
     public int Power => power;
     public int Accuracy => accuracy;
     public bool AlwaysHits => alwaysHits;
@@ -101,6 +103,15 @@ public class RecoilMoveEffect
     public RecoilType recoilType;
     public int recoilDamage = 0;
 }
+
+[System.Serializable]
+public class OneHitKOMoveEffect
+{
+    public bool isOneHitKO;
+    public bool lowerOddsException;
+    public MonsterType immunityType;
+}
+
 
 public enum MoveCategory
 {

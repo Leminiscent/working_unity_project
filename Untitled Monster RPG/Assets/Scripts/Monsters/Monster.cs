@@ -249,6 +249,14 @@ public class Monster
 
     public DamageDetails TakeDamage(Move move, Monster attacker, Condition weather)
     {
+        if (move.Base.OneHitKO.isOneHitKO)
+        {
+            int oneHitDamage = HP;
+
+            DecreaseHP(oneHitDamage);
+            return new DamageDetails() { TypeEffectiveness = 1f, Critical = 1f, Defeated = false };
+        }
+
         float critical = 1f;
 
         if (!(move.Base.CritBehavior == CritBehavior.NeverCrits))
@@ -261,8 +269,11 @@ public class Monster
             {
                 int critChance = 0 + ((move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0); //Todo: Ability, HeldItem
                 float[] chances = new float[] { 4.167f, 12.5f, 50f, 100f };
+
                 if (Random.value * 100f <= chances[Mathf.Clamp(critChance, 0, 3)])
+                {
                     critical = 1.5f;
+                }
             }
         }
 
