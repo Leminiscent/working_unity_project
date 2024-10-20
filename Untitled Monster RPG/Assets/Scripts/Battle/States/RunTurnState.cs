@@ -316,10 +316,9 @@ public class RunTurnState : State<BattleSystem>
 
         if (move.DrainPercentage != 0)
         {
-            int healedHP = Mathf.Clamp(Mathf.CeilToInt(details.DamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
+            int heal = Mathf.Clamp(Mathf.CeilToInt(details.DamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
 
-            sourceUnit.Monster.IncreaseHP(healedHP);
-            yield return sourceUnit.Hud.WaitForHPUpdate();
+            sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster);
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);

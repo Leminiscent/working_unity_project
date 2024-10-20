@@ -308,6 +308,16 @@ public class Monster
         StatusChanges.Enqueue($"{Base.Name} was damaged by the recoil!");
     }
 
+    public void DrainHealth(int heal, Monster target)
+    {
+        if (heal < 1)
+        {
+            heal = 1;
+        }
+        IncreaseHP(heal);
+        StatusChanges.Enqueue($"{Base.Name} drained health from {target.Base.Name}!");
+    }
+
     public void DecreaseHP(int damage)
     {
         HP = Mathf.Clamp(HP - damage, 0, MaxHp);
