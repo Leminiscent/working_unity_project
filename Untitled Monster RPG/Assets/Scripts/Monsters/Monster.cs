@@ -132,7 +132,7 @@ public class Monster
             HP += MaxHP - prevMaxHP;
     }
 
-    void ResetStatBoosts()
+    public void ResetStatBoosts()
     {
         StatBoosts = new Dictionary<Stat, int>()
         {

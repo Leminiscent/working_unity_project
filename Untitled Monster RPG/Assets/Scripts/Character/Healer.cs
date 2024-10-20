@@ -15,7 +15,7 @@ public class Healer : MonoBehaviour
 
             var playerParty = player.GetComponent<MonsterParty>();
 
-            playerParty.Monsters.ForEach(m => m.Heal());
+            playerParty.RestoreParty();
             playerParty.PartyUpdated();
             yield return Fader.Instance.FadeOut(0.5f);
             yield return DialogueManager.Instance.ShowDialogueText("All healed up! Come back if you need more healing!", true);

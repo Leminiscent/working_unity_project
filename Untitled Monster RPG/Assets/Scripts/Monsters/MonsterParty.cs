@@ -50,7 +50,7 @@ public class MonsterParty : MonoBehaviour
 
     public bool CheckForTransformations()
     {
-       return monsters.Any(m => m.CheckForTransformation() != null);
+        return monsters.Any(m => m.CheckForTransformation() != null);
     }
 
     public IEnumerator RunTransformations()
@@ -62,6 +62,22 @@ public class MonsterParty : MonoBehaviour
             if (transformation != null)
             {
                 yield return TransformationState.Instance.Transform(monster, transformation);
+            }
+        }
+    }
+
+    public void RestoreParty()
+    {
+        foreach (Monster monster in monsters)
+        {
+            monster.CureStatus();
+            monster.CureVolatileStatus();
+            monster.Heal();
+            monster.ResetStatBoosts();
+
+            foreach (Move mov in monster.Moves)
+            {
+                mov.SP = mov.Base.SP;
             }
         }
     }
