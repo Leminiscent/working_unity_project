@@ -6,9 +6,12 @@ using UnityEngine;
 public class MapArea : MonoBehaviour
 {
     [SerializeField] List<MonsterEncounterRecord> wildMonsters;
+    [SerializeField] BattleTrigger terrain;
 
     [HideInInspector]
     [SerializeField] int totalChance = 0;
+
+    public BattleTrigger Terrain => terrain;
 
     private void OnValidate()
     {

@@ -53,14 +53,15 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void StartWildBattle(BattleTrigger trigger)
+    public void StartWildBattle()
     {
-        BattleState.Instance.Trigger = trigger;
+        BattleState.Instance.Trigger = CurrentScene.GetComponent<MapArea>().Terrain;
         StateMachine.Push(BattleState.Instance);
     }
 
     public void StartMasterBattle(MasterController master)
     {
+        BattleState.Instance.Trigger = CurrentScene.GetComponent<MapArea>().Terrain;
         BattleState.Instance.Master = master;
         StateMachine.Push(BattleState.Instance);
     }

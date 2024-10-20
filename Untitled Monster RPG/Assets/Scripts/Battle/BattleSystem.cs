@@ -68,7 +68,7 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger = BattleTrigger.Field)
+    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger)
     {
         IsMasterBattle = false;
 
@@ -80,7 +80,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger = BattleTrigger.Field)
+    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger)
     {
         IsMasterBattle = true;
 
