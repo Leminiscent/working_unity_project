@@ -305,7 +305,7 @@ public class Monster
             damage = 1;
         }
         DecreaseHP(damage);
-        StatusChanges.Enqueue($"{Base.Name} took {damage} damage from the recoil!");
+        StatusChanges.Enqueue($"{Base.Name} was damaged by the recoil!");
     }
 
     public void DrainHealth(int heal, Monster target)
@@ -315,7 +315,7 @@ public class Monster
             heal = 1;
         }
         IncreaseHP(heal);
-        StatusChanges.Enqueue($"{Base.Name} drained {heal} health from {target.Base.Name}!");
+        StatusChanges.Enqueue($"{Base.Name} drained health from {target.Base.Name}!");
     }
 
     public void DecreaseHP(int damage)
