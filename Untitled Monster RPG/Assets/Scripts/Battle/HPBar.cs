@@ -20,13 +20,16 @@ public class HPBar : MonoBehaviour
         bool isDamaging = curHp - newHp > 0;
         float changeAmt = curHp - newHp;
 
-        while (isDamaging ? (curHp - newHp > Mathf.Epsilon) : (curHp - newHp < Mathf.Epsilon))
+        if (changeAmt != 0)
         {
-            curHp -= changeAmt * Time.deltaTime;
-            health.transform.localScale = new Vector3(curHp, 1f, 1f);
-            yield return null;
+            while (isDamaging ? (curHp - newHp > Mathf.Epsilon) : (curHp - newHp < Mathf.Epsilon))
+            {
+                curHp -= changeAmt * Time.deltaTime;
+                health.transform.localScale = new Vector3(curHp, 1f, 1f);
+                yield return null;
+            }
+            health.transform.localScale = new Vector3(newHp, 1f, 1f);
         }
-        health.transform.localScale = new Vector3(newHp, 1f, 1f);
 
         IsUpdating = false;
     }

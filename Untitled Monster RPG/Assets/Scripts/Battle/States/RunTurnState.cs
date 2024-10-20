@@ -231,7 +231,7 @@ public class RunTurnState : State<BattleSystem>
                         }
                     }
                 }
-                yield return RunAfterMove(damageDetails, move.Base, sourceUnit.Monster, targetUnit.Monster);
+                yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
 
                 hit = i;
                 if (targetUnit.Monster.HP <= 0) break;
@@ -254,7 +254,7 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    IEnumerator RunAfterMove(DamageDetails details, MoveBase move, Monster source, Monster target)
+    IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         if (details == null)
             yield break;
@@ -266,28 +266,36 @@ public class RunTurnState : State<BattleSystem>
             switch (move.Recoil.recoilType)
             {
                 case RecoilType.RecoilByMaxHP:
-                    int maxHp = source.MaxHp;
+                    int maxHp = sourceUnit.Monster.MaxHp;
 
                     damage = Mathf.FloorToInt(maxHp * (move.Recoil.recoilDamage / 100f));
-                    source.TakeRecoilDamage(damage);
+                    sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByCurrentHP:
-                    int currentHp = source.HP;
+                    int currentHp = sourceUnit.Monster.HP;
 
                     damage = Mathf.FloorToInt(currentHp * (move.Recoil.recoilDamage / 100f));
-                    source.TakeRecoilDamage(damage);
+                    sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByDamage:
                     damage = Mathf.FloorToInt(details.DamageDealt * (move.Recoil.recoilDamage / 100f));
-                    source.TakeRecoilDamage(damage);
+                    sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 default:
                     break;
             }
         }
 
-        yield return ShowStatusChanges(source);
-        yield return ShowStatusChanges(target);
+        if (move.DrainPercentage != 0)
+        {
+            int healedHP = Mathf.Clamp(Mathf.CeilToInt(details.DamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
+
+            sourceUnit.Monster.IncreaseHP(healedHP);
+            yield return sourceUnit.Hud.WaitForHPUpdate();
+        }
+
+        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return ShowStatusChanges(targetUnit.Monster);
     }
 
     IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)

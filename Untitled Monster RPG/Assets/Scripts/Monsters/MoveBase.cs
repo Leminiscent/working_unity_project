@@ -15,6 +15,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] List<SecondaryEffects> secondaryEffects;
     [SerializeField] CritBehavior critBehavior;
     [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
+    [SerializeField] int drainPercentage = 0;
     [SerializeField] MoveTarget target;
     [SerializeField] Vector2Int hitRange;
     [SerializeField] int power;
@@ -50,6 +51,7 @@ public class MoveBase : ScriptableObject
     public MonsterType Type => type;
     public CritBehavior CritBehavior => critBehavior;
     public RecoilMoveEffect Recoil => recoil;
+    public int DrainPercentage => drainPercentage;
     public int Power => power;
     public int Accuracy => accuracy;
     public bool AlwaysHits => alwaysHits;
