@@ -45,8 +45,8 @@ public class RunTurnState : State<BattleSystem>
     {
         if (playerAction == BattleAction.Fight)
         {
-            playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves[battleSystem.SelectedMove];
-            enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove();
+            playerUnit.Monster.CurrentMove = (battleSystem.SelectedMove != -1) ? playerUnit.Monster.Moves[battleSystem.SelectedMove] : new Move(GlobalSettings.Instance.BackupMove);
+            enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
 
             int playerMovePriority = playerUnit.Monster.CurrentMove.Base.Priority;
             int enemyMovePriority = enemyUnit.Monster.CurrentMove.Base.Priority;
@@ -87,8 +87,8 @@ public class RunTurnState : State<BattleSystem>
                 yield return AttemptEscape();
             }
 
-            var enemyMove = enemyUnit.Monster.GetRandomMove();
-            yield return RunMove(enemyUnit, playerUnit, enemyMove);
+            enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
+            yield return RunMove(enemyUnit, playerUnit, enemyUnit.Monster.CurrentMove);
             yield return RunAfterTurn(enemyUnit);
             if (battleSystem.BattleIsOver) yield break;
         }
@@ -190,6 +190,11 @@ public class RunTurnState : State<BattleSystem>
 
         yield return ShowStatusChanges(sourceUnit.Monster);
         move.SP--;
+
+        if (move.Base == GlobalSettings.Instance.BackupMove)
+        {
+            yield return dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} has no SP left!");
+        }
         yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
 
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))

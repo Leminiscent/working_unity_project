@@ -347,6 +347,12 @@ public class Monster
     public Move GetRandomMove()
     {
         var movesWithSP = Moves.Where(x => x.SP > 0).ToList();
+
+        if (movesWithSP.Count == 0)
+        {
+            return null;
+        }
+
         int randomIndex = Random.Range(0, movesWithSP.Count);
 
         return movesWithSP[randomIndex];

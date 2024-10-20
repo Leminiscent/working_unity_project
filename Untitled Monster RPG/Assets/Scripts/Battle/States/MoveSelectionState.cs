@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utils.GenericSelectionUI;
 using Utils.StateMachine;
@@ -23,6 +24,14 @@ public class MoveSelectionState : State<BattleSystem>
     {
         battleSystem = owner;
         selectionUI.SetMoves(Moves);
+
+        if (Moves.Where(m => m.SP > 0).Count() == 0)
+        {
+            battleSystem.SelectedMove = -1;
+            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            return;
+        }
+        
         selectionUI.gameObject.SetActive(true);
         moveDetailsUI.SetActive(true);
         battleSystem.DialogueBox.EnableDialogueText(false);
