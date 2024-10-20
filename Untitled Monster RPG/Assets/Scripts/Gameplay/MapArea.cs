@@ -6,13 +6,9 @@ using UnityEngine;
 public class MapArea : MonoBehaviour
 {
     [SerializeField] List<MonsterEncounterRecord> wildMonsters;
-    [SerializeField] List<MonsterEncounterRecord> wildWaterMonsters;
 
     [HideInInspector]
     [SerializeField] int totalChance = 0;
-
-    [HideInInspector]
-    [SerializeField] int totalChanceWater = 0;
 
     private void OnValidate()
     {
@@ -27,36 +23,24 @@ public class MapArea : MonoBehaviour
     void CalculateSpawnChance()
     {
         totalChance = -1;
-        totalChanceWater = -1;
 
         if (wildMonsters.Count > 0)
         {
             totalChance = 0;
             foreach (var record in wildMonsters)
             {
-                record.chanceLower = totalChance;
-                record.chanceUpper = totalChance + record.spawnChance;
+                record.ChanceLower = totalChance;
+                record.ChanceUpper = totalChance + record.spawnChance;
                 totalChance += record.spawnChance;
-            }
-        }
-
-        if (wildWaterMonsters.Count > 0)
-        {
-            totalChanceWater = 0;
-            foreach (var record in wildWaterMonsters)
-            {
-                record.chanceLower = totalChanceWater;
-                record.chanceUpper = totalChanceWater + record.spawnChance;
-                totalChanceWater += record.spawnChance;
             }
         }
     }
 
-    public Monster GetRandomWildMonster(BattleTrigger trigger)
+    public Monster GetRandomWildMonster()
     {
-        var monsterList = (trigger == BattleTrigger.Ground) ? wildMonsters : wildWaterMonsters;
+        var monsterList = wildMonsters;
         int randVal = Random.Range(1, 101);
-        var monsterRecord = monsterList.First(m => randVal >= m.chanceLower && randVal <= m.chanceUpper);
+        var monsterRecord = monsterList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
         var levelRange = monsterRecord.levelRange;
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
         var wildMonster = new Monster(monsterRecord.monster, level);
@@ -73,6 +57,6 @@ public class MonsterEncounterRecord
     public Vector2Int levelRange;
     public int spawnChance;
 
-    public int chanceLower { get; set; }
-    public int chanceUpper { get; set; }
+    public int ChanceLower { get; set; }
+    public int ChanceUpper { get; set; }
 }

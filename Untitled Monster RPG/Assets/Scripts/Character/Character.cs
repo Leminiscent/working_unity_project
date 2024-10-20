@@ -48,11 +48,6 @@ public class Character : MonoBehaviour
             yield break;
         }
 
-        if (animator.IsSailing && Physics2D.OverlapCircle(targetPos, 0.3f, GameLayers.Instance.WaterLayer) == null)
-        {
-            animator.IsSailing = false;
-        }
-
         IsMoving = true;
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
@@ -77,11 +72,6 @@ public class Character : MonoBehaviour
         var diff = targetPos - transform.position;
         var dir = diff.normalized;
         var collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer;
-
-        if (!animator.IsSailing)
-        {
-            collisionLayer |= GameLayers.Instance.WaterLayer;
-        }
 
         if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer) == true)
         {
