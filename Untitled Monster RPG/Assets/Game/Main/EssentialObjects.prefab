@@ -1034,9 +1034,6 @@ MonoBehaviour:
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 32768
-  waterLayer:
-    serializedVersion: 2
-    m_Bits: 16
 --- !u!114 &7428171737727562100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3495,8 +3492,14 @@ MonoBehaviour:
   masterBattleMusic: {fileID: 8300000, guid: c616e9b461d41a2408be0b54f3a2c644, type: 3}
   battleVictoryMusic: {fileID: 8300000, guid: 42a6ef9113512194097ab077a6cbb2b6, type: 3}
   backgroundImage: {fileID: 4026935577351587265}
-  groundBackground: {fileID: 21300000, guid: eab7269bd5383ab47aaaa9565d90c6d9, type: 3}
-  waterBackground: {fileID: 21300000, guid: 84ac8c07f14f5914c987660170f65495, type: 3}
+  desertBackground: {fileID: 21300000, guid: 6575118da86c5be439c06f0d87d99caf, type: 3}
+  desertOasisBackground: {fileID: 21300000, guid: 84ac8c07f14f5914c987660170f65495, type: 3}
+  fieldBackground: {fileID: 21300000, guid: 38ac2e2ae27cb5642b083374edb7af8d, type: 3}
+  fieldLakeBackground: {fileID: 21300000, guid: eab7269bd5383ab47aaaa9565d90c6d9, type: 3}
+  meadowBackground: {fileID: 21300000, guid: 898b2e36671245d4dba8fea997a8b6ab, type: 3}
+  mountainBackground: {fileID: 21300000, guid: 5fe575b436caa8c488c42065fb18470d, type: 3}
+  mountainCloudsBackground: {fileID: 21300000, guid: ea11f5f1fb886004cb1fb432f7d4216a, type: 3}
+  wastelandBackground: {fileID: 21300000, guid: 45a5176a7403a1d4ca597168e2be00cc, type: 3}
 --- !u!114 &1111094633315783786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4238,7 +4241,6 @@ MonoBehaviour:
   walkUpSprites: []
   walkRightSprites: []
   walkLeftSprites: []
-  sailSprites: []
   defaultDirection: 1
 --- !u!114 &1489924708215288470
 MonoBehaviour:
