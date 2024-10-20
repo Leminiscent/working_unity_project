@@ -390,6 +390,8 @@ public class RunTurnState : State<BattleSystem>
                 AudioManager.Instance.PlayMusic(battleSystem.BattleVictoryMusic);
             }
 
+            playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
+
             int expYield = defeatedUnit.Monster.Base.ExpYield;
             int enemyLevel = defeatedUnit.Monster.Level;
             float masterBonus = isMasterBattle ? 1.5f : 1f;

@@ -48,8 +48,17 @@ public class Monster
             }
         }
 
-        Exp = Base.GetExpForLevel(Level);
+        StatPerformanceValues = new Dictionary<Stat, int>()
+        {
+            { Stat.HP, 0 },
+            { Stat.Strength, 0 },
+            { Stat.Endurance, 0 },
+            { Stat.Intelligence, 0 },
+            { Stat.Fortitude, 0 },
+            { Stat.Agility, 0 }
+        };
 
+        Exp = Base.GetExpForLevel(Level);
         CalculateStats();
         HP = MaxHP;
 
@@ -71,9 +80,14 @@ public class Monster
         {
             Status = ConditionsDB.Conditions[saveData.statusId.Value];
         }
-        else Status = null;
+        else
+        {
+            Status = null;
+        }
 
         Moves = saveData.moves.Select(s => new Move(s)).ToList();
+        StatPerformanceValues = saveData.statPerformanceValues.ToDictionary(s => s.stat, s => s.pv);
+
         CalculateStats();
         StatusChanges = new Queue<string>();
         ResetStatBoosts();
@@ -89,7 +103,12 @@ public class Monster
             level = Level,
             exp = Exp,
             statusId = Status?.ID,
-            moves = Moves.Select(m => m.GetSaveData()).ToList()
+            moves = Moves.Select(m => m.GetSaveData()).ToList(),
+            statPerformanceValues = StatPerformanceValues.Select(s => new StatPV
+            {
+                stat = s.Key,
+                pv = s.Value
+            }).ToList()
         };
 
         return saveData;
@@ -97,22 +116,20 @@ public class Monster
 
     void CalculateStats()
     {
-        int prevMaxHp = MaxHP;
-
-        MaxHP = Mathf.FloorToInt(Base.HP * Level / 100f) + 10 + Level;
-        if (prevMaxHp != 0)
+        Stats = new Dictionary<Stat, int>
         {
-            HP += MaxHP - prevMaxHp;
-        }
-
-        Stats = new Dictionary<Stat, int>()
-        {
-            { Stat.Strength, Mathf.FloorToInt(Base.Strength * Level / 100f) + 5 },
-            { Stat.Endurance, Mathf.FloorToInt(Base.Endurance * Level / 100f) + 5 },
-            { Stat.Intelligence, Mathf.FloorToInt(Base.Intelligence * Level / 100f) + 5 },
-            { Stat.Fortitude, Mathf.FloorToInt(Base.Fortitude * Level / 100f) + 5 },
-            { Stat.Agility, Mathf.FloorToInt(Base.Agility * Level / 100f) + 5 },
+            { Stat.Strength, Mathf.FloorToInt(((2f * Base.Strength + (StatPerformanceValues[Stat.Strength] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Endurance, Mathf.FloorToInt(((2f * Base.Endurance + (StatPerformanceValues[Stat.Endurance] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Intelligence, Mathf.FloorToInt(((2f * Base.Intelligence + (StatPerformanceValues[Stat.Intelligence] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Fortitude, Mathf.FloorToInt(((2f * Base.Fortitude + (StatPerformanceValues[Stat.Fortitude] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Agility, Mathf.FloorToInt(((2f * Base.Agility + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) } // Todo Nature + IV's
         };
+
+        int prevMaxHP = MaxHP;
+        MaxHP = Mathf.FloorToInt(((2f * Base.HP + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
+
+        if (prevMaxHP != 0)
+            HP += MaxHP - prevMaxHP;
     }
 
     void ResetStatBoosts()
@@ -166,10 +183,27 @@ public class Monster
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
             riseOrFall = changeIsPositive ? "rose" : "fell";
 
-            string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
+            string bigChange = (Mathf.Abs(boost) >= 3) ? " spverly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
 
             StatusChanges.Enqueue($"{Base.Name}'s {stat}{bigChange}{riseOrFall}!");
         }
+    }
+
+    public void GainPvs(Dictionary<Stat, int> pvGained)
+    {
+        foreach (var spv in StatPerformanceValues.ToArray())
+        {
+            if (spv.Value < GlobalSettings.Instance.MaxPvPerStat && GetTotalPvs() < GlobalSettings.Instance.MaxPvs)
+            {
+                pvGained[spv.Key] = Mathf.Clamp(pvGained[spv.Key], 0, GlobalSettings.Instance.MaxPvs - GetTotalPvs());
+                StatPerformanceValues[spv.Key] = Mathf.Clamp(StatPerformanceValues[spv.Key] += pvGained[spv.Key], 0, GlobalSettings.Instance.MaxPvPerStat);
+            }
+        }
+    }
+
+    public int GetTotalPvs()
+    {
+        return StatPerformanceValues.Values.Sum();
     }
 
     public bool CheckForLevelUp()
@@ -246,6 +280,7 @@ public class Monster
     public int Intelligence => GetStat(Stat.Intelligence);
     public int Fortitude => GetStat(Stat.Fortitude);
     public int Agility => GetStat(Stat.Agility);
+    public Dictionary<Stat, int> StatPerformanceValues { get; private set; }
 
     public DamageDetails TakeDamage(Move move, Monster attacker, Condition weather)
     {
@@ -411,6 +446,7 @@ public class Monster
     {
         VolatileStatus = null;
         ResetStatBoosts();
+        CalculateStats();
     }
 }
 
@@ -431,4 +467,12 @@ public class MonsterSaveData
     public int exp;
     public ConditionID? statusId;
     public List<MoveSaveData> moves;
+    public List<StatPV> statPerformanceValues;
+}
+
+[System.Serializable]
+public class StatPV
+{
+    public Stat stat;
+    public int pv;
 }

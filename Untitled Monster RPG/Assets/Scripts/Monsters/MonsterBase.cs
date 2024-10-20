@@ -5,24 +5,42 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
 public class MonsterBase : ScriptableObject
 {
+    [Header("Basic Details")]
     [SerializeField] new string name;
     [TextArea]
     [SerializeField] string description;
     [SerializeField] Sprite sprite;
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
+
+    [Header("Stats")]
     [SerializeField] int hp;
     [SerializeField] int strength;
     [SerializeField] int endurance;
     [SerializeField] int intelligence;
     [SerializeField] int fortitude;
     [SerializeField] int agility;
+
+    [Header("Performance Value Yield")]
+    [SerializeField] int hpPvYield = 0;
+    [SerializeField] int strengthPvYield = 0;
+    [SerializeField] int endurancePvYield = 0;
+    [SerializeField] int intelligencePvYield = 0;
+    [SerializeField] int fortitudePvYield = 0;
+    [SerializeField] int agilityPvYield = 0;
+
+    [Header("Moves")]
     [SerializeField] List<LearnableMove> learnableMoves;
     [SerializeField] List<MoveBase> learnableBySkillBook;
+
+    [Header("Transformations")]
     [SerializeField] List<Transformation> transformations;
-    public static int MaxMoveCount { get; set; } = 4;
+
+    [Header("Experience")]
     [SerializeField] int expYield;
     [SerializeField] GrowthRate growthRate;
+
+    [Header("Recruitment")]
     [SerializeField] int recruitRate;
     [SerializeField] List<RecruitmentQuestion> recruitmentQuestions;
 
@@ -55,6 +73,7 @@ public class MonsterBase : ScriptableObject
         }
         return -1;
     }
+
     public string Name => name;
     public string Description => description;
     public Sprite Sprite => sprite;
@@ -66,8 +85,17 @@ public class MonsterBase : ScriptableObject
     public int Intelligence => intelligence;
     public int Fortitude => fortitude;
     public int Agility => agility;
+    public Dictionary<Stat, int> PvYield => new() {
+        { Stat.HP, hpPvYield },
+        { Stat.Strength, strengthPvYield },
+        { Stat.Endurance, endurancePvYield },
+        { Stat.Intelligence, intelligencePvYield },
+        { Stat.Fortitude, fortitudePvYield },
+        { Stat.Agility, agilityPvYield }
+};
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableBySkillBook => learnableBySkillBook;
+    public static int MaxMoveCount { get; set; } = 4;
     public List<Transformation> Transformations => transformations;
     public int ExpYield => expYield;
     public GrowthRate GrowthRate => growthRate;
@@ -152,6 +180,7 @@ public enum GrowthRate
 
 public enum Stat
 {
+    HP,
     Strength,
     Endurance,
     Intelligence,
@@ -159,13 +188,6 @@ public enum Stat
     Agility,
     Accuracy,
     Evasion
-}
-
-public enum MonsterSize
-{
-    Small,
-    Medium,
-    Large,
 }
 
 public class TypeChart
