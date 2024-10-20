@@ -32,11 +32,11 @@ public class RecoveryItem : ItemBase
 
             if (revive)
             {
-                monster.IncreaseHP(monster.MaxHp / 2);
+                monster.IncreaseHP(monster.MaxHP / 2);
             }
             else
             {
-                monster.IncreaseHP(monster.MaxHp);
+                monster.IncreaseHP(monster.MaxHP);
             }
 
             monster.CureStatus();
@@ -50,14 +50,14 @@ public class RecoveryItem : ItemBase
 
         if (restoreMaxHP || hpAmount > 0)
         {
-            if (monster.HP == monster.MaxHp)
+            if (monster.HP == monster.MaxHP)
             {
                 return false;
             }
 
             if (restoreMaxHP)
             {
-                monster.IncreaseHP(monster.MaxHp);
+                monster.IncreaseHP(monster.MaxHP);
             }
             else
             {

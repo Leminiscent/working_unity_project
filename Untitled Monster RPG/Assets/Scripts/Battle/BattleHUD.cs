@@ -32,7 +32,7 @@ public class BattleHUD : MonoBehaviour
 
         nameText.text = monster.Base.Name;
         SetLevel();
-        hpBar.SetHP((float)monster.HP / monster.MaxHp);
+        hpBar.SetHP((float)monster.HP / monster.MaxHP);
         SetExp();
         SetAffinity();
 
@@ -123,7 +123,7 @@ public class BattleHUD : MonoBehaviour
 
     public IEnumerator UpdateHPAsync()
     {
-        yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHp);
+        yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHP);
     }
 
     public IEnumerator WaitForHPUpdate()

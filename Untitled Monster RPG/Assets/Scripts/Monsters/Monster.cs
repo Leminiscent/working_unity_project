@@ -51,7 +51,7 @@ public class Monster
         Exp = Base.GetExpForLevel(Level);
 
         CalculateStats();
-        HP = MaxHp;
+        HP = MaxHP;
 
         StatusChanges = new Queue<string>();
         ResetStatBoosts();
@@ -97,12 +97,12 @@ public class Monster
 
     void CalculateStats()
     {
-        int prevMaxHp = MaxHp;
+        int prevMaxHp = MaxHP;
 
-        MaxHp = Mathf.FloorToInt(Base.HP * Level / 100f) + 10 + Level;
+        MaxHP = Mathf.FloorToInt(Base.HP * Level / 100f) + 10 + Level;
         if (prevMaxHp != 0)
         {
-            HP += MaxHp - prevMaxHp;
+            HP += MaxHP - prevMaxHp;
         }
 
         Stats = new Dictionary<Stat, int>()
@@ -226,7 +226,7 @@ public class Monster
 
     public void Heal()
     {
-        HP = MaxHp;
+        HP = MaxHP;
         OnHPChanged?.Invoke();
         CureStatus();
     }
@@ -240,7 +240,7 @@ public class Monster
         return Mathf.Clamp01(normalizedExp);
     }
 
-    public int MaxHp { get; private set; }
+    public int MaxHP { get; private set; }
     public int Strength => GetStat(Stat.Strength);
     public int Endurance => GetStat(Stat.Endurance);
     public int Intelligence => GetStat(Stat.Intelligence);
@@ -305,7 +305,7 @@ public class Monster
             damage = 1;
         }
         DecreaseHP(damage);
-        StatusChanges.Enqueue($"{Base.Name} was damaged by the recoil!");
+        StatusChanges.Enqueue($"{Base.Name} took {damage} damage from the recoil!");
     }
 
     public void DrainHealth(int heal, Monster target)
@@ -315,18 +315,18 @@ public class Monster
             heal = 1;
         }
         IncreaseHP(heal);
-        StatusChanges.Enqueue($"{Base.Name} drained health from {target.Base.Name}!");
+        StatusChanges.Enqueue($"{Base.Name} drained {heal} health from {target.Base.Name}!");
     }
 
     public void DecreaseHP(int damage)
     {
-        HP = Mathf.Clamp(HP - damage, 0, MaxHp);
+        HP = Mathf.Clamp(HP - damage, 0, MaxHP);
         OnHPChanged?.Invoke();
     }
 
     public void IncreaseHP(int heal)
     {
-        HP = Mathf.Clamp(HP + heal, 0, MaxHp);
+        HP = Mathf.Clamp(HP + heal, 0, MaxHP);
         OnHPChanged?.Invoke();
     }
 
