@@ -18,12 +18,12 @@ public class SummaryState : State<GameController>
     }
     private void Start()
     {
-        playerParty = PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
     }
 
     public override void Enter(GameController owner)
     {
         gameController = owner;
+        playerParty = PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
         summaryScreenUI.gameObject.SetActive(true);
         summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
         summaryScreenUI.ShowPage(selectedPage);

@@ -319,7 +319,8 @@ public class Monster
             TypeEffectiveness = type,
             Critical = critical,
             Defeated = false,
-            DamageDealt = 0
+            TotalDamageDealt = 0,
+            ActualDamageDealt = 0
         };
         float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
         float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
@@ -328,8 +329,9 @@ public class Monster
         float d = a * move.Base.Power * (((float)attack / defense) + 2);
         int damage = Mathf.FloorToInt(d * modifiers);
 
+        damageDetails.TotalDamageDealt = damage;
+        damageDetails.ActualDamageDealt = Mathf.Min(damage, HP);
         DecreaseHP(damage);
-        damageDetails.DamageDealt = damage;
         return damageDetails;
     }
 
@@ -455,7 +457,8 @@ public class DamageDetails
     public bool Defeated { get; set; }
     public float Critical { get; set; }
     public float TypeEffectiveness { get; set; }
-    public int DamageDealt { get; set; }
+    public int TotalDamageDealt { get; set; }
+    public int ActualDamageDealt { get; set; }
 }
 
 [System.Serializable]

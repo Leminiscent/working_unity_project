@@ -306,7 +306,7 @@ public class RunTurnState : State<BattleSystem>
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByDamage:
-                    damage = Mathf.FloorToInt(details.DamageDealt * (move.Recoil.recoilDamage / 100f));
+                    damage = Mathf.FloorToInt(details.ActualDamageDealt * (move.Recoil.recoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 default:
@@ -314,9 +314,9 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        if (move.DrainPercentage != 0)
+        if (move.DrainPercentage != 0 && sourceUnit.Monster.HP != sourceUnit.Monster.MaxHP)
         {
-            int heal = Mathf.Clamp(Mathf.CeilToInt(details.DamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHP);
+            int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHP);
 
             sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster);
         }

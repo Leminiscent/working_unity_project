@@ -11,8 +11,8 @@ public class GlobalSettings : MonoBehaviour
     [SerializeField] Color bgHighlightColor;
 
     [Header("Monsters")]
-    [SerializeField] int maxPvs = 510;
-    [SerializeField] int maxPvPerStat = 252;
+    [SerializeField] int maxPvs;
+    [SerializeField] int maxPvPerStat;
     [SerializeField] MoveBase backupMove;
 
     public Color ActiveColor => activeColor;
