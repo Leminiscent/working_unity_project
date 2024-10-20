@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
-  m_Name: Vine Lash
+  m_Name: Struggle
   m_EditorClassIdentifier: 
-  name: Vine Lash
-  description: The user lashes the target with vine-like appendages, dealing physical
-    damage.
-  type: 5
+  name: Struggle
+  description: This attack is used in desperation only if the user has no remaining
+    SP. It also damages the user a little.
+  type: 0
   category: 0
   effects:
     boosts: []
@@ -23,16 +23,16 @@ MonoBehaviour:
     volatileStatus: 0
     weather: 0
   secondaryEffects: []
-  critBehavior: 1
+  critBehavior: 3
   recoil:
-    recoilType: 3
+    recoilType: 1
     recoilDamage: 25
   drainPercentage: 0
   target: 0
-  hitRange: {x: 2, y: 5}
-  power: 45
+  hitRange: {x: 0, y: 0}
+  power: 50
   accuracy: 100
-  alwaysHits: 0
-  sP: 10
+  alwaysHits: 1
+  sP: 1
   priority: 0
-  sound: {fileID: 8300000, guid: d489a6e132e83d744933956157da356d, type: 3}
+  sound: {fileID: 0}
