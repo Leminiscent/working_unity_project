@@ -9,7 +9,7 @@ public class Encounters : MonoBehaviour, IPlayerTriggerable
         if (Random.Range(1, 101) <= 10)
         {
             player.Character.Animator.IsMoving = false;
-            GameController.Instance.StartWildBattle(BattleTrigger.Ground);
+            GameController.Instance.StartWildBattle(BattleTrigger.Field);
         }
     }
 

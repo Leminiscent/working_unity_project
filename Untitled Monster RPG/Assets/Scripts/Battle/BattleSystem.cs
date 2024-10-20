@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Utils.StateMachine;
 
 public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
-public enum BattleTrigger { Ground, Water }
+public enum BattleTrigger { Desert, DesertOasis, Field, FieldLake, Meadow, Mountain, MountainClouds, Wasteland }
 
 public class BattleSystem : MonoBehaviour
 {
@@ -26,8 +26,14 @@ public class BattleSystem : MonoBehaviour
 
     [Header("Background")]
     [SerializeField] Image backgroundImage;
-    [SerializeField] Sprite groundBackground;
-    [SerializeField] Sprite waterBackground;
+    [SerializeField] Sprite desertBackground;
+    [SerializeField] Sprite desertOasisBackground;
+    [SerializeField] Sprite fieldBackground;
+    [SerializeField] Sprite fieldLakeBackground;
+    [SerializeField] Sprite meadowBackground;
+    [SerializeField] Sprite mountainBackground;
+    [SerializeField] Sprite mountainCloudsBackground;
+    [SerializeField] Sprite wastelandBackground;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public event Action<bool> OnBattleOver;
@@ -45,8 +51,24 @@ public class BattleSystem : MonoBehaviour
     public MasterController Enemy { get; private set; }
     PlayerController player;
     BattleTrigger battleTrigger;
+    Dictionary<BattleTrigger, Sprite> backgroundMapping;
 
-    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger = BattleTrigger.Ground)
+    private void Awake()
+    {
+        backgroundMapping = new Dictionary<BattleTrigger, Sprite>
+        {
+            { BattleTrigger.Desert, desertBackground },
+            { BattleTrigger.DesertOasis, desertOasisBackground },
+            { BattleTrigger.Field, fieldBackground },
+            { BattleTrigger.FieldLake, fieldLakeBackground },
+            { BattleTrigger.Meadow, meadowBackground },
+            { BattleTrigger.Mountain, mountainBackground },
+            { BattleTrigger.MountainClouds, mountainCloudsBackground },
+            { BattleTrigger.Wasteland, wastelandBackground }
+        };
+    }
+
+    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger = BattleTrigger.Field)
     {
         IsMasterBattle = false;
 
@@ -58,7 +80,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger = BattleTrigger.Ground)
+    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger = BattleTrigger.Field)
     {
         IsMasterBattle = true;
 
@@ -78,7 +100,14 @@ public class BattleSystem : MonoBehaviour
         playerUnit.Clear();
         enemyUnit.Clear();
 
-        backgroundImage.sprite = (battleTrigger == BattleTrigger.Ground) ? groundBackground : waterBackground;
+        if (backgroundMapping.ContainsKey(battleTrigger))
+        {
+            backgroundImage.sprite = backgroundMapping[battleTrigger];
+        }
+        else
+        {
+            backgroundImage.sprite = fieldBackground; // Fallback option
+        }
 
         if (!IsMasterBattle)
         {

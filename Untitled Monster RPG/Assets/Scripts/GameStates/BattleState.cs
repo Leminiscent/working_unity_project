@@ -8,8 +8,8 @@ public class BattleState : State<GameController>
     [SerializeField] BattleSystem battleSystem;
     GameController gameController;
 
-    public BattleTrigger trigger { get; set; }
-    public MasterController master { get; set; }
+    public BattleTrigger Trigger { get; set; }
+    public MasterController Master { get; set; }
 
     public static BattleState Instance { get; private set; }
 
@@ -27,16 +27,16 @@ public class BattleState : State<GameController>
 
         var playerParty = gameController.PlayerController.GetComponent<MonsterParty>();
 
-        if (master == null)
+        if (Master == null)
         {
             var wildMonster = gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
             var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
 
-            battleSystem.StartWildBattle(playerParty, wildMonsterCopy, trigger);
+            battleSystem.StartWildBattle(playerParty, wildMonsterCopy, Trigger);
         }
         else
         {
-            var enemyParty = master.GetComponent<MonsterParty>();
+            var enemyParty = Master.GetComponent<MonsterParty>();
             battleSystem.StartMasterBattle(playerParty, enemyParty);
         }
 
@@ -57,10 +57,10 @@ public class BattleState : State<GameController>
 
     void EndBattle(bool won)
     {
-        if (master != null && won == true)
+        if (Master != null && won == true)
         {
-            master.BattleLost();
-            master = null;
+            Master.BattleLost();
+            Master = null;
         }
 
         gameController.StateMachine.Pop();
