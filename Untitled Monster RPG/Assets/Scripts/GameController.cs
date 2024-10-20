@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] InventoryUI inventoryUI;
-
+    private DeputyController deputyController;
     MasterController master;
 
     public StateMachine<GameController> StateMachine { get; private set; }
@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
         ItemDB.Init();
         QuestDB.Init();
         ConditionsDB.Init();
+        deputyController = FindObjectOfType<DeputyController>().GetComponent<DeputyController>();
     }
 
     private void Start()
@@ -132,7 +133,8 @@ public class GameController : MonoBehaviour
         // }
     }
 
-    public PlayerController PlayerController => playerController;
+    public PlayerController PlayerController { get => playerController; set => playerController = value; }
     public Camera WorldCamera => worldCamera;
+    public DeputyController DeputyController { get => deputyController; set => deputyController = value; }
     public PartyScreen PartyScreen => partyScreen;
 }

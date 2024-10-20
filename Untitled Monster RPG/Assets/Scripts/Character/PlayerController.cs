@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
             if (input != Vector2.zero)
             {
+                GameController.Instance.DeputyController.Follow(GameController.Instance.PlayerController.transform.position);
                 StartCoroutine(character.Move(input, OnMoveOver));
             }
         }

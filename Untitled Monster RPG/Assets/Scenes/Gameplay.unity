@@ -264,12 +264,8 @@ MonoBehaviour:
   - monster: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
     levelRange: {x: 34, y: 40}
     spawnChance: 5
-  wildWaterMonsters:
-  - monster: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    levelRange: {x: 50, y: 100}
-    spawnChance: 100
+  terrain: 4
   totalChance: 100
-  totalChanceWater: 100
 --- !u!1001 &725205645
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -482,9 +478,8 @@ MonoBehaviour:
   - monster: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
     levelRange: {x: 20, y: 28}
     spawnChance: 40
-  wildWaterMonsters: []
+  terrain: 3
   totalChance: 100
-  totalChanceWater: -1
 --- !u!114 &1647700579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -515,12 +510,8 @@ MonoBehaviour:
   - monster: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
     levelRange: {x: 20, y: 28}
     spawnChance: 40
-  wildWaterMonsters:
-  - monster: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    levelRange: {x: 50, y: 100}
-    spawnChance: 100
+  terrain: 2
   totalChance: 100
-  totalChanceWater: 100
 --- !u!1001 &1878940712108653051
 PrefabInstance:
   m_ObjectHideFlags: 0
