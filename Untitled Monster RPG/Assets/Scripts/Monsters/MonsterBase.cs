@@ -11,7 +11,6 @@ public class MonsterBase : ScriptableObject
     [SerializeField] Sprite sprite;
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
-    [SerializeField] MonsterSize size;
     [SerializeField] int hp;
     [SerializeField] int strength;
     [SerializeField] int endurance;
@@ -61,7 +60,6 @@ public class MonsterBase : ScriptableObject
     public Sprite Sprite => sprite;
     public MonsterType Type1 => type1;
     public MonsterType Type2 => type2;
-    public MonsterSize Size => size;
     public int HP => hp;
     public int Strength => strength;
     public int Endurance => endurance;

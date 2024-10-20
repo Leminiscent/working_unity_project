@@ -29,24 +29,12 @@ public class BattleUnit : MonoBehaviour
         Monster = monster;
         image.sprite = Monster.Base.Sprite;
 
-        float scaleFactor = 1.0f;
-
-        switch (Monster.Base.Size)
-        {
-            case MonsterSize.Medium:
-                scaleFactor = 1.5f;
-                break;
-            case MonsterSize.Large:
-                scaleFactor = 2.0f;
-                break;
-        }
-
         float originalSize = image.rectTransform.rect.height;
-        float newSize = originalSize * scaleFactor;
+        float newSize = originalSize;
 
         originalPos.y = (newSize - originalSize) / 2;
         image.transform.localPosition = new Vector3(originalPos.x, originalPos.y);
-        image.transform.localScale = Vector3.one * scaleFactor;
+        image.transform.localScale = Vector3.one;
         hud.gameObject.SetActive(true);
         hud.SetData(monster);
         image.color = originalColor;

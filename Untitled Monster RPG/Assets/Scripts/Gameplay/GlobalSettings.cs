@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class GlobalSettings : MonoBehaviour
 {
+    [Header("Colors")]
     [SerializeField] Color activeColor;
     [SerializeField] Color inactiveColor;
     [SerializeField] Color emptyColor;
     [SerializeField] Color bgHighlightColor;
+
+    [Header("Monsters")]
+    [SerializeField] int maxEvs = 510;
+    [SerializeField] int maxEvPerStat = 252;
     [SerializeField] MoveBase backupMove;
 
     public Color ActiveColor => activeColor;
     public Color InactiveColor => inactiveColor;
     public Color EmptyColor => emptyColor;
     public Color BgHighlightColor => bgHighlightColor;
+    public int MaxEvs => maxEvs;
+    public int MaxEvPerStat => maxEvPerStat;
     public MoveBase BackupMove => backupMove;
     public static GlobalSettings Instance { get; private set; }
 
