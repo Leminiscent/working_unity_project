@@ -29,7 +29,7 @@ public class BattleState : State<GameController>
 
         if (master == null)
         {
-            var wildMonster = gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonster(trigger);
+            var wildMonster = gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
             var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
 
             battleSystem.StartWildBattle(playerParty, wildMonsterCopy, trigger);
