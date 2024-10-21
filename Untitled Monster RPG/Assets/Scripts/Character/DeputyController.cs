@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class DeputyController : MonoBehaviour
@@ -62,6 +63,17 @@ public class DeputyController : MonoBehaviour
             animator.MoveY = moveVec.y;
 
             Vector3 nextPos = transform.position + (Vector3)moveVec;
+            Ledge ledge = CheckForLedge(nextPos);
+
+            if (ledge != null)
+            {
+                if (moveVec.x == ledge.xDir && moveVec.y == ledge.yDir)
+                {
+                    Vector3 jumpDest = transform.position + new Vector3(ledge.xDir, ledge.yDir) * 2;
+                    yield return Jump(jumpDest);
+                    continue;
+                }
+            }
 
             while ((nextPos - transform.position).sqrMagnitude > Mathf.Epsilon)
             {
@@ -92,5 +104,23 @@ public class DeputyController : MonoBehaviour
         {
             return Vector2.zero;
         }
+    }
+
+    private Ledge CheckForLedge(Vector3 targetPos)
+    {
+        var collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
+
+        return collider?.GetComponent<Ledge>();
+    }
+
+    private IEnumerator Jump(Vector3 jumpDest)
+    {
+        isMoving = true;
+        animator.IsJumping = true;
+
+        yield return transform.DOJump(jumpDest, 0.3f, 1, 0.5f).WaitForCompletion();
+
+        animator.IsJumping = false;
+        isMoving = false;
     }
 }
