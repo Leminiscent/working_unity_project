@@ -67,9 +67,9 @@ public class DeputyController : MonoBehaviour
 
             if (ledge != null)
             {
-                if (moveVec.x == ledge.xDir && moveVec.y == ledge.yDir)
+                if (ledge.CanJump(moveVec))
                 {
-                    Vector3 jumpDest = transform.position + new Vector3(ledge.xDir, ledge.yDir) * 2;
+                    Vector3 jumpDest = transform.position + (Vector3)moveVec * 2;
                     
                     yield return Jump(jumpDest);
                     continue;
