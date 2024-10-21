@@ -64,6 +64,7 @@ public class ShopUI : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
+            selectedItem = 0;
             onBack?.Invoke();
         }
     }
