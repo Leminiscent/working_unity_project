@@ -11,9 +11,9 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     [SerializeField] List<ImageSlot> storageSlots;
     [SerializeField] TextMeshProUGUI depotNameText;
     [SerializeField] Image transferImage;
-    List<StoragePartySlotUI> partySlots = new List<StoragePartySlotUI>();
-    List<StorageSlotUI> depotSlots = new List<StorageSlotUI>();
-    List<Image> storageSlotImages = new List<Image>();
+    List<StoragePartySlotUI> partySlots = new();
+    List<StorageSlotUI> depotSlots = new();
+    List<Image> storageSlotImages = new();
     MonsterParty party;
     MonsterStorage storage;
     int totalColumns = 9;
@@ -93,11 +93,15 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             SelectedDepot = (SelectedDepot + 1) % storage.NumberOfDepots;
         }
 
-        if (prevSelectedDepot != SelectedDepot)
+        if (prevSelectedDepot != SelectedDepot || Input.GetButtonDown("Back"))
         {
+            if (Input.GetButtonDown("Back"))
+            {
+                SelectedDepot = 0;
+            }
+
             SetStorageData();
             UpdateSelectionInUI();
-            return;
         }
 
         base.HandleUpdate();

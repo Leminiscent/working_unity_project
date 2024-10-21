@@ -76,8 +76,13 @@ public class InventoryUI : SelectionUI<TextSlot>
             selectedCategory = Inventory.ItemCategories.Count - 1;
         }
 
-        if (prevCategory != selectedCategory)
+        if (prevCategory != selectedCategory || Input.GetButtonDown("Back"))
         {
+            if (Input.GetButtonDown("Back"))
+            {
+                selectedCategory = 0;
+            }
+
             ResetSelction();
             categoryText.text = Inventory.ItemCategories[selectedCategory];
             UpdateItemList();

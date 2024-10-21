@@ -53,5 +53,10 @@ public class ChoiceBox : MonoBehaviour
         {
             choiceSelected = true;
         }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            currentChoice = choiceTexts.Count - 1;
+            choiceSelected = true;
+        }
     }
 }
