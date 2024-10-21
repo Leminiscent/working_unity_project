@@ -208,6 +208,11 @@ public class Monster
 
     public bool CheckForLevelUp()
     {
+        if (Level >= GlobalSettings.Instance.MaxLevel)
+        {
+            return false;
+        }
+
         if (Exp >= Base.GetExpForLevel(Level + 1))
         {
             ++level;

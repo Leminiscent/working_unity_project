@@ -13,6 +13,7 @@ public class GlobalSettings : MonoBehaviour
     [Header("Monsters")]
     [SerializeField] int maxPvs;
     [SerializeField] int maxPvPerStat;
+    [SerializeField] int maxLevel;
     [SerializeField] MoveBase backupMove;
 
     public Color ActiveColor => activeColor;
@@ -21,6 +22,7 @@ public class GlobalSettings : MonoBehaviour
     public Color BgHighlightColor => bgHighlightColor;
     public int MaxPvs => maxPvs;
     public int MaxPvPerStat => maxPvPerStat;
+    public int MaxLevel => maxLevel;
     public MoveBase BackupMove => backupMove;
     public static GlobalSettings Instance { get; private set; }
 
