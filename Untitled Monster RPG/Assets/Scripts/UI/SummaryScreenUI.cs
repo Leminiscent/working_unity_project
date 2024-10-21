@@ -15,7 +15,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     [Header("Pages")]
     [SerializeField] TextMeshProUGUI pageNameText;
-    [SerializeField] GameObject skillsPage;
+    [SerializeField] GameObject detailsPage;
     [SerializeField] GameObject movesPage;
 
     [Header("Stats & Exp")]
@@ -82,8 +82,8 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         if (index == 0)
         {
-            pageNameText.text = "Monster Stats";
-            skillsPage.SetActive(true);
+            pageNameText.text = "Monster Details";
+            detailsPage.SetActive(true);
             movesPage.SetActive(false);
             SetStatsAndExp();
         }
@@ -91,7 +91,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         {
             pageNameText.text = "Monster Moves";
             movesPage.SetActive(true);
-            skillsPage.SetActive(false);
+            detailsPage.SetActive(false);
             SetMoves();
         }
     }
@@ -106,7 +106,18 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         agilityText.text = "" + monster.Agility;
 
         expText.text = "" + monster.Exp;
-        expToNextLevelText.text = "" + (monster.Base.GetExpForLevel(monster.Level + 1) - monster.Exp);
+
+        if (monster.Level == GlobalSettings.Instance.MaxLevel)
+        {
+            expToNextLevelText.text = "0";
+        }
+        else
+        {
+            int expToNextLevel = monster.Base.GetExpForLevel(monster.Level + 1) - monster.Exp;
+
+            expToNextLevelText.text = "" + expToNextLevel;
+        }
+
         expBar.localScale = new Vector2(monster.GetNormalizedExp(), 1);
     }
 
