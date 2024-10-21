@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     public float moveSpeed;
     public bool IsMoving { get; private set; }
     public float OffestY { get; private set; } = 0.3f;
+    public event Action<Vector3> OnMoveStart;
 
     private void Awake()
     {
@@ -49,6 +50,7 @@ public class Character : MonoBehaviour
         }
 
         IsMoving = true;
+        OnMoveStart?.Invoke(transform.position);
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
@@ -58,7 +60,6 @@ public class Character : MonoBehaviour
         transform.position = targetPos;
 
         IsMoving = false;
-
         OnMoveOver?.Invoke();
     }
 

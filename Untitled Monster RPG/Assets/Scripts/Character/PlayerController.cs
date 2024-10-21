@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour, ISavable
     {
         Instance = this;
         character = GetComponent<Character>();
-        deputy = FindObjectOfType<DeputyController>().GetComponent<DeputyController>();
+        deputy = FindObjectOfType<DeputyController>();
     }
 
     public void HandleUpdate()
@@ -31,10 +31,6 @@ public class PlayerController : MonoBehaviour, ISavable
 
             if (input != Vector2.zero)
             {
-                if (character.IsPathClear((Vector2)this.transform.position + input))
-                {
-                    deputy.Follow(this.transform.position);
-                }
                 StartCoroutine(character.Move(input, OnMoveOver));
             }
         }
