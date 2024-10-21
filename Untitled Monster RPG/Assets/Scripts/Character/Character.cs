@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -29,17 +30,14 @@ public class Character : MonoBehaviour
         animator.MoveX = Mathf.Clamp(moveVector.x, -1f, 1f);
         animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
-        var targetPos = transform.position;
-
-        targetPos.x += moveVector.x;
-        targetPos.y += moveVector.y;
-
+        var targetPos = transform.position + new Vector3(moveVector.x, moveVector.y);
         var ledge = CheckForLedge(targetPos);
 
         if (ledge != null)
         {
-            if (ledge.CanJump(this, moveVector))
+            if (ledge.CanJump(moveVector))
             {
+                yield return Jump(moveVector, OnMoveOver);
                 yield break;
             }
         }
@@ -60,6 +58,23 @@ public class Character : MonoBehaviour
         transform.position = targetPos;
 
         IsMoving = false;
+        OnMoveOver?.Invoke();
+    }
+
+    public IEnumerator Jump(Vector2 moveDir, Action OnMoveOver = null)
+    {
+        IsMoving = true;
+        OnMoveStart?.Invoke(transform.position);
+
+        animator.IsJumping = true;
+
+        var jumpDest = transform.position + new Vector3(moveDir.x, moveDir.y) * 2;
+
+        yield return transform.DOJump(jumpDest, 0.3f, 1, 0.5f).WaitForCompletion();
+
+        animator.IsJumping = false;
+        IsMoving = false;
+
         OnMoveOver?.Invoke();
     }
 
