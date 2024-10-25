@@ -96,6 +96,15 @@ public class Character : MonoBehaviour
         return true;
     }
 
+    private bool IsWalkable(Vector3 targetPos)
+    {
+        if (Physics2D.OverlapCircle(targetPos, 0.1f, GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer) != null)
+        {
+            return false;
+        }
+        return true;
+    }
+
     Ledge CheckForLedge(Vector3 targetPos)
     {
         var collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
