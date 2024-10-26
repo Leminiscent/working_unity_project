@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
@@ -156,7 +157,10 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleOver(bool won)
     {
-        StateMachine.PushAndWait(LootSummaryState.Instance);
+        if (won)
+        {
+            StartCoroutine(OpenLootSummary());
+        }
 
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(m => m.OnBattleOver());
@@ -168,6 +172,11 @@ public class BattleSystem : MonoBehaviour
     public void HandleUpdate()
     {
         StateMachine.Execute();
+    }
+
+    public IEnumerator OpenLootSummary()
+    {
+        yield return StateMachine.PushAndWait(LootSummaryState.Instance);
     }
 
     public IEnumerator SwitchMonster(Monster newMonster)
