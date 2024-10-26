@@ -44,6 +44,10 @@ public class MonsterBase : ScriptableObject
     [SerializeField] int recruitRate;
     [SerializeField] List<RecruitmentQuestion> recruitmentQuestions;
 
+    [Header("Drops")]
+    [SerializeField] Vector2Int gpDropped;
+    [SerializeField] List<ItemDrop> itemsDropped;
+
     public int GetExpForLevel(int level)
     {
         switch (growthRate)
@@ -85,14 +89,15 @@ public class MonsterBase : ScriptableObject
     public int Intelligence => intelligence;
     public int Fortitude => fortitude;
     public int Agility => agility;
-    public Dictionary<Stat, int> PvYield => new() {
+    public Dictionary<Stat, int> PvYield => new()
+    {
         { Stat.HP, hpPvYield },
         { Stat.Strength, strengthPvYield },
         { Stat.Endurance, endurancePvYield },
         { Stat.Intelligence, intelligencePvYield },
         { Stat.Fortitude, fortitudePvYield },
         { Stat.Agility, agilityPvYield }
-};
+    };
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableBySkillBook => learnableBySkillBook;
     public static int MaxMoveCount { get; set; } = 4;
@@ -101,6 +106,8 @@ public class MonsterBase : ScriptableObject
     public GrowthRate GrowthRate => growthRate;
     public int RecruitRate => recruitRate;
     public List<RecruitmentQuestion> RecruitmentQuestions => recruitmentQuestions;
+    public Vector2Int GPDropped => gpDropped;
+    public List<ItemDrop> ItemsDropped => itemsDropped;
 }
 
 [System.Serializable]
@@ -143,6 +150,16 @@ public class RecruitmentAnswer
 
     public string AnswerText => answerText;
     public int AffinityScore => affinityScore;
+}
+
+[System.Serializable]
+public class ItemDrop
+{
+    [SerializeField] ItemBase item;
+    [SerializeField] float dropChance;
+
+    public ItemBase Item => item;
+    public float DropChance => dropChance;
 }
 
 public enum MonsterType
