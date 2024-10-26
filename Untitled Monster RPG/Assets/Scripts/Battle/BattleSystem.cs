@@ -156,6 +156,8 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleOver(bool won)
     {
+        StateMachine.PushAndWait(LootSummaryState.Instance);
+
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(m => m.OnBattleOver());
         playerUnit.Hud.ClearData();
