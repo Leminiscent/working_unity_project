@@ -8,8 +8,8 @@ public class LootSummaryState : State<BattleSystem>
 {
     [SerializeField] GameObject lootSummaryUI;
     [SerializeField] TextMeshProUGUI goldText;
-    [SerializeField] Transform lootListContainer;
-    [SerializeField] GameObject lootItemPrefab;
+    [SerializeField] GameObject lootListContainer;
+    [SerializeField] ItemSlotUI itemSlotUI;
 
     private int goldAmount;
     private Dictionary<ItemBase, int> items;
@@ -72,17 +72,16 @@ public class LootSummaryState : State<BattleSystem>
 
     private void DisplayItems()
     {
-        foreach (Transform child in lootListContainer)
+        foreach (Transform child in lootListContainer.transform)
+        {
             Destroy(child.gameObject);
+        }
 
         foreach (var item in items)
         {
-            var lootItem = Instantiate(lootItemPrefab, lootListContainer);
-            var itemText = lootItem.GetComponentInChildren<TextMeshProUGUI>();
-            var itemIcon = lootItem.GetComponentInChildren<Image>();
+            var lootItem = Instantiate(itemSlotUI, lootListContainer.transform);
 
-            itemText.text = $"{item.Key.Name} x{item.Value}";
-            itemIcon.sprite = item.Key.Icon;
+            lootItem.SetData(new ItemSlot { Item = item.Key, Count = item.Value });
         }
     }
 
