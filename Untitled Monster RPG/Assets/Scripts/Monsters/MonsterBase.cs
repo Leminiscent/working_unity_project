@@ -45,8 +45,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] List<RecruitmentQuestion> recruitmentQuestions;
 
     [Header("Drops")]
-    [SerializeField] Vector2Int gpDropped;
-    [SerializeField] List<ItemDrop> itemsDropped;
+    [SerializeField] DropTable dropTable;
 
     public int GetExpForLevel(int level)
     {
@@ -106,8 +105,7 @@ public class MonsterBase : ScriptableObject
     public GrowthRate GrowthRate => growthRate;
     public int RecruitRate => recruitRate;
     public List<RecruitmentQuestion> RecruitmentQuestions => recruitmentQuestions;
-    public Vector2Int GPDropped => gpDropped;
-    public List<ItemDrop> ItemsDropped => itemsDropped;
+    public DropTable DropTable => dropTable;
 }
 
 [System.Serializable]
@@ -153,12 +151,23 @@ public class RecruitmentAnswer
 }
 
 [System.Serializable]
+public class DropTable
+{
+    [SerializeField] Vector2Int gpDropped;
+    [SerializeField] List<ItemDrop> itemDrops;
+
+    public Vector2Int GpDropped => gpDropped;
+    public List<ItemDrop> ItemDrops => itemDrops;
+}
+
+[System.Serializable]
 public class ItemDrop
 {
     [SerializeField] ItemBase item;
+    [SerializeField] Vector2Int quantityRange;
     [SerializeField] float dropChance;
-
     public ItemBase Item => item;
+    public Vector2Int QuantityRange => quantityRange;
     public float DropChance => dropChance;
 }
 
