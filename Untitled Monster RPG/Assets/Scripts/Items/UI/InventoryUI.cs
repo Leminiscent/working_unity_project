@@ -14,6 +14,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] TextMeshProUGUI categoryText;
     [SerializeField] Image itemIcon;
     [SerializeField] TextMeshProUGUI itemDescription;
+    [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] Image upArrow;
     [SerializeField] Image downArrow;
     int selectedCategory = 0;
@@ -30,8 +31,10 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     private void Start()
     {
+        moneyText.text = $"{Wallet.Instance.Money} GP";
         UpdateItemList();
         inventory.OnUpdated += UpdateItemList;
+        Wallet.Instance.OnMoneyChanged += UpdateMoneyText;
     }
 
     void UpdateItemList()
@@ -52,6 +55,11 @@ public class InventoryUI : SelectionUI<TextSlot>
 
         SetItems(slotUIList.Select(s => s.GetComponent<TextSlot>()).ToList());
         UpdateSelectionInUI();
+    }
+
+    void UpdateMoneyText()
+    {
+        moneyText.text = $"{Wallet.Instance.Money} GP";
     }
 
     public override void HandleUpdate()
