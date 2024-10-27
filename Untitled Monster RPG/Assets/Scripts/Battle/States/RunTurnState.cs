@@ -232,7 +232,7 @@ public class RunTurnState : State<BattleSystem>
 
                 sourceUnit.PlayAttackAnimation();
                 AudioManager.Instance.PlaySFX(move.Base.Sound);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.75f);
                 targetUnit.PlayHitAnimation();
                 AudioManager.Instance.PlaySFX(AudioID.Hit);
 
@@ -375,7 +375,7 @@ public class RunTurnState : State<BattleSystem>
     {
         yield return dialogueBox.TypeDialogue(defeatedUnit.Monster.Base.Name + " has been defeated!");
         defeatedUnit.PlayDefeatAnimation();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         if (!defeatedUnit.IsPlayerUnit)
         {
