@@ -474,7 +474,7 @@ public class RunTurnState : State<BattleSystem>
                 if (gpDropped > 0)
                 {
                     yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} dropped {gpDropped} GP!");
-                    battleSystem.Player.GetComponent<Wallet>().AddMoney(gpDropped);
+                    Wallet.Instance.GetWallet().AddMoney(gpDropped);
                 }
 
                 for (int i = 0; i < itemsDropped.Count; i++)
@@ -483,7 +483,7 @@ public class RunTurnState : State<BattleSystem>
                     var quantity = quantitiesDropped[i];
 
                     yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} dropped {quantity}x {item.Name}!");
-                    battleSystem.Player.GetComponent<Inventory>().AddItem(item, quantity);
+                    Inventory.GetInventory().AddItem(item, quantity);
                 }
             }
         }

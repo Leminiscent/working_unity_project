@@ -33,6 +33,11 @@ public class Wallet : MonoBehaviour, ISavable
         return money >= amount;
     }
 
+    public Wallet GetWallet()
+    {
+        return FindObjectOfType<PlayerController>().GetComponent<Wallet>();
+    }
+
     public object CaptureState()
     {
         return money;
