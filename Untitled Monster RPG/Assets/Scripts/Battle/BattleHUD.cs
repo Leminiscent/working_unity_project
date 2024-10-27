@@ -88,7 +88,7 @@ public class BattleHUD : MonoBehaviour
 
         float normalizedExp = _monster.GetNormalizedExp();
 
-        yield return expBar.transform.DOScaleX(normalizedExp, 1.5f).WaitForCompletion();
+        yield return expBar.transform.DOScaleX(normalizedExp, 1.15f).WaitForCompletion();
     }
 
     public void SetAffinity()
@@ -106,7 +106,7 @@ public class BattleHUD : MonoBehaviour
 
         float normalizedAffinity = GetNormalizedAffinity();
 
-        yield return affinityBar.transform.DOScaleX(normalizedAffinity, 1.5f).WaitForCompletion();
+        yield return affinityBar.transform.DOScaleX(normalizedAffinity, 1.15f).WaitForCompletion();
     }
 
     float GetNormalizedAffinity()
