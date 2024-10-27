@@ -157,11 +157,6 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleOver(bool won)
     {
-        if (won)
-        {
-            StartCoroutine(OpenLootSummary());
-        }
-
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(m => m.OnBattleOver());
         playerUnit.Hud.ClearData();
@@ -172,11 +167,6 @@ public class BattleSystem : MonoBehaviour
     public void HandleUpdate()
     {
         StateMachine.Execute();
-    }
-
-    public IEnumerator OpenLootSummary()
-    {
-        yield return StateMachine.PushAndWait(LootSummaryState.Instance);
     }
 
     public IEnumerator SwitchMonster(Monster newMonster)
