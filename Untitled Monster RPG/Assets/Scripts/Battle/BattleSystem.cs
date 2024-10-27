@@ -175,7 +175,7 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue("Come back " + playerUnit.Monster.Base.Name + "!");
             playerUnit.PlayExitAnimation();
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.75f);
         }
 
         playerUnit.Setup(newMonster);
