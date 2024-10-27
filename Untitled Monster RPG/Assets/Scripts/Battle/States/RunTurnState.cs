@@ -390,8 +390,6 @@ public class RunTurnState : State<BattleSystem>
                 AudioManager.Instance.PlayMusic(battleSystem.BattleVictoryMusic);
             }
 
-            playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
-
             int expYield = defeatedUnit.Monster.Base.ExpYield;
             int enemyLevel = defeatedUnit.Monster.Level;
             float masterBonus = isMasterBattle ? 1.5f : 1f;
@@ -406,7 +404,7 @@ public class RunTurnState : State<BattleSystem>
                 playerUnit.Monster.Exp += expGain;
                 yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
                 yield return playerUnit.Hud.SetExpSmooth();
-                
+
                 while (playerUnit.Monster.CheckForLevelUp())
                 {
                     playerUnit.Hud.SetLevel();
@@ -450,6 +448,43 @@ public class RunTurnState : State<BattleSystem>
                     yield return playerUnit.Hud.SetExpSmooth(true);
                 }
                 yield return new WaitForSeconds(1f);
+            }
+
+            playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
+
+            var dropTable = defeatedUnit.Monster.Base.DropTable;
+
+            if (dropTable != null)
+            {
+                int gpDropped = Random.Range(dropTable.GpDropped.x, dropTable.GpDropped.y + 1);
+                List<ItemBase> itemsDropped = new();
+                List<int> quantitiesDropped = new();
+
+                foreach (var itemDrop in dropTable.ItemDrops)
+                {
+                    if (Random.Range(1, 101) <= itemDrop.DropChance)
+                    {
+                        int quantity = Random.Range(itemDrop.QuantityRange.x, itemDrop.QuantityRange.y + 1);
+
+                        itemsDropped.Add(itemDrop.Item);
+                        quantitiesDropped.Add(quantity);
+                    }
+                }
+
+                if (gpDropped > 0)
+                {
+                    yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} dropped {gpDropped} GP!");
+                    battleSystem.Player.GetComponent<Wallet>().AddMoney(gpDropped);
+                }
+
+                for (int i = 0; i < itemsDropped.Count; i++)
+                {
+                    var item = itemsDropped[i];
+                    var quantity = quantitiesDropped[i];
+
+                    yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} dropped {quantity}x {item.Name}!");
+                    battleSystem.Player.GetComponent<Inventory>().AddItem(item, quantity);
+                }
             }
         }
 

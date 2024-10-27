@@ -50,7 +50,7 @@ public class BattleSystem : MonoBehaviour
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
     public MasterController Enemy { get; private set; }
-    PlayerController player;
+    public PlayerController Player { get; private set; }
     BattleTrigger battleTrigger;
     Dictionary<BattleTrigger, Sprite> backgroundMapping;
 
@@ -88,7 +88,7 @@ public class BattleSystem : MonoBehaviour
         this.PlayerParty = playerParty;
         this.EnemyParty = enemyParty;
 
-        player = playerParty.GetComponent<PlayerController>();
+        Player = playerParty.GetComponent<PlayerController>();
         Enemy = enemyParty.GetComponent<MasterController>();
         battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(masterBattleMusic);
@@ -125,7 +125,7 @@ public class BattleSystem : MonoBehaviour
 
             playerImage.gameObject.SetActive(true);
             enemyImage.gameObject.SetActive(true);
-            playerImage.sprite = player.Sprite;
+            playerImage.sprite = Player.Sprite;
             enemyImage.sprite = Enemy.Sprite;
 
             yield return dialogueBox.TypeDialogue(Enemy.Name + " wants to battle!");
