@@ -119,7 +119,7 @@ public class DeputyController : MonoBehaviour
         isMoving = true;
         animator.IsJumping = true;
 
-        yield return transform.DOJump(jumpDest, 0.3f, 1, 0.5f).WaitForCompletion();
+        yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
         animator.IsJumping = false;
         isMoving = false;

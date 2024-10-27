@@ -70,7 +70,7 @@ public class Character : MonoBehaviour
 
         var jumpDest = transform.position + new Vector3(moveDir.x, moveDir.y) * 2;
 
-        yield return transform.DOJump(jumpDest, 0.3f, 1, 0.5f).WaitForCompletion();
+        yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
         animator.IsJumping = false;
         IsMoving = false;
