@@ -1,17 +1,11 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Utils.StateMachine;
 
 public class LootSummaryState : State<BattleSystem>
 {
-    [SerializeField] GameObject lootSummaryUI;
-    [SerializeField] TextMeshProUGUI goldText;
-    [SerializeField] GameObject lootListContainer;
-    [SerializeField] ItemSlotUI itemSlotUI;
-
-    private int goldAmount;
+    [SerializeField] LootSummaryUI lootSummaryUI;
+    private int gold;
     private Dictionary<ItemBase, int> items;
     BattleSystem battleSystem;
 
@@ -25,16 +19,16 @@ public class LootSummaryState : State<BattleSystem>
     public override void Enter(BattleSystem owner)
     {
         battleSystem = owner;
-        lootSummaryUI.SetActive(true);
-        goldAmount = CalculateGold();
-        items = CalculateLoot();
-        DisplayGold();
-        DisplayItems();
+        lootSummaryUI.gameObject.SetActive(true);
+        gold = CalculateGold();
+        items = CalculateItems();
+        lootSummaryUI.DisplayGold(gold);
+        lootSummaryUI.DisplayItems(items);
     }
 
     public override void Execute()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
         {
             battleSystem.StateMachine.Pop();
         }
@@ -47,7 +41,7 @@ public class LootSummaryState : State<BattleSystem>
         return Random.Range(gpDropped.x, gpDropped.y + 1);
     }
 
-    public Dictionary<ItemBase, int> CalculateLoot()
+    public Dictionary<ItemBase, int> CalculateItems()
     {
         var itemDrops = battleSystem.EnemyUnit.Monster.Base.DropTable.ItemDrops;
         Dictionary<ItemBase, int> lootDict = new();
@@ -65,28 +59,8 @@ public class LootSummaryState : State<BattleSystem>
         return lootDict;
     }
 
-    private void DisplayGold()
-    {
-        goldText.text = $"{goldAmount} GP";
-    }
-
-    private void DisplayItems()
-    {
-        foreach (Transform child in lootListContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (var item in items)
-        {
-            var lootItem = Instantiate(itemSlotUI, lootListContainer.transform);
-
-            lootItem.SetData(new ItemSlot { Item = item.Key, Count = item.Value });
-        }
-    }
-
     public override void Exit()
     {
-        lootSummaryUI.SetActive(false);
+        lootSummaryUI.gameObject.SetActive(false);
     }
 }
