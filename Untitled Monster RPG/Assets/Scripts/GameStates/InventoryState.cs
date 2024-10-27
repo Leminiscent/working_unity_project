@@ -66,23 +66,30 @@ public class InventoryState : State<GameController>
     {
         var prevState = gameController.StateMachine.GetPrevState();
 
-        if (prevState == BattleState.Instance)
+        if (!SelectedItem.DirectlyUsable)
+        {
+            yield return DialogueManager.Instance.ShowDialogueText("This item can't be used directly!");
+            yield break;
+        }
+        else if (prevState == BattleState.Instance)
         {
             if (!SelectedItem.UsableInBattle)
             {
                 yield return DialogueManager.Instance.ShowDialogueText("This item can't be used in battle!");
                 yield break;
             }
-            else
+        }
+        else
+        {
+            if (!SelectedItem.UsableOutsideBattle)
             {
-                if (!SelectedItem.UsableOutsideBattle)
-                {
-                    yield return DialogueManager.Instance.ShowDialogueText("This item can't be used outside of battle!");
-                    yield break;
-                }
+                yield return DialogueManager.Instance.ShowDialogueText("This item can't be used outside of battle!");
+                yield break;
             }
         }
+
         yield return gameController.StateMachine.PushAndWait(PartyState.Instance);
+
         if (prevState == BattleState.Instance)
         {
             if (UseItemState.Instance.ItemUsed)

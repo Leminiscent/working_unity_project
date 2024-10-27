@@ -17,7 +17,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] Image upArrow;
     [SerializeField] Image downArrow;
-    int selectedCategory = 0;
+    int selectedCategory;
     const int itemsInViewport = 8;
     List<ItemSlotUI> slotUIList;
     Inventory inventory;
@@ -32,6 +32,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     private void Start()
     {
         moneyText.text = $"{Wallet.Instance.Money} GP";
+        selectedCategory = GetFirstNonEmptyCategory();
         UpdateItemList();
         inventory.OnUpdated += UpdateItemList;
         Wallet.Instance.OnMoneyChanged += UpdateMoneyText;
@@ -68,27 +69,18 @@ public class InventoryUI : SelectionUI<TextSlot>
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            ++selectedCategory;
+            selectedCategory = GetNextNonEmptyCategory(selectedCategory, 1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            --selectedCategory;
-        }
-
-        if (selectedCategory > Inventory.ItemCategories.Count - 1)
-        {
-            selectedCategory = 0;
-        }
-        else if (selectedCategory < 0)
-        {
-            selectedCategory = Inventory.ItemCategories.Count - 1;
+            selectedCategory = GetNextNonEmptyCategory(selectedCategory, -1);
         }
 
         if (prevCategory != selectedCategory || Input.GetButtonDown("Back"))
         {
             if (Input.GetButtonDown("Back"))
             {
-                selectedCategory = 0;
+                selectedCategory = GetFirstNonEmptyCategory();
             }
 
             ResetSelction();
@@ -138,6 +130,37 @@ public class InventoryUI : SelectionUI<TextSlot>
         itemIcon.sprite = null;
         itemDescription.text = "";
     }
+
+    private int GetNextNonEmptyCategory(int currentCategory, int direction)
+    {
+        int originalCategory = currentCategory;
+        int categoryCount = Inventory.ItemCategories.Count;
+
+        do
+        {
+            currentCategory = (currentCategory + direction + categoryCount) % categoryCount;
+
+            var slots = inventory.GetSlotsByCategory(currentCategory);
+            if (slots.Count > 0)
+                return currentCategory;
+
+        } while (currentCategory != originalCategory);
+
+        return originalCategory; // Fallback
+    }
+
+    private int GetFirstNonEmptyCategory()
+    {
+        for (int i = 0; i < Inventory.ItemCategories.Count; i++)
+        {
+            var slots = inventory.GetSlotsByCategory(i);
+            if (slots.Count > 0)
+                return i;
+        }
+
+        return 0; // Fallback
+    }
+
 
     public ItemBase SelectedItem => inventory.GetItem(selectedItem, selectedCategory);
 

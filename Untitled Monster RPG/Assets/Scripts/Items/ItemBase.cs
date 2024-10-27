@@ -20,6 +20,7 @@ public class ItemBase : ScriptableObject
 
     public virtual bool Use(Monster monster) => false;
     public virtual bool IsReusable => false;
+    public virtual bool DirectlyUsable => true;
     public virtual bool UsableInBattle => true;
     public virtual bool UsableOutsideBattle => true;
 }
