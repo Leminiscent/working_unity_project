@@ -20,8 +20,8 @@ public class LootSummaryState : State<BattleSystem>
     {
         battleSystem = owner;
         lootSummaryUI.gameObject.SetActive(true);
-        gold = CalculateGold();
-        items = CalculateItems();
+        CalculateGold();
+        CalculateItems();
         lootSummaryUI.DisplayGold(gold);
         lootSummaryUI.DisplayItems(items);
     }
@@ -34,17 +34,18 @@ public class LootSummaryState : State<BattleSystem>
         }
     }
 
-    public int CalculateGold()
+    public void CalculateGold()
     {
         var gpDropped = battleSystem.EnemyUnit.Monster.Base.DropTable.GpDropped;
 
-        return Random.Range(gpDropped.x, gpDropped.y + 1);
+        gold = Random.Range(gpDropped.x, gpDropped.y + 1);
     }
 
-    public Dictionary<ItemBase, int> CalculateItems()
+    public void CalculateItems()
     {
         var itemDrops = battleSystem.EnemyUnit.Monster.Base.DropTable.ItemDrops;
-        Dictionary<ItemBase, int> lootDict = new();
+
+        items = new();
 
         foreach (var itemDrop in itemDrops)
         {
@@ -52,11 +53,9 @@ public class LootSummaryState : State<BattleSystem>
             {
                 int quantity = Random.Range(itemDrop.QuantityRange.x, itemDrop.QuantityRange.y + 1);
 
-                lootDict.Add(itemDrop.Item, quantity);
+                items.Add(itemDrop.Item, quantity);
             }
         }
-
-        return lootDict;
     }
 
     public override void Exit()

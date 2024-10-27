@@ -6,14 +6,14 @@ using UnityEngine;
 public class LootSummaryUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI goldText;
-    [SerializeField] GameObject lootListContainer;
-    [SerializeField] ItemSlotUI itemSlotUI;
+    [SerializeField] Transform itemList;
+    [SerializeField] GameObject itemEntryPrefab;
 
     public void DisplayGold(int gold)
     {
         if (gold == 0)
         {
-            goldText.text = "";
+            goldText.gameObject.SetActive(false);
         }
         else
         {
@@ -23,16 +23,22 @@ public class LootSummaryUI : MonoBehaviour
 
     public void DisplayItems(Dictionary<ItemBase, int> items)
     {
-        foreach (Transform child in lootListContainer.transform)
+        foreach (Transform child in itemList)
         {
             Destroy(child.gameObject);
         }
 
+        if (items.Count == 0)
+        {
+            return;
+        }
+
         foreach (var item in items)
         {
-            var lootItem = Instantiate(itemSlotUI, lootListContainer.transform);
-
-            lootItem.SetData(new ItemSlot { Item = item.Key, Count = item.Value });
+            GameObject itemEntryObj = Instantiate(itemEntryPrefab, itemList);
+            ItemEntryUI itemEntryUI = itemEntryObj.GetComponent<ItemEntryUI>();
+            
+            itemEntryUI.SetItem(item.Key, item.Value);
         }
     }
 }
