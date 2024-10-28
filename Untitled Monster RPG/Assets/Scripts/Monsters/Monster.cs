@@ -176,16 +176,16 @@ public class Monster
             if ((changeIsPositive && StatBoosts[stat] == 6) || (!changeIsPositive && StatBoosts[stat] == -6))
             {
                 riseOrFall = changeIsPositive ? "higher" : "lower";
-                StatusChanges.Enqueue($"{Base.Name}'s {stat} won't go any {riseOrFall}!");
+                StatusChanges.Enqueue($"'s {stat} won't go any {riseOrFall}!");
                 return;
             }
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
             riseOrFall = changeIsPositive ? "rose" : "fell";
 
-            string bigChange = (Mathf.Abs(boost) >= 3) ? " spverly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
+            string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
 
-            StatusChanges.Enqueue($"{Base.Name}'s {stat}{bigChange}{riseOrFall}!");
+            StatusChanges.Enqueue($"'s {stat}{bigChange}{riseOrFall}!");
         }
     }
 
@@ -347,17 +347,17 @@ public class Monster
             damage = 1;
         }
         DecreaseHP(damage);
-        StatusChanges.Enqueue($"{Base.Name} was damaged by the recoil!");
+        StatusChanges.Enqueue($" was damaged by the recoil!");
     }
 
-    public void DrainHealth(int heal, Monster target)
+    public void DrainHealth(int heal, string targetName)
     {
         if (heal < 1)
         {
             heal = 1;
         }
         IncreaseHP(heal);
-        StatusChanges.Enqueue($"{Base.Name} drained health from {target.Base.Name}!");
+        StatusChanges.Enqueue($" drained health from {targetName}!");
     }
 
     public void DecreaseHP(int damage)
@@ -383,7 +383,7 @@ public class Monster
 
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
-        StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+        StatusChanges.Enqueue($"{Status.StartMessage}");
         OnStatusChanged?.Invoke();
     }
 
@@ -399,7 +399,7 @@ public class Monster
 
         VolatileStatus = ConditionsDB.Conditions[conditionId];
         VolatileStatus?.OnStart?.Invoke(this);
-        StatusChanges.Enqueue($"{Base.Name} {VolatileStatus.StartMessage}");
+        StatusChanges.Enqueue($"{VolatileStatus.StartMessage}");
     }
 
     public void CureVolatileStatus()

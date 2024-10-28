@@ -23,11 +23,11 @@ public class ConditionsDB
             new Condition
             {
                 Name = "Poison",
-                StartMessage = "has been poisoned!",
+                StartMessage = " has been poisoned!",
                 OnEndOfTurn = (Monster monster) =>
                 {
                     monster.DecreaseHP(monster.MaxHP / 8);
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by poison!");
+                    monster.StatusChanges.Enqueue(" is hurt by poison!");
                 }
             }
         },
@@ -36,11 +36,11 @@ public class ConditionsDB
             new Condition
             {
                 Name = "Burn",
-                StartMessage = "has been burned!",
+                StartMessage = " has been burned!",
                 OnEndOfTurn = (Monster monster) =>
                 {
                     monster.DecreaseHP(monster.MaxHP / 16);
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is hurt by its burn!");
+                    monster.StatusChanges.Enqueue(" is hurt by its burn!");
                 }
             }
         },
@@ -49,7 +49,7 @@ public class ConditionsDB
             new Condition
             {
                 Name = "Sleep",
-                StartMessage = "has been put to sleep!",
+                StartMessage = " has been put to sleep!",
                 OnStart = (Monster monster) =>
                 {
                     monster.StatusTime = Random.Range(1, 4);
@@ -59,11 +59,11 @@ public class ConditionsDB
                     if (monster.StatusTime == 0)
                     {
                         monster.CureStatus();
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} woke up!");
+                        monster.StatusChanges.Enqueue(" woke up!");
                         return true;
                     }
                     monster.StatusTime--;
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is fast asleep!");
+                    monster.StatusChanges.Enqueue(" is fast asleep!");
                     return false;
                 }
             }
@@ -73,12 +73,12 @@ public class ConditionsDB
             new Condition
             {
                 Name = "Paralyzed",
-                StartMessage = "has been paralyzed!",
+                StartMessage = " has been paralyzed!",
                 OnBeginningofTurn = (Monster monster) =>
                 {
                     if (Random.Range(1, 5) == 1)
                     {
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} is fully paralyzed and cannot move!");
+                        monster.StatusChanges.Enqueue(" is fully paralyzed and cannot move!");
                         return false;
                     }
                     return true;
@@ -90,18 +90,18 @@ public class ConditionsDB
             new Condition
             {
                 Name = "Frozen",
-                StartMessage = "has been frozen solid!",
+                StartMessage = " has been frozen solid!",
                 OnBeginningofTurn = (Monster monster) =>
                 {
                     if (Random.Range(1, 5) == 1)
                     {
                         monster.CureStatus();
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} is no longer frozen!");
+                        monster.StatusChanges.Enqueue(" is no longer frozen!");
                         return true;
                     }
                     else
                     {
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} is frozen solid and cannot move!");
+                        monster.StatusChanges.Enqueue(" is frozen solid and cannot move!");
                         return false;
                     }
                 }
@@ -114,7 +114,7 @@ public class ConditionsDB
             new Condition
             {
                 Name = "Confusion",
-                StartMessage = "has been confused!",
+                StartMessage = " has been confused!",
                 OnStart = (Monster monster) =>
                 {
                     monster.VolatileStatusTime = Random.Range(2, 5);
@@ -124,16 +124,16 @@ public class ConditionsDB
                     if (monster.VolatileStatusTime == 0)
                     {
                         monster.CureVolatileStatus();
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} snapped out of confusion!");
+                        monster.StatusChanges.Enqueue(" snapped out of confusion!");
                         return true;
                     }
                     monster.VolatileStatusTime--;
 
                     if (Random.Range(1, 4) == 1)
                     {
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} is confused!");
+                        monster.StatusChanges.Enqueue(" is confused!");
                         monster.DecreaseHP(Mathf.FloorToInt(monster.MaxHP / 8));
-                        monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself in its confusion!");
+                        monster.StatusChanges.Enqueue(" hurt itself in its confusion!");
                         return false;
                     }
                     return true;
@@ -195,8 +195,8 @@ public class ConditionsDB
                 EffectMessage = "The sandstorm rages!",
                 OnWeather = (Monster monster) =>
                 {
-                    monster.DecreaseHP(Mathf.RoundToInt((float)monster.MaxHP / 16f));
-                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is buffeted by the sandstorm!");
+                    monster.DecreaseHP(Mathf.RoundToInt(monster.MaxHP / 16f));
+                    monster.StatusChanges.Enqueue(" is buffeted by the sandstorm!");
                 }
             }
         }

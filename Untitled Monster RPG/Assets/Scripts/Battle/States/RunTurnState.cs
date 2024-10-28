@@ -9,6 +9,8 @@ public class RunTurnState : State<BattleSystem>
     BattleSystem battleSystem;
     BattleUnit playerUnit;
     BattleUnit enemyUnit;
+    string playerMonsterName;
+    string enemyMonsterName;
     BattleDialogueBox dialogueBox;
     PartyScreen partyScreen;
     Monster wildMonster;
@@ -30,6 +32,8 @@ public class RunTurnState : State<BattleSystem>
         battleSystem = owner;
         playerUnit = battleSystem.PlayerUnit;
         enemyUnit = battleSystem.EnemyUnit;
+        playerMonsterName = playerUnit.Monster.Base.Name;
+        enemyMonsterName = isMasterBattle ? $"The enemy {enemyUnit.Monster.Base.Name}" : $"The wild {enemyUnit.Monster.Base.Name}";
         dialogueBox = battleSystem.DialogueBox;
         partyScreen = battleSystem.PartyScreen;
         wildMonster = battleSystem.WildMonster;
@@ -62,17 +66,19 @@ public class RunTurnState : State<BattleSystem>
             }
 
             var firstUnit = playerGoesFirst ? playerUnit : enemyUnit;
+            var firstUnitName = playerGoesFirst ? playerMonsterName : enemyMonsterName;
             var secondUnit = playerGoesFirst ? enemyUnit : playerUnit;
+            var secondUnitName = playerGoesFirst ? enemyMonsterName : playerMonsterName;
             var secondMonster = secondUnit.Monster;
 
-            yield return RunMove(firstUnit, secondUnit, firstUnit.Monster.CurrentMove);
-            yield return RunAfterTurn(firstUnit);
+            yield return RunMove(firstUnit, firstUnitName, secondUnit, secondUnitName, firstUnit.Monster.CurrentMove);
+            yield return RunAfterTurn(firstUnit, firstUnitName);
             if (battleSystem.BattleIsOver) yield break;
 
             if (secondMonster.HP > 0)
             {
-                yield return RunMove(secondUnit, firstUnit, secondUnit.Monster.CurrentMove);
-                yield return RunAfterTurn(secondUnit);
+                yield return RunMove(secondUnit, secondUnitName, firstUnit, firstUnitName, secondMonster.CurrentMove);
+                yield return RunAfterTurn(secondUnit, secondUnitName);
                 if (battleSystem.BattleIsOver) yield break;
             }
         }
@@ -88,8 +94,8 @@ public class RunTurnState : State<BattleSystem>
             }
 
             enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
-            yield return RunMove(enemyUnit, playerUnit, enemyUnit.Monster.CurrentMove);
-            yield return RunAfterTurn(enemyUnit);
+            yield return RunMove(enemyUnit, enemyMonsterName, playerUnit, playerMonsterName, enemyUnit.Monster.CurrentMove);
+            yield return RunAfterTurn(enemyUnit, enemyMonsterName);
             if (battleSystem.BattleIsOver) yield break;
         }
 
@@ -98,19 +104,19 @@ public class RunTurnState : State<BattleSystem>
             yield return dialogueBox.TypeDialogue(field.Weather.EffectMessage);
 
             field.Weather.OnWeather?.Invoke(playerUnit.Monster);
-            yield return ShowStatusChanges(playerUnit.Monster);
+            yield return ShowStatusChanges(playerUnit.Monster, playerMonsterName);
             yield return playerUnit.Hud.WaitForHPUpdate();
             if (playerUnit.Monster.HP <= 0)
             {
-                yield return HandleMonsterDefeat(playerUnit);
+                yield return HandleMonsterDefeat(playerUnit, playerMonsterName);
             }
 
             field.Weather.OnWeather?.Invoke(enemyUnit.Monster);
-            yield return ShowStatusChanges(enemyUnit.Monster);
+            yield return ShowStatusChanges(enemyUnit.Monster, enemyMonsterName);
             yield return enemyUnit.Hud.WaitForHPUpdate();
             if (enemyUnit.Monster.HP <= 0)
             {
-                yield return HandleMonsterDefeat(enemyUnit);
+                yield return HandleMonsterDefeat(enemyUnit, enemyMonsterName);
             }
 
             if (field.WeatherDuration != null)
@@ -131,16 +137,16 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    IEnumerator RunAfterTurn(BattleUnit sourceUnit)
+    IEnumerator RunAfterTurn(BattleUnit sourceUnit, string sourceUnitName)
     {
         if (battleSystem.BattleIsOver) yield break;
 
         sourceUnit.Monster.OnEndOfTurn();
-        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
         yield return sourceUnit.Hud.WaitForHPUpdate();
         if (sourceUnit.Monster.HP <= 0)
         {
-            yield return HandleMonsterDefeat(sourceUnit);
+            yield return HandleMonsterDefeat(sourceUnit, sourceUnitName);
         }
     }
 
@@ -200,25 +206,25 @@ public class RunTurnState : State<BattleSystem>
         return Random.Range(1, 101) <= moveAccuracy;
     }
 
-    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
+    IEnumerator RunMove(BattleUnit sourceUnit, string sourceUnitName, BattleUnit targetUnit, string targetUnitName, Move move)
     {
         bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
 
         if (!canRunMove)
         {
-            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
             yield return sourceUnit.Hud.WaitForHPUpdate();
             yield break;
         }
 
-        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
         move.SP--;
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
         {
-            yield return dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} has no SP left!");
+            yield return dialogueBox.TypeDialogue($"{sourceUnitName} has no SP left!");
         }
-        yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
+        yield return dialogueBox.TypeDialogue($"{sourceUnitName} used {move.Base.Name}!");
 
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
         {
@@ -238,7 +244,7 @@ public class RunTurnState : State<BattleSystem>
 
                 if (move.Base.Category == MoveCategory.Status)
                 {
-                    yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
+                    yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, sourceUnitName, targetUnit.Monster, targetUnitName, move.Base.Target);
                 }
                 else
                 {
@@ -255,11 +261,11 @@ public class RunTurnState : State<BattleSystem>
                         var rnd = Random.Range(1, 101);
                         if (rnd <= effect.Chance)
                         {
-                            yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                            yield return RunMoveEffects(effect, sourceUnit.Monster, sourceUnitName, targetUnit.Monster, targetUnitName, effect.Target);
                         }
                     }
                 }
-                yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
+                yield return RunAfterMove(damageDetails, move.Base, sourceUnit, sourceUnitName, targetUnit, targetUnitName);
 
                 hit = i;
                 if (targetUnit.Monster.HP <= 0) break;
@@ -273,16 +279,16 @@ public class RunTurnState : State<BattleSystem>
 
             if (targetUnit.Monster.HP <= 0)
             {
-                yield return HandleMonsterDefeat(targetUnit);
+                yield return HandleMonsterDefeat(targetUnit, targetUnitName);
             }
         }
         else
         {
-            yield return dialogueBox.TypeDialogue(sourceUnit.Monster.Base.Name + "'s attack missed!");
+            yield return dialogueBox.TypeDialogue($"{sourceUnitName}'s attack missed!");
         }
     }
 
-    IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, BattleUnit targetUnit)
+    IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, string sourceUnitName, BattleUnit targetUnit, string targetUnitName)
     {
         if (details == null)
             yield break;
@@ -317,15 +323,21 @@ public class RunTurnState : State<BattleSystem>
         if (move.DrainPercentage != 0 && sourceUnit.Monster.HP != sourceUnit.Monster.MaxHP)
         {
             int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHP);
+            string updatedTargetUnitName = targetUnitName;
 
-            sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster);
+            if (targetUnit.Monster == enemyUnit.Monster)
+            {
+                updatedTargetUnitName = isMasterBattle ? $"the enemy {targetUnit.Monster.Base.Name}" : $"the wild {targetUnit.Monster.Base.Name}";
+            }
+
+            sourceUnit.Monster.DrainHealth(heal, updatedTargetUnitName);
         }
 
-        yield return ShowStatusChanges(sourceUnit.Monster);
-        yield return ShowStatusChanges(targetUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
+        yield return ShowStatusChanges(targetUnit.Monster, targetUnitName);
     }
 
-    IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)
+    IEnumerator RunMoveEffects(MoveEffects effects, Monster source, string sourceName, Monster target, string targetName, MoveTarget moveTarget)
     {
         // Stat Boosts
         if (effects.Boosts != null)
@@ -358,22 +370,23 @@ public class RunTurnState : State<BattleSystem>
             yield return dialogueBox.TypeDialogue(field.Weather.StartMessage);
         }
 
-        yield return ShowStatusChanges(source);
-        yield return ShowStatusChanges(target);
+        yield return ShowStatusChanges(source, sourceName);
+        yield return ShowStatusChanges(target, targetName);
     }
 
-    IEnumerator ShowStatusChanges(Monster monster)
+    IEnumerator ShowStatusChanges(Monster monster, string monsterName)
     {
         while (monster.StatusChanges.Count > 0)
         {
             var message = monster.StatusChanges.Dequeue();
-            yield return dialogueBox.TypeDialogue(message);
+
+            yield return dialogueBox.TypeDialogue($"{monsterName}{message}");
         }
     }
 
-    IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
+    IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit, string defeatedUnitName)
     {
-        yield return dialogueBox.TypeDialogue(defeatedUnit.Monster.Base.Name + " has been defeated!");
+        yield return dialogueBox.TypeDialogue($"{defeatedUnitName} has been defeated!");
         defeatedUnit.PlayDefeatAnimation();
         yield return new WaitForSeconds(1f);
 
@@ -411,7 +424,7 @@ public class RunTurnState : State<BattleSystem>
 
                 if (gpDropped > 0)
                 {
-                    yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} dropped {gpDropped} GP!");
+                    yield return dialogueBox.TypeDialogue($"{defeatedUnitName} dropped {gpDropped} GP!");
                     Wallet.Instance.GetWallet().AddMoney(gpDropped);
                 }
 
@@ -420,7 +433,7 @@ public class RunTurnState : State<BattleSystem>
                     var item = itemsDropped[i];
                     var quantity = quantitiesDropped[i];
 
-                    yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} dropped {quantity}x {item.Name}!");
+                    yield return dialogueBox.TypeDialogue($"{defeatedUnitName} dropped {quantity}x {item.Name}!");
                     Inventory.GetInventory().AddItem(item, quantity);
                 }
             }
@@ -439,13 +452,13 @@ public class RunTurnState : State<BattleSystem>
 
                 expGain = Mathf.Min(expGain, expNeeded);
                 playerUnit.Monster.Exp += expGain;
-                yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
+                yield return dialogueBox.TypeDialogue($"{playerMonsterName} gained {expGain} experience!");
                 yield return playerUnit.Hud.SetExpSmooth();
 
                 while (playerUnit.Monster.CheckForLevelUp())
                 {
                     playerUnit.Hud.SetLevel();
-                    yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " grew to level " + playerUnit.Monster.Level + "!");
+                    yield return dialogueBox.TypeDialogue($"{playerMonsterName} grew to level {playerUnit.Monster.Level}!");
 
                     var newMove = playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
 
@@ -454,13 +467,13 @@ public class RunTurnState : State<BattleSystem>
                         if (playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
                         {
                             playerUnit.Monster.LearnMove(newMove.Base);
-                            yield return dialogueBox.TypeDialogue(playerUnit.Monster.Base.Name + " learned " + newMove.Base.Name + "!");
+                            yield return dialogueBox.TypeDialogue($"{playerMonsterName} learned {newMove.Base.Name}!");
                             dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
                         }
                         else
                         {
-                            yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
-                            yield return dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
+                            yield return dialogueBox.TypeDialogue($"{playerMonsterName} is trying to learn {newMove.Base.Name}!");
+                            yield return dialogueBox.TypeDialogue($"But {playerMonsterName} already knows {MonsterBase.MaxMoveCount} moves!");
                             yield return dialogueBox.TypeDialogue($"Choose a move to forget.");
 
                             ForgettingMoveState.Instance.CurrentMoves = playerUnit.Monster.Moves.Select(m => m.Base).ToList();
@@ -471,20 +484,20 @@ public class RunTurnState : State<BattleSystem>
 
                             if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
                             {
-                                yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} did not learn {newMove.Base.Name}!");
+                                yield return dialogueBox.TypeDialogue($"{playerMonsterName} did not learn {newMove.Base.Name}!");
                             }
                             else
                             {
                                 var selectedMove = playerUnit.Monster.Moves[moveIndex];
 
-                                yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
+                                yield return dialogueBox.TypeDialogue($"{playerMonsterName} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
                                 playerUnit.Monster.Moves[moveIndex] = new Move(newMove.Base);
                             }
                         }
                     }
                     yield return playerUnit.Hud.SetExpSmooth(true);
                 }
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.75f);
             }
         }
 

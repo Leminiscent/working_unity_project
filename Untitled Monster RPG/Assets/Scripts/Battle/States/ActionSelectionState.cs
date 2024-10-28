@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -10,6 +9,7 @@ public class ActionSelectionState : State<BattleSystem>
     BattleSystem battleSystem;
 
     public static ActionSelectionState Instance { get; private set; }
+    public ActionSelectionUI SelectionUI => selectionUI;
 
     private void Awake()
     {

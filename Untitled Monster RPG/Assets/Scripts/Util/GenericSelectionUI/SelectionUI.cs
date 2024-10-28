@@ -67,8 +67,7 @@ namespace Utils.GenericSelectionUI
             }
             if (Input.GetButtonDown("Back"))
             {
-                selectedItem = 0;
-                UpdateSelectionInUI();
+                ResetSelection();
                 OnBack?.Invoke();
             }
         }
@@ -109,6 +108,12 @@ namespace Utils.GenericSelectionUI
             {
                 items[i].OnSelectionChanged(i == selectedItem);
             }
+        }
+
+        public void ResetSelection()
+        {
+            selectedItem = 0;
+            UpdateSelectionInUI();
         }
 
         void UpdateSelectionTimer()
