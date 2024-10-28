@@ -157,9 +157,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 
         if (saveData != null)
         {
-            var pos = saveData.position;
-
-            transform.position = new Vector3(pos[0], pos[1]);
+            transform.position = new Vector3(saveData.position[0], saveData.position[1]);
             activeQuest = (saveData.activeQuest != null) ? new Quest(saveData.activeQuest) : null;
             questToStart = (saveData.questToStart != null) ? new Quest(saveData.questToStart).Base : null;
             questToComplete = (saveData.questToComplete != null) ? new Quest(saveData.questToComplete).Base : null;

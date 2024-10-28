@@ -134,9 +134,8 @@ public class DeputyController : MonoBehaviour, ISavable
     public void RestoreState(object state)
     {
         var saveData = (DeputySaveData)state;
-        var pos = saveData.position;
 
-        transform.position = new Vector3(pos[0], pos[1]);
+        transform.position = new Vector3(saveData.position[0], saveData.position[1]);
     }
 }
 

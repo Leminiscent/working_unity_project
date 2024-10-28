@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -90,19 +91,31 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
 
     public object CaptureState()
     {
-        return battleLost;
+        var saveData = new MasterSaveData
+        {
+            position = new float[] { transform.position.x, transform.position.y },
+            battleLost = battleLost
+        };
+
+        return saveData;
     }
 
     public void RestoreState(object state)
     {
-        battleLost = (bool)state;
+        var saveData = (MasterSaveData)state;
 
-        if (battleLost)
-        {
-            los.gameObject.SetActive(false);
-        }
+        transform.position = new Vector3(saveData.position[0], saveData.position[1]);
+        battleLost = saveData.battleLost;
+        los.SetActive(!battleLost);
     }
 
     public string Name => name;
     public Sprite Sprite => sprite;
+}
+
+[Serializable]
+public class MasterSaveData
+{
+    public float[] position;
+    public bool battleLost;
 }
