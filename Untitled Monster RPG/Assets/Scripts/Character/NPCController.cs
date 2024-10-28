@@ -132,26 +132,34 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 
     public object CaptureState()
     {
-        var saveData = new NPCQuestSaveData();
+        var saveData = new NPCSaveData
+        {
+            position = new float[] { transform.position.x, transform.position.y },
+            activeQuest = activeQuest?.GetSaveData()
+        };
 
-        saveData.activeQuest = activeQuest?.GetSaveData();
         if (questToStart != null)
         {
             saveData.questToStart = new Quest(questToStart).GetSaveData();
         }
+
         if (questToComplete != null)
         {
             saveData.questToComplete = new Quest(questToComplete).GetSaveData();
         }
+
         return saveData;
     }
 
     public void RestoreState(object state)
     {
-        var saveData = state as NPCQuestSaveData;
+        var saveData = (NPCSaveData)state;
 
         if (saveData != null)
         {
+            var pos = saveData.position;
+
+            transform.position = new Vector3(pos[0], pos[1]);
             activeQuest = (saveData.activeQuest != null) ? new Quest(saveData.activeQuest) : null;
             questToStart = (saveData.questToStart != null) ? new Quest(saveData.questToStart).Base : null;
             questToComplete = (saveData.questToComplete != null) ? new Quest(saveData.questToComplete).Base : null;
@@ -160,8 +168,9 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 }
 
 [System.Serializable]
-public class NPCQuestSaveData
+public class NPCSaveData
 {
+    public float[] position;
     public QuestSaveData activeQuest;
     public QuestSaveData questToStart;
     public QuestSaveData questToComplete;
