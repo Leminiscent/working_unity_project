@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class DeputyController : MonoBehaviour
+public class DeputyController : MonoBehaviour, ISavable
 {
     private CharacterAnimator animator;
     private bool isMoving;
@@ -12,21 +12,17 @@ public class DeputyController : MonoBehaviour
     private float moveSpeed;
     private Queue<Vector3> positionQueue = new();
 
-    private void Start()
+    private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
         animator = GetComponent<CharacterAnimator>();
-        SetPosition();
-        moveSpeed = player.Character.moveSpeed;
-        player.Character.OnMoveStart += OnPlayerMoveStart;
     }
 
-    private void OnDestroy()
+    private void Start()
     {
-        if (player != null)
-        {
-            player.Character.OnMoveStart -= OnPlayerMoveStart;
-        }
+        moveSpeed = player.Character.moveSpeed;
+        player.Character.OnMoveStart += OnPlayerMoveStart;
+        SetPosition();
     }
 
     private void Update()
@@ -124,4 +120,28 @@ public class DeputyController : MonoBehaviour
         animator.IsJumping = false;
         isMoving = false;
     }
+
+    public object CaptureState()
+    {
+        var saveData = new DeputySaveData()
+        {
+            position = new float[] { transform.position.x, transform.position.y }
+        };
+
+        return saveData;
+    }
+
+    public void RestoreState(object state)
+    {
+        var saveData = (DeputySaveData)state;
+        var pos = saveData.position;
+
+        transform.position = new Vector3(pos[0], pos[1]);
+    }
+}
+
+[Serializable]
+public class DeputySaveData
+{
+    public float[] position;
 }
