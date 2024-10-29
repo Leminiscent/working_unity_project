@@ -135,6 +135,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
         var saveData = new NPCSaveData
         {
             position = new float[] { transform.position.x, transform.position.y },
+            facingDirection = character.Animator.FacingDirection,
             activeQuest = activeQuest?.GetSaveData()
         };
 
@@ -158,6 +159,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
         if (saveData != null)
         {
             transform.position = new Vector3(saveData.position[0], saveData.position[1]);
+            character.Animator.FacingDirection = saveData.facingDirection;
             activeQuest = (saveData.activeQuest != null) ? new Quest(saveData.activeQuest) : null;
             questToStart = (saveData.questToStart != null) ? new Quest(saveData.questToStart).Base : null;
             questToComplete = (saveData.questToComplete != null) ? new Quest(saveData.questToComplete).Base : null;
@@ -169,6 +171,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 public class NPCSaveData
 {
     public float[] position;
+    public FacingDirection facingDirection;
     public QuestSaveData activeQuest;
     public QuestSaveData questToStart;
     public QuestSaveData questToComplete;

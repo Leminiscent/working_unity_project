@@ -94,6 +94,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         var saveData = new MasterSaveData
         {
             position = new float[] { transform.position.x, transform.position.y },
+            facingDirection = character.Animator.FacingDirection,
             battleLost = battleLost
         };
 
@@ -105,6 +106,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         var saveData = (MasterSaveData)state;
 
         transform.position = new Vector3(saveData.position[0], saveData.position[1]);
+        character.Animator.FacingDirection = saveData.facingDirection;
         battleLost = saveData.battleLost;
         los.SetActive(!battleLost);
     }
@@ -117,5 +119,6 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
 public class MasterSaveData
 {
     public float[] position;
+    public FacingDirection facingDirection;
     public bool battleLost;
 }

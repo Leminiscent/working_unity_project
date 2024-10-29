@@ -125,7 +125,8 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         var saveData = new DeputySaveData()
         {
-            position = new float[] { transform.position.x, transform.position.y }
+            position = new float[] { transform.position.x, transform.position.y },
+            facingDirection = animator.FacingDirection,
         };
 
         return saveData;
@@ -136,6 +137,7 @@ public class DeputyController : MonoBehaviour, ISavable
         var saveData = (DeputySaveData)state;
 
         transform.position = new Vector3(saveData.position[0], saveData.position[1]);
+        animator.FacingDirection = saveData.facingDirection;
     }
 }
 
@@ -143,4 +145,5 @@ public class DeputyController : MonoBehaviour, ISavable
 public class DeputySaveData
 {
     public float[] position;
+    public FacingDirection facingDirection;
 }

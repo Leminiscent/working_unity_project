@@ -99,7 +99,41 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
+    private SpriteAnimator GetAnimForFacingDirection(FacingDirection dir)
+    {
+        return dir switch
+        {
+            FacingDirection.Up => walkUpAnim,
+            FacingDirection.Down => walkDownAnim,
+            FacingDirection.Left => walkLeftAnim,
+            FacingDirection.Right => walkRightAnim,
+            _ => walkDownAnim,
+        };
+    }
+
     public FacingDirection DefaultDirection => defaultDirection;
+    public FacingDirection FacingDirection
+    {
+        get
+        {
+            if (currentAnim == walkRightAnim)
+                return FacingDirection.Right;
+            else if (currentAnim == walkLeftAnim)
+                return FacingDirection.Left;
+            else if (currentAnim == walkUpAnim)
+                return FacingDirection.Up;
+            else if (currentAnim == walkDownAnim)
+                return FacingDirection.Down;
+            else
+                return defaultDirection;
+        }
+        set
+        {
+            SetFacingDirection(value);
+            currentAnim = GetAnimForFacingDirection(value);
+            currentAnim.Start();
+        }
+    }
 }
 
 public enum FacingDirection

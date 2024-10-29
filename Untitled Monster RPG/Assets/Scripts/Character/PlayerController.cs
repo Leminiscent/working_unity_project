@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var saveData = new PlayerSaveData
         {
             position = new float[] { transform.position.x, transform.position.y },
+            facingDirection = character.Animator.FacingDirection,
             monsters = GetComponent<MonsterParty>().Monsters.Select(m => m.GetSaveData()).ToList()
         };
 
@@ -99,6 +100,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var saveData = (PlayerSaveData)state;
 
         transform.position = new Vector3(saveData.position[0], saveData.position[1]);
+        character.Animator.FacingDirection = saveData.facingDirection;
         GetComponent<MonsterParty>().Monsters = saveData.monsters.Select(s => new Monster(s)).ToList();
     }
 
@@ -112,5 +114,6 @@ public class PlayerController : MonoBehaviour, ISavable
 public class PlayerSaveData
 {
     public float[] position;
+    public FacingDirection facingDirection;
     public List<MonsterSaveData> monsters;
 }
