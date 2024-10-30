@@ -408,8 +408,13 @@ public class RunTurnState : State<BattleSystem>
             if (dropTable != null)
             {
                 int gpDropped = Random.Range(dropTable.GpDropped.x, dropTable.GpDropped.y + 1);
-                List<ItemBase> itemsDropped = new();
-                List<int> quantitiesDropped = new();
+                List<string> lootDescriptions = new();
+
+                if (gpDropped > 0)
+                {
+                    lootDescriptions.Add($"{gpDropped} GP");
+                    Wallet.Instance.GetWallet().AddMoney(gpDropped);
+                }
 
                 foreach (var itemDrop in dropTable.ItemDrops)
                 {
@@ -417,24 +422,26 @@ public class RunTurnState : State<BattleSystem>
                     {
                         int quantity = Random.Range(itemDrop.QuantityRange.x, itemDrop.QuantityRange.y + 1);
 
-                        itemsDropped.Add(itemDrop.Item);
-                        quantitiesDropped.Add(quantity);
+                        lootDescriptions.Add($"{quantity}x {itemDrop.Item.Name}");
+                        Inventory.GetInventory().AddItem(itemDrop.Item, quantity);
                     }
                 }
 
-                if (gpDropped > 0)
+                if (lootDescriptions.Count > 0)
                 {
-                    yield return dialogueBox.TypeDialogue($"{defeatedUnitName} dropped {gpDropped} GP!");
-                    Wallet.Instance.GetWallet().AddMoney(gpDropped);
-                }
+                    string initialMessage = $"{defeatedUnitName} dropped";
 
-                for (int i = 0; i < itemsDropped.Count; i++)
-                {
-                    var item = itemsDropped[i];
-                    var quantity = quantitiesDropped[i];
-
-                    yield return dialogueBox.TypeDialogue($"{defeatedUnitName} dropped {quantity}x {item.Name}!");
-                    Inventory.GetInventory().AddItem(item, quantity);
+                    foreach (var loot in lootDescriptions)
+                    {
+                        if (loot != lootDescriptions.First())
+                        {
+                            yield return dialogueBox.SetAndTypeDialogue(initialMessage, loot);
+                        }
+                        else
+                        {
+                            yield return dialogueBox.TypeDialogue($"{initialMessage} {loot}");
+                        }
+                    }
                 }
             }
 

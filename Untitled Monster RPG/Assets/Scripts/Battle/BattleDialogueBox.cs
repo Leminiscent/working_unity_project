@@ -25,7 +25,7 @@ public class BattleDialogueBox : MonoBehaviour
         dialogueText.text = dialogue;
     }
 
-    public IEnumerator TypeDialogue(string dialogue)
+    public IEnumerator TypeDialogue(string dialogue, bool waitForInput = false)
     {
         dialogueText.text = "";
         foreach (var letter in dialogue.ToCharArray())
@@ -34,7 +34,33 @@ public class BattleDialogueBox : MonoBehaviour
             yield return new WaitForSeconds(1f / lettersPerSecond);
         }
 
-        yield return new WaitForSeconds(0.75f);
+        if (waitForInput)
+        {
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.75f);
+        }
+    }
+
+    public IEnumerator SetAndTypeDialogue(string setDialogue, string typeDialogue, bool waitForInput = false)
+    {
+        dialogueText.text = $"{setDialogue} ";
+        foreach (var letter in typeDialogue.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(1f / lettersPerSecond);
+        }
+
+        if (waitForInput)
+        {
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.75f);
+        }
     }
 
     public void EnableDialogueText(bool enabled)
