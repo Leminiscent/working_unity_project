@@ -6,65 +6,55 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private List<AudioData> sfxList;
-    [SerializeField] private AudioSource musicPlayer;
-    [SerializeField] private AudioSource sfxPlayer;
-    [SerializeField] private float fadeDuration = 0.75f;
-
-    private AudioClip currentMusic;
-    private float originalMusicVolume;
-    private Dictionary<AudioID, AudioData> sfxDictionary;
+    [SerializeField] List<AudioData> sfxList;
+    [SerializeField] AudioSource musicPlayer;
+    [SerializeField] AudioSource sfxPlayer;
+    [SerializeField] float fadeDuration = 0.75f;
+    AudioClip currentMusic;
+    float originalMusicVolume;
+    Dictionary<AudioID, AudioData> sfxDictionary;
 
     public static AudioManager Instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     private void Start()
     {
         originalMusicVolume = musicPlayer.volume;
-        sfxDictionary = sfxList.ToDictionary(audioData => audioData.id, audioData => audioData);
+        sfxDictionary = sfxList.ToDictionary(x => x.id, x => x);
     }
 
     public void PlaySFX(AudioClip clip, bool pauseMusic = false)
     {
         if (clip == null) return;
-
         if (pauseMusic)
         {
             musicPlayer.Pause();
             StartCoroutine(UnpauseMusic(clip.length));
         }
-
         sfxPlayer.PlayOneShot(clip);
     }
 
     public void PlaySFX(AudioID id, bool pauseMusic = false)
     {
-        if (sfxDictionary.TryGetValue(id, out var audioData))
-        {
-            PlaySFX(audioData.clip, pauseMusic);
-        }
+        if (!sfxDictionary.ContainsKey(id)) return;
+
+        var audioData = sfxDictionary[id];
+
+        PlaySFX(audioData.clip, pauseMusic);
     }
 
     public void PlayMusic(AudioClip clip, bool loop = true, bool fade = false)
     {
         if (clip == null || clip == currentMusic) return;
-
         currentMusic = clip;
         StartCoroutine(PlayMusicAsync(clip, loop, fade));
     }
 
-    private IEnumerator PlayMusicAsync(AudioClip clip, bool loop, bool fade)
+    IEnumerator PlayMusicAsync(AudioClip clip, bool loop, bool fade)
     {
         if (fade)
         {
@@ -81,7 +71,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private IEnumerator UnpauseMusic(float delay)
+    IEnumerator UnpauseMusic(float delay)
     {
         yield return new WaitForSeconds(delay);
         musicPlayer.volume = 0;
@@ -90,15 +80,7 @@ public class AudioManager : MonoBehaviour
     }
 }
 
-public enum AudioID
-{
-    UISelect,
-    Hit,
-    Defeat,
-    ExpGain,
-    ItemObtained,
-    MonsterObtained
-}
+public enum AudioID { UISelect, Hit, Defeat, ExpGain, ItemObtained, MonsterObtained }
 
 [System.Serializable]
 public class AudioData
