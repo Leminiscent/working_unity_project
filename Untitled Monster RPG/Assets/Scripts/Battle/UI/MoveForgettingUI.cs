@@ -8,16 +8,16 @@ using Utils.GenericSelectionUI;
 
 public class MoveForgettingUI : SelectionUI<TextSlot>
 {
-    [SerializeField] List<TextMeshProUGUI> moveTexts;
+    [SerializeField] private List<TextMeshProUGUI> _moveTexts;
 
     public void SetMoveData(List<MoveBase> currentMoves, MoveBase newMove)
     {
         for (int i = 0; i < currentMoves.Count; i++)
         {
-            moveTexts[i].text = currentMoves[i].Name;
+            _moveTexts[i].text = currentMoves[i].Name;
         }
 
-        moveTexts[currentMoves.Count].text = newMove.Name;
-        SetItems(moveTexts.Select(m => m.GetComponent<TextSlot>()).ToList());
+        _moveTexts[currentMoves.Count].text = newMove.Name;
+        SetItems(_moveTexts.Select(m => m.GetComponent<TextSlot>()).ToList());
     }
 }

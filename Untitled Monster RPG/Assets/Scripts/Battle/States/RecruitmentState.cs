@@ -10,7 +10,6 @@ public class RecruitmentState : State<BattleSystem>
     private BattleSystem _battleSystem;
     private Monster _enemyMonster;
     private BattleDialogueBox _dialogueBox;
-
     private List<RecruitmentQuestion> _questions;
     private List<RecruitmentQuestion> _selectedQuestions;
     private int _currentQuestionIndex;
@@ -21,7 +20,14 @@ public class RecruitmentState : State<BattleSystem>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(BattleSystem owner)

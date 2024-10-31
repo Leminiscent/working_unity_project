@@ -11,12 +11,18 @@ public class MoveSelectionState : State<BattleSystem>
     private BattleSystem _battleSystem;
 
     public List<Move> Moves { get; set; }
-
     public static MoveSelectionState Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(BattleSystem owner)

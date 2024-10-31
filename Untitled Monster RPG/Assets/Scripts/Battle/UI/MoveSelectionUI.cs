@@ -7,10 +7,10 @@ using Utils.GenericSelectionUI;
 
 public class MoveSelectionUI : SelectionUI<TextSlot>
 {
-    [SerializeField] List<TextSlot> moveTexts;
-    [SerializeField] TextMeshProUGUI spText;
-    [SerializeField] TextMeshProUGUI typeText;
-    List<Move> _moves;
+    [SerializeField] private List<TextSlot> _moveTexts;
+    [SerializeField] private TextMeshProUGUI _spText;
+    [SerializeField] private TextMeshProUGUI _typeText;
+    private List<Move> _moves;
 
     private void Start()
     {
@@ -21,17 +21,17 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     {
         _moves = moves;
         selectedItem = 0;
-        SetItems(moveTexts.Take(moves.Count).ToList());
+        SetItems(_moveTexts.Take(moves.Count).ToList());
 
-        for (int i = 0; i < moveTexts.Count; ++i)
+        for (int i = 0; i < _moveTexts.Count; ++i)
         {
             if (i < moves.Count)
             {
-                moveTexts[i].SetText(moves[i].Base.Name);
+                _moveTexts[i].SetText(moves[i].Base.Name);
             }
             else
             {
-                moveTexts[i].SetText("-");
+                _moveTexts[i].SetText("-");
             }
         }
     }
@@ -41,15 +41,15 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
         base.UpdateSelectionInUI();
         var move = _moves[selectedItem];
 
-        spText.text = $"SP {move.SP}/{move.Base.SP}";
-        typeText.text = move.Base.Type.ToString();
+        _spText.text = $"SP {move.SP}/{move.Base.SP}";
+        _typeText.text = move.Base.Type.ToString();
         if (move.SP == 0)
         {
-            spText.color = GlobalSettings.Instance.EmptyColor;
+            _spText.color = GlobalSettings.Instance.EmptyColor;
         }
         else
         {
-            spText.color = GlobalSettings.Instance.InactiveColor;
+            _spText.color = GlobalSettings.Instance.InactiveColor;
         }
     }
 }

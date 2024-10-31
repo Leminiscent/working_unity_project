@@ -21,7 +21,14 @@ public class RunTurnState : State<BattleSystem>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(BattleSystem owner)
@@ -171,7 +178,6 @@ public class RunTurnState : State<BattleSystem>
             }
 
             int chance = source.Level - target.Level + baseAccuracy;
-
             return Random.Range(1, 101) <= chance;
         }
 
