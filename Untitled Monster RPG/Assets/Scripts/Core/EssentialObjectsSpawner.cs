@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EssentialObjectsSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject essentialObjectsPrefab;
+    [SerializeField] private GameObject _essentialObjectsPrefab;
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public class EssentialObjectsSpawner : MonoBehaviour
             {
                 spawnPos = grid.transform.position;
             }
-            Instantiate(essentialObjectsPrefab, spawnPos, Quaternion.identity);
+            Instantiate(_essentialObjectsPrefab, spawnPos, Quaternion.identity);
         }
     }
 }
