@@ -6,67 +6,68 @@ using Utils.GenericSelectionUI;
 
 public class PartyScreen : SelectionUI<TextSlot>
 {
-    [SerializeField] private TextMeshProUGUI messageText;
-    private PartyMemberUI[] memberSlots;
-    private List<Monster> monsters;
-    private MonsterParty party;
+    [SerializeField] private TextMeshProUGUI _messageText;
 
-    public Monster SelectedMember => monsters[selectedItem];
+    private PartyMemberUI[] _memberSlots;
+    private List<Monster> _monsters;
+    private MonsterParty _party;
+
+    public Monster SelectedMember => _monsters[selectedItem];
 
     public void Init()
     {
-        memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+        _memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
         SetSelectionSettings(SelectionType.Grid, 2);
-        party = MonsterParty.GetPlayerParty();
+        _party = MonsterParty.GetPlayerParty();
         SetPartyData();
-        party.OnUpdated += SetPartyData;
+        _party.OnUpdated += SetPartyData;
     }
 
     public void SetPartyData()
     {
-        monsters = party.Monsters;
+        _monsters = _party.Monsters;
         ClearItems();
 
-        for (int i = 0; i < memberSlots.Length; ++i)
+        for (int i = 0; i < _memberSlots.Length; ++i)
         {
-            if (i < monsters.Count)
+            if (i < _monsters.Count)
             {
-                memberSlots[i].gameObject.SetActive(true);
-                memberSlots[i].Init(monsters[i]);
+                _memberSlots[i].gameObject.SetActive(true);
+                _memberSlots[i].Init(_monsters[i]);
             }
             else
             {
-                memberSlots[i].gameObject.SetActive(false);
+                _memberSlots[i].gameObject.SetActive(false);
             }
         }
 
-        IEnumerable<TextSlot> textSlots = memberSlots.Select(static m => m.GetComponent<TextSlot>());
+        IEnumerable<TextSlot> textSlots = _memberSlots.Select(static m => m.GetComponent<TextSlot>());
 
-        SetItems(textSlots.Take(monsters.Count).ToList());
+        SetItems(textSlots.Take(_monsters.Count).ToList());
 
-        messageText.text = "Choose a Monster!";
+        _messageText.text = "Choose a Monster!";
     }
 
     public void ShowSkillBookUsability(SkillBook skillBook)
     {
-        for (int i = 0; i < monsters.Count; ++i)
+        for (int i = 0; i < _monsters.Count; ++i)
         {
-            string message = skillBook.CanBeLearned(monsters[i]) ? "Learnable" : "Not Learnable";
+            string message = skillBook.CanBeLearned(_monsters[i]) ? "Learnable" : "Not Learnable";
 
-            memberSlots[i].SetMessage(message);
+            _memberSlots[i].SetMessage(message);
         }
     }
 
     public void SetMessageText(string message)
     {
-        messageText.text = message;
+        _messageText.text = message;
     }
 
     public void ClearMessageText()
     {
-        for (int i = 0; i < monsters.Count; ++i)
+        for (int i = 0; i < _monsters.Count; ++i)
         {
-            memberSlots[i].SetMessage("");
+            _memberSlots[i].SetMessage("");
         }
     }
 }

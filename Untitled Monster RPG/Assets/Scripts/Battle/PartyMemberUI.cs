@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class PartyMemberUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private HPBar hpBar;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private TextMeshProUGUI _levelText;
+    [SerializeField] private TextMeshProUGUI _messageText;
+    [SerializeField] private HPBar _hpBar;
+
     private Monster _monster;
 
     public void Init(Monster monster)
@@ -19,18 +20,18 @@ public class PartyMemberUI : MonoBehaviour
 
     private void UpdateData()
     {
-        nameText.text = _monster.Base.Name;
-        levelText.text = $"Lvl {_monster.Level}";
-        hpBar.SetHP((float)_monster.HP / _monster.MaxHP);
+        _nameText.text = _monster.Base.Name;
+        _levelText.text = $"Lvl {_monster.Level}";
+        _hpBar.SetHP((float)_monster.HP / _monster.MaxHP);
     }
 
     public void SetSelected(bool selected)
     {
-        nameText.color = selected ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
+        _nameText.color = selected ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
     }
 
     public void SetMessage(string message)
     {
-        messageText.text = message;
+        _messageText.text = message;
     }
 }
