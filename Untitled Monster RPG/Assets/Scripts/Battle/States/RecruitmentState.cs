@@ -6,16 +6,16 @@ using Utils.StateMachine;
 
 public class RecruitmentState : State<BattleSystem>
 {
-    [SerializeField] AnswerSelectionUI selectionUI;
-    BattleSystem battleSystem;
-    Monster enemyMonster;
-    BattleDialogueBox dialogueBox;
+    [SerializeField] private AnswerSelectionUI _selectionUI;
+    private BattleSystem _battleSystem;
+    private Monster _enemyMonster;
+    private BattleDialogueBox _dialogueBox;
 
-    List<RecruitmentQuestion> questions;
-    List<RecruitmentQuestion> selectedQuestions;
-    int currentQuestionIndex;
-    bool yesSelected;
-    float selectionTimer = 0;
+    private List<RecruitmentQuestion> _questions;
+    private List<RecruitmentQuestion> _selectedQuestions;
+    private int _currentQuestionIndex;
+    private bool _yesSelected;
+    private float _selectionTimer = 0;
 
     public static RecruitmentState Instance { get; private set; }
 
@@ -26,19 +26,19 @@ public class RecruitmentState : State<BattleSystem>
 
     public override void Enter(BattleSystem owner)
     {
-        battleSystem = owner;
-        enemyMonster = battleSystem.EnemyUnit.Monster;
-        dialogueBox = battleSystem.DialogueBox;
+        _battleSystem = owner;
+        _enemyMonster = _battleSystem.EnemyUnit.Monster;
+        _dialogueBox = _battleSystem.DialogueBox;
         StartCoroutine(StartRecruitment());
     }
 
     public override void Execute()
     {
-        if (selectionUI.gameObject.activeInHierarchy)
+        if (_selectionUI.gameObject.activeInHierarchy)
         {
-            selectionUI.HandleUpdate();
+            _selectionUI.HandleUpdate();
         }
-        else if (dialogueBox.IsChoiceBoxEnabled)
+        else if (_dialogueBox.IsChoiceBoxEnabled)
         {
             HandleChoiceBoxInput();
         }
@@ -46,98 +46,98 @@ public class RecruitmentState : State<BattleSystem>
 
     public override void Exit()
     {
-        selectionUI.gameObject.SetActive(false);
-        selectionUI.OnSelected -= OnAnswerSelected;
+        _selectionUI.gameObject.SetActive(false);
+        _selectionUI.OnSelected -= OnAnswerSelected;
     }
 
-    IEnumerator StartRecruitment()
+    private IEnumerator StartRecruitment()
     {
-        if (battleSystem.IsMasterBattle)
+        if (_battleSystem.IsMasterBattle)
         {
-            yield return dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
-            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            yield return _dialogueBox.TypeDialogue("You can't recruit another Master's monster!");
+            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
             yield break;
         }
 
-        yield return dialogueBox.TypeDialogue("You want to talk?");
-        yield return dialogueBox.TypeDialogue("Alright, let's talk!");
+        yield return _dialogueBox.TypeDialogue("You want to talk?");
+        yield return _dialogueBox.TypeDialogue("Alright, let's talk!");
 
         // Select 3 random questions
-        questions = enemyMonster.Base.RecruitmentQuestions.OrderBy(q => Random.value).ToList();
-        selectedQuestions = questions.Take(3).ToList();
-        currentQuestionIndex = 0;
+        _questions = _enemyMonster.Base.RecruitmentQuestions.OrderBy(q => Random.value).ToList();
+        _selectedQuestions = _questions.Take(3).ToList();
+        _currentQuestionIndex = 0;
         yield return PresentQuestion();
     }
 
-    IEnumerator PresentQuestion()
+    private IEnumerator PresentQuestion()
     {
-        var currentQuestion = selectedQuestions[currentQuestionIndex];
+        var currentQuestion = _selectedQuestions[_currentQuestionIndex];
 
-        yield return dialogueBox.TypeDialogue(currentQuestion.QuestionText);
+        yield return _dialogueBox.TypeDialogue(currentQuestion.QuestionText);
 
         // Set up the answer selection UI
-        dialogueBox.EnableDialogueText(false);
-        selectionUI.gameObject.SetActive(true);
-        selectionUI.OnSelected += OnAnswerSelected;
-        selectionUI.SetAnswers(currentQuestion.Answers);
-        selectionUI.UpdateSelectionInUI();
+        _dialogueBox.EnableDialogueText(false);
+        _selectionUI.gameObject.SetActive(true);
+        _selectionUI.OnSelected += OnAnswerSelected;
+        _selectionUI.SetAnswers(currentQuestion.Answers);
+        _selectionUI.UpdateSelectionInUI();
     }
 
-    void OnAnswerSelected(int selection)
+    private void OnAnswerSelected(int selection)
     {
         StartCoroutine(ProcessAnswer(selection));
     }
 
-    IEnumerator ProcessAnswer(int selectedAnswerIndex)
+    private IEnumerator ProcessAnswer(int selectedAnswerIndex)
     {
-        selectionUI.gameObject.SetActive(false);
-        selectionUI.OnSelected -= OnAnswerSelected;
+        _selectionUI.gameObject.SetActive(false);
+        _selectionUI.OnSelected -= OnAnswerSelected;
 
-        var currentQuestion = selectedQuestions[currentQuestionIndex];
+        var currentQuestion = _selectedQuestions[_currentQuestionIndex];
         var selectedAnswer = currentQuestion.Answers[selectedAnswerIndex];
 
         // Update affinity level
-        enemyMonster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
-        yield return battleSystem.EnemyUnit.Hud.SetAffinitySmooth();
+        _enemyMonster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
+        yield return _battleSystem.EnemyUnit.Hud.SetAffinitySmooth();
 
         // Show reaction
-        dialogueBox.EnableDialogueText(true);
-        yield return dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
+        _dialogueBox.EnableDialogueText(true);
+        yield return _dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
 
         // Proceed to next question or attempt recruitment
-        if (currentQuestionIndex < selectedQuestions.Count - 1)
+        if (_currentQuestionIndex < _selectedQuestions.Count - 1)
         {
-            currentQuestionIndex++;
+            _currentQuestionIndex++;
             yield return PresentQuestion();
         }
         else
         {
             // Attempt recruitment
-            yield return AttemptRecruitment(enemyMonster);
+            yield return AttemptRecruitment(_enemyMonster);
         }
     }
 
-    string GenerateReaction(int affinityScore)
+    private string GenerateReaction(int affinityScore)
     {
         if (affinityScore == 2)
         {
-            return enemyMonster.Base.Name + " seems to love your answer!";
+            return _enemyMonster.Base.Name + " seems to love your answer!";
         }
         else if (affinityScore == 1)
         {
-            return enemyMonster.Base.Name + " seems to like your answer.";
+            return _enemyMonster.Base.Name + " seems to like your answer.";
         }
         else if (affinityScore == -1)
         {
-            return enemyMonster.Base.Name + " seems to dislike your answer...";
+            return _enemyMonster.Base.Name + " seems to dislike your answer...";
         }
-        else
+        else // affinityScore == -2
         {
-            return enemyMonster.Base.Name + " seems to hate your answer!";
+            return _enemyMonster.Base.Name + " seems to hate your answer!";
         }
     }
 
-    IEnumerator AttemptRecruitment(Monster targetMonster)
+    private IEnumerator AttemptRecruitment(Monster targetMonster)
     {
         // Calculate recruitment chance
         float a = Mathf.Min(Mathf.Max(targetMonster.AffinityLevel - 3, 0), 3) * (3 * targetMonster.MaxHP - 2 * targetMonster.HP) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHP);
@@ -156,68 +156,68 @@ public class RecruitmentState : State<BattleSystem>
 
         if (canRecruit)
         {
-            yield return dialogueBox.TypeDialogue(enemyMonster.Base.Name + " wants to join your party! Will you accept?");
+            yield return _dialogueBox.TypeDialogue(_enemyMonster.Base.Name + " wants to join your party! Will you accept?");
 
             // Present choice to accept or reject
-            dialogueBox.EnableDialogueText(false);
-            dialogueBox.EnableChoiceBox(true);
-            yesSelected = true;
-            dialogueBox.UpdateChoiceBox(yesSelected);
+            _dialogueBox.EnableDialogueText(false);
+            _dialogueBox.EnableChoiceBox(true);
+            _yesSelected = true;
+            _dialogueBox.UpdateChoiceBox(_yesSelected);
         }
         else
         {
-            yield return dialogueBox.TypeDialogue(enemyMonster.Base.Name + " refused to join you.");
-            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            yield return _dialogueBox.TypeDialogue(_enemyMonster.Base.Name + " refused to join you.");
+            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }
 
-    IEnumerator ProcessAcceptReject(int selection)
+    private IEnumerator ProcessAcceptReject(int selection)
     {
-        dialogueBox.EnableDialogueText(true);
+        _dialogueBox.EnableDialogueText(true);
         if (selection == 0)
         {
             // Yes
-            yield return dialogueBox.TypeDialogue($"{enemyMonster.Base.Name} was recruited!");
-            battleSystem.PlayerParty.AddMonster(enemyMonster);
-            battleSystem.BattleOver(true);
+            yield return _dialogueBox.TypeDialogue($"{_enemyMonster.Base.Name} was recruited!");
+            _battleSystem.PlayerParty.AddMonster(_enemyMonster);
+            _battleSystem.BattleOver(true);
         }
         else
         {
             // No
-            yield return dialogueBox.TypeDialogue($"{enemyMonster.Base.Name} was rejected.");
-            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            yield return _dialogueBox.TypeDialogue($"{_enemyMonster.Base.Name} was rejected.");
+            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }
 
-    void HandleChoiceBoxInput()
+    private void HandleChoiceBoxInput()
     {
         const float selectionSpeed = 5f;
         float v = Input.GetAxisRaw("Vertical");
 
-        if (selectionTimer > 0)
+        if (_selectionTimer > 0)
         {
-            selectionTimer = Mathf.Clamp(selectionTimer - Time.deltaTime, 0, selectionTimer);
+            _selectionTimer = Mathf.Clamp(_selectionTimer - Time.deltaTime, 0, _selectionTimer);
         }
 
-        if (selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
+        if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
         {
-            yesSelected = !yesSelected;
-            selectionTimer = 1 / selectionSpeed;
-            dialogueBox.UpdateChoiceBox(yesSelected);
+            _yesSelected = !_yesSelected;
+            _selectionTimer = 1 / selectionSpeed;
+            _dialogueBox.UpdateChoiceBox(_yesSelected);
         }
 
         if (Input.GetButtonDown("Action"))
         {
-            dialogueBox.EnableChoiceBox(false);
+            _dialogueBox.EnableChoiceBox(false);
 
-            int selection = yesSelected ? 0 : 1;
+            int selection = _yesSelected ? 0 : 1;
 
             StartCoroutine(ProcessAcceptReject(selection));
         }
 
         if (Input.GetButtonDown("Back"))
         {
-            dialogueBox.EnableChoiceBox(false);
+            _dialogueBox.EnableChoiceBox(false);
             StartCoroutine(ProcessAcceptReject(1));
         }
     }

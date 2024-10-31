@@ -36,7 +36,7 @@ public class ActionSelectionState : State<BattleSystem>
         _selectionUI.OnSelected -= OnActionSelected;
     }
 
-    void OnActionSelected(int selection)
+    private void OnActionSelected(int selection)
     {
         switch (selection)
         {
@@ -74,7 +74,7 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    IEnumerator GoToInventoryState()
+    private IEnumerator GoToInventoryState()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
 
@@ -88,7 +88,7 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    IEnumerator GoToPartyState()
+    private IEnumerator GoToPartyState()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
 

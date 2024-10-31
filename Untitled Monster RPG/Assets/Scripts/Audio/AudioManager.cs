@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(PlayMusicAsync(clip, loop, fade));
     }
 
-    IEnumerator PlayMusicAsync(AudioClip clip, bool loop, bool fade)
+    private IEnumerator PlayMusicAsync(AudioClip clip, bool loop, bool fade)
     {
         if (fade)
         {
@@ -74,7 +74,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    IEnumerator UnpauseMusic(float delay)
+    private IEnumerator UnpauseMusic(float delay)
     {
         yield return new WaitForSeconds(delay);
         _musicPlayer.volume = 0;

@@ -53,13 +53,13 @@ public class MoveSelectionState : State<BattleSystem>
         _selectionUI.ClearItems();
     }
 
-    void OnMoveSelected(int selection)
+    private void OnMoveSelected(int selection)
     {
         _battleSystem.SelectedMove = selection;
         _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
     }
 
-    void OnBack()
+    private void OnBack()
     {
         _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
     }
