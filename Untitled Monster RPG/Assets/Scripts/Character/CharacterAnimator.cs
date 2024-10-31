@@ -3,76 +3,109 @@ using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
-    [SerializeField] private List<Sprite> walkDownSprites;
-    [SerializeField] private List<Sprite> walkUpSprites;
-    [SerializeField] private List<Sprite> walkRightSprites;
-    [SerializeField] private List<Sprite> walkLeftSprites;
-    [SerializeField] private FacingDirection defaultDirection = FacingDirection.Down;
+    [SerializeField] private List<Sprite> _walkDownSprites;
+    [SerializeField] private List<Sprite> _walkUpSprites;
+    [SerializeField] private List<Sprite> _walkRightSprites;
+    [SerializeField] private List<Sprite> _walkLeftSprites;
+    [SerializeField] private FacingDirection _defaultDirection = FacingDirection.Down;
+
+    private SpriteAnimator _walkDownAnim;
+    private SpriteAnimator _walkUpAnim;
+    private SpriteAnimator _walkRightAnim;
+    private SpriteAnimator _walkLeftAnim;
+    private SpriteAnimator _currentAnim;
+    private bool _wasMoving;
+    private SpriteRenderer _spriteRenderer;
 
     public float MoveX { get; set; }
     public float MoveY { get; set; }
     public bool IsMoving { get; set; }
     public bool IsJumping { get; set; }
-
-    private SpriteAnimator walkDownAnim;
-    private SpriteAnimator walkUpAnim;
-    private SpriteAnimator walkRightAnim;
-    private SpriteAnimator walkLeftAnim;
-    private SpriteAnimator currentAnim;
-    private bool wasMoving;
-    private SpriteRenderer spriteRenderer;
+    public FacingDirection DefaultDirection => _defaultDirection;
+    public FacingDirection FacingDirection
+    {
+        get
+        {
+            if (_currentAnim == _walkRightAnim)
+            {
+                return FacingDirection.Right;
+            }
+            else if (_currentAnim == _walkLeftAnim)
+            {
+                return FacingDirection.Left;
+            }
+            else if (_currentAnim == _walkUpAnim)
+            {
+                return FacingDirection.Up;
+            }
+            else if (_currentAnim == _walkDownAnim)
+            {
+                return FacingDirection.Down;
+            }
+            else
+            {
+                return _defaultDirection;
+            }
+        }
+        set
+        {
+            SetFacingDirection(value);
+            _currentAnim = GetAnimForFacingDirection(value);
+            _currentAnim.Start();
+        }
+    }
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        walkDownAnim = new SpriteAnimator(walkDownSprites, spriteRenderer);
-        walkUpAnim = new SpriteAnimator(walkUpSprites, spriteRenderer);
-        walkRightAnim = new SpriteAnimator(walkRightSprites, spriteRenderer);
-        walkLeftAnim = new SpriteAnimator(walkLeftSprites, spriteRenderer);
-        SetFacingDirection(defaultDirection);
-        currentAnim = walkDownAnim;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _walkDownAnim = new SpriteAnimator(_walkDownSprites, _spriteRenderer);
+        _walkUpAnim = new SpriteAnimator(_walkUpSprites, _spriteRenderer);
+        _walkRightAnim = new SpriteAnimator(_walkRightSprites, _spriteRenderer);
+        _walkLeftAnim = new SpriteAnimator(_walkLeftSprites, _spriteRenderer);
+        SetFacingDirection(_defaultDirection);
+        _currentAnim = _walkDownAnim;
     }
 
     private void Update()
     {
-        SpriteAnimator prevAnim = currentAnim;
+        SpriteAnimator prevAnim = _currentAnim;
 
         if (MoveX == 1)
         {
-            currentAnim = walkRightAnim;
+            _currentAnim = _walkRightAnim;
         }
         else if (MoveX == -1)
         {
-            currentAnim = walkLeftAnim;
+            _currentAnim = _walkLeftAnim;
         }
         else if (MoveY == 1)
         {
-            currentAnim = walkUpAnim;
+            _currentAnim = _walkUpAnim;
         }
         else if (MoveY == -1)
         {
-            currentAnim = walkDownAnim;
+            _currentAnim = _walkDownAnim;
         }
 
-        if (currentAnim != prevAnim || IsMoving != wasMoving)
+        if (_currentAnim != prevAnim || IsMoving != _wasMoving)
         {
-            currentAnim.Start();
+            _currentAnim.Start();
         }
 
         if (IsJumping)
         {
-            spriteRenderer.sprite = currentAnim.Frames[currentAnim.Frames.Count - 1];
+            _spriteRenderer.sprite = _currentAnim.Frames[_currentAnim.Frames.Count - 1];
         }
         else if (IsMoving)
         {
-            currentAnim.HandleUpdate();
+            _currentAnim.HandleUpdate();
         }
         else
         {
-            spriteRenderer.sprite = currentAnim.Frames[0];
+            _spriteRenderer.sprite = _currentAnim.Frames[0];
         }
 
-        wasMoving = IsMoving;
+        _wasMoving = IsMoving;
     }
 
     public void SetFacingDirection(FacingDirection dir)
@@ -102,46 +135,12 @@ public class CharacterAnimator : MonoBehaviour
     {
         return dir switch
         {
-            FacingDirection.Up => walkUpAnim,
-            FacingDirection.Down => walkDownAnim,
-            FacingDirection.Left => walkLeftAnim,
-            FacingDirection.Right => walkRightAnim,
-            _ => walkDownAnim,
+            FacingDirection.Up => _walkUpAnim,
+            FacingDirection.Down => _walkDownAnim,
+            FacingDirection.Left => _walkLeftAnim,
+            FacingDirection.Right => _walkRightAnim,
+            _ => _walkDownAnim,
         };
-    }
-
-    public FacingDirection DefaultDirection => defaultDirection;
-    public FacingDirection FacingDirection
-    {
-        get
-        {
-            if (currentAnim == walkRightAnim)
-            {
-                return FacingDirection.Right;
-            }
-            else if (currentAnim == walkLeftAnim)
-            {
-                return FacingDirection.Left;
-            }
-            else if (currentAnim == walkUpAnim)
-            {
-                return FacingDirection.Up;
-            }
-            else if (currentAnim == walkDownAnim)
-            {
-                return FacingDirection.Down;
-            }
-            else
-            {
-                return defaultDirection;
-            }
-        }
-        set
-        {
-            SetFacingDirection(value);
-            currentAnim = GetAnimForFacingDirection(value);
-            currentAnim.Start();
-        }
     }
 }
 

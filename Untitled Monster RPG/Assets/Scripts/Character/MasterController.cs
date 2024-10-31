@@ -4,69 +4,73 @@ using UnityEngine;
 
 public class MasterController : MonoBehaviour, Interactable, ISavable
 {
-    [SerializeField] private new string name;
-    [SerializeField] private Sprite sprite;
-    [SerializeField] private Dialogue dialogue;
-    [SerializeField] private Dialogue postBattleDialogue;
-    [SerializeField] private GameObject exclamation;
-    [SerializeField] private GameObject los;
-    [SerializeField] private AudioClip playerDetectedClip;
-    private bool battleLost = false;
-    private Character character;
+    [SerializeField] private string _name;
+    [SerializeField] private Sprite _sprite;
+    [SerializeField] private Dialogue _dialogue;
+    [SerializeField] private Dialogue _postBattleDialogue;
+    [SerializeField] private GameObject _exclamation;
+    [SerializeField] private GameObject _los;
+    [SerializeField] private AudioClip _playerDetectedClip;
+
+    private bool _battleLost = false;
+    private Character _character;
+
+    public string Name => _name;
+    public Sprite Sprite => _sprite;
 
     private void Awake()
     {
-        character = GetComponent<Character>();
+        _character = GetComponent<Character>();
     }
 
     private void Start()
     {
-        SetLosRotation(character.Animator.DefaultDirection);
+        SetLosRotation(_character.Animator.DefaultDirection);
     }
 
     private void Update()
     {
-        character.HandleUpdate();
+        _character.HandleUpdate();
     }
 
     public IEnumerator Interact(Transform initiator)
     {
-        character.LookTowards(initiator.position);
-        if (!battleLost)
+        _character.LookTowards(initiator.position);
+        if (!_battleLost)
         {
-            AudioManager.Instance.PlayMusic(playerDetectedClip);
-            yield return DialogueManager.Instance.ShowDialogue(dialogue);
+            AudioManager.Instance.PlayMusic(_playerDetectedClip);
+            yield return DialogueManager.Instance.ShowDialogue(_dialogue);
             GameController.Instance.StartMasterBattle(this);
         }
         else
         {
-            yield return DialogueManager.Instance.ShowDialogue(postBattleDialogue);
+            yield return DialogueManager.Instance.ShowDialogue(_postBattleDialogue);
         }
     }
 
     public IEnumerator TriggerBattle(PlayerController player)
     {
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
-        AudioManager.Instance.PlayMusic(playerDetectedClip);
-        exclamation.SetActive(true);
+        AudioManager.Instance.PlayMusic(_playerDetectedClip);
+        _exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
-        exclamation.SetActive(false);
+        _exclamation.SetActive(false);
 
         Vector3 diff = player.transform.position - transform.position;
         Vector3 moveVector = diff - diff.normalized;
         moveVector = new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
 
-        yield return character.Move(moveVector);
+        yield return _character.Move(moveVector);
         
-        yield return DialogueManager.Instance.ShowDialogue(dialogue);
+        yield return DialogueManager.Instance.ShowDialogue(_dialogue);
         GameController.Instance.StateMachine.Pop();
         GameController.Instance.StartMasterBattle(this);
     }
 
     public void BattleLost()
     {
-        battleLost = true;
-        los.gameObject.SetActive(false);
+        _battleLost = true;
+        _los.gameObject.SetActive(false);
     }
 
     public void SetLosRotation(FacingDirection dir)
@@ -85,16 +89,16 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         {
             angle = 270f;
         }
-        los.transform.eulerAngles = new Vector3(0f, 0f, angle);
+        _los.transform.eulerAngles = new Vector3(0f, 0f, angle);
     }
 
     public object CaptureState()
     {
         MasterSaveData saveData = new MasterSaveData
         {
-            position = new float[] { transform.position.x, transform.position.y },
-            facingDirection = character.Animator.FacingDirection,
-            battleLost = battleLost
+            Position = new float[] { transform.position.x, transform.position.y },
+            FacingDirection = _character.Animator.FacingDirection,
+            BattleLost = _battleLost
         };
 
         return saveData;
@@ -104,20 +108,17 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
     {
         MasterSaveData saveData = (MasterSaveData)state;
 
-        transform.position = new Vector3(saveData.position[0], saveData.position[1]);
-        character.Animator.FacingDirection = saveData.facingDirection;
-        battleLost = saveData.battleLost;
-        los.SetActive(!battleLost);
+        transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
+        _character.Animator.FacingDirection = saveData.FacingDirection;
+        _battleLost = saveData.BattleLost;
+        _los.SetActive(!_battleLost);
     }
-
-    public string Name => name;
-    public Sprite Sprite => sprite;
 }
 
 [Serializable]
 public class MasterSaveData
 {
-    public float[] position;
-    public FacingDirection facingDirection;
-    public bool battleLost;
+    public float[] Position;
+    public FacingDirection FacingDirection;
+    public bool BattleLost;
 }

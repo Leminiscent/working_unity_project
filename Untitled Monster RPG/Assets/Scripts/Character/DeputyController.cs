@@ -6,57 +6,57 @@ using UnityEngine;
 
 public class DeputyController : MonoBehaviour, ISavable
 {
-    private CharacterAnimator animator;
-    private bool isMoving;
-    private PlayerController player;
-    private float moveSpeed;
-    private Queue<Vector3> positionQueue = new();
+    private CharacterAnimator _animator;
+    private bool _isMoving;
+    private PlayerController _player;
+    private float _moveSpeed;
+    private Queue<Vector3> _positionQueue = new();
 
     private void Awake()
     {
-        player = FindObjectOfType<PlayerController>();
-        animator = GetComponent<CharacterAnimator>();
+        _player = FindObjectOfType<PlayerController>();
+        _animator = GetComponent<CharacterAnimator>();
     }
 
     private void Start()
     {
-        moveSpeed = player.Character.moveSpeed;
-        player.Character.OnMoveStart += OnPlayerMoveStart;
+        _moveSpeed = _player.Character.MoveSpeed;
+        _player.Character.OnMoveStart += OnPlayerMoveStart;
         SetPosition();
     }
 
     private void Update()
     {
-        if (!isMoving && positionQueue.Count > 0)
+        if (!_isMoving && _positionQueue.Count > 0)
         {
-            Vector3 targetPosition = positionQueue.Dequeue();
+            Vector3 targetPosition = _positionQueue.Dequeue();
             StartCoroutine(MoveToPosition(targetPosition));
         }
     }
 
     private void OnPlayerMoveStart(Vector3 playerPosition)
     {
-        positionQueue.Enqueue(playerPosition);
+        _positionQueue.Enqueue(playerPosition);
     }
 
     public void SetPosition()
     {
-        transform.position = player.transform.position;
-        animator.IsMoving = false;
-        isMoving = false;
+        transform.position = _player.transform.position;
+        _animator.IsMoving = false;
+        _isMoving = false;
     }
 
     private IEnumerator MoveToPosition(Vector3 targetPos)
     {
-        isMoving = true;
-        animator.IsMoving = true;
+        _isMoving = true;
+        _animator.IsMoving = true;
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             Vector2 moveVec = GetNextMoveVector(transform.position, targetPos);
 
-            animator.MoveX = moveVec.x;
-            animator.MoveY = moveVec.y;
+            _animator.MoveX = moveVec.x;
+            _animator.MoveY = moveVec.y;
 
             Vector3 nextPos = transform.position + (Vector3)moveVec;
             Ledge ledge = CheckForLedge(nextPos);
@@ -66,7 +66,7 @@ public class DeputyController : MonoBehaviour, ISavable
                 if (ledge.CanJump(moveVec))
                 {
                     Vector3 jumpDest = transform.position + (Vector3)moveVec * 2;
-                    
+
                     yield return Jump(jumpDest);
                     continue;
                 }
@@ -74,15 +74,15 @@ public class DeputyController : MonoBehaviour, ISavable
 
             while ((nextPos - transform.position).sqrMagnitude > Mathf.Epsilon)
             {
-                transform.position = Vector3.MoveTowards(transform.position, nextPos, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, nextPos, _moveSpeed * Time.deltaTime);
                 yield return null;
             }
 
             transform.position = nextPos;
         }
 
-        animator.IsMoving = false;
-        isMoving = false;
+        _animator.IsMoving = false;
+        _isMoving = false;
     }
 
     private Vector2 GetNextMoveVector(Vector3 fromPosition, Vector3 toPosition)
@@ -112,21 +112,21 @@ public class DeputyController : MonoBehaviour, ISavable
 
     private IEnumerator Jump(Vector3 jumpDest)
     {
-        isMoving = true;
-        animator.IsJumping = true;
+        _isMoving = true;
+        _animator.IsJumping = true;
 
         yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
-        animator.IsJumping = false;
-        isMoving = false;
+        _animator.IsJumping = false;
+        _isMoving = false;
     }
 
     public object CaptureState()
     {
         DeputySaveData saveData = new DeputySaveData()
         {
-            position = new float[] { transform.position.x, transform.position.y },
-            facingDirection = animator.FacingDirection,
+            Position = new float[] { transform.position.x, transform.position.y },
+            FacingDirection = _animator.FacingDirection,
         };
 
         return saveData;
@@ -136,14 +136,14 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         DeputySaveData saveData = (DeputySaveData)state;
 
-        transform.position = new Vector3(saveData.position[0], saveData.position[1]);
-        animator.FacingDirection = saveData.facingDirection;
+        transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
+        _animator.FacingDirection = saveData.FacingDirection;
     }
 }
 
 [Serializable]
 public class DeputySaveData
 {
-    public float[] position;
-    public FacingDirection facingDirection;
+    public float[] Position;
+    public FacingDirection FacingDirection;
 }

@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    private CharacterAnimator animator;
-    public float moveSpeed;
+    private CharacterAnimator _animator;
+
+    public float MoveSpeed;
     public bool IsMoving { get; private set; }
     public float OffestY { get; private set; } = 0.3f;
+    public CharacterAnimator Animator => _animator;
     public event Action<Vector3> OnMoveStart;
 
     private void Awake()
     {
-        animator = GetComponent<CharacterAnimator>();
+        _animator = GetComponent<CharacterAnimator>();
         SetPositionAndSnapToTile(transform.position);
     }
 
@@ -26,8 +28,8 @@ public class Character : MonoBehaviour
 
     public IEnumerator Move(Vector2 moveVector, Action OnMoveOver = null, bool checkCollisions = true)
     {
-        animator.MoveX = Mathf.Clamp(moveVector.x, -1f, 1f);
-        animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
+        _animator.MoveX = Mathf.Clamp(moveVector.x, -1f, 1f);
+        _animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
         Vector3 targetPos = transform.position + new Vector3(moveVector.x, moveVector.y);
         Ledge ledge = CheckForLedge(targetPos);
@@ -51,7 +53,7 @@ public class Character : MonoBehaviour
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, MoveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = targetPos;
@@ -65,13 +67,13 @@ public class Character : MonoBehaviour
         IsMoving = true;
         OnMoveStart?.Invoke(transform.position);
 
-        animator.IsJumping = true;
+        _animator.IsJumping = true;
 
         Vector3 jumpDest = transform.position + new Vector3(moveDir.x, moveDir.y) * 2;
 
         yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
-        animator.IsJumping = false;
+        _animator.IsJumping = false;
         IsMoving = false;
 
         OnMoveOver?.Invoke();
@@ -79,7 +81,7 @@ public class Character : MonoBehaviour
 
     public void HandleUpdate()
     {
-        animator.IsMoving = IsMoving;
+        _animator.IsMoving = IsMoving;
     }
 
     public bool IsPathClear(Vector3 targetPos)
@@ -89,15 +91,6 @@ public class Character : MonoBehaviour
         int collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer;
 
         if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer) == true)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    private bool IsWalkable(Vector3 targetPos)
-    {
-        if (Physics2D.OverlapCircle(targetPos, 0.1f, GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer) != null)
         {
             return false;
         }
@@ -118,10 +111,8 @@ public class Character : MonoBehaviour
 
         if (xdiff == 0 || ydiff == 0)
         {
-            animator.MoveX = Mathf.Clamp(xdiff, -1f, 1f);
-            animator.MoveY = Mathf.Clamp(ydiff, -1f, 1f);
+            _animator.MoveX = Mathf.Clamp(xdiff, -1f, 1f);
+            _animator.MoveY = Mathf.Clamp(ydiff, -1f, 1f);
         }
     }
-
-    public CharacterAnimator Animator => animator;
 }
