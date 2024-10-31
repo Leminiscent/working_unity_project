@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CuttableTree : MonoBehaviour, Interactable
 {
-    [SerializeField] ItemBase requiredItem;
+    [SerializeField] private ItemBase requiredItem;
 
     public IEnumerator Interact(Transform initiator)
     {

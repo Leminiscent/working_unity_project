@@ -5,11 +5,11 @@ using Utils.StateMachine;
 
 public class PartyState : State<GameController>
 {
-    [SerializeField] PartyScreen partyScreen;
-    GameController gameController;
-    MonsterParty playerParty;
-    bool isSwitchingPosition;
-    int selectedSwitchToIndex = 0;
+    [SerializeField] private PartyScreen partyScreen;
+    private GameController gameController;
+    private MonsterParty playerParty;
+    private bool isSwitchingPosition;
+    private int selectedSwitchToIndex = 0;
 
     public Monster SelectedMonster { get; private set; }
 
@@ -46,13 +46,13 @@ public class PartyState : State<GameController>
         partyScreen.OnBack -= OnBack;
     }
 
-    void OnMonsterSelected(int selection)
+    private void OnMonsterSelected(int selection)
     {
         SelectedMonster = partyScreen.SelectedMember;
         StartCoroutine(MonsterSelectedAction(selection));
     }
 
-    IEnumerator MonsterSelectedAction(int selectedMonsterIndex)
+    private IEnumerator MonsterSelectedAction(int selectedMonsterIndex)
     {
         State<GameController> prevState = gameController.StateMachine.GetPrevState();
 
@@ -138,13 +138,13 @@ public class PartyState : State<GameController>
         }
     }
 
-    IEnumerator GoToUseItemState()
+    private IEnumerator GoToUseItemState()
     {
         yield return gameController.StateMachine.PushAndWait(UseItemState.Instance);
         gameController.StateMachine.Pop();
     }
 
-    void OnBack()
+    private void OnBack()
     {
         SelectedMonster = null;
 

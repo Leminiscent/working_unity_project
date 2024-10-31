@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HPBar : MonoBehaviour
 {
-    [SerializeField] GameObject health;
+    [SerializeField] private GameObject health;
     public bool IsUpdating { get; private set; }
 
     public void SetHP(float hpNormalized)

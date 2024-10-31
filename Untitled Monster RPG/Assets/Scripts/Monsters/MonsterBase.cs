@@ -5,46 +5,46 @@ using UnityEngine;
 public class MonsterBase : ScriptableObject
 {
     [Header("Basic Details")]
-    [SerializeField] new string name;
+    [SerializeField] private new string name;
     [TextArea]
-    [SerializeField] string description;
-    [SerializeField] Sprite sprite;
-    [SerializeField] MonsterType type1;
-    [SerializeField] MonsterType type2;
+    [SerializeField] private string description;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private MonsterType type1;
+    [SerializeField] private MonsterType type2;
 
     [Header("Stats")]
-    [SerializeField] int hp;
-    [SerializeField] int strength;
-    [SerializeField] int endurance;
-    [SerializeField] int intelligence;
-    [SerializeField] int fortitude;
-    [SerializeField] int agility;
+    [SerializeField] private int hp;
+    [SerializeField] private int strength;
+    [SerializeField] private int endurance;
+    [SerializeField] private int intelligence;
+    [SerializeField] private int fortitude;
+    [SerializeField] private int agility;
 
     [Header("Performance Value Yield")]
-    [SerializeField] int hpPvYield = 0;
-    [SerializeField] int strengthPvYield = 0;
-    [SerializeField] int endurancePvYield = 0;
-    [SerializeField] int intelligencePvYield = 0;
-    [SerializeField] int fortitudePvYield = 0;
-    [SerializeField] int agilityPvYield = 0;
+    [SerializeField] private int hpPvYield = 0;
+    [SerializeField] private int strengthPvYield = 0;
+    [SerializeField] private int endurancePvYield = 0;
+    [SerializeField] private int intelligencePvYield = 0;
+    [SerializeField] private int fortitudePvYield = 0;
+    [SerializeField] private int agilityPvYield = 0;
 
     [Header("Moves")]
-    [SerializeField] List<LearnableMove> learnableMoves;
-    [SerializeField] List<MoveBase> learnableBySkillBook;
+    [SerializeField] private List<LearnableMove> learnableMoves;
+    [SerializeField] private List<MoveBase> learnableBySkillBook;
 
     [Header("Transformations")]
-    [SerializeField] List<Transformation> transformations;
+    [SerializeField] private List<Transformation> transformations;
 
     [Header("Experience")]
-    [SerializeField] int expYield;
-    [SerializeField] GrowthRate growthRate;
+    [SerializeField] private int expYield;
+    [SerializeField] private GrowthRate growthRate;
 
     [Header("Recruitment")]
-    [SerializeField] int recruitRate;
-    [SerializeField] List<RecruitmentQuestion> recruitmentQuestions;
+    [SerializeField] private int recruitRate;
+    [SerializeField] private List<RecruitmentQuestion> recruitmentQuestions;
 
     [Header("Drops")]
-    [SerializeField] DropTable dropTable;
+    [SerializeField] private DropTable dropTable;
 
     public int GetExpForLevel(int level)
     {
@@ -125,8 +125,8 @@ public class MonsterBase : ScriptableObject
 [System.Serializable]
 public class LearnableMove
 {
-    [SerializeField] MoveBase moveBase;
-    [SerializeField] int level;
+    [SerializeField] private MoveBase moveBase;
+    [SerializeField] private int level;
 
     public MoveBase Base => moveBase;
     public int Level => level;
@@ -135,9 +135,9 @@ public class LearnableMove
 [System.Serializable]
 public class Transformation
 {
-    [SerializeField] MonsterBase transformsInto;
-    [SerializeField] int requiredLevel;
-    [SerializeField] TransformationItem requiredItem;
+    [SerializeField] private MonsterBase transformsInto;
+    [SerializeField] private int requiredLevel;
+    [SerializeField] private TransformationItem requiredItem;
 
     public MonsterBase TransformsInto => transformsInto;
     public int RequiredLevel => requiredLevel;
@@ -147,8 +147,8 @@ public class Transformation
 [System.Serializable]
 public class RecruitmentQuestion
 {
-    [SerializeField] string questionText;
-    [SerializeField] List<RecruitmentAnswer> answers;
+    [SerializeField] private string questionText;
+    [SerializeField] private List<RecruitmentAnswer> answers;
 
     public string QuestionText => questionText;
     public List<RecruitmentAnswer> Answers => answers;
@@ -157,8 +157,8 @@ public class RecruitmentQuestion
 [System.Serializable]
 public class RecruitmentAnswer
 {
-    [SerializeField] string answerText;
-    [SerializeField] int affinityScore;
+    [SerializeField] private string answerText;
+    [SerializeField] private int affinityScore;
 
     public string AnswerText => answerText;
     public int AffinityScore => affinityScore;
@@ -167,8 +167,8 @@ public class RecruitmentAnswer
 [System.Serializable]
 public class DropTable
 {
-    [SerializeField] Vector2Int gpDropped;
-    [SerializeField] List<ItemDrop> itemDrops;
+    [SerializeField] private Vector2Int gpDropped;
+    [SerializeField] private List<ItemDrop> itemDrops;
 
     public Vector2Int GpDropped => gpDropped;
     public List<ItemDrop> ItemDrops => itemDrops;
@@ -177,9 +177,9 @@ public class DropTable
 [System.Serializable]
 public class ItemDrop
 {
-    [SerializeField] ItemBase item;
-    [SerializeField] Vector2Int quantityRange;
-    [SerializeField] float dropChance;
+    [SerializeField] private ItemBase item;
+    [SerializeField] private Vector2Int quantityRange;
+    [SerializeField] private float dropChance;
     public ItemBase Item => item;
     public Vector2Int QuantityRange => quantityRange;
     public float DropChance => dropChance;
@@ -232,7 +232,7 @@ public enum Stat
 
 public class TypeChart
 {
-    static float[][] chart =
+    private static float[][] chart =
     {
         //                         NOR   FIR   WAT   THU   PLA   ICE   FOR   POI   EAR   WIN   MIN   INS   STO   SPI   DRA   DAR   MET   LIG
         /*Normal*/   new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f },

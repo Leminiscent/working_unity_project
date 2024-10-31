@@ -3,8 +3,8 @@ using Utils.StateMachine;
 
 public class BattleState : State<GameController>
 {
-    [SerializeField] BattleSystem battleSystem;
-    GameController gameController;
+    [SerializeField] private BattleSystem battleSystem;
+    private GameController gameController;
 
     public BattleTrigger Trigger { get; set; }
     public MasterController Master { get; set; }
@@ -53,7 +53,7 @@ public class BattleState : State<GameController>
         battleSystem.OnBattleOver -= EndBattle;
     }
 
-    void EndBattle(bool won)
+    private void EndBattle(bool won)
     {
         if (Master != null && won == true)
         {

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class MonsterStorage : MonoBehaviour, ISavable
 {
-    const int numberOfDepots = 10;
-    const int numberOfSlots = 48; // 6 * 8
-    Monster[,] depots = new Monster[numberOfDepots, numberOfSlots];
+    private const int numberOfDepots = 10;
+    private const int numberOfSlots = 48; // 6 * 8
+    private Monster[,] depots = new Monster[numberOfDepots, numberOfSlots];
 
     public int NumberOfDepots => numberOfDepots;
     public int NumberOfSlots => numberOfSlots;

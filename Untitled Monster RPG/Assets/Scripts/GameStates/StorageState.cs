@@ -3,12 +3,12 @@ using Utils.StateMachine;
 
 public class StorageState : State<GameController>
 {
-    [SerializeField] MonsterStorageUI storageUI;
-    bool isMovingMonster = false;
-    int selectedSlotToMove = 0;
-    Monster selectedMonsterToMove;
-    GameController gameController;
-    MonsterParty party;
+    [SerializeField] private MonsterStorageUI storageUI;
+    private bool isMovingMonster = false;
+    private int selectedSlotToMove = 0;
+    private Monster selectedMonsterToMove;
+    private GameController gameController;
+    private MonsterParty party;
 
     public static StorageState Instance { get; private set; }
 
@@ -40,7 +40,7 @@ public class StorageState : State<GameController>
         storageUI.OnBack -= OnBack;
     }
 
-    void OnSlotSelected(int slotIndex)
+    private void OnSlotSelected(int slotIndex)
     {
         if (!isMovingMonster)
         {
@@ -81,7 +81,7 @@ public class StorageState : State<GameController>
         }
     }
 
-    void OnBack()
+    private void OnBack()
     {
         if (isMovingMonster)
         {

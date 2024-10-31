@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class ImageSlot : MonoBehaviour, ISelectableItem
 {
-    Image bgImage;
-    Color originalColor;
+    private Image bgImage;
+    private Color originalColor;
 
     private void Awake()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    CharacterAnimator animator;
+    private CharacterAnimator animator;
     public float moveSpeed;
     public bool IsMoving { get; private set; }
     public float OffestY { get; private set; } = 0.3f;
@@ -104,7 +104,7 @@ public class Character : MonoBehaviour
         return true;
     }
 
-    Ledge CheckForLedge(Vector3 targetPos)
+    private Ledge CheckForLedge(Vector3 targetPos)
     {
         Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
 

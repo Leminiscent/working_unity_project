@@ -4,7 +4,7 @@ using Utils.StateMachine;
 
 public class ShopMenuState : State<GameController>
 {
-    GameController gameController;
+    private GameController gameController;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopMenuState Instance { get; private set; }
@@ -20,7 +20,7 @@ public class ShopMenuState : State<GameController>
         StartCoroutine(StartMenu());
     }
 
-    IEnumerator StartMenu()
+    private IEnumerator StartMenu()
     {
         int selectedChoice = 0;
 

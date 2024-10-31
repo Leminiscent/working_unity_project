@@ -4,9 +4,9 @@ using Utils.StateMachine;
 
 public class DynamicMenuState : State<GameController>
 {
-    [SerializeField] DynamicMenuUI dynamicMenuUI;
-    [SerializeField] TextSlot itemTextPrefab;
-    GameController gameController;
+    [SerializeField] private DynamicMenuUI dynamicMenuUI;
+    [SerializeField] private TextSlot itemTextPrefab;
+    private GameController gameController;
 
     public List<string> MenuItems { get; set; }
     public int? SelectedItem { get; private set; }
@@ -55,13 +55,13 @@ public class DynamicMenuState : State<GameController>
         dynamicMenuUI.OnBack -= OnBack;
     }
 
-    void OnItemSelected(int selection)
+    private void OnItemSelected(int selection)
     {
         SelectedItem = selection;
         gameController.StateMachine.Pop();
     }
 
-    void OnBack()
+    private void OnBack()
     {
         SelectedItem = null;
         gameController.StateMachine.Pop();

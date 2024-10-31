@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Monster
 {
-    [SerializeField] MonsterBase _base;
-    [SerializeField] int level;
+    [SerializeField] private MonsterBase _base;
+    [SerializeField] private int level;
 
     public Monster(MonsterBase pBase, int pLevel)
     {
@@ -75,14 +75,7 @@ public class Monster
         level = saveData.level;
         Exp = saveData.exp;
 
-        if (saveData.statusId != null)
-        {
-            Status = ConditionsDB.Conditions[saveData.statusId.Value];
-        }
-        else
-        {
-            Status = null;
-        }
+        Status = saveData.statusId != null ? ConditionsDB.Conditions[saveData.statusId.Value] : null;
 
         Moves = saveData.moves.Select(static s => new Move(s)).ToList();
         StatPerformanceValues = saveData.statPerformanceValues.ToDictionary(static s => s.stat, static s => s.pv);
@@ -113,7 +106,7 @@ public class Monster
         return saveData;
     }
 
-    void CalculateStats()
+    private void CalculateStats()
     {
         Stats = new Dictionary<Stat, int>
         {
@@ -147,20 +140,13 @@ public class Monster
         };
     }
 
-    int GetStat(Stat stat)
+    private int GetStat(Stat stat)
     {
         int statVal = Stats[stat];
         int boost = StatBoosts[stat];
         float[] boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
 
-        if (boost >= 0)
-        {
-            statVal = Mathf.FloorToInt(statVal * boostValues[boost]);
-        }
-        else
-        {
-            statVal = Mathf.FloorToInt(statVal / boostValues[-boost]);
-        }
+        statVal = boost >= 0 ? Mathf.FloorToInt(statVal * boostValues[boost]) : Mathf.FloorToInt(statVal / boostValues[-boost]);
 
         return statVal;
     }

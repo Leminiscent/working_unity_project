@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EssentialObjectsSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject essentialObjectsPrefab;
+    [SerializeField] private GameObject essentialObjectsPrefab;
 
     private void Awake()
     {

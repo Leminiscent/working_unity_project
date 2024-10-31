@@ -6,10 +6,10 @@ using Utils.GenericSelectionUI;
 
 public class PartyScreen : SelectionUI<TextSlot>
 {
-    [SerializeField] TextMeshProUGUI messageText;
-    PartyMemberUI[] memberSlots;
-    List<Monster> monsters;
-    MonsterParty party;
+    [SerializeField] private TextMeshProUGUI messageText;
+    private PartyMemberUI[] memberSlots;
+    private List<Monster> monsters;
+    private MonsterParty party;
 
     public Monster SelectedMember => monsters[selectedItem];
 

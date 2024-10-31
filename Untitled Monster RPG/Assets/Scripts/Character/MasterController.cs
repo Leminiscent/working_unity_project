@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class MasterController : MonoBehaviour, Interactable, ISavable
 {
-    [SerializeField] new string name;
-    [SerializeField] Sprite sprite;
-    [SerializeField] Dialogue dialogue;
-    [SerializeField] Dialogue postBattleDialogue;
-    [SerializeField] GameObject exclamation;
-    [SerializeField] GameObject los;
-    [SerializeField] AudioClip playerDetectedClip;
-    bool battleLost = false;
-    Character character;
+    [SerializeField] private new string name;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private Dialogue dialogue;
+    [SerializeField] private Dialogue postBattleDialogue;
+    [SerializeField] private GameObject exclamation;
+    [SerializeField] private GameObject los;
+    [SerializeField] private AudioClip playerDetectedClip;
+    private bool battleLost = false;
+    private Character character;
 
     private void Awake()
     {

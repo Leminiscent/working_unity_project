@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Fader : MonoBehaviour
 {
     public static Fader Instance { get; private set; }
-    Image image;
+
+    private Image image;
 
     private void Awake()
     {

@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour, IPlayerTriggerable
 {
-    [SerializeField] int sceneToLoad = -1;
-    [SerializeField] DestinationIdentifier destinationPortal;
-    [SerializeField] Transform spawnPoint;
-    PlayerController player;
+    [SerializeField] private int sceneToLoad = -1;
+    [SerializeField] private DestinationIdentifier destinationPortal;
+    [SerializeField] private Transform spawnPoint;
+    private PlayerController player;
 
     public void OnPlayerTriggered(PlayerController player)
     {
@@ -20,14 +20,14 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
 
     public bool TriggerRepeatedly => false;
 
-    Fader fader;
+    private Fader fader;
 
     private void Start()
     {
         fader = FindObjectOfType<Fader>();
     }
 
-    IEnumerator SwitchScene()
+    private IEnumerator SwitchScene()
     {
         DontDestroyOnLoad(gameObject);
         GameController.Instance.PauseGame(true);

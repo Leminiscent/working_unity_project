@@ -5,11 +5,11 @@ using Utils.StateMachine;
 
 public class ShopSellingState : State<GameController>
 {
-    [SerializeField] InventoryUI playerInventoryUI;
-    [SerializeField] WalletUI walletUI;
-    [SerializeField] CountSelectorUI countSelectorUI;
-    GameController gameController;
-    Inventory playerInventory;
+    [SerializeField] private InventoryUI playerInventoryUI;
+    [SerializeField] private WalletUI walletUI;
+    [SerializeField] private CountSelectorUI countSelectorUI;
+    private GameController gameController;
+    private Inventory playerInventory;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopSellingState Instance { get; private set; }
@@ -30,7 +30,7 @@ public class ShopSellingState : State<GameController>
         StartCoroutine(StartSelling());
     }
 
-    IEnumerator StartSelling()
+    private IEnumerator StartSelling()
     {
         yield return gameController.StateMachine.PushAndWait(InventoryState.Instance);
 
@@ -47,7 +47,7 @@ public class ShopSellingState : State<GameController>
         }
     }
 
-    IEnumerator SellItem(ItemBase item)
+    private IEnumerator SellItem(ItemBase item)
     {
         if (!item.IsSellable)
         {

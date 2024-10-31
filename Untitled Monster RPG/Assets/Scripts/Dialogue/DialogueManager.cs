@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] GameObject dialogueBox;
-    [SerializeField] ChoiceBox choiceBox;
-    [SerializeField] TextMeshProUGUI dialogueText;
-    [SerializeField] float lettersPerSecond;
+    [SerializeField] private GameObject dialogueBox;
+    [SerializeField] private ChoiceBox choiceBox;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private float lettersPerSecond;
 
     public event Action OnShowDialogue;
     public event Action OnDialogueFinished;

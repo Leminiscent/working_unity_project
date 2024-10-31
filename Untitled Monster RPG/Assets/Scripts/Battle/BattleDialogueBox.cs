@@ -95,14 +95,7 @@ public class BattleDialogueBox : MonoBehaviour
     {
         for (int i = 0; i < _actionTexts.Count; ++i)
         {
-            if (i == selectedAction)
-            {
-                _actionTexts[i].color = GlobalSettings.Instance.ActiveColor;
-            }
-            else
-            {
-                _actionTexts[i].color = GlobalSettings.Instance.InactiveColor;
-            }
+            _actionTexts[i].color = i == selectedAction ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
         }
     }
 
@@ -110,40 +103,19 @@ public class BattleDialogueBox : MonoBehaviour
     {
         for (int i = 0; i < _moveTexts.Count; ++i)
         {
-            if (i == selectedMove)
-            {
-                _moveTexts[i].color = GlobalSettings.Instance.ActiveColor;
-            }
-            else
-            {
-                _moveTexts[i].color = GlobalSettings.Instance.InactiveColor;
-            }
+            _moveTexts[i].color = i == selectedMove ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
         }
 
         _spText.text = $"SP {move.SP}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();
-        if (move.SP == 0)
-        {
-            _spText.color = GlobalSettings.Instance.EmptyColor;
-        }
-        else
-        {
-            _spText.color = GlobalSettings.Instance.InactiveColor;
-        }
+        _spText.color = move.SP == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
     }
 
     public void SetMoveNames(List<Move> moves)
     {
         for (int i = 0; i < _moveTexts.Count; ++i)
         {
-            if (i < moves.Count)
-            {
-                _moveTexts[i].text = moves[i].Base.Name;
-            }
-            else
-            {
-                _moveTexts[i].text = "-";
-            }
+            _moveTexts[i].text = i < moves.Count ? moves[i].Base.Name : "-";
         }
     }
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class StorageSlotUI : MonoBehaviour
 {
-    [SerializeField] Image image;
+    [SerializeField] private Image image;
 
     public void SetData(Monster monster)
     {

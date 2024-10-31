@@ -6,8 +6,8 @@ using UnityEngine;
 [ExecuteAlways]
 public class SavableEntity : MonoBehaviour
 {
-    [SerializeField] string uniqueId = "";
-    static Dictionary<string, SavableEntity> globalLookup = new Dictionary<string, SavableEntity>();
+    [SerializeField] private string uniqueId = "";
+    private static Dictionary<string, SavableEntity> globalLookup = new Dictionary<string, SavableEntity>();
 
     public string UniqueId => uniqueId;
 

@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class MoveActorAction : CutsceneAction
 {
-    [SerializeField] CutsceneActor actor;
-    [SerializeField] List<Vector2> movePatterns;
+    [SerializeField] private CutsceneActor actor;
+    [SerializeField] private List<Vector2> movePatterns;
 
     public override IEnumerator Play()
     {
@@ -22,8 +22,8 @@ public class MoveActorAction : CutsceneAction
 [System.Serializable]
 public class CutsceneActor
 {
-    [SerializeField] bool isPlayer;
-    [SerializeField] Character character;
+    [SerializeField] private bool isPlayer;
+    [SerializeField] private Character character;
 
     public Character GetCharacter() => isPlayer ? PlayerController.Instance.Character : character;
 }

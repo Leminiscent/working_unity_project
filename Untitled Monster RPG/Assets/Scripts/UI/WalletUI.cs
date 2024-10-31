@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WalletUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI moneyText;
 
     private void Start()
     {
@@ -21,7 +21,7 @@ public class WalletUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void SetMoneyText()
+    private void SetMoneyText()
     {
         moneyText.text = $"{Wallet.Instance.Money} GP";
     }

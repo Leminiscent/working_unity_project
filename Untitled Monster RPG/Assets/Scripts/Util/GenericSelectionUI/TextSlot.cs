@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class TextSlot : MonoBehaviour, ISelectableItem
 {
-    [SerializeField] TextMeshProUGUI text;
-    Color originalColor;
+    [SerializeField] private TextMeshProUGUI text;
+    private Color originalColor;
 
     public void Init()
     {

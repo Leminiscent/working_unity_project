@@ -4,9 +4,9 @@ using Utils.StateMachine;
 
 public class InventoryState : State<GameController>
 {
-    [SerializeField] InventoryUI inventoryUI;
-    GameController gameController;
-    Inventory inventory;
+    [SerializeField] private InventoryUI inventoryUI;
+    private GameController gameController;
+    private Inventory inventory;
 
     public ItemBase SelectedItem { get; private set; }
     public static InventoryState Instance { get; private set; }
@@ -42,7 +42,7 @@ public class InventoryState : State<GameController>
         inventoryUI.OnBack -= OnBack;
     }
 
-    void OnItemSelected(int selection)
+    private void OnItemSelected(int selection)
     {
         SelectedItem = inventoryUI.SelectedItem;
         if (gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
@@ -55,13 +55,13 @@ public class InventoryState : State<GameController>
         }
     }
 
-    void OnBack()
+    private void OnBack()
     {
         SelectedItem = null;
         gameController.StateMachine.Pop();
     }
 
-    IEnumerator SelectMonsterAndUseItem()
+    private IEnumerator SelectMonsterAndUseItem()
     {
         State<GameController> prevState = gameController.StateMachine.GetPrevState();
 

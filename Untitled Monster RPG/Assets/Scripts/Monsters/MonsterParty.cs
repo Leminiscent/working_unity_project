@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonsterParty : MonoBehaviour
 {
-    [SerializeField] List<Monster> monsters;
-    MonsterStorage storage;
+    [SerializeField] private List<Monster> monsters;
+    private MonsterStorage storage;
 
     public event Action OnUpdated;
 

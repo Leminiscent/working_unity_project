@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NPCInteractAction : CutsceneAction
 {
-    [SerializeField] NPCController npc;
+    [SerializeField] private NPCController npc;
 
     public override IEnumerator Play()
     {

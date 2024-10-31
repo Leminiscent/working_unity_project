@@ -10,7 +10,7 @@ namespace Utils.StateMachine
         public State<T> CurrentState { get; private set; }
         public Stack<State<T>> StateStack { get; private set; }
 
-        T owner;
+        private T owner;
 
         public StateMachine(T owner)
         {

@@ -5,10 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneDetails : MonoBehaviour
 {
-    [SerializeField] List<SceneDetails> connectedScenes;
-    [SerializeField] AudioClip sceneMusic;
+    [SerializeField] private List<SceneDetails> connectedScenes;
+    [SerializeField] private AudioClip sceneMusic;
     public bool IsLoaded { get; private set; }
-    List<SavableEntity> savableEntities;
+
+    private List<SavableEntity> savableEntities;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

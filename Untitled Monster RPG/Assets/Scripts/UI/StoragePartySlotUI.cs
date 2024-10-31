@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class StoragePartySlotUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI levelText;
-    [SerializeField] Image image;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private Image image;
 
     public void SetData(Monster monster)
     {

@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
-    [SerializeField] List<Sprite> walkDownSprites;
-    [SerializeField] List<Sprite> walkUpSprites;
-    [SerializeField] List<Sprite> walkRightSprites;
-    [SerializeField] List<Sprite> walkLeftSprites;
-    [SerializeField] FacingDirection defaultDirection = FacingDirection.Down;
+    [SerializeField] private List<Sprite> walkDownSprites;
+    [SerializeField] private List<Sprite> walkUpSprites;
+    [SerializeField] private List<Sprite> walkRightSprites;
+    [SerializeField] private List<Sprite> walkLeftSprites;
+    [SerializeField] private FacingDirection defaultDirection = FacingDirection.Down;
 
     public float MoveX { get; set; }
     public float MoveY { get; set; }
     public bool IsMoving { get; set; }
     public bool IsJumping { get; set; }
 
-    SpriteAnimator walkDownAnim;
-    SpriteAnimator walkUpAnim;
-    SpriteAnimator walkRightAnim;
-    SpriteAnimator walkLeftAnim;
-    SpriteAnimator currentAnim;
-    bool wasMoving;
-    SpriteRenderer spriteRenderer;
+    private SpriteAnimator walkDownAnim;
+    private SpriteAnimator walkUpAnim;
+    private SpriteAnimator walkRightAnim;
+    private SpriteAnimator walkLeftAnim;
+    private SpriteAnimator currentAnim;
+    private bool wasMoving;
+    private SpriteRenderer spriteRenderer;
 
     private void Start()
     {

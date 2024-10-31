@@ -3,7 +3,7 @@ using Utils.StateMachine;
 
 public class FreeRoamState : State<GameController>
 {
-    GameController gameController;
+    private GameController gameController;
 
     public static FreeRoamState Instance { get; private set; }
 

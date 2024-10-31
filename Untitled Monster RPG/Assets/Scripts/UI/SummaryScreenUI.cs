@@ -8,38 +8,37 @@ using Utils.GenericSelectionUI;
 public class SummaryScreenUI : SelectionUI<TextSlot>
 {
     [Header("Basic Details")]
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI levelText;
-    [SerializeField] Image image;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private Image image;
 
     [Header("Pages")]
-    [SerializeField] TextMeshProUGUI pageNameText;
-    [SerializeField] GameObject detailsPage;
-    [SerializeField] GameObject movesPage;
+    [SerializeField] private TextMeshProUGUI pageNameText;
+    [SerializeField] private GameObject detailsPage;
+    [SerializeField] private GameObject movesPage;
 
     [Header("Stats & Exp")]
-    [SerializeField] TextMeshProUGUI hpText;
-    [SerializeField] TextMeshProUGUI strengthText;
-    [SerializeField] TextMeshProUGUI enduranceText;
-    [SerializeField] TextMeshProUGUI intelligenceText;
-    [SerializeField] TextMeshProUGUI fortitudeText;
-    [SerializeField] TextMeshProUGUI agilityText;
-    [SerializeField] TextMeshProUGUI expText;
-    [SerializeField] TextMeshProUGUI expToNextLevelText;
-    [SerializeField] Transform expBar;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private TextMeshProUGUI strengthText;
+    [SerializeField] private TextMeshProUGUI enduranceText;
+    [SerializeField] private TextMeshProUGUI intelligenceText;
+    [SerializeField] private TextMeshProUGUI fortitudeText;
+    [SerializeField] private TextMeshProUGUI agilityText;
+    [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI expToNextLevelText;
+    [SerializeField] private Transform expBar;
 
     [Header("Moves")]
-    [SerializeField] List<TextMeshProUGUI> moveTypes;
-    [SerializeField] List<TextMeshProUGUI> moveNames;
-    [SerializeField] List<TextMeshProUGUI> moveSP;
-    [SerializeField] TextMeshProUGUI moveDescriptionText;
-    [SerializeField] TextMeshProUGUI movePowerText;
-    [SerializeField] TextMeshProUGUI moveAccuracyText;
-    [SerializeField] GameObject moveEffectsUI;
-
-    List<TextSlot> moveSlots;
-    Monster monster;
-    bool inMoveSelection;
+    [SerializeField] private List<TextMeshProUGUI> moveTypes;
+    [SerializeField] private List<TextMeshProUGUI> moveNames;
+    [SerializeField] private List<TextMeshProUGUI> moveSP;
+    [SerializeField] private TextMeshProUGUI moveDescriptionText;
+    [SerializeField] private TextMeshProUGUI movePowerText;
+    [SerializeField] private TextMeshProUGUI moveAccuracyText;
+    [SerializeField] private GameObject moveEffectsUI;
+    private List<TextSlot> moveSlots;
+    private Monster monster;
+    private bool inMoveSelection;
 
     public bool InMoveSelection
     {

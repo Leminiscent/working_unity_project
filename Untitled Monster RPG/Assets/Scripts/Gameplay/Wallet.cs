@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Wallet : MonoBehaviour, ISavable
 {
-    [SerializeField] float money;
+    [SerializeField] private float money;
 
     public event Action OnMoneyChanged;
 

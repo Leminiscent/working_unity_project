@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueAction : CutsceneAction
 {
-    [SerializeField] Dialogue dialogue;
+    [SerializeField] private Dialogue dialogue;
 
     public override IEnumerator Play()
     {

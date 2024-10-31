@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class CountSelectorUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI countText;
-    [SerializeField] TextMeshProUGUI priceText;
-    bool selected;
-    int currentCount;
-    int maxCount;
-    float pricePerUnit;
+    [SerializeField] private TextMeshProUGUI countText;
+    [SerializeField] private TextMeshProUGUI priceText;
+    private bool selected;
+    private int currentCount;
+    private int maxCount;
+    private float pricePerUnit;
 
     public IEnumerator ShowSelector(int maxCount, float pricePerUnit, Action<int> onCountSelected)
     {
@@ -49,7 +49,7 @@ public class CountSelectorUI : MonoBehaviour
         }
     }
 
-    void SetValues()
+    private void SetValues()
     {
         countText.text = $"x {currentCount}";
         priceText.text = $"{currentCount * pricePerUnit} GP";

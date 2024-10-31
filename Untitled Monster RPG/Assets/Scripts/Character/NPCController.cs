@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour, Interactable, ISavable
 {
-    [SerializeField] Dialogue dialogue;
+    [SerializeField] private Dialogue dialogue;
 
     [Header("Quests")]
-    [SerializeField] QuestBase questToStart;
-    [SerializeField] QuestBase questToComplete;
+    [SerializeField] private QuestBase questToStart;
+    [SerializeField] private QuestBase questToComplete;
 
     [Header("Movement")]
-    [SerializeField] List<Vector2> movementPattern;
-    [SerializeField] float patternRate;
-
-    NPCState state;
-    float idleTimer = 0f;
-    int currentPattern = 0;
-    Quest activeQuest;
-    Character character;
-    ItemGiver itemGiver;
-    MonsterGiver monsterGiver;
-    Healer healer;
-    Merchant merchant;
+    [SerializeField] private List<Vector2> movementPattern;
+    [SerializeField] private float patternRate;
+    private NPCState state;
+    private float idleTimer = 0f;
+    private int currentPattern = 0;
+    private Quest activeQuest;
+    private Character character;
+    private ItemGiver itemGiver;
+    private MonsterGiver monsterGiver;
+    private Healer healer;
+    private Merchant merchant;
 
     private void Awake()
     {
@@ -116,7 +115,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
         character.HandleUpdate();
     }
 
-    IEnumerator Walk()
+    private IEnumerator Walk()
     {
         state = NPCState.Moving;
 

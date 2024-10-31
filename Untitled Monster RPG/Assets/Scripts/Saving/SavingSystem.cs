@@ -11,7 +11,7 @@ public class SavingSystem : MonoBehaviour
         i = this;
     }
 
-    Dictionary<string, object> gameState = new Dictionary<string, object>();
+    private Dictionary<string, object> gameState = new Dictionary<string, object>();
 
     public void CaptureEntityStates(List<SavableEntity> savableEntities)
     {
@@ -80,7 +80,7 @@ public class SavingSystem : MonoBehaviour
         }
     }
 
-    void SaveFile(string saveFile, Dictionary<string, object> state)
+    private void SaveFile(string saveFile, Dictionary<string, object> state)
     {
         string path = GetPath(saveFile);
         print($"saving to {path}");
@@ -93,7 +93,7 @@ public class SavingSystem : MonoBehaviour
         }
     }
 
-    Dictionary<string, object> LoadFile(string saveFile)
+    private Dictionary<string, object> LoadFile(string saveFile)
     {
         string path = GetPath(saveFile);
         if (!File.Exists(path))

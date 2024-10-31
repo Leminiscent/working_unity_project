@@ -7,15 +7,15 @@ using Utils.GenericSelectionUI;
 
 public class MonsterStorageUI : SelectionUI<ImageSlot>
 {
-    [SerializeField] List<ImageSlot> storageSlots;
-    [SerializeField] TextMeshProUGUI depotNameText;
-    [SerializeField] Image transferImage;
-    List<StoragePartySlotUI> partySlots = new();
-    List<StorageSlotUI> depotSlots = new();
-    List<Image> storageSlotImages = new();
-    MonsterParty party;
-    MonsterStorage storage;
-    int totalColumns = 9;
+    [SerializeField] private List<ImageSlot> storageSlots;
+    [SerializeField] private TextMeshProUGUI depotNameText;
+    [SerializeField] private Image transferImage;
+    private List<StoragePartySlotUI> partySlots = new();
+    private List<StorageSlotUI> depotSlots = new();
+    private List<Image> storageSlotImages = new();
+    private MonsterParty party;
+    private MonsterStorage storage;
+    private int totalColumns = 9;
 
     public int SelectedDepot { get; private set; } = 0;
 

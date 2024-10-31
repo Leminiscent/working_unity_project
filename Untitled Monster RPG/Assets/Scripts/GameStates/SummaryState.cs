@@ -4,10 +4,10 @@ using Utils.StateMachine;
 
 public class SummaryState : State<GameController>
 {
-    [SerializeField] SummaryScreenUI summaryScreenUI;
-    int selectedPage = 0;
-    List<Monster> playerParty;
-    GameController gameController;
+    [SerializeField] private SummaryScreenUI summaryScreenUI;
+    private int selectedPage = 0;
+    private List<Monster> playerParty;
+    private GameController gameController;
 
     public int SelectedMonsterIndex { get; set; }
     public static SummaryState Instance { get; set; }

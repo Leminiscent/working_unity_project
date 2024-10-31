@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FadeInAction : CutsceneAction
 {
-    [SerializeField] float duration = 0.5f;
+    [SerializeField] private float duration = 0.5f;
 
     public override IEnumerator Play()
     {

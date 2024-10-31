@@ -3,16 +3,16 @@ using UnityEngine;
 public class GlobalSettings : MonoBehaviour
 {
     [Header("Colors")]
-    [SerializeField] Color activeColor;
-    [SerializeField] Color inactiveColor;
-    [SerializeField] Color emptyColor;
-    [SerializeField] Color bgHighlightColor;
+    [SerializeField] private Color activeColor;
+    [SerializeField] private Color inactiveColor;
+    [SerializeField] private Color emptyColor;
+    [SerializeField] private Color bgHighlightColor;
 
     [Header("Monsters")]
-    [SerializeField] int maxPvs;
-    [SerializeField] int maxPvPerStat;
-    [SerializeField] int maxLevel;
-    [SerializeField] MoveBase backupMove;
+    [SerializeField] private int maxPvs;
+    [SerializeField] private int maxPvPerStat;
+    [SerializeField] private int maxLevel;
+    [SerializeField] private MoveBase backupMove;
 
     public Color ActiveColor => activeColor;
     public Color InactiveColor => inactiveColor;

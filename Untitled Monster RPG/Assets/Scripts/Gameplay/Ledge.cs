@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Ledge : MonoBehaviour
 {
-    [SerializeField] int xDir;
-    [SerializeField] int yDir;
+    [SerializeField] private int xDir;
+    [SerializeField] private int yDir;
 
     private void Awake()
     {

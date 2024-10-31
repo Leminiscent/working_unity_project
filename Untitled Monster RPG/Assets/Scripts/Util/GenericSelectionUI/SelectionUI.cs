@@ -8,12 +8,12 @@ namespace Utils.GenericSelectionUI
 
     public class SelectionUI<T> : MonoBehaviour where T : ISelectableItem
     {
-        List<T> items;
+        private List<T> items;
         protected int selectedItem = 0;
-        SelectionType selectionType;
-        int gridWidth = 2;
-        float selectionTimer = 0;
-        const float selectionSpeed = 5f;
+        private SelectionType selectionType;
+        private int gridWidth = 2;
+        private float selectionTimer = 0;
+        private const float selectionSpeed = 5f;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
@@ -71,7 +71,7 @@ namespace Utils.GenericSelectionUI
             }
         }
 
-        void HandleListSelection()
+        private void HandleListSelection()
         {
             float v = Input.GetAxisRaw("Vertical");
 
@@ -82,7 +82,7 @@ namespace Utils.GenericSelectionUI
             }
         }
 
-        void HandleGridSelection()
+        private void HandleGridSelection()
         {
             float v = Input.GetAxisRaw("Vertical");
             float h = Input.GetAxisRaw("Horizontal");
@@ -115,7 +115,7 @@ namespace Utils.GenericSelectionUI
             UpdateSelectionInUI();
         }
 
-        void UpdateSelectionTimer()
+        private void UpdateSelectionTimer()
         {
             if (selectionTimer > 0)
             {

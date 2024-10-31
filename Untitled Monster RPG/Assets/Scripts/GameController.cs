@@ -4,13 +4,12 @@ using Utils.StateMachine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] PlayerController playerController;
-    [SerializeField] BattleSystem battleSystem;
-    [SerializeField] Camera worldCamera;
-    [SerializeField] PartyScreen partyScreen;
-    [SerializeField] InventoryUI inventoryUI;
-
-    MasterController master;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private BattleSystem battleSystem;
+    [SerializeField] private Camera worldCamera;
+    [SerializeField] private PartyScreen partyScreen;
+    [SerializeField] private InventoryUI inventoryUI;
+    private MasterController master;
 
     public StateMachine<GameController> StateMachine { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
@@ -69,7 +68,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(master.TriggerBattle(playerController));
     }
 
-    void EndBattle(bool won)
+    private void EndBattle(bool won)
     {
         if (master != null && won == true)
         {

@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class PartyMemberUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI levelText;
-    [SerializeField] TextMeshProUGUI messageText;
-    [SerializeField] HPBar hpBar;
-
-    Monster _monster;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI messageText;
+    [SerializeField] private HPBar hpBar;
+    private Monster _monster;
 
     public void Init(Monster monster)
     {
@@ -18,7 +17,7 @@ public class PartyMemberUI : MonoBehaviour
         _monster.OnHPChanged += UpdateData;
     }
 
-    void UpdateData()
+    private void UpdateData()
     {
         nameText.text = _monster.Base.Name;
         levelText.text = $"Lvl {_monster.Level}";

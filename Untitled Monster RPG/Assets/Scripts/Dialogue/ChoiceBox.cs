@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class ChoiceBox : MonoBehaviour
 {
-    [SerializeField] ChoiceText choiceTextPrefab;
-    bool choiceSelected = false;
-    List<ChoiceText> choiceTexts;
-    int currentChoice;
+    [SerializeField] private ChoiceText choiceTextPrefab;
+    private bool choiceSelected = false;
+    private List<ChoiceText> choiceTexts;
+    private int currentChoice;
 
     public IEnumerator ShowChoices(List<string> choices, Action<int> onChoiceSelected)
     {

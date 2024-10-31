@@ -14,12 +14,12 @@ public enum ItemCategory
 
 public class Inventory : MonoBehaviour, ISavable
 {
-    [SerializeField] List<ItemSlot> recoveryItemSlots;
-    [SerializeField] List<ItemSlot> materialSlots;
-    [SerializeField] List<ItemSlot> transformationItemSlots;
-    [SerializeField] List<ItemSlot> skillBookSlots;
-    [SerializeField] List<ItemSlot> keyItemSlots;
-    List<List<ItemSlot>> allSlots;
+    [SerializeField] private List<ItemSlot> recoveryItemSlots;
+    [SerializeField] private List<ItemSlot> materialSlots;
+    [SerializeField] private List<ItemSlot> transformationItemSlots;
+    [SerializeField] private List<ItemSlot> skillBookSlots;
+    [SerializeField] private List<ItemSlot> keyItemSlots;
+    private List<List<ItemSlot>> allSlots;
 
     public event Action OnUpdated;
 
@@ -137,7 +137,7 @@ public class Inventory : MonoBehaviour, ISavable
         return currentSlots.Exists(slot => slot.Item == item);
     }
 
-    ItemCategory GetCategoryFromItem(ItemBase item)
+    private ItemCategory GetCategoryFromItem(ItemBase item)
     {
         if (item is RecoveryItem)
         {
@@ -206,8 +206,8 @@ public class Inventory : MonoBehaviour, ISavable
 [Serializable]
 public class ItemSlot
 {
-    [SerializeField] ItemBase item;
-    [SerializeField] int count;
+    [SerializeField] private ItemBase item;
+    [SerializeField] private int count;
 
     public ItemSlot() { }
 

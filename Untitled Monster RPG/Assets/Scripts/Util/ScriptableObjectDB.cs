@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScriptableObjectDB<T> : MonoBehaviour where T : ScriptableObject
 {
-    static Dictionary<string, T> objects;
+    private static Dictionary<string, T> objects;
 
     public static void Init()
     {

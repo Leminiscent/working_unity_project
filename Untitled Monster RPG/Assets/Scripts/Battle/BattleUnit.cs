@@ -4,16 +4,16 @@ using UnityEngine.UI;
 
 public class BattleUnit : MonoBehaviour
 {
-    [SerializeField] bool isPlayerUnit;
-    [SerializeField] BattleHUD hud;
+    [SerializeField] private bool isPlayerUnit;
+    [SerializeField] private BattleHUD hud;
+
+    private Image image;
+    private Vector3 originalPos;
+    private Color originalColor;
 
     public bool IsPlayerUnit => isPlayerUnit;
     public BattleHUD Hud => hud;
-
     public Monster Monster { get; set; }
-    Image image;
-    Vector3 originalPos;
-    Color originalColor;
 
     private void Awake()
     {
@@ -48,14 +48,7 @@ public class BattleUnit : MonoBehaviour
     {
         int offsetX = 1500;
 
-        if (isPlayerUnit)
-        {
-            image.transform.localPosition = new Vector3(-offsetX, originalPos.y);
-        }
-        else
-        {
-            image.transform.localPosition = new Vector3(offsetX, originalPos.y);
-        }
+        image.transform.localPosition = isPlayerUnit ? new Vector3(-offsetX, originalPos.y) : new Vector3(offsetX, originalPos.y);
 
         image.transform.DOLocalMoveX(originalPos.x, 1.2f);
     }

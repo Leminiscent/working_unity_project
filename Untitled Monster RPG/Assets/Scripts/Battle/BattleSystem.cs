@@ -8,32 +8,32 @@ using Utils.StateMachine;
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] private BattleUnit playerUnit;
-    [SerializeField] private BattleUnit enemyUnit;
-    [SerializeField] private BattleDialogueBox dialogueBox;
-    [SerializeField] private PartyScreen partyScreen;
-    [SerializeField] private Image playerImage;
-    [SerializeField] private Image enemyImage;
-    [SerializeField] private MoveForgettingUI moveForgettingUI;
-    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private BattleUnit _playerUnit;
+    [SerializeField] private BattleUnit _enemyUnit;
+    [SerializeField] private BattleDialogueBox _dialogueBox;
+    [SerializeField] private PartyScreen _partyScreen;
+    [SerializeField] private Image _playerImage;
+    [SerializeField] private Image _enemyImage;
+    [SerializeField] private MoveForgettingUI _moveForgettingUI;
+    [SerializeField] private InventoryUI _inventoryUI;
 
     [Header("Audio")]
-    [SerializeField] private AudioClip wildBattleMusic;
-    [SerializeField] private AudioClip masterBattleMusic;
-    [SerializeField] private AudioClip battleVictoryMusic;
+    [SerializeField] private AudioClip _wildBattleMusic;
+    [SerializeField] private AudioClip _masterBattleMusic;
+    [SerializeField] private AudioClip _battleVictoryMusic;
 
     [Header("Background")]
-    [SerializeField] private Image backgroundImage;
-    [SerializeField] private Sprite desertBackground;
-    [SerializeField] private Sprite desertOasisBackground;
-    [SerializeField] private Sprite fieldBackground;
-    [SerializeField] private Sprite fieldLakeBackground;
-    [SerializeField] private Sprite meadowBackground;
-    [SerializeField] private Sprite mountainBackground;
-    [SerializeField] private Sprite mountainCloudsBackground;
-    [SerializeField] private Sprite wastelandBackground;
-    private BattleTrigger battleTrigger;
-    private Dictionary<BattleTrigger, Sprite> backgroundMapping;
+    [SerializeField] private Image _backgroundImage;
+    [SerializeField] private Sprite _desertBackground;
+    [SerializeField] private Sprite _desertOasisBackground;
+    [SerializeField] private Sprite _fieldBackground;
+    [SerializeField] private Sprite _fieldLakeBackground;
+    [SerializeField] private Sprite _meadowBackground;
+    [SerializeField] private Sprite _mountainBackground;
+    [SerializeField] private Sprite _mountainCloudsBackground;
+    [SerializeField] private Sprite _wastelandBackground;
+    private BattleTrigger _battleTrigger;
+    private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public event Action<bool> OnBattleOver;
@@ -50,24 +50,24 @@ public class BattleSystem : MonoBehaviour
     public int EscapeAttempts { get; set; }
     public MasterController Enemy { get; private set; }
     public PlayerController Player { get; private set; }
-    public BattleDialogueBox DialogueBox => dialogueBox;
-    public PartyScreen PartyScreen => partyScreen;
-    public BattleUnit PlayerUnit => playerUnit;
-    public BattleUnit EnemyUnit => enemyUnit;
-    public AudioClip BattleVictoryMusic => battleVictoryMusic;
+    public BattleDialogueBox DialogueBox => _dialogueBox;
+    public PartyScreen PartyScreen => _partyScreen;
+    public BattleUnit PlayerUnit => _playerUnit;
+    public BattleUnit EnemyUnit => _enemyUnit;
+    public AudioClip BattleVictoryMusic => _battleVictoryMusic;
 
     private void Awake()
     {
-        backgroundMapping = new Dictionary<BattleTrigger, Sprite>
+        _backgroundMapping = new Dictionary<BattleTrigger, Sprite>
         {
-            { BattleTrigger.Desert, desertBackground },
-            { BattleTrigger.DesertOasis, desertOasisBackground },
-            { BattleTrigger.Field, fieldBackground },
-            { BattleTrigger.FieldLake, fieldLakeBackground },
-            { BattleTrigger.Meadow, meadowBackground },
-            { BattleTrigger.Mountain, mountainBackground },
-            { BattleTrigger.MountainClouds, mountainCloudsBackground },
-            { BattleTrigger.Wasteland, wastelandBackground }
+            { BattleTrigger.Desert, _desertBackground },
+            { BattleTrigger.DesertOasis, _desertOasisBackground },
+            { BattleTrigger.Field, _fieldBackground },
+            { BattleTrigger.FieldLake, _fieldLakeBackground },
+            { BattleTrigger.Meadow, _meadowBackground },
+            { BattleTrigger.Mountain, _mountainBackground },
+            { BattleTrigger.MountainClouds, _mountainCloudsBackground },
+            { BattleTrigger.Wasteland, _wastelandBackground }
         };
     }
 
@@ -78,8 +78,8 @@ public class BattleSystem : MonoBehaviour
         PlayerParty = playerParty;
         WildMonster = wildMonster;
 
-        battleTrigger = trigger;
-        AudioManager.Instance.PlayMusic(wildBattleMusic);
+        _battleTrigger = trigger;
+        AudioManager.Instance.PlayMusic(_wildBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
@@ -92,68 +92,68 @@ public class BattleSystem : MonoBehaviour
 
         Player = playerParty.GetComponent<PlayerController>();
         Enemy = enemyParty.GetComponent<MasterController>();
-        battleTrigger = trigger;
-        AudioManager.Instance.PlayMusic(masterBattleMusic);
+        _battleTrigger = trigger;
+        AudioManager.Instance.PlayMusic(_masterBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
     public IEnumerator SetupBattle()
     {
         StateMachine = new StateMachine<BattleSystem>(this);
-        playerUnit.Clear();
-        enemyUnit.Clear();
+        _playerUnit.Clear();
+        _enemyUnit.Clear();
 
-        if (backgroundMapping.ContainsKey(battleTrigger))
+        if (_backgroundMapping.ContainsKey(_battleTrigger))
         {
-            backgroundImage.sprite = backgroundMapping[battleTrigger];
+            _backgroundImage.sprite = _backgroundMapping[_battleTrigger];
         }
         else
         {
-            backgroundImage.sprite = fieldBackground; // Fallback option
+            _backgroundImage.sprite = _fieldBackground; // Fallback option
         }
 
         if (!IsMasterBattle)
         {
-            playerUnit.Setup(PlayerParty.GetHealthyMonster());
-            enemyUnit.Setup(WildMonster);
+            _playerUnit.Setup(PlayerParty.GetHealthyMonster());
+            _enemyUnit.Setup(WildMonster);
 
-            dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
-            yield return dialogueBox.TypeDialogue("A wild " + enemyUnit.Monster.Base.Name + " appeared!");
+            _dialogueBox.SetMoveNames(_playerUnit.Monster.Moves);
+            yield return _dialogueBox.TypeDialogue("A wild " + _enemyUnit.Monster.Base.Name + " appeared!");
         }
         else
         {
-            playerUnit.gameObject.SetActive(false);
-            enemyUnit.gameObject.SetActive(false);
+            _playerUnit.gameObject.SetActive(false);
+            _enemyUnit.gameObject.SetActive(false);
 
-            playerImage.gameObject.SetActive(true);
-            enemyImage.gameObject.SetActive(true);
-            playerImage.sprite = Player.Sprite;
-            enemyImage.sprite = Enemy.Sprite;
+            _playerImage.gameObject.SetActive(true);
+            _enemyImage.gameObject.SetActive(true);
+            _playerImage.sprite = Player.Sprite;
+            _enemyImage.sprite = Enemy.Sprite;
 
-            yield return dialogueBox.TypeDialogue(Enemy.Name + " wants to battle!");
+            yield return _dialogueBox.TypeDialogue(Enemy.Name + " wants to battle!");
 
-            enemyImage.gameObject.SetActive(false);
-            enemyUnit.gameObject.SetActive(true);
+            _enemyImage.gameObject.SetActive(false);
+            _enemyUnit.gameObject.SetActive(true);
 
             Monster enemyMonster = EnemyParty.GetHealthyMonster();
 
-            enemyUnit.Setup(enemyMonster);
-            yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
+            _enemyUnit.Setup(enemyMonster);
+            yield return _dialogueBox.TypeDialogue(Enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
 
-            playerImage.gameObject.SetActive(false);
-            playerUnit.gameObject.SetActive(true);
+            _playerImage.gameObject.SetActive(false);
+            _playerUnit.gameObject.SetActive(true);
 
             Monster playerMonster = PlayerParty.GetHealthyMonster();
 
-            playerUnit.Setup(playerMonster);
-            yield return dialogueBox.TypeDialogue("Go " + playerMonster.Base.Name + "!");
-            dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
+            _playerUnit.Setup(playerMonster);
+            yield return _dialogueBox.TypeDialogue("Go " + playerMonster.Base.Name + "!");
+            _dialogueBox.SetMoveNames(_playerUnit.Monster.Moves);
         }
 
         Field = new Field();
         BattleIsOver = false;
         EscapeAttempts = 0;
-        partyScreen.Init();
+        _partyScreen.Init();
         StateMachine.ChangeState(ActionSelectionState.Instance);
     }
 
@@ -161,8 +161,8 @@ public class BattleSystem : MonoBehaviour
     {
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
-        playerUnit.Hud.ClearData();
-        enemyUnit.Hud.ClearData();
+        _playerUnit.Hud.ClearData();
+        _enemyUnit.Hud.ClearData();
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
         OnBattleOver(won);
     }
@@ -174,24 +174,24 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SwitchMonster(Monster newMonster)
     {
-        if (playerUnit.Monster.HP > 0)
+        if (_playerUnit.Monster.HP > 0)
         {
-            yield return dialogueBox.TypeDialogue("Come back " + playerUnit.Monster.Base.Name + "!");
-            playerUnit.PlayExitAnimation();
+            yield return _dialogueBox.TypeDialogue("Come back " + _playerUnit.Monster.Base.Name + "!");
+            _playerUnit.PlayExitAnimation();
             yield return new WaitForSeconds(0.75f);
         }
 
-        playerUnit.Setup(newMonster);
-        dialogueBox.SetMoveNames(newMonster.Moves);
-        yield return dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
+        _playerUnit.Setup(newMonster);
+        _dialogueBox.SetMoveNames(newMonster.Moves);
+        yield return _dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
     }
 
     public IEnumerator SendNextMasterMonster()
     {
         Monster nextMonster = EnemyParty.GetHealthyMonster();
 
-        enemyUnit.Setup(nextMonster);
-        yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
+        _enemyUnit.Setup(nextMonster);
+        yield return _dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
     }
 }
 

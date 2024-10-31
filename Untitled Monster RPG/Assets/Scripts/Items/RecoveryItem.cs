@@ -4,20 +4,20 @@ using UnityEngine;
 public class RecoveryItem : ItemBase
 {
     [Header("HP")]
-    [SerializeField] int hpAmount;
-    [SerializeField] bool restoreMaxHP;
+    [SerializeField] private int hpAmount;
+    [SerializeField] private bool restoreMaxHP;
 
     [Header("SP")]
-    [SerializeField] int spAmount;
-    [SerializeField] bool restoreMaxSP;
+    [SerializeField] private int spAmount;
+    [SerializeField] private bool restoreMaxSP;
 
     [Header("Status Conditions")]
-    [SerializeField] ConditionID status;
-    [SerializeField] bool recoverAllStatus;
+    [SerializeField] private ConditionID status;
+    [SerializeField] private bool recoverAllStatus;
 
     [Header("Revive")]
-    [SerializeField] bool revive;
-    [SerializeField] bool maxRevive;
+    [SerializeField] private bool revive;
+    [SerializeField] private bool maxRevive;
 
     public override bool Use(Monster monster)
     {

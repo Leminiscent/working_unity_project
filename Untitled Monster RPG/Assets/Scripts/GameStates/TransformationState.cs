@@ -5,9 +5,9 @@ using Utils.StateMachine;
 
 public class TransformationState : State<GameController>
 {
-    [SerializeField] GameObject transformationUI;
-    [SerializeField] Image monsterImage;
-    [SerializeField] AudioClip transformationMusic;
+    [SerializeField] private GameObject transformationUI;
+    [SerializeField] private Image monsterImage;
+    [SerializeField] private AudioClip transformationMusic;
 
     public static TransformationState Instance { get; private set; }
 

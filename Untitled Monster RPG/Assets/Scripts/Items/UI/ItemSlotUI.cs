@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class ItemSlotUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI countText;
-    RectTransform rectTransform;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI countText;
+    private RectTransform rectTransform;
 
     public TextMeshProUGUI NameText => nameText;
     public TextMeshProUGUI CountText => countText;

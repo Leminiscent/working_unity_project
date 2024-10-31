@@ -4,8 +4,8 @@ using Utils.StateMachine;
 
 public class ForgettingMoveState : State<GameController>
 {
-    [SerializeField] MoveForgettingUI moveForgettingUI;
-    GameController gameController;
+    [SerializeField] private MoveForgettingUI moveForgettingUI;
+    private GameController gameController;
 
     public List<MoveBase> CurrentMoves { get; set; }
     public MoveBase NewMove { get; set; }
@@ -39,13 +39,13 @@ public class ForgettingMoveState : State<GameController>
         moveForgettingUI.OnBack -= OnBack;
     }
 
-    void OnMoveSelected(int selection)
+    private void OnMoveSelected(int selection)
     {
         Selection = selection;
         gameController.StateMachine.Pop();
     }
 
-    void OnBack()
+    private void OnBack()
     {
         Selection = -1;
         gameController.StateMachine.Pop();

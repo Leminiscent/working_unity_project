@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChoiceText : MonoBehaviour
 {
-    TextMeshProUGUI text;
+    private TextMeshProUGUI text;
 
     private void Awake()
     {

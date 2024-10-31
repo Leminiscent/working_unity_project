@@ -5,13 +5,13 @@ using Utils.StateMachine;
 
 public class ShopBuyingState : State<GameController>
 {
-    [SerializeField] Vector2 shopCameraOffest;
-    [SerializeField] ShopUI shopUI;
-    [SerializeField] WalletUI walletUI;
-    [SerializeField] CountSelectorUI countSelectorUI;
-    GameController gameController;
-    Inventory playerInventory;
-    bool browseItems;
+    [SerializeField] private Vector2 shopCameraOffest;
+    [SerializeField] private ShopUI shopUI;
+    [SerializeField] private WalletUI walletUI;
+    [SerializeField] private CountSelectorUI countSelectorUI;
+    private GameController gameController;
+    private Inventory playerInventory;
+    private bool browseItems;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopBuyingState Instance { get; private set; }
@@ -41,7 +41,7 @@ public class ShopBuyingState : State<GameController>
         }
     }
 
-    IEnumerator StartBuying()
+    private IEnumerator StartBuying()
     {
         yield return GameController.Instance.MoveCamera(shopCameraOffest);
         walletUI.Show();
@@ -49,7 +49,7 @@ public class ShopBuyingState : State<GameController>
         browseItems = true;
     }
 
-    IEnumerator BuyItem(ItemBase item)
+    private IEnumerator BuyItem(ItemBase item)
     {
         browseItems = false;
         yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}'s would you like?",
@@ -87,7 +87,7 @@ public class ShopBuyingState : State<GameController>
         browseItems = true;
     }
 
-    IEnumerator OnBackFromBuying()
+    private IEnumerator OnBackFromBuying()
     {
         yield return GameController.Instance.MoveCamera(-shopCameraOffest);
         shopUI.Close();

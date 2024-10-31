@@ -7,7 +7,7 @@ using UnityEngine;
 public class Cutscene : MonoBehaviour, IPlayerTriggerable
 {
     [SerializeReference]
-    [SerializeField] List<CutsceneAction> actions;
+    [SerializeField] private List<CutsceneAction> actions;
 
     public bool TriggerRepeatedly => false;
 

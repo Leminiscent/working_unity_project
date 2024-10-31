@@ -7,19 +7,19 @@ using Utils.GenericSelectionUI;
 
 public class InventoryUI : SelectionUI<TextSlot>
 {
-    [SerializeField] GameObject itemList;
-    [SerializeField] ItemSlotUI itemSlotUI;
-    [SerializeField] TextMeshProUGUI categoryText;
-    [SerializeField] Image itemIcon;
-    [SerializeField] TextMeshProUGUI itemDescription;
-    [SerializeField] TextMeshProUGUI moneyText;
-    [SerializeField] Image upArrow;
-    [SerializeField] Image downArrow;
-    int selectedCategory;
-    const int itemsInViewport = 8;
-    List<ItemSlotUI> slotUIList;
-    Inventory inventory;
-    RectTransform itemListRect;
+    [SerializeField] private GameObject itemList;
+    [SerializeField] private ItemSlotUI itemSlotUI;
+    [SerializeField] private TextMeshProUGUI categoryText;
+    [SerializeField] private Image itemIcon;
+    [SerializeField] private TextMeshProUGUI itemDescription;
+    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private Image upArrow;
+    [SerializeField] private Image downArrow;
+    private int selectedCategory;
+    private const int itemsInViewport = 8;
+    private List<ItemSlotUI> slotUIList;
+    private Inventory inventory;
+    private RectTransform itemListRect;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         Wallet.Instance.OnMoneyChanged += UpdateMoneyText;
     }
 
-    void UpdateItemList()
+    private void UpdateItemList()
     {
         foreach (Transform child in itemList.transform)
         {
@@ -56,7 +56,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         UpdateSelectionInUI();
     }
 
-    void UpdateMoneyText()
+    private void UpdateMoneyText()
     {
         moneyText.text = $"{Wallet.Instance.Money} GP";
     }
@@ -106,7 +106,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         base.UpdateSelectionInUI();
     }
 
-    void HandleScrolling()
+    private void HandleScrolling()
     {
         if (slotUIList.Count <= itemsInViewport)
         {
@@ -123,7 +123,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         downArrow.gameObject.SetActive(showDownArrow);
     }
 
-    void ResetSelction()
+    private void ResetSelction()
     {
         selectedItem = 0;
         upArrow.gameObject.SetActive(false);

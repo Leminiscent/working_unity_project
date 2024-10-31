@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Create new skill book")]
 public class SkillBook : ItemBase
 {
-    [SerializeField] MoveBase move;
-    [SerializeField] bool isUnlimited;
+    [SerializeField] private MoveBase move;
+    [SerializeField] private bool isUnlimited;
 
     public override string Name
     {

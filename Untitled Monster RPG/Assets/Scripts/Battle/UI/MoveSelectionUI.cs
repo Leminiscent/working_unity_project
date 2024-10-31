@@ -43,13 +43,6 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
 
         _spText.text = $"SP {move.SP}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();
-        if (move.SP == 0)
-        {
-            _spText.color = GlobalSettings.Instance.EmptyColor;
-        }
-        else
-        {
-            _spText.color = GlobalSettings.Instance.InactiveColor;
-        }
+        _spText.color = move.SP == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
     }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MapArea : MonoBehaviour
 {
-    [SerializeField] List<MonsterEncounterRecord> wildMonsters;
-    [SerializeField] BattleTrigger terrain;
+    [SerializeField] private List<MonsterEncounterRecord> wildMonsters;
+    [SerializeField] private BattleTrigger terrain;
 
     [HideInInspector]
-    [SerializeField] int totalChance = 0;
+    [SerializeField] private int totalChance = 0;
 
     public BattleTrigger Terrain => terrain;
 
@@ -22,7 +22,7 @@ public class MapArea : MonoBehaviour
         CalculateSpawnChance();
     }
 
-    void CalculateSpawnChance()
+    private void CalculateSpawnChance()
     {
         totalChance = -1;
 

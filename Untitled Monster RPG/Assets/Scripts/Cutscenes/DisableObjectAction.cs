@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DisableObjectAction : CutsceneAction
 {
-    [SerializeField] GameObject objectToDisable;
+    [SerializeField] private GameObject objectToDisable;
 
     public override IEnumerator Play()
     {

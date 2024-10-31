@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class TurnActorAction : CutsceneAction
 {
-    [SerializeField] CutsceneActor actor;
-    [SerializeField] FacingDirection direction;
+    [SerializeField] private CutsceneActor actor;
+    [SerializeField] private FacingDirection direction;
 
     public override IEnumerator Play()
     {

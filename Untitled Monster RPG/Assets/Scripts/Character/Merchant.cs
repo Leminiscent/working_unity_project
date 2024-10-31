@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Merchant : MonoBehaviour
 {
-    [SerializeField] List<ItemBase> itemsForSale;
+    [SerializeField] private List<ItemBase> itemsForSale;
     
     public IEnumerator Trade()
     {

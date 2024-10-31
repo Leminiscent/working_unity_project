@@ -5,25 +5,25 @@ using UnityEngine;
 public class MoveBase : ScriptableObject
 {
     // Attributes
-    [SerializeField] new string name;
+    [SerializeField] private new string name;
     [TextArea]
-    [SerializeField] string description;
-    [SerializeField] MonsterType type;
-    [SerializeField] MoveCategory category;
-    [SerializeField] MoveEffects effects;
-    [SerializeField] List<SecondaryEffects> secondaryEffects;
-    [SerializeField] CritBehavior critBehavior;
-    [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
-    [SerializeField] int drainPercentage = 0;
-    [SerializeField] OneHitKOMoveEffect oneHitKO = new OneHitKOMoveEffect();
-    [SerializeField] MoveTarget target;
-    [SerializeField] Vector2Int hitRange;
-    [SerializeField] int power;
-    [SerializeField] int accuracy;
-    [SerializeField] bool alwaysHits;
-    [SerializeField] int sP;
-    [SerializeField] int priority;
-    [SerializeField] AudioClip sound;
+    [SerializeField] private string description;
+    [SerializeField] private MonsterType type;
+    [SerializeField] private MoveCategory category;
+    [SerializeField] private MoveEffects effects;
+    [SerializeField] private List<SecondaryEffects> secondaryEffects;
+    [SerializeField] private CritBehavior critBehavior;
+    [SerializeField] private RecoilMoveEffect recoil = new RecoilMoveEffect();
+    [SerializeField] private int drainPercentage = 0;
+    [SerializeField] private OneHitKOMoveEffect oneHitKO = new OneHitKOMoveEffect();
+    [SerializeField] private MoveTarget target;
+    [SerializeField] private Vector2Int hitRange;
+    [SerializeField] private int power;
+    [SerializeField] private int accuracy;
+    [SerializeField] private bool alwaysHits;
+    [SerializeField] private int sP;
+    [SerializeField] private int priority;
+    [SerializeField] private AudioClip sound;
 
     // Properties
     public int GetHitCount()
@@ -34,13 +34,9 @@ public class MoveBase : ScriptableObject
         {
             hitCount = 1;
         }
-        else if (hitRange.y == 0)
-        {
-            hitCount = hitRange.x;
-        }
         else
         {
-            hitCount = Random.Range(hitRange.x, hitRange.y + 1);
+            hitCount = hitRange.y == 0 ? hitRange.x : Random.Range(hitRange.x, hitRange.y + 1);
         }
 
         return hitCount;
@@ -68,10 +64,10 @@ public class MoveBase : ScriptableObject
 [System.Serializable]
 public class MoveEffects
 {
-    [SerializeField] List<StatBoost> boosts;
-    [SerializeField] ConditionID status;
-    [SerializeField] ConditionID volatileStatus;
-    [SerializeField] ConditionID weather;
+    [SerializeField] private List<StatBoost> boosts;
+    [SerializeField] private ConditionID status;
+    [SerializeField] private ConditionID volatileStatus;
+    [SerializeField] private ConditionID weather;
 
     public List<StatBoost> Boosts => boosts;
     public ConditionID Status => status;
@@ -82,8 +78,8 @@ public class MoveEffects
 [System.Serializable]
 public class SecondaryEffects : MoveEffects
 {
-    [SerializeField] int chance;
-    [SerializeField] MoveTarget target;
+    [SerializeField] private int chance;
+    [SerializeField] private MoveTarget target;
 
     public int Chance => chance;
     public MoveTarget Target => target;

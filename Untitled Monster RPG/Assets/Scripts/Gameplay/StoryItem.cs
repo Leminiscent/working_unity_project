@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StoryItem : MonoBehaviour, IPlayerTriggerable
 {
-    [SerializeField] Dialogue dialogue;
+    [SerializeField] private Dialogue dialogue;
 
     public void OnPlayerTriggered(PlayerController player)
     {

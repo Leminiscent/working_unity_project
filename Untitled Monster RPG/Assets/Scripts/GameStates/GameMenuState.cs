@@ -4,8 +4,8 @@ using Utils.StateMachine;
 
 public class GameMenuState : State<GameController>
 {
-    [SerializeField] MenuController menuController;
-    GameController gameController;
+    [SerializeField] private MenuController menuController;
+    private GameController gameController;
 
     public static GameMenuState Instance { get; private set; }
 
@@ -34,7 +34,7 @@ public class GameMenuState : State<GameController>
         menuController.OnBack -= OnBack;
     }
 
-    void OnMenuItemSelected(int selection)
+    private void OnMenuItemSelected(int selection)
     {
         if (selection == 0)
         {
@@ -58,21 +58,21 @@ public class GameMenuState : State<GameController>
         }
     }
 
-    IEnumerator SaveSelected()
+    private IEnumerator SaveSelected()
     {
         yield return Fader.Instance.FadeIn(0.5f);
         SavingSystem.i.Save("saveSlot1");
         yield return Fader.Instance.FadeOut(0.5f);
     }
 
-    IEnumerator LoadSelected()
+    private IEnumerator LoadSelected()
     {
         yield return Fader.Instance.FadeIn(0.5f);
         SavingSystem.i.Load("saveSlot1");
         yield return Fader.Instance.FadeOut(0.5f);
     }
 
-    void OnBack()
+    private void OnBack()
     {
         gameController.StateMachine.Pop();
     }

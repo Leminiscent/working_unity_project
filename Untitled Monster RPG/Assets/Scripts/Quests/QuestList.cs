@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class QuestList : MonoBehaviour, ISavable
 {
-    List<Quest> quests = new List<Quest>();
+    private List<Quest> quests = new List<Quest>();
 
     public event Action OnUpdated;
 

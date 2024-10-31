@@ -6,19 +6,19 @@ using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
-    [SerializeField] GameObject itemList;
-    [SerializeField] ItemSlotUI itemSlotUI;
-    [SerializeField] Image itemIcon;
-    [SerializeField] TextMeshProUGUI itemDescription;
-    [SerializeField] Image upArrow;
-    [SerializeField] Image downArrow;
-    int selectedItem;
-    List<ItemBase> availableItems;
-    Action<ItemBase> onItemSelected;
-    Action onBack;
-    List<ItemSlotUI> slotUIList;
-    const int itemsInViewport = 8;
-    RectTransform itemListRect;
+    [SerializeField] private GameObject itemList;
+    [SerializeField] private ItemSlotUI itemSlotUI;
+    [SerializeField] private Image itemIcon;
+    [SerializeField] private TextMeshProUGUI itemDescription;
+    [SerializeField] private Image upArrow;
+    [SerializeField] private Image downArrow;
+    private int selectedItem;
+    private List<ItemBase> availableItems;
+    private Action<ItemBase> onItemSelected;
+    private Action onBack;
+    private List<ItemSlotUI> slotUIList;
+    private const int itemsInViewport = 8;
+    private RectTransform itemListRect;
 
     private void Awake()
     {
@@ -68,7 +68,7 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    void UpdateItemList()
+    private void UpdateItemList()
     {
         foreach (Transform child in itemList.transform)
         {
@@ -87,19 +87,12 @@ public class ShopUI : MonoBehaviour
         UpdateItemSelection();
     }
 
-    void UpdateItemSelection()
+    private void UpdateItemSelection()
     {
         selectedItem = Mathf.Clamp(selectedItem, 0, availableItems.Count - 1);
         for (int i = 0; i < slotUIList.Count; i++)
         {
-            if (i == selectedItem)
-            {
-                slotUIList[i].NameText.color = GlobalSettings.Instance.ActiveColor;
-            }
-            else
-            {
-                slotUIList[i].NameText.color = GlobalSettings.Instance.InactiveColor;
-            }
+            slotUIList[i].NameText.color = i == selectedItem ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
         }
 
         if (availableItems.Count > 0)
@@ -113,7 +106,7 @@ public class ShopUI : MonoBehaviour
         HandleScrolling();
     }
 
-    void HandleScrolling()
+    private void HandleScrolling()
     {
         if (slotUIList.Count <= itemsInViewport)
         {

@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class ItemGiver : MonoBehaviour, ISavable
 {
-    [SerializeField] ItemBase item;
-    [SerializeField] int count = 1;
-    [SerializeField] Dialogue dialogue;
-
-    bool used = false;
+    [SerializeField] private ItemBase item;
+    [SerializeField] private int count = 1;
+    [SerializeField] private Dialogue dialogue;
+    private bool used = false;
 
     public IEnumerator GiveItem(PlayerController player)
     {

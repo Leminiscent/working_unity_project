@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 {
-    [SerializeField] DestinationIdentifier destinationPortal;
-    [SerializeField] Transform spawnPoint;
-    PlayerController player;
+    [SerializeField] private DestinationIdentifier destinationPortal;
+    [SerializeField] private Transform spawnPoint;
+    private PlayerController player;
 
     public void OnPlayerTriggered(PlayerController player)
     {
@@ -18,14 +18,14 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 
     public bool TriggerRepeatedly => false;
 
-    Fader fader;
+    private Fader fader;
 
     private void Start()
     {
         fader = FindObjectOfType<Fader>();
     }
 
-    IEnumerator Teleport()
+    private IEnumerator Teleport()
     {
         GameController.Instance.PauseGame(true);
         yield return fader.FadeIn(0.5f);

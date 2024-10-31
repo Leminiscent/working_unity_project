@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class ItemBase : ScriptableObject
 {
-    [SerializeField] new string name;
-    [SerializeField] string description;
-    [SerializeField] string message;
-    [SerializeField] Sprite icon;
-    [SerializeField] float price;
-    [SerializeField] bool isSellable;
+    [SerializeField] private new string name;
+    [SerializeField] private string description;
+    [SerializeField] private string message;
+    [SerializeField] private Sprite icon;
+    [SerializeField] private float price;
+    [SerializeField] private bool isSellable;
 
     public virtual string Name => name;
     public virtual string Description => description;

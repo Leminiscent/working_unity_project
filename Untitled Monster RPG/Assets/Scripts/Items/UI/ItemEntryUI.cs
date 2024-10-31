@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ItemEntryUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI itemNameText;
-    [SerializeField] TextMeshProUGUI itemQuantityText;
+    [SerializeField] private TextMeshProUGUI itemNameText;
+    [SerializeField] private TextMeshProUGUI itemQuantityText;
 
     public void SetItem(ItemBase item, int quantity)
     {

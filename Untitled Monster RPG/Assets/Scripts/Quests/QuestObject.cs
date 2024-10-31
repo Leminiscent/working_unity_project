@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class QuestObject : MonoBehaviour
 {
-    [SerializeField] QuestBase questToCheck;
-    [SerializeField] ObjectActions onStart;
-    [SerializeField] ObjectActions onComplete;
-    QuestList questList;
+    [SerializeField] private QuestBase questToCheck;
+    [SerializeField] private ObjectActions onStart;
+    [SerializeField] private ObjectActions onComplete;
+    private QuestList questList;
 
     private void Start()
     {

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour, Interactable, ISavable
 {
-    [SerializeField] ItemBase item;
-    [SerializeField] Sprite usedSprite;
+    [SerializeField] private ItemBase item;
+    [SerializeField] private Sprite usedSprite;
     public bool Used { get; set; } = false;
 
     public IEnumerator Interact(Transform initiator)

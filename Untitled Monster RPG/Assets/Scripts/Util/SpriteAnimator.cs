@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class SpriteAnimator
 {
-    SpriteRenderer renderer;
-    List<Sprite> frames;
-    float frameRate;
-    int currentFrame;
-    float timer;
+    private SpriteRenderer renderer;
+    private List<Sprite> frames;
+    private float frameRate;
+    private int currentFrame;
+    private float timer;
 
     public SpriteAnimator(List<Sprite> frames, SpriteRenderer renderer, float frameRate = 0.16f)
     {

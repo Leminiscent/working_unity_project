@@ -5,10 +5,10 @@ using Utils.StateMachine;
 
 public class UseItemState : State<GameController>
 {
-    [SerializeField] PartyScreen partyScreen;
-    [SerializeField] InventoryUI inventoryUI;
-    GameController gameController;
-    Inventory inventory;
+    [SerializeField] private PartyScreen partyScreen;
+    [SerializeField] private InventoryUI inventoryUI;
+    private GameController gameController;
+    private Inventory inventory;
 
     public bool ItemUsed { get; private set; }
     public static UseItemState Instance { get; private set; }
@@ -27,7 +27,7 @@ public class UseItemState : State<GameController>
         StartCoroutine(UseItem());
     }
 
-    IEnumerator UseItem()
+    private IEnumerator UseItem()
     {
         ItemBase item = inventoryUI.SelectedItem;
         Monster monster = partyScreen.SelectedMember;
@@ -77,7 +77,7 @@ public class UseItemState : State<GameController>
         gameController.StateMachine.Pop();
     }
 
-    IEnumerator HandleSkillBooks()
+    private IEnumerator HandleSkillBooks()
     {
         SkillBook skillBook = inventoryUI.SelectedItem as SkillBook;
 

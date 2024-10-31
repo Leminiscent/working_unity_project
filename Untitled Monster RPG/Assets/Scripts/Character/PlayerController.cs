@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ISavable
 {
-    [SerializeField] new string name;
-    [SerializeField] Sprite sprite;
+    [SerializeField] private new string name;
+    [SerializeField] private Sprite sprite;
     private Vector2 input;
     private Character character;
     private DeputyController deputy;
     public static PlayerController Instance { get; private set; }
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
         character = GetComponent<Character>();
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour, ISavable
         }
     }
 
-    IEnumerator Interact()
+    private IEnumerator Interact()
     {
         Vector3 facingDir = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
         Vector3 interactPos = transform.position + facingDir;
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour, ISavable
         }
     }
 
-    IPlayerTriggerable currentlyInTrigger;
+    private IPlayerTriggerable currentlyInTrigger;
 
     private void OnMoveOver()
     {

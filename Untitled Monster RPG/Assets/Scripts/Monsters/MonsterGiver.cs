@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class MonsterGiver : MonoBehaviour, ISavable
 {
-    [SerializeField] Monster monster;
-    [SerializeField] Dialogue dialogue;
-
-    bool used = false;
+    [SerializeField] private Monster monster;
+    [SerializeField] private Dialogue dialogue;
+    private bool used = false;
 
     public IEnumerator GiveMonster(PlayerController player)
     {

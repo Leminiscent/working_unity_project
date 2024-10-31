@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class GameLayers : MonoBehaviour
 {
-    [SerializeField] LayerMask solidObjectsLayer;
-    [SerializeField] LayerMask encountersLayer;
-    [SerializeField] LayerMask interactablesLayer;
-    [SerializeField] LayerMask playerLayer;
-    [SerializeField] LayerMask losLayer;
-    [SerializeField] LayerMask portalLayer;
-    [SerializeField] LayerMask triggersLayer;
-    [SerializeField] LayerMask ledgeLayer;
+    [SerializeField] private LayerMask solidObjectsLayer;
+    [SerializeField] private LayerMask encountersLayer;
+    [SerializeField] private LayerMask interactablesLayer;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask losLayer;
+    [SerializeField] private LayerMask portalLayer;
+    [SerializeField] private LayerMask triggersLayer;
+    [SerializeField] private LayerMask ledgeLayer;
 
     public static GameLayers Instance { get; set; }
 

@@ -4,8 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class CutsceneAction
 {
-    [SerializeField] string name;
-    [SerializeField] bool waitForCompletion = true;
+    [SerializeField] private string name;
+    [SerializeField] private bool waitForCompletion = true;
 
     public virtual IEnumerator Play()
     {

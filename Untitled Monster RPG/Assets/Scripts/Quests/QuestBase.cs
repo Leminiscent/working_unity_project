@@ -3,13 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Quests/Create a new quest")]
 public class QuestBase : ScriptableObject
 {
-    [SerializeField] new string name;
-    [SerializeField] string description;
-    [SerializeField] Dialogue startDialogue;
-    [SerializeField] Dialogue inProgressDialogue;
-    [SerializeField] Dialogue completedDialogue;
-    [SerializeField] ItemBase requiredItem;
-    [SerializeField] ItemBase rewardItem;
+    [SerializeField] private new string name;
+    [SerializeField] private string description;
+    [SerializeField] private Dialogue startDialogue;
+    [SerializeField] private Dialogue inProgressDialogue;
+    [SerializeField] private Dialogue completedDialogue;
+    [SerializeField] private ItemBase requiredItem;
+    [SerializeField] private ItemBase rewardItem;
 
     public string Name => name;
     public string Description => description;
