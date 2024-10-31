@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _musicPlayer;
     [SerializeField] private AudioSource _sfxPlayer;
     [SerializeField] private float _fadeDuration = 0.75f;
+
     private AudioClip _currentMusic;
     private float _originalMusicVolume;
     private Dictionary<AudioID, AudioData> _sfxDictionary;
@@ -18,13 +19,19 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
     private void Start()
     {
         _originalMusicVolume = _musicPlayer.volume;
-        _sfxDictionary = _sfxList.ToDictionary(x => x.id, x => x);
+        _sfxDictionary = _sfxList.ToDictionary(x => x.Id, x => x);
     }
 
     public void PlaySFX(AudioClip clip, bool pauseMusic = false)
@@ -42,11 +49,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioID id, bool pauseMusic = false)
     {
-        if (!_sfxDictionary.ContainsKey(id)) return;
-
-        var audioData = _sfxDictionary[id];
-        
-        PlaySFX(audioData.clip, pauseMusic);
+        if (_sfxDictionary.TryGetValue(id, out var audioData))
+        {
+            PlaySFX(audioData.Clip, pauseMusic);
+        }
     }
 
     public void PlayMusic(AudioClip clip, bool loop = true, bool fade = false)
@@ -96,6 +102,6 @@ public enum AudioID
 [System.Serializable]
 public class AudioData
 {
-    public AudioID id;
-    public AudioClip clip;
+    public AudioID Id;
+    public AudioClip Clip;
 }
