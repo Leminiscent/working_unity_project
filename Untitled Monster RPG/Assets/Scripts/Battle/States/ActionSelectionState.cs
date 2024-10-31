@@ -9,12 +9,18 @@ public class ActionSelectionState : State<BattleSystem>
     private BattleSystem _battleSystem;
 
     public static ActionSelectionState Instance { get; private set; }
-
     public ActionSelectionUI SelectionUI => _selectionUI;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(BattleSystem owner)
@@ -79,7 +85,6 @@ public class ActionSelectionState : State<BattleSystem>
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
 
         var selectedItem = InventoryState.Instance.SelectedItem;
-
         if (selectedItem != null)
         {
             _battleSystem.SelectedAction = BattleAction.UseItem;
@@ -93,7 +98,6 @@ public class ActionSelectionState : State<BattleSystem>
         yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
 
         var selectedMonster = PartyState.Instance.SelectedMonster;
-
         if (selectedMonster != null)
         {
             _battleSystem.SelectedAction = BattleAction.SwitchMonster;
