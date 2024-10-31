@@ -34,7 +34,7 @@ public class ShopSellingState : State<GameController>
     {
         yield return gameController.StateMachine.PushAndWait(InventoryState.Instance);
 
-        var selectedItem = InventoryState.Instance.SelectedItem;
+        ItemBase selectedItem = InventoryState.Instance.SelectedItem;
 
         if (selectedItem != null)
         {

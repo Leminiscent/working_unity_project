@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -30,8 +29,8 @@ public class Character : MonoBehaviour
         animator.MoveX = Mathf.Clamp(moveVector.x, -1f, 1f);
         animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
-        var targetPos = transform.position + new Vector3(moveVector.x, moveVector.y);
-        var ledge = CheckForLedge(targetPos);
+        Vector3 targetPos = transform.position + new Vector3(moveVector.x, moveVector.y);
+        Ledge ledge = CheckForLedge(targetPos);
 
         if (ledge != null)
         {
@@ -68,7 +67,7 @@ public class Character : MonoBehaviour
 
         animator.IsJumping = true;
 
-        var jumpDest = transform.position + new Vector3(moveDir.x, moveDir.y) * 2;
+        Vector3 jumpDest = transform.position + new Vector3(moveDir.x, moveDir.y) * 2;
 
         yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
@@ -85,9 +84,9 @@ public class Character : MonoBehaviour
 
     public bool IsPathClear(Vector3 targetPos)
     {
-        var diff = targetPos - transform.position;
-        var dir = diff.normalized;
-        var collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer;
+        Vector3 diff = targetPos - transform.position;
+        Vector3 dir = diff.normalized;
+        int collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer;
 
         if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer) == true)
         {
@@ -107,15 +106,15 @@ public class Character : MonoBehaviour
 
     Ledge CheckForLedge(Vector3 targetPos)
     {
-        var collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
+        Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
 
         return collider?.GetComponent<Ledge>();
     }
 
     public void LookTowards(Vector3 target)
     {
-        var xdiff = Mathf.Floor(target.x) - Mathf.Floor(transform.position.x);
-        var ydiff = Mathf.Floor(target.y) - Mathf.Floor(transform.position.y);
+        float xdiff = Mathf.Floor(target.x) - Mathf.Floor(transform.position.x);
+        float ydiff = Mathf.Floor(target.y) - Mathf.Floor(transform.position.y);
 
         if (xdiff == 0 || ydiff == 0)
         {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -10,6 +9,7 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     [SerializeField] private List<TextSlot> _moveTexts;
     [SerializeField] private TextMeshProUGUI _spText;
     [SerializeField] private TextMeshProUGUI _typeText;
+
     private List<Move> _moves;
 
     private void Start()
@@ -39,7 +39,7 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();
-        var move = _moves[selectedItem];
+        Move move = _moves[selectedItem];
 
         _spText.text = $"SP {move.SP}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();

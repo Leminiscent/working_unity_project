@@ -67,21 +67,27 @@ public class RunTurnState : State<BattleSystem>
                 playerGoesFirst = _playerUnit.Monster.Agility >= _enemyUnit.Monster.Agility;
             }
 
-            var firstUnit = playerGoesFirst ? _playerUnit : _enemyUnit;
-            var firstUnitName = playerGoesFirst ? _playerMonsterName : _enemyMonsterName;
-            var secondUnit = playerGoesFirst ? _enemyUnit : _playerUnit;
-            var secondUnitName = playerGoesFirst ? _enemyMonsterName : _playerMonsterName;
-            var secondMonster = secondUnit.Monster;
+            BattleUnit firstUnit = playerGoesFirst ? _playerUnit : _enemyUnit;
+            string firstUnitName = playerGoesFirst ? _playerMonsterName : _enemyMonsterName;
+            BattleUnit secondUnit = playerGoesFirst ? _enemyUnit : _playerUnit;
+            string secondUnitName = playerGoesFirst ? _enemyMonsterName : _playerMonsterName;
+            Monster secondMonster = secondUnit.Monster;
 
             yield return RunMove(firstUnit, firstUnitName, secondUnit, secondUnitName, firstUnit.Monster.CurrentMove);
             yield return RunAfterTurn(firstUnit, firstUnitName);
-            if (_battleSystem.BattleIsOver) yield break;
+            if (_battleSystem.BattleIsOver)
+            {
+                yield break;
+            }
 
             if (secondMonster.HP > 0)
             {
                 yield return RunMove(secondUnit, secondUnitName, firstUnit, firstUnitName, secondMonster.CurrentMove);
                 yield return RunAfterTurn(secondUnit, secondUnitName);
-                if (_battleSystem.BattleIsOver) yield break;
+                if (_battleSystem.BattleIsOver)
+                {
+                    yield break;
+                }
             }
         }
         else
@@ -98,7 +104,10 @@ public class RunTurnState : State<BattleSystem>
             _enemyUnit.Monster.CurrentMove = _enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
             yield return RunMove(_enemyUnit, _enemyMonsterName, _playerUnit, _playerMonsterName, _enemyUnit.Monster.CurrentMove);
             yield return RunAfterTurn(_enemyUnit, _enemyMonsterName);
-            if (_battleSystem.BattleIsOver) yield break;
+            if (_battleSystem.BattleIsOver)
+            {
+                yield break;
+            }
         }
 
         if (_field.Weather != null)
@@ -141,7 +150,10 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator RunAfterTurn(BattleUnit sourceUnit, string sourceUnitName)
     {
-        if (_battleSystem.BattleIsOver) yield break;
+        if (_battleSystem.BattleIsOver)
+        {
+            yield break;
+        }
 
         sourceUnit.Monster.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
@@ -184,7 +196,7 @@ public class RunTurnState : State<BattleSystem>
         float moveAccuracy = move.Base.Accuracy;
         int accuracy = source.StatBoosts[Stat.Accuracy];
         int evasion = target.StatBoosts[Stat.Evasion];
-        var boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
+        float[] boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
 
         if (accuracy > 0)
         {
@@ -235,7 +247,7 @@ public class RunTurnState : State<BattleSystem>
 
             for (int i = 1; i <= hitCount; i++)
             {
-                var damageDetails = new DamageDetails();
+                DamageDetails damageDetails = new DamageDetails();
 
                 sourceUnit.PlayAttackAnimation();
                 AudioManager.Instance.PlaySFX(move.Base.Sound);
@@ -257,9 +269,9 @@ public class RunTurnState : State<BattleSystem>
 
                 if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.HP > 0)
                 {
-                    foreach (var effect in move.Base.SecondaryEffects)
+                    foreach (SecondaryEffects effect in move.Base.SecondaryEffects)
                     {
-                        var rnd = Random.Range(1, 101);
+                        int rnd = Random.Range(1, 101);
                         if (rnd <= effect.Chance)
                         {
                             yield return RunMoveEffects(effect, sourceUnit.Monster, sourceUnitName, targetUnit.Monster, targetUnitName, effect.Target);
@@ -269,7 +281,10 @@ public class RunTurnState : State<BattleSystem>
                 yield return RunAfterMove(damageDetails, move.Base, sourceUnit, sourceUnitName, targetUnit, targetUnitName);
 
                 hit = i;
-                if (targetUnit.Monster.HP <= 0) break;
+                if (targetUnit.Monster.HP <= 0)
+                {
+                    break;
+                }
             }
             yield return ShowEffectiveness(typeEffectiveness);
 
@@ -292,7 +307,9 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, string sourceUnitName, BattleUnit targetUnit, string targetUnitName)
     {
         if (details == null)
+        {
             yield break;
+        }
 
         if (move.Recoil.recoilType != RecoilType.none)
         {
@@ -379,7 +396,7 @@ public class RunTurnState : State<BattleSystem>
     {
         while (monster.StatusChanges.Count > 0)
         {
-            var message = monster.StatusChanges.Dequeue();
+            string message = monster.StatusChanges.Dequeue();
 
             yield return _dialogueBox.TypeDialogue($"{monsterName}{message}");
         }
@@ -404,7 +421,7 @@ public class RunTurnState : State<BattleSystem>
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleVictoryMusic);
             }
 
-            var dropTable = defeatedUnit.Monster.Base.DropTable;
+            DropTable dropTable = defeatedUnit.Monster.Base.DropTable;
 
             if (dropTable != null)
             {
@@ -417,7 +434,7 @@ public class RunTurnState : State<BattleSystem>
                     Wallet.Instance.GetWallet().AddMoney(gpDropped);
                 }
 
-                foreach (var itemDrop in dropTable.ItemDrops)
+                foreach (ItemDrop itemDrop in dropTable.ItemDrops)
                 {
                     if (Random.Range(1, 101) <= itemDrop.DropChance)
                     {
@@ -432,7 +449,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     string initialMessage = $"{defeatedUnitName} dropped";
 
-                    foreach (var loot in lootDescriptions)
+                    foreach (string loot in lootDescriptions)
                     {
                         if (loot != lootDescriptions.First())
                         {
@@ -468,7 +485,7 @@ public class RunTurnState : State<BattleSystem>
                     _playerUnit.Hud.SetLevel();
                     yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} grew to level {_playerUnit.Monster.Level}!");
 
-                    var newMove = _playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
+                    LearnableMove newMove = _playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
 
                     if (newMove != null)
                     {
@@ -484,7 +501,7 @@ public class RunTurnState : State<BattleSystem>
                             yield return _dialogueBox.TypeDialogue($"But {_playerMonsterName} already knows {MonsterBase.MaxMoveCount} moves!");
                             yield return _dialogueBox.TypeDialogue($"Choose a move to forget.");
 
-                            ForgettingMoveState.Instance.CurrentMoves = _playerUnit.Monster.Moves.Select(m => m.Base).ToList();
+                            ForgettingMoveState.Instance.CurrentMoves = _playerUnit.Monster.Moves.Select(static m => m.Base).ToList();
                             ForgettingMoveState.Instance.NewMove = newMove.Base;
                             yield return GameController.Instance.StateMachine.PushAndWait(ForgettingMoveState.Instance);
 
@@ -496,7 +513,7 @@ public class RunTurnState : State<BattleSystem>
                             }
                             else
                             {
-                                var selectedMove = _playerUnit.Monster.Moves[moveIndex];
+                                Move selectedMove = _playerUnit.Monster.Moves[moveIndex];
 
                                 yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
                                 _playerUnit.Monster.Moves[moveIndex] = new Move(newMove.Base);
@@ -516,7 +533,7 @@ public class RunTurnState : State<BattleSystem>
     {
         if (defeatedUnit.IsPlayerUnit)
         {
-            var nextMonster = _playerParty.GetHealthyMonster();
+            Monster nextMonster = _playerParty.GetHealthyMonster();
             if (nextMonster != null)
             {
                 yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
@@ -535,7 +552,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                var nextMonster = _enemyParty.GetHealthyMonster();
+                Monster nextMonster = _enemyParty.GetHealthyMonster();
                 if (nextMonster != null)
                 {
                     StartCoroutine(_battleSystem.SendNextMasterMonster());

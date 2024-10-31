@@ -20,9 +20,9 @@ public class ChoiceBox : MonoBehaviour
             Destroy(child.gameObject);
         }
         choiceTexts = new List<ChoiceText>();
-        foreach (var choice in choices)
+        foreach (string choice in choices)
         {
-            var choiceTextObj = Instantiate(choiceTextPrefab, transform);
+            ChoiceText choiceTextObj = Instantiate(choiceTextPrefab, transform);
 
             choiceTextObj.TextField.text = choice;
             choiceTexts.Add(choiceTextObj);

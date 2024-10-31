@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,7 +47,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        var saveData = new DepotSaveData()
+        DepotSaveData saveData = new DepotSaveData()
         {
             depotSlots = new List<DepotSlotSaveData>()
         };
@@ -59,7 +58,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
             {
                 if (depots[depotIndex, slotIndex] != null)
                 {
-                    var depotSlot = new DepotSlotSaveData()
+                    DepotSlotSaveData depotSlot = new DepotSlotSaveData()
                     {
                         monsterData = depots[depotIndex, slotIndex].GetSaveData(),
                         depotIndex = depotIndex,
@@ -76,7 +75,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
 
     public void RestoreState(object state)
     {
-        var saveData = state as DepotSaveData;
+        DepotSaveData saveData = state as DepotSaveData;
 
         for (int depotIndex = 0; depotIndex < numberOfDepots; depotIndex++)
         {
@@ -86,7 +85,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
             }
         }
 
-        foreach (var slot in saveData.depotSlots)
+        foreach (DepotSlotSaveData slot in saveData.depotSlots)
         {
             depots[slot.depotIndex, slot.slotIndex] = new Monster(slot.monsterData);
         }

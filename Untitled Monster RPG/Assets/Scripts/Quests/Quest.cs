@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -15,7 +14,7 @@ public class Quest
 
     public QuestSaveData GetSaveData()
     {
-        var saveData = new QuestSaveData
+        QuestSaveData saveData = new QuestSaveData
         {
             name = Base.name,
             status = Status
@@ -35,7 +34,7 @@ public class Quest
         Status = QuestStatus.Started;
         yield return DialogueManager.Instance.ShowDialogue(Base.StartDialogue);
 
-        var questList = QuestList.GetQuestList();
+        QuestList questList = QuestList.GetQuestList();
 
         questList.AddQuest(this);
     }
@@ -45,7 +44,7 @@ public class Quest
         Status = QuestStatus.Completed;
         yield return DialogueManager.Instance.ShowDialogue(Base.CompletedDialogue);
 
-        var inventory = Inventory.GetInventory();
+        Inventory inventory = Inventory.GetInventory();
 
         if (Base.RequiredItem != null)
         {
@@ -60,14 +59,14 @@ public class Quest
             yield return DialogueManager.Instance.ShowDialogueText($"{playerName} received {Base.RewardItem.Name}!");
         }
 
-        var questList = QuestList.GetQuestList();
+        QuestList questList = QuestList.GetQuestList();
 
         questList.AddQuest(this);
     }
 
     public bool CanBeCompleted()
     {
-        var inventory = Inventory.GetInventory();
+        Inventory inventory = Inventory.GetInventory();
 
         if (Base.RequiredItem != null)
         {

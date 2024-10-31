@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -46,7 +44,7 @@ public class StorageState : State<GameController>
     {
         if (!isMovingMonster)
         {
-            var monster = storageUI.TakeMonsterFromSlot(slotIndex);
+            Monster monster = storageUI.TakeMonsterFromSlot(slotIndex);
 
             if (monster != null)
             {
@@ -61,7 +59,7 @@ public class StorageState : State<GameController>
 
             int firstSlotIndex = selectedSlotToMove;
             int secondSlotIndex = slotIndex;
-            var secondMonster = storageUI.TakeMonsterFromSlot(secondSlotIndex);
+            Monster secondMonster = storageUI.TakeMonsterFromSlot(secondSlotIndex);
 
             if (secondMonster == null && storageUI.IsPartySlot(firstSlotIndex) && storageUI.IsPartySlot(secondSlotIndex))
             {
@@ -76,7 +74,7 @@ public class StorageState : State<GameController>
             {
                 storageUI.PlaceMonsterIntoSlot(firstSlotIndex, secondMonster);
             }
-            party.Monsters.RemoveAll(m => m == null);
+            party.Monsters.RemoveAll(static m => m == null);
             party.PartyUpdated();
             storageUI.SetStorageData();
             storageUI.SetPartyData();

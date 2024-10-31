@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +29,7 @@ public class MapArea : MonoBehaviour
         if (wildMonsters.Count > 0)
         {
             totalChance = 0;
-            foreach (var record in wildMonsters)
+            foreach (MonsterEncounterRecord record in wildMonsters)
             {
                 record.ChanceLower = totalChance;
                 record.ChanceUpper = totalChance + record.spawnChance;
@@ -41,12 +40,12 @@ public class MapArea : MonoBehaviour
 
     public Monster GetRandomWildMonster()
     {
-        var monsterList = wildMonsters;
+        List<MonsterEncounterRecord> monsterList = wildMonsters;
         int randVal = Random.Range(1, 101);
-        var monsterRecord = monsterList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
-        var levelRange = monsterRecord.levelRange;
+        MonsterEncounterRecord monsterRecord = monsterList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
+        Vector2Int levelRange = monsterRecord.levelRange;
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
-        var wildMonster = new Monster(monsterRecord.monster, level);
+        Monster wildMonster = new Monster(monsterRecord.monster, level);
 
         wildMonster.Init();
         return wildMonster;

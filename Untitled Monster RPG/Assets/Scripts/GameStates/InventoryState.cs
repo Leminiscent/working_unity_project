@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -64,7 +63,7 @@ public class InventoryState : State<GameController>
 
     IEnumerator SelectMonsterAndUseItem()
     {
-        var prevState = gameController.StateMachine.GetPrevState();
+        State<GameController> prevState = gameController.StateMachine.GetPrevState();
 
         if (!SelectedItem.DirectlyUsable)
         {

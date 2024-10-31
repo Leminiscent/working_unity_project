@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour
         yield return TypeDialogue(text);
         if (waitForInput)
         {
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
+            yield return new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
         }
 
         if (choices != null && choices.Count > 1)
@@ -60,11 +60,11 @@ public class DialogueManager : MonoBehaviour
         OnShowDialogue?.Invoke();
         IsShowing = true;
         dialogueBox.SetActive(true);
-        foreach (var line in dialogue.Lines)
+        foreach (string line in dialogue.Lines)
         {
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
             yield return TypeDialogue(line);
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
+            yield return new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
         }
 
         if (choices != null && choices.Count > 1)
@@ -85,7 +85,7 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator TypeDialogue(string line)
     {
         dialogueText.text = "";
-        foreach (var letter in line.ToCharArray())
+        foreach (char letter in line.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(1f / lettersPerSecond);

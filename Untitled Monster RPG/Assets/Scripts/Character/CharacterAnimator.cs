@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,7 +35,7 @@ public class CharacterAnimator : MonoBehaviour
 
     private void Update()
     {
-        var prevAnim = currentAnim;
+        SpriteAnimator prevAnim = currentAnim;
 
         if (MoveX == 1)
         {
@@ -117,15 +116,25 @@ public class CharacterAnimator : MonoBehaviour
         get
         {
             if (currentAnim == walkRightAnim)
+            {
                 return FacingDirection.Right;
+            }
             else if (currentAnim == walkLeftAnim)
+            {
                 return FacingDirection.Left;
+            }
             else if (currentAnim == walkUpAnim)
+            {
                 return FacingDirection.Up;
+            }
             else if (currentAnim == walkDownAnim)
+            {
                 return FacingDirection.Down;
+            }
             else
+            {
                 return defaultDirection;
+            }
         }
         set
         {

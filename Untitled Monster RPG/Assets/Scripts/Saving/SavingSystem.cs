@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SavingSystem : MonoBehaviour
 {
@@ -30,7 +27,9 @@ public class SavingSystem : MonoBehaviour
         {
             string id = savable.UniqueId;
             if (gameState.ContainsKey(id))
+            {
                 savable.RestoreState(gameState[id]);
+            }
         }
     }
 
@@ -67,7 +66,9 @@ public class SavingSystem : MonoBehaviour
         {
             string id = savable.UniqueId;
             if (state.ContainsKey(id))
+            {
                 savable.RestoreState(state[id]);
+            }
         }
     }
 
@@ -96,7 +97,9 @@ public class SavingSystem : MonoBehaviour
     {
         string path = GetPath(saveFile);
         if (!File.Exists(path))
+        {
             return new Dictionary<string, object>();
+        }
 
         using (FileStream fs = File.Open(path, FileMode.Open))
         {

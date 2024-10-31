@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
@@ -30,8 +29,8 @@ public class UseItemState : State<GameController>
 
     IEnumerator UseItem()
     {
-        var item = inventoryUI.SelectedItem;
-        var monster = partyScreen.SelectedMember;
+        ItemBase item = inventoryUI.SelectedItem;
+        Monster monster = partyScreen.SelectedMember;
 
         if (item is SkillBook)
         {
@@ -41,7 +40,7 @@ public class UseItemState : State<GameController>
         {
             if (item is TransformationItem)
             {
-                var transformation = monster.CheckForTransformation(item);
+                Transformation transformation = monster.CheckForTransformation(item);
 
                 if (transformation != null)
                 {
@@ -55,7 +54,7 @@ public class UseItemState : State<GameController>
                 }
             }
 
-            var usedItem = inventory.UseItem(item, monster);
+            ItemBase usedItem = inventory.UseItem(item, monster);
 
             if (usedItem != null)
             {
@@ -80,14 +79,14 @@ public class UseItemState : State<GameController>
 
     IEnumerator HandleSkillBooks()
     {
-        var skillBook = inventoryUI.SelectedItem as SkillBook;
+        SkillBook skillBook = inventoryUI.SelectedItem as SkillBook;
 
         if (skillBook == null)
         {
             yield break;
         }
 
-        var monster = partyScreen.SelectedMember;
+        Monster monster = partyScreen.SelectedMember;
 
         if (monster.HasMove(skillBook.Move))
         {
@@ -112,7 +111,7 @@ public class UseItemState : State<GameController>
             yield return DialogueManager.Instance.ShowDialogueText($"But {monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
             yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", true, false);
             ForgettingMoveState.Instance.NewMove = skillBook.Move;
-            ForgettingMoveState.Instance.CurrentMoves = monster.Moves.Select(m => m.Base).ToList();
+            ForgettingMoveState.Instance.CurrentMoves = monster.Moves.Select(static m => m.Base).ToList();
             yield return gameController.StateMachine.PushAndWait(ForgettingMoveState.Instance);
 
             int moveIndex = ForgettingMoveState.Instance.Selection;
@@ -123,7 +122,7 @@ public class UseItemState : State<GameController>
             }
             else
             {
-                var selectedMove = monster.Moves[moveIndex];
+                Move selectedMove = monster.Moves[moveIndex];
 
                 yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} forgot {selectedMove.Base.Name} and learned {skillBook.Move.Name}!");
                 monster.Moves[moveIndex] = new Move(skillBook.Move);

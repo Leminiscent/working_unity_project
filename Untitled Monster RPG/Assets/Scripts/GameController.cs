@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -82,7 +80,7 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);
 
-        var playerParty = playerController.GetComponent<MonsterParty>();
+        MonsterParty playerParty = playerController.GetComponent<MonsterParty>();
         bool hasTransformations = playerParty.CheckForTransformations();
 
         if (hasTransformations)
@@ -122,7 +120,7 @@ public class GameController : MonoBehaviour
 
     private void OnGUI()
     {
-        var style = new GUIStyle();
+        GUIStyle style = new GUIStyle();
 
         style.fontSize = 40;
         // GUILayout.Label("STATE STACK", style);

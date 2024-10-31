@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _musicPlayer;
     [SerializeField] private AudioSource _sfxPlayer;
     [SerializeField] private float _fadeDuration = 0.75f;
+
     private AudioClip _currentMusic;
     private float _originalMusicVolume;
     private Dictionary<AudioID, AudioData> _sfxDictionary;
@@ -31,12 +32,15 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         _originalMusicVolume = _musicPlayer.volume;
-        _sfxDictionary = _sfxList.ToDictionary(x => x.Id, x => x);
+        _sfxDictionary = _sfxList.ToDictionary(static x => x.Id, static x => x);
     }
 
     public void PlaySFX(AudioClip clip, bool pauseMusic = false)
     {
-        if (clip == null) return;
+        if (clip == null)
+        {
+            return;
+        }
 
         if (pauseMusic)
         {
@@ -49,7 +53,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioID id, bool pauseMusic = false)
     {
-        if (_sfxDictionary.TryGetValue(id, out var audioData))
+        if (_sfxDictionary.TryGetValue(id, out AudioData audioData))
         {
             PlaySFX(audioData.Clip, pauseMusic);
         }
@@ -57,7 +61,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioClip clip, bool loop = true, bool fade = false)
     {
-        if (clip == null || clip == _currentMusic) return;
+        if (clip == null || clip == _currentMusic)
+        {
+            return;
+        }
 
         _currentMusic = clip;
         StartCoroutine(PlayMusicAsync(clip, loop, fade));

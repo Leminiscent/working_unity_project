@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
@@ -26,7 +24,7 @@ public class TransformationState : State<GameController>
         monsterImage.sprite = monster.Base.Sprite;
         yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is transforming!");
 
-        var oldMonster = monster.Base;
+        MonsterBase oldMonster = monster.Base;
 
         monster.Transform(transformation);
         monsterImage.sprite = monster.Base.Sprite;

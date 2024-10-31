@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,13 +28,13 @@ namespace Utils.GenericSelectionUI
         {
             this.items = items;
 
-            items.ForEach(i => i.Init());
+            items.ForEach(static i => i.Init());
             UpdateSelectionInUI();
         }
 
         public void ClearItems()
         {
-            items?.ForEach(i => i.Clear());
+            items?.ForEach(static i => i.Clear());
 
             this.items = null;
         }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -42,7 +40,7 @@ public class PartyScreen : SelectionUI<TextSlot>
             }
         }
 
-        var textSlots = memberSlots.Select(m => m.GetComponent<TextSlot>());
+        IEnumerable<TextSlot> textSlots = memberSlots.Select(static m => m.GetComponent<TextSlot>());
 
         SetItems(textSlots.Take(monsters.Count).ToList());
 

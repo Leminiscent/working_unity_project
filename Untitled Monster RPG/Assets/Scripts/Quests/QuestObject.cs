@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestObject : MonoBehaviour
@@ -32,7 +30,7 @@ public class QuestObject : MonoBehaviour
                 {
                     child.gameObject.SetActive(true);
 
-                    var savable = child.GetComponent<SavableEntity>();
+                    SavableEntity savable = child.GetComponent<SavableEntity>();
 
                     if (savable != null)
                     {
@@ -54,7 +52,7 @@ public class QuestObject : MonoBehaviour
                 {
                     child.gameObject.SetActive(true);
 
-                    var savable = child.GetComponent<SavableEntity>();
+                    SavableEntity savable = child.GetComponent<SavableEntity>();
 
                     if (savable != null)
                     {

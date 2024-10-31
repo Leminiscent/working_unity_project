@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,14 +21,14 @@ public class QuestList : MonoBehaviour, ISavable
 
     public bool IsStarted(string questName)
     {
-        var questStatus =  quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
+        QuestStatus? questStatus =  quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
 
         return questStatus == QuestStatus.Started || questStatus == QuestStatus.Completed;
     }
 
     public bool IsCompleted(string questName)
     {
-        var questStatus = quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
+        QuestStatus? questStatus = quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
 
         return questStatus == QuestStatus.Completed;
     }
@@ -41,16 +40,16 @@ public class QuestList : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        return quests.Select(q => q.GetSaveData()).ToList();
+        return quests.Select(static q => q.GetSaveData()).ToList();
     }
 
     public void RestoreState(object state)
     {
-        var saveData = state as List<QuestSaveData>;
+        List<QuestSaveData> saveData = state as List<QuestSaveData>;
 
         if (saveData != null)
         {
-            quests = saveData.Select(q => new Quest(q)).ToList();
+            quests = saveData.Select(static q => new Quest(q)).ToList();
             OnUpdated?.Invoke();
         }
     }

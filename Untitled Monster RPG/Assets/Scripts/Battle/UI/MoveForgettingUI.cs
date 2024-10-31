@@ -1,6 +1,4 @@
 using TMPro;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +16,6 @@ public class MoveForgettingUI : SelectionUI<TextSlot>
         }
 
         _moveTexts[currentMoves.Count].text = newMove.Name;
-        SetItems(_moveTexts.Select(m => m.GetComponent<TextSlot>()).ToList());
+        SetItems(_moveTexts.Select(static m => m.GetComponent<TextSlot>()).ToList());
     }
 }

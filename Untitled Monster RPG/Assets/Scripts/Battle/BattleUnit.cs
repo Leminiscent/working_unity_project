@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -80,7 +78,7 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayAttackAnimation()
     {
-        var sequence = DOTween.Sequence();
+        Sequence sequence = DOTween.Sequence();
 
         if (isPlayerUnit)
         {
@@ -96,7 +94,7 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayHitAnimation()
     {
-        var sequence = DOTween.Sequence();
+        Sequence sequence = DOTween.Sequence();
 
         if (isPlayerUnit)
         {
@@ -114,7 +112,7 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayDefeatAnimation()
     {
-        var sequence = DOTween.Sequence();
+        Sequence sequence = DOTween.Sequence();
 
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 50f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));

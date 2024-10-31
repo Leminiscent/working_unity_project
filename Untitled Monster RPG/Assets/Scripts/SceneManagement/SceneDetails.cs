@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,18 +22,18 @@ public class SceneDetails : MonoBehaviour
                 AudioManager.Instance.PlayMusic(sceneMusic, fade: true);
             }
 
-            foreach (var scene in connectedScenes)
+            foreach (SceneDetails scene in connectedScenes)
             {
                 scene.LoadScene();
             }
 
-            var prevScene = GameController.Instance.PreviousScene;
+            SceneDetails prevScene = GameController.Instance.PreviousScene;
 
             if (prevScene != null)
             {
-                var previouslyLoadedScenes = prevScene.connectedScenes;
+                List<SceneDetails> previouslyLoadedScenes = prevScene.connectedScenes;
 
-                foreach (var scene in previouslyLoadedScenes)
+                foreach (SceneDetails scene in previouslyLoadedScenes)
                 {
                     if (!connectedScenes.Contains(scene) && scene != this)
                     {
@@ -55,7 +54,7 @@ public class SceneDetails : MonoBehaviour
     {
         if (!IsLoaded)
         {
-            var operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
+            AsyncOperation operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
 
             IsLoaded = true;
             operation.completed += (AsyncOperation op) =>
@@ -78,8 +77,8 @@ public class SceneDetails : MonoBehaviour
 
     public List<SavableEntity> GetSavableEntitiesInScene()
     {
-        var currscene = SceneManager.GetSceneByName(gameObject.name);
-        var savableEntities = FindObjectsOfType<SavableEntity>().Where(x => x.gameObject.scene == currscene).ToList();
+        Scene currscene = SceneManager.GetSceneByName(gameObject.name);
+        List<SavableEntity> savableEntities = FindObjectsOfType<SavableEntity>().Where(x => x.gameObject.scene == currscene).ToList();
 
         return savableEntities;
     }

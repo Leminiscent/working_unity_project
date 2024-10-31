@@ -105,7 +105,7 @@ public class DeputyController : MonoBehaviour, ISavable
 
     private Ledge CheckForLedge(Vector3 targetPos)
     {
-        var collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
+        Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
 
         return collider?.GetComponent<Ledge>();
     }
@@ -123,7 +123,7 @@ public class DeputyController : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        var saveData = new DeputySaveData()
+        DeputySaveData saveData = new DeputySaveData()
         {
             position = new float[] { transform.position.x, transform.position.y },
             facingDirection = animator.FacingDirection,
@@ -134,7 +134,7 @@ public class DeputyController : MonoBehaviour, ISavable
 
     public void RestoreState(object state)
     {
-        var saveData = (DeputySaveData)state;
+        DeputySaveData saveData = (DeputySaveData)state;
 
         transform.position = new Vector3(saveData.position[0], saveData.position[1]);
         animator.FacingDirection = saveData.facingDirection;

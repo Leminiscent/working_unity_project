@@ -52,7 +52,7 @@ namespace Utils.StateMachine
 
         public IEnumerator PushAndWait(State<T> newState)
         {
-            var prevState = CurrentState;
+            State<T> prevState = CurrentState;
 
             Push(newState);
             yield return new WaitUntil(() => CurrentState == prevState);

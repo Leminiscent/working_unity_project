@@ -7,6 +7,7 @@ using Utils.StateMachine;
 public class RecruitmentState : State<BattleSystem>
 {
     [SerializeField] private AnswerSelectionUI _selectionUI;
+
     private BattleSystem _battleSystem;
     private Monster _enemyMonster;
     private BattleDialogueBox _dialogueBox;
@@ -69,7 +70,7 @@ public class RecruitmentState : State<BattleSystem>
         yield return _dialogueBox.TypeDialogue("Alright, let's talk!");
 
         // Select 3 random questions
-        _questions = _enemyMonster.Base.RecruitmentQuestions.OrderBy(q => Random.value).ToList();
+        _questions = _enemyMonster.Base.RecruitmentQuestions.OrderBy(static q => Random.value).ToList();
         _selectedQuestions = _questions.Take(3).ToList();
         _currentQuestionIndex = 0;
         yield return PresentQuestion();
@@ -77,7 +78,7 @@ public class RecruitmentState : State<BattleSystem>
 
     private IEnumerator PresentQuestion()
     {
-        var currentQuestion = _selectedQuestions[_currentQuestionIndex];
+        RecruitmentQuestion currentQuestion = _selectedQuestions[_currentQuestionIndex];
 
         yield return _dialogueBox.TypeDialogue(currentQuestion.QuestionText);
 
@@ -99,8 +100,8 @@ public class RecruitmentState : State<BattleSystem>
         _selectionUI.gameObject.SetActive(false);
         _selectionUI.OnSelected -= OnAnswerSelected;
 
-        var currentQuestion = _selectedQuestions[_currentQuestionIndex];
-        var selectedAnswer = currentQuestion.Answers[selectedAnswerIndex];
+        RecruitmentQuestion currentQuestion = _selectedQuestions[_currentQuestionIndex];
+        RecruitmentAnswer selectedAnswer = currentQuestion.Answers[selectedAnswerIndex];
 
         // Update affinity level
         _enemyMonster.UpdateAffinityLevel(selectedAnswer.AffinityScore);

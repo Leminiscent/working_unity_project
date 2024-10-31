@@ -6,20 +6,20 @@ using UnityEngine;
 
 public class BattleHUD : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI levelText;
-    [SerializeField] TextMeshProUGUI statusText;
-    [SerializeField] HPBar hpBar;
-    [SerializeField] GameObject expBar;
-    [SerializeField] GameObject affinityBar;
-    [SerializeField] Color psnColor;
-    [SerializeField] Color brnColor;
-    [SerializeField] Color slpColor;
-    [SerializeField] Color parColor;
-    [SerializeField] Color frzColor;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private TextMeshProUGUI _levelText;
+    [SerializeField] private TextMeshProUGUI _statusText;
+    [SerializeField] private HPBar _hpBar;
+    [SerializeField] private GameObject _expBar;
+    [SerializeField] private GameObject _affinityBar;
+    [SerializeField] private Color _psnColor;
+    [SerializeField] private Color _brnColor;
+    [SerializeField] private Color _slpColor;
+    [SerializeField] private Color _parColor;
+    [SerializeField] private Color _frzColor;
 
-    Monster _monster;
-    Dictionary<ConditionID, Color> statusColors;
+    private Monster _monster;
+    private Dictionary<ConditionID, Color> _statusColors;
 
     public void SetData(Monster monster)
     {
@@ -30,19 +30,19 @@ public class BattleHUD : MonoBehaviour
 
         _monster = monster;
 
-        nameText.text = monster.Base.Name;
+        _nameText.text = monster.Base.Name;
         SetLevel();
-        hpBar.SetHP((float)monster.HP / monster.MaxHP);
+        _hpBar.SetHP((float)monster.HP / monster.MaxHP);
         SetExp();
         SetAffinity();
 
-        statusColors = new Dictionary<ConditionID, Color>()
+        _statusColors = new Dictionary<ConditionID, Color>()
         {
-            { ConditionID.psn, psnColor },
-            { ConditionID.brn, brnColor },
-            { ConditionID.slp, slpColor },
-            { ConditionID.par, parColor },
-            { ConditionID.frz, frzColor },
+            { ConditionID.psn, _psnColor },
+            { ConditionID.brn, _brnColor },
+            { ConditionID.slp, _slpColor },
+            { ConditionID.par, _parColor },
+            { ConditionID.frz, _frzColor },
         };
 
         SetStatusText();
@@ -50,66 +50,78 @@ public class BattleHUD : MonoBehaviour
         _monster.OnHPChanged += UpdateHP;
     }
 
-    void SetStatusText()
+    private void SetStatusText()
     {
         if (_monster.Status == null)
         {
-            statusText.text = "";
+            _statusText.text = "";
         }
         else
         {
-            statusText.text = _monster.Status.ID.ToString().ToUpper();
-            statusText.color = statusColors[_monster.Status.ID];
+            _statusText.text = _monster.Status.ID.ToString().ToUpper();
+            _statusText.color = _statusColors[_monster.Status.ID];
         }
     }
 
     public void SetLevel()
     {
-        levelText.text = "Lvl " + _monster.Level;
+        _levelText.text = "Lvl " + _monster.Level;
     }
 
     public void SetExp()
     {
-        if (expBar == null) return;
-
-        float normalizedExp = _monster.GetNormalizedExp();
-
-        expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
-    }
-
-    public IEnumerator SetExpSmooth(bool reset = false)
-    {
-        if (expBar == null) yield break;
-
-        if (reset)
+        if (_expBar == null)
         {
-            expBar.transform.localScale = new Vector3(0, 1, 1);
+            return;
         }
 
         float normalizedExp = _monster.GetNormalizedExp();
 
-        yield return expBar.transform.DOScaleX(normalizedExp, 1.15f).WaitForCompletion();
+        _expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
+    }
+
+    public IEnumerator SetExpSmooth(bool reset = false)
+    {
+        if (_expBar == null)
+        {
+            yield break;
+        }
+
+        if (reset)
+        {
+            _expBar.transform.localScale = new Vector3(0, 1, 1);
+        }
+
+        float normalizedExp = _monster.GetNormalizedExp();
+
+        yield return _expBar.transform.DOScaleX(normalizedExp, 1.15f).WaitForCompletion();
     }
 
     public void SetAffinity()
     {
-        if (affinityBar == null) return;
+        if (_affinityBar == null)
+        {
+            return;
+        }
 
         float normalizedAffinity = GetNormalizedAffinity();
 
-        affinityBar.transform.localScale = new Vector3(normalizedAffinity, 1, 1);
+        _affinityBar.transform.localScale = new Vector3(normalizedAffinity, 1, 1);
     }
 
     public IEnumerator SetAffinitySmooth()
     {
-        if (affinityBar == null) yield break;
+        if (_affinityBar == null)
+        {
+            yield break;
+        }
 
         float normalizedAffinity = GetNormalizedAffinity();
 
-        yield return affinityBar.transform.DOScaleX(normalizedAffinity, 1.15f).WaitForCompletion();
+        yield return _affinityBar.transform.DOScaleX(normalizedAffinity, 1.15f).WaitForCompletion();
     }
 
-    float GetNormalizedAffinity()
+    private float GetNormalizedAffinity()
     {
         float normalizedAffinity = (float)_monster.AffinityLevel / 6;
 
@@ -123,12 +135,12 @@ public class BattleHUD : MonoBehaviour
 
     public IEnumerator UpdateHPAsync()
     {
-        yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHP);
+        yield return _hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHP);
     }
 
     public IEnumerator WaitForHPUpdate()
     {
-        yield return new WaitUntil(() => !hpBar.IsUpdating);
+        yield return new WaitUntil(() => !_hpBar.IsUpdating);
     }
 
     public void ClearData()

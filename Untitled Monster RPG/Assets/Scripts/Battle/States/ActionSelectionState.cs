@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
 public class ActionSelectionState : State<BattleSystem>
 {
     [SerializeField] private ActionSelectionUI _selectionUI;
+
     private BattleSystem _battleSystem;
 
     public static ActionSelectionState Instance { get; private set; }
@@ -84,7 +84,7 @@ public class ActionSelectionState : State<BattleSystem>
     {
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
 
-        var selectedItem = InventoryState.Instance.SelectedItem;
+        ItemBase selectedItem = InventoryState.Instance.SelectedItem;
         if (selectedItem != null)
         {
             _battleSystem.SelectedAction = BattleAction.UseItem;
@@ -97,7 +97,7 @@ public class ActionSelectionState : State<BattleSystem>
     {
         yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
 
-        var selectedMonster = PartyState.Instance.SelectedMonster;
+        Monster selectedMonster = PartyState.Instance.SelectedMonster;
         if (selectedMonster != null)
         {
             _battleSystem.SelectedAction = BattleAction.SwitchMonster;

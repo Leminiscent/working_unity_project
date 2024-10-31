@@ -6,35 +6,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
 
-public enum BattleAction { Fight, Talk, UseItem, SwitchMonster, Run }
-public enum BattleTrigger { Desert, DesertOasis, Field, FieldLake, Meadow, Mountain, MountainClouds, Wasteland }
-
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] BattleUnit playerUnit;
-    [SerializeField] BattleUnit enemyUnit;
-    [SerializeField] BattleDialogueBox dialogueBox;
-    [SerializeField] PartyScreen partyScreen;
-    [SerializeField] Image playerImage;
-    [SerializeField] Image enemyImage;
-    [SerializeField] MoveForgettingUI moveForgettingUI;
-    [SerializeField] InventoryUI inventoryUI;
+    [SerializeField] private BattleUnit playerUnit;
+    [SerializeField] private BattleUnit enemyUnit;
+    [SerializeField] private BattleDialogueBox dialogueBox;
+    [SerializeField] private PartyScreen partyScreen;
+    [SerializeField] private Image playerImage;
+    [SerializeField] private Image enemyImage;
+    [SerializeField] private MoveForgettingUI moveForgettingUI;
+    [SerializeField] private InventoryUI inventoryUI;
 
     [Header("Audio")]
-    [SerializeField] AudioClip wildBattleMusic;
-    [SerializeField] AudioClip masterBattleMusic;
-    [SerializeField] AudioClip battleVictoryMusic;
+    [SerializeField] private AudioClip wildBattleMusic;
+    [SerializeField] private AudioClip masterBattleMusic;
+    [SerializeField] private AudioClip battleVictoryMusic;
 
     [Header("Background")]
-    [SerializeField] Image backgroundImage;
-    [SerializeField] Sprite desertBackground;
-    [SerializeField] Sprite desertOasisBackground;
-    [SerializeField] Sprite fieldBackground;
-    [SerializeField] Sprite fieldLakeBackground;
-    [SerializeField] Sprite meadowBackground;
-    [SerializeField] Sprite mountainBackground;
-    [SerializeField] Sprite mountainCloudsBackground;
-    [SerializeField] Sprite wastelandBackground;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Sprite desertBackground;
+    [SerializeField] private Sprite desertOasisBackground;
+    [SerializeField] private Sprite fieldBackground;
+    [SerializeField] private Sprite fieldLakeBackground;
+    [SerializeField] private Sprite meadowBackground;
+    [SerializeField] private Sprite mountainBackground;
+    [SerializeField] private Sprite mountainCloudsBackground;
+    [SerializeField] private Sprite wastelandBackground;
+    private BattleTrigger battleTrigger;
+    private Dictionary<BattleTrigger, Sprite> backgroundMapping;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public event Action<bool> OnBattleOver;
@@ -51,8 +50,11 @@ public class BattleSystem : MonoBehaviour
     public int EscapeAttempts { get; set; }
     public MasterController Enemy { get; private set; }
     public PlayerController Player { get; private set; }
-    BattleTrigger battleTrigger;
-    Dictionary<BattleTrigger, Sprite> backgroundMapping;
+    public BattleDialogueBox DialogueBox => dialogueBox;
+    public PartyScreen PartyScreen => partyScreen;
+    public BattleUnit PlayerUnit => playerUnit;
+    public BattleUnit EnemyUnit => enemyUnit;
+    public AudioClip BattleVictoryMusic => battleVictoryMusic;
 
     private void Awake()
     {
@@ -73,8 +75,8 @@ public class BattleSystem : MonoBehaviour
     {
         IsMasterBattle = false;
 
-        this.PlayerParty = playerParty;
-        this.WildMonster = wildMonster;
+        PlayerParty = playerParty;
+        WildMonster = wildMonster;
 
         battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(wildBattleMusic);
@@ -85,8 +87,8 @@ public class BattleSystem : MonoBehaviour
     {
         IsMasterBattle = true;
 
-        this.PlayerParty = playerParty;
-        this.EnemyParty = enemyParty;
+        PlayerParty = playerParty;
+        EnemyParty = enemyParty;
 
         Player = playerParty.GetComponent<PlayerController>();
         Enemy = enemyParty.GetComponent<MasterController>();
@@ -133,7 +135,7 @@ public class BattleSystem : MonoBehaviour
             enemyImage.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(true);
 
-            var enemyMonster = EnemyParty.GetHealthyMonster();
+            Monster enemyMonster = EnemyParty.GetHealthyMonster();
 
             enemyUnit.Setup(enemyMonster);
             yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
@@ -141,7 +143,7 @@ public class BattleSystem : MonoBehaviour
             playerImage.gameObject.SetActive(false);
             playerUnit.gameObject.SetActive(true);
 
-            var playerMonster = PlayerParty.GetHealthyMonster();
+            Monster playerMonster = PlayerParty.GetHealthyMonster();
 
             playerUnit.Setup(playerMonster);
             yield return dialogueBox.TypeDialogue("Go " + playerMonster.Base.Name + "!");
@@ -158,7 +160,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleOver(bool won)
     {
         BattleIsOver = true;
-        PlayerParty.Monsters.ForEach(m => m.OnBattleOver());
+        PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
         playerUnit.Hud.ClearData();
         enemyUnit.Hud.ClearData();
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
@@ -186,15 +188,30 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SendNextMasterMonster()
     {
-        var nextMonster = EnemyParty.GetHealthyMonster();
+        Monster nextMonster = EnemyParty.GetHealthyMonster();
 
         enemyUnit.Setup(nextMonster);
         yield return dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
     }
+}
 
-    public BattleDialogueBox DialogueBox => dialogueBox;
-    public PartyScreen PartyScreen => partyScreen;
-    public BattleUnit PlayerUnit => playerUnit;
-    public BattleUnit EnemyUnit => enemyUnit;
-    public AudioClip BattleVictoryMusic => battleVictoryMusic;
+public enum BattleAction
+{
+    Fight,
+    Talk,
+    UseItem,
+    SwitchMonster,
+    Run
+}
+
+public enum BattleTrigger
+{
+    Desert,
+    DesertOasis,
+    Field,
+    FieldLake,
+    Meadow,
+    Mountain,
+    MountainClouds,
+    Wasteland
 }

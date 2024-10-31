@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ public static class VectorExtensions
 
         foreach (Vector2 dir in compass2D)
         {
-            var t = Vector2.Dot(org, dir);
+            float t = Vector2.Dot(org, dir);
             
             if (t > maxDot)
             {

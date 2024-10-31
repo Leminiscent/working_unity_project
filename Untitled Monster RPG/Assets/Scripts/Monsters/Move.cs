@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Move
@@ -21,7 +19,7 @@ public class Move
 
     public MoveSaveData GetSaveData()
     {
-        var saveData = new MoveSaveData
+        MoveSaveData saveData = new MoveSaveData
         {
             name = Base.name,
             sp = SP

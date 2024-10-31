@@ -27,7 +27,10 @@ public class PlayerController : MonoBehaviour, ISavable
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
-            if (input.x != 0) input.y = 0;
+            if (input.x != 0)
+            {
+                input.y = 0;
+            }
 
             if (input != Vector2.zero)
             {
@@ -45,9 +48,9 @@ public class PlayerController : MonoBehaviour, ISavable
 
     IEnumerator Interact()
     {
-        var facingDir = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
-        var interactPos = transform.position + facingDir;
-        var collider = Physics2D.OverlapCircle(interactPos, 0.1f, GameLayers.Instance.InteractablesLayer);
+        Vector3 facingDir = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
+        Vector3 interactPos = transform.position + facingDir;
+        Collider2D collider = Physics2D.OverlapCircle(interactPos, 0.1f, GameLayers.Instance.InteractablesLayer);
 
         if (collider != null)
         {
@@ -59,10 +62,10 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private void OnMoveOver()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, character.OffestY), 0.2f, GameLayers.Instance.TriggerableLayers);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, character.OffestY), 0.2f, GameLayers.Instance.TriggerableLayers);
         IPlayerTriggerable triggerable = null;
 
-        foreach (var collider in colliders)
+        foreach (Collider2D collider in colliders)
         {
             triggerable = collider.GetComponent<IPlayerTriggerable>();
             if (triggerable != null)
@@ -85,11 +88,11 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        var saveData = new PlayerSaveData
+        PlayerSaveData saveData = new PlayerSaveData
         {
             position = new float[] { transform.position.x, transform.position.y },
             facingDirection = character.Animator.FacingDirection,
-            monsters = GetComponent<MonsterParty>().Monsters.Select(m => m.GetSaveData()).ToList()
+            monsters = GetComponent<MonsterParty>().Monsters.Select(static m => m.GetSaveData()).ToList()
         };
 
         return saveData;
@@ -97,11 +100,11 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public void RestoreState(object state)
     {
-        var saveData = (PlayerSaveData)state;
+        PlayerSaveData saveData = (PlayerSaveData)state;
 
         transform.position = new Vector3(saveData.position[0], saveData.position[1]);
         character.Animator.FacingDirection = saveData.facingDirection;
-        GetComponent<MonsterParty>().Monsters = saveData.monsters.Select(s => new Monster(s)).ToList();
+        GetComponent<MonsterParty>().Monsters = saveData.monsters.Select(static s => new Monster(s)).ToList();
     }
 
     public string Name => name;

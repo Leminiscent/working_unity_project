@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MasterController : MonoBehaviour, Interactable, ISavable
@@ -53,8 +52,8 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
         yield return new WaitForSeconds(0.5f);
         exclamation.SetActive(false);
 
-        var diff = player.transform.position - transform.position;
-        var moveVector = diff - diff.normalized;
+        Vector3 diff = player.transform.position - transform.position;
+        Vector3 moveVector = diff - diff.normalized;
         moveVector = new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
 
         yield return character.Move(moveVector);
@@ -91,7 +90,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
 
     public object CaptureState()
     {
-        var saveData = new MasterSaveData
+        MasterSaveData saveData = new MasterSaveData
         {
             position = new float[] { transform.position.x, transform.position.y },
             facingDirection = character.Animator.FacingDirection,
@@ -103,7 +102,7 @@ public class MasterController : MonoBehaviour, Interactable, ISavable
 
     public void RestoreState(object state)
     {
-        var saveData = (MasterSaveData)state;
+        MasterSaveData saveData = (MasterSaveData)state;
 
         transform.position = new Vector3(saveData.position[0], saveData.position[1]);
         character.Animator.FacingDirection = saveData.facingDirection;

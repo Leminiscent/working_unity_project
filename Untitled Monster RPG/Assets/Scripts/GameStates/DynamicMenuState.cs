@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -29,11 +26,11 @@ public class DynamicMenuState : State<GameController>
             Destroy(child.gameObject);
         }
 
-        var itemTextSlots = new List<TextSlot>();
+        List<TextSlot> itemTextSlots = new List<TextSlot>();
 
-        foreach (var item in MenuItems)
+        foreach (string item in MenuItems)
         {
-            var itemTextSlot = Instantiate(itemTextPrefab, dynamicMenuUI.transform);
+            TextSlot itemTextSlot = Instantiate(itemTextPrefab, dynamicMenuUI.transform);
 
             itemTextSlot.SetText(item);
             itemTextSlots.Add(itemTextSlot);

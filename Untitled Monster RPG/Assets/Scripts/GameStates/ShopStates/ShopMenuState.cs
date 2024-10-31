@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Utils.StateMachine;
 
 public class ShopMenuState : State<GameController>

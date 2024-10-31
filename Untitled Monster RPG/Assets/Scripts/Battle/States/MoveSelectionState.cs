@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +7,7 @@ public class MoveSelectionState : State<BattleSystem>
 {
     [SerializeField] private MoveSelectionUI _selectionUI;
     [SerializeField] private GameObject _moveDetailsUI;
+
     private BattleSystem _battleSystem;
 
     public List<Move> Moves { get; set; }
@@ -30,7 +30,7 @@ public class MoveSelectionState : State<BattleSystem>
         _battleSystem = owner;
         _selectionUI.SetMoves(Moves);
 
-        if (Moves.Where(m => m.SP > 0).Count() == 0)
+        if (Moves.Where(static m => m.SP > 0).Count() == 0)
         {
             _battleSystem.SelectedMove = -1;
             _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);

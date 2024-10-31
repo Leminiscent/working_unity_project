@@ -54,7 +54,7 @@ public class PartyState : State<GameController>
 
     IEnumerator MonsterSelectedAction(int selectedMonsterIndex)
     {
-        var prevState = gameController.StateMachine.GetPrevState();
+        State<GameController> prevState = gameController.StateMachine.GetPrevState();
 
         if (prevState == InventoryState.Instance)
         {
@@ -62,7 +62,7 @@ public class PartyState : State<GameController>
         }
         else if (prevState == BattleState.Instance)
         {
-            var battleState = prevState as BattleState;
+            BattleState battleState = prevState as BattleState;
 
             DynamicMenuState.Instance.MenuItems = new List<string>
             {
@@ -148,11 +148,11 @@ public class PartyState : State<GameController>
     {
         SelectedMonster = null;
 
-        var prevState = gameController.StateMachine.GetPrevState();
+        State<GameController> prevState = gameController.StateMachine.GetPrevState();
 
         if (prevState == BattleState.Instance)
         {
-            var battleState = prevState as BattleState;
+            BattleState battleState = prevState as BattleState;
 
             if (battleState.BattleSystem.PlayerUnit.Monster.HP <= 0)
             {

@@ -42,7 +42,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 
             if (questToComplete != null)
             {
-                var quest = new Quest(questToComplete);
+                Quest quest = new Quest(questToComplete);
 
                 yield return quest.CompleteQuest(initiator);
                 questToComplete = null;
@@ -120,7 +120,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
     {
         state = NPCState.Moving;
 
-        var prevPos = transform.position;
+        Vector3 prevPos = transform.position;
 
         yield return character.Move(movementPattern[currentPattern]);
         if (transform.position != prevPos)
@@ -132,7 +132,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 
     public object CaptureState()
     {
-        var saveData = new NPCSaveData
+        NPCSaveData saveData = new NPCSaveData
         {
             position = new float[] { transform.position.x, transform.position.y },
             facingDirection = character.Animator.FacingDirection,
@@ -154,7 +154,7 @@ public class NPCController : MonoBehaviour, Interactable, ISavable
 
     public void RestoreState(object state)
     {
-        var saveData = (NPCSaveData)state;
+        NPCSaveData saveData = (NPCSaveData)state;
 
         if (saveData != null)
         {

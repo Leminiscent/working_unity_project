@@ -13,7 +13,7 @@ public class Healer : MonoBehaviour
         {
             yield return Fader.Instance.FadeIn(0.5f);
 
-            var playerParty = player.GetComponent<MonsterParty>();
+            MonsterParty playerParty = player.GetComponent<MonsterParty>();
 
             playerParty.RestoreParty();
             playerParty.PartyUpdated();

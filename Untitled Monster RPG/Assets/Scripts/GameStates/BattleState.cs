@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -25,18 +23,18 @@ public class BattleState : State<GameController>
         battleSystem.gameObject.SetActive(true);
         gameController.WorldCamera.gameObject.SetActive(false);
 
-        var playerParty = gameController.PlayerController.GetComponent<MonsterParty>();
+        MonsterParty playerParty = gameController.PlayerController.GetComponent<MonsterParty>();
 
         if (Master == null)
         {
-            var wildMonster = gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
-            var wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
+            Monster wildMonster = gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
+            Monster wildMonsterCopy = new Monster(wildMonster.Base, wildMonster.Level);
 
             battleSystem.StartWildBattle(playerParty, wildMonsterCopy, Trigger);
         }
         else
         {
-            var enemyParty = Master.GetComponent<MonsterParty>();
+            MonsterParty enemyParty = Master.GetComponent<MonsterParty>();
             battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger);
         }
 

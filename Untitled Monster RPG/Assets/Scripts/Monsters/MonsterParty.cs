@@ -24,7 +24,7 @@ public class MonsterParty : MonoBehaviour
     private void Awake()
     {
         storage = GetComponent<MonsterStorage>();
-        foreach (var monster in monsters)
+        foreach (Monster monster in monsters)
         {
             monster.Init();
         }
@@ -32,7 +32,7 @@ public class MonsterParty : MonoBehaviour
 
     public Monster GetHealthyMonster()
     {
-        return monsters.Where(x => x.HP > 0).FirstOrDefault();
+        return monsters.Where(static x => x.HP > 0).FirstOrDefault();
     }
 
     public void AddMonster(Monster newMonster)
@@ -50,14 +50,14 @@ public class MonsterParty : MonoBehaviour
 
     public bool CheckForTransformations()
     {
-        return monsters.Any(m => m.CheckForTransformation() != null);
+        return monsters.Any(static m => m.CheckForTransformation() != null);
     }
 
     public IEnumerator RunTransformations()
     {
-        foreach (var monster in monsters)
+        foreach (Monster monster in monsters)
         {
-            var transformation = monster.CheckForTransformation();
+            Transformation transformation = monster.CheckForTransformation();
 
             if (transformation != null)
             {

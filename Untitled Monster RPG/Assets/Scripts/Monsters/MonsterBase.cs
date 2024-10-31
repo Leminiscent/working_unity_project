@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,11 +52,20 @@ public class MonsterBase : ScriptableObject
         {
             case GrowthRate.Erratic:
                 if (level < 50)
+                {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (100 - level) / 50);
+                }
+
                 if (level < 68)
+                {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (150 - level) / 100);
+                }
+
                 if (level < 98)
+                {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (1911 - 10 * level) / 3 / 500);
+                }
+
                 return Mathf.FloorToInt(Mathf.Pow(level, 3) * (160 - level) / 100);
             case GrowthRate.Fast:
                 return Mathf.FloorToInt(4 * Mathf.Pow(level, 3) / 5);
@@ -69,9 +77,15 @@ public class MonsterBase : ScriptableObject
                 return Mathf.FloorToInt(5 * Mathf.Pow(level, 3) / 4);
             case GrowthRate.Fluctuating:
                 if (level < 15)
+                {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level + 1) / 3 + 24) / 50);
+                }
+
                 if (level < 36)
+                {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level + 14) / 50);
+                }
+
                 return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level / 2 + 32) / 50);
         }
         return -1;
@@ -244,7 +258,9 @@ public class TypeChart
     public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
     {
         if (attackType == MonsterType.None || defenseType == MonsterType.None)
+        {
             return 1;
+        }
 
         int row = (int)attackType - 1;
         int col = (int)defenseType - 1;

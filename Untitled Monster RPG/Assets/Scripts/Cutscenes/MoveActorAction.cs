@@ -10,9 +10,9 @@ public class MoveActorAction : CutsceneAction
 
     public override IEnumerator Play()
     {
-        var character = actor.GetCharacter();
+        Character character = actor.GetCharacter();
 
-        foreach (var movePattern in movePatterns)
+        foreach (Vector2 movePattern in movePatterns)
         {
             yield return character.Move(movePattern, checkCollisions: false);
         }

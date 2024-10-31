@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -22,9 +21,9 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
     private void Awake()
     {
-        foreach (var slot in storageSlots)
+        foreach (ImageSlot slot in storageSlots)
         {
-            var storageSlot = slot.GetComponent<StorageSlotUI>();
+            StorageSlotUI storageSlot = slot.GetComponent<StorageSlotUI>();
 
             if (storageSlot != null)
             {
@@ -38,7 +37,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
         party = MonsterParty.GetPlayerParty();
         storage = MonsterStorage.GetPlayerStorage();
-        storageSlotImages = storageSlots.Select(s => s.transform.GetChild(0).GetComponent<Image>()).ToList();
+        storageSlotImages = storageSlots.Select(static s => s.transform.GetChild(0).GetComponent<Image>()).ToList();
         transferImage.gameObject.SetActive(false);
     }
 
@@ -52,7 +51,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     {
         for (int i = 0; i < depotSlots.Count; i++)
         {
-            var monster = storage.GetMonster(SelectedDepot, i);
+            Monster monster = storage.GetMonster(SelectedDepot, i);
 
             if (monster != null)
             {
@@ -139,7 +138,11 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             }
 
             monster = party.Monsters[partyIndex];
-            if (monster == null) return null;
+            if (monster == null)
+            {
+                return null;
+            }
+
             party.Monsters[partyIndex] = null;
         }
         else
@@ -147,7 +150,11 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
             int depotSlotIndex = slotIndex - (slotIndex / totalColumns + 1);
 
             monster = storage.GetMonster(SelectedDepot, depotSlotIndex);
-            if (monster == null) return null;
+            if (monster == null)
+            {
+                return null;
+            }
+
             storage.RemoveMonster(SelectedDepot, depotSlotIndex);
         }
 

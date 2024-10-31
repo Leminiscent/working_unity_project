@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -36,7 +35,7 @@ public class Monster
     public void Init()
     {
         Moves = new List<Move>();
-        foreach (var move in Base.LearnableMoves)
+        foreach (LearnableMove move in Base.LearnableMoves)
         {
             if (move.Level <= Level)
             {
@@ -85,8 +84,8 @@ public class Monster
             Status = null;
         }
 
-        Moves = saveData.moves.Select(s => new Move(s)).ToList();
-        StatPerformanceValues = saveData.statPerformanceValues.ToDictionary(s => s.stat, s => s.pv);
+        Moves = saveData.moves.Select(static s => new Move(s)).ToList();
+        StatPerformanceValues = saveData.statPerformanceValues.ToDictionary(static s => s.stat, static s => s.pv);
 
         CalculateStats();
         StatusChanges = new Queue<string>();
@@ -96,15 +95,15 @@ public class Monster
 
     public MonsterSaveData GetSaveData()
     {
-        var saveData = new MonsterSaveData()
+        MonsterSaveData saveData = new MonsterSaveData()
         {
             name = Base.name,
             hp = HP,
             level = Level,
             exp = Exp,
             statusId = Status?.ID,
-            moves = Moves.Select(m => m.GetSaveData()).ToList(),
-            statPerformanceValues = StatPerformanceValues.Select(s => new StatPV
+            moves = Moves.Select(static m => m.GetSaveData()).ToList(),
+            statPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
             {
                 stat = s.Key,
                 pv = s.Value
@@ -129,7 +128,9 @@ public class Monster
         MaxHP = Mathf.FloorToInt(((2f * Base.HP + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
 
         if (prevMaxHP != 0)
+        {
             HP += MaxHP - prevMaxHP;
+        }
     }
 
     public void ResetStatBoosts()
@@ -150,7 +151,7 @@ public class Monster
     {
         int statVal = Stats[stat];
         int boost = StatBoosts[stat];
-        var boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+        float[] boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
 
         if (boost >= 0)
         {
@@ -166,10 +167,10 @@ public class Monster
 
     public void ApplyBoosts(List<StatBoost> statBoosts)
     {
-        foreach (var statBoost in statBoosts)
+        foreach (StatBoost statBoost in statBoosts)
         {
-            var stat = statBoost.stat;
-            var boost = statBoost.boost;
+            Stat stat = statBoost.stat;
+            int boost = statBoost.boost;
             bool changeIsPositive = boost > 0;
             string riseOrFall;
 
@@ -191,7 +192,7 @@ public class Monster
 
     public void GainPvs(Dictionary<Stat, int> pvGained)
     {
-        foreach (var spv in StatPerformanceValues.ToArray())
+        foreach (KeyValuePair<Stat, int> spv in StatPerformanceValues.ToArray())
         {
             if (spv.Value < GlobalSettings.Instance.MaxPvPerStat && GetTotalPvs() < GlobalSettings.Instance.MaxPvs)
             {
@@ -229,7 +230,11 @@ public class Monster
 
     public void LearnMove(MoveBase moveToLearn)
     {
-        if (Moves.Count > MonsterBase.MaxMoveCount) return;
+        if (Moves.Count > MonsterBase.MaxMoveCount)
+        {
+            return;
+        }
+
         Moves.Add(new Move(moveToLearn));
     }
 
@@ -319,7 +324,7 @@ public class Monster
 
         float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
         float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
-        var damageDetails = new DamageDetails()
+        DamageDetails damageDetails = new DamageDetails()
         {
             TypeEffectiveness = type,
             Critical = critical,
@@ -379,7 +384,10 @@ public class Monster
 
     public void SetStatus(ConditionID conditionId)
     {
-        if (Status != null) return;
+        if (Status != null)
+        {
+            return;
+        }
 
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
@@ -395,7 +403,10 @@ public class Monster
 
     public void SetVolatileStatus(ConditionID conditionId)
     {
-        if (VolatileStatus != null) return;
+        if (VolatileStatus != null)
+        {
+            return;
+        }
 
         VolatileStatus = ConditionsDB.Conditions[conditionId];
         VolatileStatus?.OnStart?.Invoke(this);
@@ -409,7 +420,7 @@ public class Monster
 
     public Move GetRandomMove()
     {
-        var movesWithSP = Moves.Where(x => x.SP > 0).ToList();
+        List<Move> movesWithSP = Moves.Where(static x => x.SP > 0).ToList();
 
         if (movesWithSP.Count == 0)
         {

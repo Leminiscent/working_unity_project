@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -43,7 +42,7 @@ public class ShopUI : MonoBehaviour
 
     public void HandleUpdate()
     {
-        var prevSelection = selectedItem;
+        int prevSelection = selectedItem;
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -77,9 +76,9 @@ public class ShopUI : MonoBehaviour
         }
 
         slotUIList = new List<ItemSlotUI>();
-        foreach (var item in availableItems)
+        foreach (ItemBase item in availableItems)
         {
-            var slotUIObj = Instantiate(itemSlotUI, itemList.transform);
+            ItemSlotUI slotUIObj = Instantiate(itemSlotUI, itemList.transform);
 
             slotUIObj.SetNameAndPrice(item);
             slotUIList.Add(slotUIObj);
@@ -105,7 +104,7 @@ public class ShopUI : MonoBehaviour
 
         if (availableItems.Count > 0)
         {
-            var item = availableItems[selectedItem];
+            ItemBase item = availableItems[selectedItem];
 
             itemIcon.sprite = item.Icon;
             itemDescription.text = item.Description;
@@ -116,7 +115,10 @@ public class ShopUI : MonoBehaviour
 
     void HandleScrolling()
     {
-        if (slotUIList.Count <= itemsInViewport) return;
+        if (slotUIList.Count <= itemsInViewport)
+        {
+            return;
+        }
 
         int maxScrollIndex = slotUIList.Count - itemsInViewport;
         float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, maxScrollIndex) * slotUIList[0].Height;

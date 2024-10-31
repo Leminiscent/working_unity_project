@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -32,7 +31,9 @@ public class SavableEntity : MonoBehaviour
             string id = savable.GetType().ToString();
 
             if (stateDict.ContainsKey(id))
+            {
                 savable.RestoreState(stateDict[id]);
+            }
         }
     }
 
@@ -41,10 +42,16 @@ public class SavableEntity : MonoBehaviour
     private void Update()
     {
         // don't execute in playmode
-        if (Application.IsPlaying(gameObject)) return;
+        if (Application.IsPlaying(gameObject))
+        {
+            return;
+        }
 
         // don't generate Id for prefabs (prefab scene will have path as null)
-        if (String.IsNullOrEmpty(gameObject.scene.path)) return;
+        if (String.IsNullOrEmpty(gameObject.scene.path))
+        {
+            return;
+        }
 
         SerializedObject serializedObject = new SerializedObject(this);
         SerializedProperty property = serializedObject.FindProperty("uniqueId");
@@ -61,9 +68,15 @@ public class SavableEntity : MonoBehaviour
 
     private bool IsUnique(string candidate)
     {
-        if (!globalLookup.ContainsKey(candidate)) return true;
+        if (!globalLookup.ContainsKey(candidate))
+        {
+            return true;
+        }
 
-        if (globalLookup[candidate] == this) return true;
+        if (globalLookup[candidate] == this)
+        {
+            return true;
+        }
 
         // Handle scene unloading cases
         if (globalLookup[candidate] == null)

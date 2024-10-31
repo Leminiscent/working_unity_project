@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -46,15 +44,15 @@ public class InventoryUI : SelectionUI<TextSlot>
         }
 
         slotUIList = new List<ItemSlotUI>();
-        foreach (var itemSlot in inventory.GetSlotsByCategory(selectedCategory))
+        foreach (ItemSlot itemSlot in inventory.GetSlotsByCategory(selectedCategory))
         {
-            var slotUIObj = Instantiate(itemSlotUI, itemList.transform);
+            ItemSlotUI slotUIObj = Instantiate(itemSlotUI, itemList.transform);
 
             slotUIObj.SetData(itemSlot);
             slotUIList.Add(slotUIObj);
         }
 
-        SetItems(slotUIList.Select(s => s.GetComponent<TextSlot>()).ToList());
+        SetItems(slotUIList.Select(static s => s.GetComponent<TextSlot>()).ToList());
         UpdateSelectionInUI();
     }
 
@@ -93,11 +91,11 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     public override void UpdateSelectionInUI()
     {
-        var slots = inventory.GetSlotsByCategory(selectedCategory);
+        List<ItemSlot> slots = inventory.GetSlotsByCategory(selectedCategory);
 
         if (slots.Count > 0)
         {
-            var item = slots[selectedItem].Item;
+            ItemBase item = slots[selectedItem].Item;
 
             itemIcon.sprite = item.Icon;
             itemDescription.text = item.Description;
@@ -110,7 +108,10 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     void HandleScrolling()
     {
-        if (slotUIList.Count <= itemsInViewport) return;
+        if (slotUIList.Count <= itemsInViewport)
+        {
+            return;
+        }
 
         int maxScrollIndex = slotUIList.Count - itemsInViewport;
         float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, maxScrollIndex) * slotUIList[0].Height;
@@ -140,10 +141,11 @@ public class InventoryUI : SelectionUI<TextSlot>
         {
             currentCategory = (currentCategory + direction + categoryCount) % categoryCount;
 
-            var slots = inventory.GetSlotsByCategory(currentCategory);
+            List<ItemSlot> slots = inventory.GetSlotsByCategory(currentCategory);
             if (slots.Count > 0)
+            {
                 return currentCategory;
-
+            }
         } while (currentCategory != originalCategory);
 
         return originalCategory; // Fallback
@@ -153,9 +155,11 @@ public class InventoryUI : SelectionUI<TextSlot>
     {
         for (int i = 0; i < Inventory.ItemCategories.Count; i++)
         {
-            var slots = inventory.GetSlotsByCategory(i);
+            List<ItemSlot> slots = inventory.GetSlotsByCategory(i);
             if (slots.Count > 0)
+            {
                 return i;
+            }
         }
 
         return 0; // Fallback

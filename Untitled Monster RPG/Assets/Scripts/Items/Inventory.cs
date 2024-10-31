@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -52,14 +51,14 @@ public class Inventory : MonoBehaviour, ISavable
 
     public ItemBase GetItem(int itemIndex, int categoryIndex)
     {
-        var currentSlots = GetSlotsByCategory(categoryIndex);
+        List<ItemSlot> currentSlots = GetSlotsByCategory(categoryIndex);
 
         return currentSlots[itemIndex].Item;
     }
 
     public ItemBase UseItem(int itemIndex, Monster selectedMonster, int selectedCategory)
     {
-        var item = GetItem(itemIndex, selectedCategory);
+        ItemBase item = GetItem(itemIndex, selectedCategory);
         
         return UseItem(item, selectedMonster);
     }
@@ -85,8 +84,8 @@ public class Inventory : MonoBehaviour, ISavable
     public void AddItem(ItemBase item, int count = 1)
     {
         int category = (int)GetCategoryFromItem(item);
-        var currentSlots = GetSlotsByCategory(category);
-        var itemSlot = currentSlots.FirstOrDefault(slot => slot.Item == item);
+        List<ItemSlot> currentSlots = GetSlotsByCategory(category);
+        ItemSlot itemSlot = currentSlots.FirstOrDefault(slot => slot.Item == item);
 
         if (itemSlot != null)
         {
@@ -103,8 +102,8 @@ public class Inventory : MonoBehaviour, ISavable
     public int GetItemCount(ItemBase item)
     {
         int category = (int)GetCategoryFromItem(item);
-        var currentSlots = GetSlotsByCategory(category);
-        var itemSlot = currentSlots.FirstOrDefault(slot => slot.Item == item);
+        List<ItemSlot> currentSlots = GetSlotsByCategory(category);
+        ItemSlot itemSlot = currentSlots.FirstOrDefault(slot => slot.Item == item);
 
         if (itemSlot != null)
         {
@@ -119,8 +118,8 @@ public class Inventory : MonoBehaviour, ISavable
     public void RemoveItem(ItemBase item, int count = 1)
     {
         int category = (int)GetCategoryFromItem(item);
-        var currentSlots = GetSlotsByCategory(category);
-        var itemSlot = currentSlots.First(slot => slot.Item == item);
+        List<ItemSlot> currentSlots = GetSlotsByCategory(category);
+        ItemSlot itemSlot = currentSlots.First(slot => slot.Item == item);
 
         itemSlot.Count -= count;
         if (itemSlot.Count == 0)
@@ -133,7 +132,7 @@ public class Inventory : MonoBehaviour, ISavable
     public bool HasItem(ItemBase item)
     {
         int category = (int)GetCategoryFromItem(item);
-        var currentSlots = GetSlotsByCategory(category);
+        List<ItemSlot> currentSlots = GetSlotsByCategory(category);
 
         return currentSlots.Exists(slot => slot.Item == item);
     }
@@ -169,13 +168,13 @@ public class Inventory : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        var saveData = new InventorySaveData
+        InventorySaveData saveData = new InventorySaveData
         {
-            recoveryItems = recoveryItemSlots.Select(slot => slot.GetSaveData()).ToList(),
-            materials = materialSlots.Select(slot => slot.GetSaveData()).ToList(),
-            transformationItems = transformationItemSlots.Select(slot => slot.GetSaveData()).ToList(),
-            skillBooks = skillBookSlots.Select(slot => slot.GetSaveData()).ToList(),
-            keyItems = keyItemSlots.Select(slot => slot.GetSaveData()).ToList()
+            recoveryItems = recoveryItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            materials = materialSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            transformationItems = transformationItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            skillBooks = skillBookSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            keyItems = keyItemSlots.Select(static slot => slot.GetSaveData()).ToList()
         };
 
         return saveData;
@@ -183,13 +182,13 @@ public class Inventory : MonoBehaviour, ISavable
 
     public void RestoreState(object state)
     {
-        var saveData = state as InventorySaveData;
+        InventorySaveData saveData = state as InventorySaveData;
 
-        recoveryItemSlots = saveData.recoveryItems.Select(data => new ItemSlot(data)).ToList();
-        materialSlots = saveData.materials.Select(data => new ItemSlot(data)).ToList();
-        transformationItemSlots = saveData.transformationItems.Select(data => new ItemSlot(data)).ToList();
-        skillBookSlots = saveData.skillBooks.Select(data => new ItemSlot(data)).ToList();
-        keyItemSlots = saveData.keyItems.Select(data => new ItemSlot(data)).ToList();
+        recoveryItemSlots = saveData.recoveryItems.Select(static data => new ItemSlot(data)).ToList();
+        materialSlots = saveData.materials.Select(static data => new ItemSlot(data)).ToList();
+        transformationItemSlots = saveData.transformationItems.Select(static data => new ItemSlot(data)).ToList();
+        skillBookSlots = saveData.skillBooks.Select(static data => new ItemSlot(data)).ToList();
+        keyItemSlots = saveData.keyItems.Select(static data => new ItemSlot(data)).ToList();
 
         allSlots = new List<List<ItemSlot>>()
         {
@@ -220,7 +219,7 @@ public class ItemSlot
 
     public ItemSaveData GetSaveData()
     {
-        var saveData = new ItemSaveData
+        ItemSaveData saveData = new ItemSaveData
         {
             name = item.name,
             count = count

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +9,9 @@ public class ScriptableObjectDB<T> : MonoBehaviour where T : ScriptableObject
     {
         objects = new Dictionary<string, T>();
 
-        var objectArray = Resources.LoadAll<T>("");
+        T[] objectArray = Resources.LoadAll<T>("");
 
-        foreach (var obj in objectArray)
+        foreach (T obj in objectArray)
         {
             if (objects.ContainsKey(obj.name))
             {

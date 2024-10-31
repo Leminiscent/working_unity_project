@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,7 +34,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         yield return fader.FadeIn(0.5f);
         yield return SceneManager.LoadSceneAsync(sceneToLoad);
 
-        var destPortal = FindObjectsOfType<Portal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
+        Portal destPortal = FindObjectsOfType<Portal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
 
         player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
         player.Deputy.SetPosition();

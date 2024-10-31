@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -64,7 +63,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     private void Start()
     {
-        moveSlots = moveNames.Select(m => m.GetComponent<TextSlot>()).ToList();
+        moveSlots = moveNames.Select(static m => m.GetComponent<TextSlot>()).ToList();
         moveEffectsUI.SetActive(false);
         moveDescriptionText.text = "";
     }
@@ -127,7 +126,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         {
             if (i < monster.Moves.Count)
             {
-                var move = monster.Moves[i];
+                Move move = monster.Moves[i];
 
                 moveTypes[i].text = move.Base.Type.ToString().ToUpper();
                 moveNames[i].text = move.Base.Name;
@@ -154,7 +153,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         base.UpdateSelectionInUI();
 
-        var move = monster.Moves[selectedItem];
+        Move move = monster.Moves[selectedItem];
 
         moveDescriptionText.text = move.Base.Description;
         movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";

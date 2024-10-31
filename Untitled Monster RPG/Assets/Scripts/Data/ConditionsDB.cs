@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +5,10 @@ public class ConditionsDB
 {
     public static void Init()
     {
-        foreach (var kvp in Conditions)
+        foreach (KeyValuePair<ConditionID, Condition> kvp in Conditions)
         {
-            var condition = kvp.Value;
-            var conditionId = kvp.Key;
+            Condition condition = kvp.Value;
+            ConditionID conditionId = kvp.Key;
 
             condition.ID = conditionId;
         }
@@ -24,7 +23,7 @@ public class ConditionsDB
             {
                 Name = "Poison",
                 StartMessage = " has been poisoned!",
-                OnEndOfTurn = (Monster monster) =>
+                OnEndOfTurn = static (Monster monster) =>
                 {
                     monster.DecreaseHP(monster.MaxHP / 8);
                     monster.StatusChanges.Enqueue(" is hurt by poison!");
@@ -37,7 +36,7 @@ public class ConditionsDB
             {
                 Name = "Burn",
                 StartMessage = " has been burned!",
-                OnEndOfTurn = (Monster monster) =>
+                OnEndOfTurn = static (Monster monster) =>
                 {
                     monster.DecreaseHP(monster.MaxHP / 16);
                     monster.StatusChanges.Enqueue(" is hurt by its burn!");
@@ -50,11 +49,11 @@ public class ConditionsDB
             {
                 Name = "Sleep",
                 StartMessage = " has been put to sleep!",
-                OnStart = (Monster monster) =>
+                OnStart = static (Monster monster) =>
                 {
                     monster.StatusTime = Random.Range(1, 4);
                 },
-                OnBeginningofTurn = (Monster monster) =>
+                OnBeginningofTurn = static (Monster monster) =>
                 {
                     if (monster.StatusTime == 0)
                     {
@@ -74,7 +73,7 @@ public class ConditionsDB
             {
                 Name = "Paralyzed",
                 StartMessage = " has been paralyzed!",
-                OnBeginningofTurn = (Monster monster) =>
+                OnBeginningofTurn = static (Monster monster) =>
                 {
                     if (Random.Range(1, 5) == 1)
                     {
@@ -91,7 +90,7 @@ public class ConditionsDB
             {
                 Name = "Frozen",
                 StartMessage = " has been frozen solid!",
-                OnBeginningofTurn = (Monster monster) =>
+                OnBeginningofTurn = static (Monster monster) =>
                 {
                     if (Random.Range(1, 5) == 1)
                     {
@@ -115,11 +114,11 @@ public class ConditionsDB
             {
                 Name = "Confusion",
                 StartMessage = " has been confused!",
-                OnStart = (Monster monster) =>
+                OnStart = static (Monster monster) =>
                 {
                     monster.VolatileStatusTime = Random.Range(2, 5);
                 },
-                OnBeginningofTurn = (Monster monster) =>
+                OnBeginningofTurn = static (Monster monster) =>
                 {
                     if (monster.VolatileStatusTime == 0)
                     {
@@ -149,7 +148,7 @@ public class ConditionsDB
                 Name = "Harsh Sunlight",
                 StartMessage = "The sunlight turned harsh!",
                 EffectMessage = "The sunlight is harsh!",
-                OnDamageModify = (Monster source, Monster target, Move move) =>
+                OnDamageModify = static (Monster source, Monster target, Move move) =>
                 {
                     if (move.Base.Type == MonsterType.Fire)
                     {
@@ -171,7 +170,7 @@ public class ConditionsDB
                 Name = "Heavy Rain",
                 StartMessage = "It started to rain!",
                 EffectMessage = "The rain is falling!",
-                OnDamageModify = (Monster source, Monster target, Move move) =>
+                OnDamageModify = static (Monster source, Monster target, Move move) =>
                 {
                     if (move.Base.Type == MonsterType.Water)
                     {
@@ -193,7 +192,7 @@ public class ConditionsDB
                 Name = "Sandstorm",
                 StartMessage = "A sandstorm kicked up!",
                 EffectMessage = "The sandstorm rages!",
-                OnWeather = (Monster monster) =>
+                OnWeather = static (Monster monster) =>
                 {
                     monster.DecreaseHP(Mathf.RoundToInt(monster.MaxHP / 16f));
                     monster.StatusChanges.Enqueue(" is buffeted by the sandstorm!");

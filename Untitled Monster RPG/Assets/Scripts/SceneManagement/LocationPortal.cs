@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -31,7 +30,7 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
         GameController.Instance.PauseGame(true);
         yield return fader.FadeIn(0.5f);
 
-        var destPortal = FindObjectsOfType<LocationPortal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
+        LocationPortal destPortal = FindObjectsOfType<LocationPortal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
 
         player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
         player.Deputy.SetPosition();

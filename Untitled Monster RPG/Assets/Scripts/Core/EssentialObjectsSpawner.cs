@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EssentialObjectsSpawner : MonoBehaviour
@@ -8,12 +6,12 @@ public class EssentialObjectsSpawner : MonoBehaviour
 
     private void Awake()
     {
-        var existingObjects = FindObjectsOfType<EssentialObjects>();
+        EssentialObjects[] existingObjects = FindObjectsOfType<EssentialObjects>();
 
         if (existingObjects.Length == 0)
         {
-            var spawnPos = new Vector3(0, 0, 0);
-            var grid = FindObjectOfType<Grid>();
+            Vector3 spawnPos = new Vector3(0, 0, 0);
+            Grid grid = FindObjectOfType<Grid>();
 
             if (grid != null)
             {
