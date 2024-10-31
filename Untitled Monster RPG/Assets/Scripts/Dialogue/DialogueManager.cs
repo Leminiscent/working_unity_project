@@ -6,28 +6,26 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private GameObject dialogueBox;
-    [SerializeField] private ChoiceBox choiceBox;
-    [SerializeField] private TextMeshProUGUI dialogueText;
-    [SerializeField] private float lettersPerSecond;
+    [SerializeField] private GameObject _dialogueBox;
+    [SerializeField] private ChoiceBox _choiceBox;
+    [SerializeField] private TextMeshProUGUI _dialogueText;
+    [SerializeField] private float _lettersPerSecond;
 
     public event Action OnShowDialogue;
     public event Action OnDialogueFinished;
-
     public static DialogueManager Instance { get; private set; }
+    public bool IsShowing { get; private set; }
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public bool IsShowing { get; private set; }
-
     public IEnumerator ShowDialogueText(string text, bool waitForInput = true, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
         OnShowDialogue?.Invoke();
         IsShowing = true;
-        dialogueBox.SetActive(true);
+        _dialogueBox.SetActive(true);
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
         yield return TypeDialogue(text);
         if (waitForInput)
@@ -37,7 +35,7 @@ public class DialogueManager : MonoBehaviour
 
         if (choices != null && choices.Count > 1)
         {
-            yield return choiceBox.ShowChoices(choices, onChoiceSelected);
+            yield return _choiceBox.ShowChoices(choices, onChoiceSelected);
         }
 
         if (autoClose)
@@ -49,7 +47,7 @@ public class DialogueManager : MonoBehaviour
 
     public void CloseDialogue()
     {
-        dialogueBox.SetActive(false);
+        _dialogueBox.SetActive(false);
         IsShowing = false;
     }
 
@@ -59,7 +57,7 @@ public class DialogueManager : MonoBehaviour
 
         OnShowDialogue?.Invoke();
         IsShowing = true;
-        dialogueBox.SetActive(true);
+        _dialogueBox.SetActive(true);
         foreach (string line in dialogue.Lines)
         {
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
@@ -69,26 +67,21 @@ public class DialogueManager : MonoBehaviour
 
         if (choices != null && choices.Count > 1)
         {
-            yield return choiceBox.ShowChoices(choices, onChoiceSelected);
+            yield return _choiceBox.ShowChoices(choices, onChoiceSelected);
         }
 
-        dialogueBox.SetActive(false);
+        _dialogueBox.SetActive(false);
         IsShowing = false;
         OnDialogueFinished?.Invoke();
     }
 
-    public void HandleUpdate()
-    {
-
-    }
-
     public IEnumerator TypeDialogue(string line)
     {
-        dialogueText.text = "";
+        _dialogueText.text = "";
         foreach (char letter in line.ToCharArray())
         {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            _dialogueText.text += letter;
+            yield return new WaitForSeconds(1f / _lettersPerSecond);
         }
     }
 }

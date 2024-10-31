@@ -18,7 +18,7 @@ public class ConditionsDB
     {
         // Non-volatile status conditions
         {
-            ConditionID.psn,
+            ConditionID.Psn,
             new Condition
             {
                 Name = "Poison",
@@ -31,7 +31,7 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.brn,
+            ConditionID.Brn,
             new Condition
             {
                 Name = "Burn",
@@ -44,7 +44,7 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.slp,
+            ConditionID.Slp,
             new Condition
             {
                 Name = "Sleep",
@@ -68,7 +68,7 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.par,
+            ConditionID.Par,
             new Condition
             {
                 Name = "Paralyzed",
@@ -85,7 +85,7 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.frz,
+            ConditionID.Frz,
             new Condition
             {
                 Name = "Frozen",
@@ -109,7 +109,7 @@ public class ConditionsDB
 
         // Volatile status conditions
         {
-            ConditionID.confusion,
+            ConditionID.Con,
             new Condition
             {
                 Name = "Confusion",
@@ -142,7 +142,7 @@ public class ConditionsDB
 
         // Weather conditions
         {
-            ConditionID.sunny,
+            ConditionID.Sun,
             new Condition()
             {
                 Name = "Harsh Sunlight",
@@ -164,7 +164,7 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.rain,
+            ConditionID.Rain,
             new Condition()
             {
                 Name = "Heavy Rain",
@@ -186,7 +186,7 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.sandstorm,
+            ConditionID.Sandstorm,
             new Condition()
             {
                 Name = "Sandstorm",
@@ -207,11 +207,11 @@ public class ConditionsDB
         {
             return 1f;
         }
-        else if (condition.ID == ConditionID.slp || condition.ID == ConditionID.frz)
+        else if (condition.ID == ConditionID.Slp || condition.ID == ConditionID.Frz)
         {
             return 2f;
         }
-        else if (condition.ID == ConditionID.psn || condition.ID == ConditionID.brn || condition.ID == ConditionID.par)
+        else if (condition.ID == ConditionID.Psn || condition.ID == ConditionID.Brn || condition.ID == ConditionID.Par)
         {
             return 1.5f;
         }
@@ -224,14 +224,14 @@ public class ConditionsDB
 
 public enum ConditionID
 {
-    none,
-    psn,
-    brn,
-    slp,
-    par,
-    frz,
-    confusion,
-    sunny,
-    rain,
-    sandstorm,
+    None,
+    Psn,
+    Brn,
+    Slp,
+    Par,
+    Frz,
+    Con,
+    Sun,
+    Rain,
+    Sandstorm,
 }

@@ -371,17 +371,17 @@ public class RunTurnState : State<BattleSystem>
         }
 
         // Status Conditions
-        if (effects.Status != ConditionID.none)
+        if (effects.Status != ConditionID.None)
         {
             target.SetStatus(effects.Status);
         }
-        if (effects.VolatileStatus != ConditionID.none)
+        if (effects.VolatileStatus != ConditionID.None)
         {
             target.SetVolatileStatus(effects.VolatileStatus);
         }
 
         // Weather
-        if (effects.Weather != ConditionID.none)
+        if (effects.Weather != ConditionID.None)
         {
             _field.SetWeather(effects.Weather);
             _field.WeatherDuration = 5;

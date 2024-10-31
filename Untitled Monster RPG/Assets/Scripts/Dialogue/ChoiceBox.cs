@@ -5,30 +5,31 @@ using UnityEngine;
 
 public class ChoiceBox : MonoBehaviour
 {
-    [SerializeField] private ChoiceText choiceTextPrefab;
-    private bool choiceSelected = false;
-    private List<ChoiceText> choiceTexts;
-    private int currentChoice;
+    [SerializeField] private ChoiceText _choiceTextPrefab;
+
+    private bool _choiceSelected = false;
+    private List<ChoiceText> _choiceTexts;
+    private int _currentChoice;
 
     public IEnumerator ShowChoices(List<string> choices, Action<int> onChoiceSelected)
     {
-        choiceSelected = false;
-        currentChoice = 0;
+        _choiceSelected = false;
+        _currentChoice = 0;
         gameObject.SetActive(true);
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
-        choiceTexts = new List<ChoiceText>();
+        _choiceTexts = new List<ChoiceText>();
         foreach (string choice in choices)
         {
-            ChoiceText choiceTextObj = Instantiate(choiceTextPrefab, transform);
+            ChoiceText choiceTextObj = Instantiate(_choiceTextPrefab, transform);
 
             choiceTextObj.TextField.text = choice;
-            choiceTexts.Add(choiceTextObj);
+            _choiceTexts.Add(choiceTextObj);
         }
-        yield return new WaitUntil(() => choiceSelected);
-        onChoiceSelected?.Invoke(currentChoice);
+        yield return new WaitUntil(() => _choiceSelected);
+        onChoiceSelected?.Invoke(_currentChoice);
         gameObject.SetActive(false);
     }
 
@@ -36,27 +37,27 @@ public class ChoiceBox : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            ++currentChoice;
+            ++_currentChoice;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            --currentChoice;
+            --_currentChoice;
         }
-        currentChoice = Mathf.Clamp(currentChoice, 0, choiceTexts.Count - 1);
+        _currentChoice = Mathf.Clamp(_currentChoice, 0, _choiceTexts.Count - 1);
 
-        for (int i = 0; i < choiceTexts.Count; i++)
+        for (int i = 0; i < _choiceTexts.Count; i++)
         {
-            choiceTexts[i].SetSelected(i == currentChoice);
+            _choiceTexts[i].SetSelected(i == _currentChoice);
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            choiceSelected = true;
+            _choiceSelected = true;
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            currentChoice = choiceTexts.Count - 1;
-            choiceSelected = true;
+            _currentChoice = _choiceTexts.Count - 1;
+            _choiceSelected = true;
         }
     }
 }

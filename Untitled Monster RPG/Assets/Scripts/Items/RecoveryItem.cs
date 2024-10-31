@@ -63,7 +63,7 @@ public class RecoveryItem : ItemBase
             }
         }
 
-        if (recoverAllStatus || status != ConditionID.none)
+        if (recoverAllStatus || status != ConditionID.None)
         {
             if (monster.Status == null && monster.VolatileStatus == null)
             {
