@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _musicPlayer;
     [SerializeField] private AudioSource _sfxPlayer;
     [SerializeField] private float _fadeDuration = 0.75f;
-
     private AudioClip _currentMusic;
     private float _originalMusicVolume;
     private Dictionary<AudioID, AudioData> _sfxDictionary;
