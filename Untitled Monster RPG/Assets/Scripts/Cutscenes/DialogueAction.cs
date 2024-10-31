@@ -4,10 +4,10 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueAction : CutsceneAction
 {
-    [SerializeField] private Dialogue dialogue;
+    [SerializeField] private Dialogue _dialogue;
 
     public override IEnumerator Play()
     {
-        yield return DialogueManager.Instance.ShowDialogue(dialogue);
+        yield return DialogueManager.Instance.ShowDialogue(_dialogue);
     }
 }

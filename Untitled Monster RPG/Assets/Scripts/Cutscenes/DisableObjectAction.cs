@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class DisableObjectAction : CutsceneAction
 {
-    [SerializeField] private GameObject objectToDisable;
+    [SerializeField] private GameObject _objectToDisable;
 
     public override IEnumerator Play()
     {
-        objectToDisable.SetActive(false);
+        _objectToDisable.SetActive(false);
         yield break;
     }
 }

@@ -5,14 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class MoveActorAction : CutsceneAction
 {
-    [SerializeField] private CutsceneActor actor;
-    [SerializeField] private List<Vector2> movePatterns;
+    [SerializeField] private CutsceneActor _actor;
+    [SerializeField] private List<Vector2> _movePatterns;
 
     public override IEnumerator Play()
     {
-        Character character = actor.GetCharacter();
+        Character character = _actor.GetCharacter();
 
-        foreach (Vector2 movePattern in movePatterns)
+        foreach (Vector2 movePattern in _movePatterns)
         {
             yield return character.Move(movePattern, checkCollisions: false);
         }
@@ -22,8 +22,8 @@ public class MoveActorAction : CutsceneAction
 [System.Serializable]
 public class CutsceneActor
 {
-    [SerializeField] private bool isPlayer;
-    [SerializeField] private Character character;
+    [SerializeField] private bool _isPlayer;
+    [SerializeField] private Character _character;
 
-    public Character GetCharacter() => isPlayer ? PlayerController.Instance.Character : character;
+    public Character GetCharacter() => _isPlayer ? PlayerController.Instance.Character : _character;
 }

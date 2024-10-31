@@ -7,14 +7,14 @@ using UnityEngine;
 public class Cutscene : MonoBehaviour, IPlayerTriggerable
 {
     [SerializeReference]
-    [SerializeField] private List<CutsceneAction> actions;
+    [SerializeField] private List<CutsceneAction> _actions;
 
     public bool TriggerRepeatedly => false;
 
     public IEnumerator Play()
     {
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
-        foreach (CutsceneAction action in actions)
+        foreach (CutsceneAction action in _actions)
         {
             if (action.WaitForCompletion)
             {
@@ -34,7 +34,7 @@ public class Cutscene : MonoBehaviour, IPlayerTriggerable
         Undo.RegisterCompleteObjectUndo(this, "Added Cutscene Action");
 #endif
         action.Name = action.GetType().Name;
-        actions.Add(action);
+        _actions.Add(action);
     }
 
     public void OnPlayerTriggered(PlayerController player)

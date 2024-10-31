@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class TeleportObjectAction : CutsceneAction
 {
-    [SerializeField] private GameObject objectToTeleport;
-    [SerializeField] private Vector2 destination;
+    [SerializeField] private GameObject _objectToTeleport;
+    [SerializeField] private Vector2 _destination;
 
     public override IEnumerator Play()
     {
-        objectToTeleport.transform.position = destination;
+        _objectToTeleport.transform.position = _destination;
         yield break;
     }
 }

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class TurnActorAction : CutsceneAction
 {
-    [SerializeField] private CutsceneActor actor;
-    [SerializeField] private FacingDirection direction;
+    [SerializeField] private CutsceneActor _actor;
+    [SerializeField] private FacingDirection _direction;
 
     public override IEnumerator Play()
     {
-        actor.GetCharacter().Animator.SetFacingDirection(direction);
+        _actor.GetCharacter().Animator.SetFacingDirection(_direction);
         yield break;
     }
 }

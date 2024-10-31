@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class NPCInteractAction : CutsceneAction
 {
-    [SerializeField] private NPCController npc;
+    [SerializeField] private NPCController _npc;
 
     public override IEnumerator Play()
     {
-        yield return npc.Interact(PlayerController.Instance.transform);
+        yield return _npc.Interact(PlayerController.Instance.transform);
     }
 }
