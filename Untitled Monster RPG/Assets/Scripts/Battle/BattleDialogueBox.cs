@@ -5,33 +5,33 @@ using UnityEngine;
 
 public class BattleDialogueBox : MonoBehaviour
 {
-    [SerializeField] int lettersPerSecond;
-    [SerializeField] TextMeshProUGUI dialogueText;
-    [SerializeField] GameObject actionSelector;
-    [SerializeField] GameObject moveSelector;
-    [SerializeField] GameObject moveDetails;
-    [SerializeField] GameObject answerSelector;
-    [SerializeField] GameObject choiceBox;
-    [SerializeField] List<TextMeshProUGUI> actionTexts;
-    [SerializeField] List<TextMeshProUGUI> moveTexts;
-    [SerializeField] List<TextMeshProUGUI> answerTexts;
-    [SerializeField] TextMeshProUGUI spText;
-    [SerializeField] TextMeshProUGUI typeText;
-    [SerializeField] TextMeshProUGUI yesText;
-    [SerializeField] TextMeshProUGUI noText;
+    [SerializeField] private int _lettersPerSecond;
+    [SerializeField] private TextMeshProUGUI _dialogueText;
+    [SerializeField] private GameObject _actionSelector;
+    [SerializeField] private GameObject _moveSelector;
+    [SerializeField] private GameObject _moveDetails;
+    [SerializeField] private GameObject _answerSelector;
+    [SerializeField] private GameObject _choiceBox;
+    [SerializeField] private List<TextMeshProUGUI> _actionTexts;
+    [SerializeField] private List<TextMeshProUGUI> _moveTexts;
+    [SerializeField] private List<TextMeshProUGUI> _answerTexts;
+    [SerializeField] private TextMeshProUGUI _spText;
+    [SerializeField] private TextMeshProUGUI _typeText;
+    [SerializeField] private TextMeshProUGUI _yesText;
+    [SerializeField] private TextMeshProUGUI _noText;
 
     public void SetDialogue(string dialogue)
     {
-        dialogueText.text = dialogue;
+        _dialogueText.text = dialogue;
     }
 
     public IEnumerator TypeDialogue(string dialogue, bool waitForInput = false)
     {
-        dialogueText.text = "";
+        _dialogueText.text = "";
         foreach (var letter in dialogue.ToCharArray())
         {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            _dialogueText.text += letter;
+            yield return new WaitForSeconds(1f / _lettersPerSecond);
         }
 
         if (waitForInput)
@@ -46,11 +46,11 @@ public class BattleDialogueBox : MonoBehaviour
 
     public IEnumerator SetAndTypeDialogue(string setDialogue, string typeDialogue, bool waitForInput = false)
     {
-        dialogueText.text = $"{setDialogue} ";
+        _dialogueText.text = $"{setDialogue} ";
         foreach (var letter in typeDialogue.ToCharArray())
         {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            _dialogueText.text += letter;
+            yield return new WaitForSeconds(1f / _lettersPerSecond);
         }
 
         if (waitForInput)
@@ -65,84 +65,84 @@ public class BattleDialogueBox : MonoBehaviour
 
     public void EnableDialogueText(bool enabled)
     {
-        dialogueText.enabled = enabled;
+        _dialogueText.enabled = enabled;
     }
 
     public void EnableActionSelector(bool enabled)
     {
-        actionSelector.SetActive(enabled);
+        _actionSelector.SetActive(enabled);
     }
 
     public void EnableMoveSelector(bool enabled)
     {
-        moveSelector.SetActive(enabled);
-        moveDetails.SetActive(enabled);
+        _moveSelector.SetActive(enabled);
+        _moveDetails.SetActive(enabled);
     }
 
     public void EnableAnswerSelector(bool enabled)
     {
-        answerSelector.SetActive(enabled);
+        _answerSelector.SetActive(enabled);
     }
 
     public void EnableChoiceBox(bool enabled)
     {
-        choiceBox.SetActive(enabled);
+        _choiceBox.SetActive(enabled);
     }
 
-    public bool IsChoiceBoxEnabled => choiceBox.activeSelf;
+    public bool IsChoiceBoxEnabled => _choiceBox.activeSelf;
 
     public void UpdateActionSelection(int selectedAction)
     {
-        for (int i = 0; i < actionTexts.Count; ++i)
+        for (int i = 0; i < _actionTexts.Count; ++i)
         {
             if (i == selectedAction)
             {
-                actionTexts[i].color = GlobalSettings.Instance.ActiveColor;
+                _actionTexts[i].color = GlobalSettings.Instance.ActiveColor;
             }
             else
             {
-                actionTexts[i].color = GlobalSettings.Instance.InactiveColor;
+                _actionTexts[i].color = GlobalSettings.Instance.InactiveColor;
             }
         }
     }
 
     public void UpdateMoveSelction(int selectedMove, Move move)
     {
-        for (int i = 0; i < moveTexts.Count; ++i)
+        for (int i = 0; i < _moveTexts.Count; ++i)
         {
             if (i == selectedMove)
             {
-                moveTexts[i].color = GlobalSettings.Instance.ActiveColor;
+                _moveTexts[i].color = GlobalSettings.Instance.ActiveColor;
             }
             else
             {
-                moveTexts[i].color = GlobalSettings.Instance.InactiveColor;
+                _moveTexts[i].color = GlobalSettings.Instance.InactiveColor;
             }
         }
 
-        spText.text = $"SP {move.SP}/{move.Base.SP}";
-        typeText.text = move.Base.Type.ToString();
+        _spText.text = $"SP {move.SP}/{move.Base.SP}";
+        _typeText.text = move.Base.Type.ToString();
         if (move.SP == 0)
         {
-            spText.color = GlobalSettings.Instance.EmptyColor;
+            _spText.color = GlobalSettings.Instance.EmptyColor;
         }
         else
         {
-            spText.color = GlobalSettings.Instance.InactiveColor;
+            _spText.color = GlobalSettings.Instance.InactiveColor;
         }
     }
 
     public void SetMoveNames(List<Move> moves)
     {
-        for (int i = 0; i < moveTexts.Count; ++i)
+        for (int i = 0; i < _moveTexts.Count; ++i)
         {
             if (i < moves.Count)
             {
-                moveTexts[i].text = moves[i].Base.Name;
+                _moveTexts[i].text = moves[i].Base.Name;
             }
             else
             {
-                moveTexts[i].text = "-";
+                _moveTexts[i].text = "-";
             }
         }
     }
@@ -151,13 +151,13 @@ public class BattleDialogueBox : MonoBehaviour
     {
         if (yesSelected)
         {
-            yesText.color = GlobalSettings.Instance.ActiveColor;
-            noText.color = GlobalSettings.Instance.InactiveColor;
+            _yesText.color = GlobalSettings.Instance.ActiveColor;
+            _noText.color = GlobalSettings.Instance.InactiveColor;
         }
         else
         {
-            yesText.color = GlobalSettings.Instance.InactiveColor;
-            noText.color = GlobalSettings.Instance.ActiveColor;
+            _yesText.color = GlobalSettings.Instance.InactiveColor;
+            _noText.color = GlobalSettings.Instance.ActiveColor;
         }
     }
 }
