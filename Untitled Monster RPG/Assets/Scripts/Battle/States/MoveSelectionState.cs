@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utils.GenericSelectionUI;
 using Utils.StateMachine;
 
 public class MoveSelectionState : State<BattleSystem>
 {
-    [SerializeField] MoveSelectionUI selectionUI;
-    [SerializeField] GameObject moveDetailsUI;
-    BattleSystem battleSystem;
+    [SerializeField] private MoveSelectionUI _selectionUI;
+    [SerializeField] private GameObject _moveDetailsUI;
+    private BattleSystem _battleSystem;
 
     public List<Move> Moves { get; set; }
 
@@ -22,46 +21,46 @@ public class MoveSelectionState : State<BattleSystem>
 
     public override void Enter(BattleSystem owner)
     {
-        battleSystem = owner;
-        selectionUI.SetMoves(Moves);
+        _battleSystem = owner;
+        _selectionUI.SetMoves(Moves);
 
         if (Moves.Where(m => m.SP > 0).Count() == 0)
         {
-            battleSystem.SelectedMove = -1;
-            battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            _battleSystem.SelectedMove = -1;
+            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
             return;
         }
-        
-        selectionUI.gameObject.SetActive(true);
-        moveDetailsUI.SetActive(true);
-        battleSystem.DialogueBox.EnableDialogueText(false);
-        selectionUI.OnSelected += OnMoveSelected;
-        selectionUI.OnBack += OnBack;
+
+        _selectionUI.gameObject.SetActive(true);
+        _moveDetailsUI.SetActive(true);
+        _battleSystem.DialogueBox.EnableDialogueText(false);
+        _selectionUI.OnSelected += OnMoveSelected;
+        _selectionUI.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        selectionUI.HandleUpdate();
+        _selectionUI.HandleUpdate();
     }
 
     public override void Exit()
     {
-        selectionUI.gameObject.SetActive(false);
-        moveDetailsUI.SetActive(false);
-        battleSystem.DialogueBox.EnableDialogueText(true);
-        selectionUI.OnSelected -= OnMoveSelected;
-        selectionUI.OnBack -= OnBack;
-        selectionUI.ClearItems();
+        _selectionUI.gameObject.SetActive(false);
+        _moveDetailsUI.SetActive(false);
+        _battleSystem.DialogueBox.EnableDialogueText(true);
+        _selectionUI.OnSelected -= OnMoveSelected;
+        _selectionUI.OnBack -= OnBack;
+        _selectionUI.ClearItems();
     }
 
     void OnMoveSelected(int selection)
     {
-        battleSystem.SelectedMove = selection;
-        battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+        _battleSystem.SelectedMove = selection;
+        _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
     }
 
     void OnBack()
     {
-        battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
+        _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
     }
 }
