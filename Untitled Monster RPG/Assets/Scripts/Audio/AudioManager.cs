@@ -45,6 +45,7 @@ public class AudioManager : MonoBehaviour
         if (!_sfxDictionary.ContainsKey(id)) return;
 
         var audioData = _sfxDictionary[id];
+        
         PlaySFX(audioData.clip, pauseMusic);
     }
 
