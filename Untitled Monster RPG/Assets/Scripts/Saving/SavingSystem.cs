@@ -11,7 +11,7 @@ public class SavingSystem : MonoBehaviour
         i = this;
     }
 
-    private Dictionary<string, object> gameState = new Dictionary<string, object>();
+    private Dictionary<string, object> gameState = new();
 
     public void CaptureEntityStates(List<SavableEntity> savableEntities)
     {
@@ -88,7 +88,7 @@ public class SavingSystem : MonoBehaviour
         using (FileStream fs = File.Open(path, FileMode.Create))
         {
             // Serialize our object
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            BinaryFormatter binaryFormatter = new();
             binaryFormatter.Serialize(fs, state);
         }
     }
@@ -104,7 +104,7 @@ public class SavingSystem : MonoBehaviour
         using (FileStream fs = File.Open(path, FileMode.Open))
         {
             // Deserialize our object
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            BinaryFormatter binaryFormatter = new();
             return (Dictionary<string, object>)binaryFormatter.Deserialize(fs);
         }
     }

@@ -14,7 +14,7 @@ public class Quest
 
     public QuestSaveData GetSaveData()
     {
-        QuestSaveData saveData = new QuestSaveData
+        QuestSaveData saveData = new()
         {
             name = Base.name,
             status = Status

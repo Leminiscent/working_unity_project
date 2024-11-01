@@ -10,7 +10,7 @@ public class EssentialObjectsSpawner : MonoBehaviour
 
         if (existingObjects.Length == 0)
         {
-            Vector3 spawnPos = new Vector3(0, 0, 0);
+            Vector3 spawnPos = new(0, 0, 0);
             Grid grid = FindObjectOfType<Grid>();
 
             if (grid != null)

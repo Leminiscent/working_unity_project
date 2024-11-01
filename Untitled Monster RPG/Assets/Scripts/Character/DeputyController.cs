@@ -123,7 +123,7 @@ public class DeputyController : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        DeputySaveData saveData = new DeputySaveData()
+        DeputySaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _animator.FacingDirection,

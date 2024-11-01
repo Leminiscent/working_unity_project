@@ -42,7 +42,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
 
             if (_questToComplete != null)
             {
-                Quest quest = new Quest(_questToComplete);
+                Quest quest = new(_questToComplete);
 
                 yield return quest.CompleteQuest(initiator);
                 _questToComplete = null;
@@ -132,7 +132,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
 
     public object CaptureState()
     {
-        NPCSaveData saveData = new NPCSaveData
+        NPCSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,

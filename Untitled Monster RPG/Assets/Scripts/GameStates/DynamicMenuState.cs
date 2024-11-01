@@ -33,7 +33,7 @@ public class DynamicMenuState : State<GameController>
             Destroy(child.gameObject);
         }
 
-        List<TextSlot> itemTextSlots = new List<TextSlot>();
+        List<TextSlot> itemTextSlots = new();
 
         foreach (string item in MenuItems)
         {

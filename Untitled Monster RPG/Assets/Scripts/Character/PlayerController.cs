@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private IEnumerator Interact()
     {
-        Vector3 facingDir = new Vector3(_character.Animator.MoveX, _character.Animator.MoveY);
+        Vector3 facingDir = new(_character.Animator.MoveX, _character.Animator.MoveY);
         Vector3 interactPos = transform.position + facingDir;
         Collider2D collider = Physics2D.OverlapCircle(interactPos, 0.1f, GameLayers.Instance.InteractablesLayer);
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        PlayerSaveData saveData = new PlayerSaveData
+        PlayerSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,

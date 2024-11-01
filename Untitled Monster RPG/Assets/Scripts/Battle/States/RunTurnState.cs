@@ -247,7 +247,7 @@ public class RunTurnState : State<BattleSystem>
 
             for (int i = 1; i <= hitCount; i++)
             {
-                DamageDetails damageDetails = new DamageDetails();
+                DamageDetails damageDetails = new();
 
                 sourceUnit.PlayAttackAnimation();
                 AudioManager.Instance.PlaySFX(move.Base.Sound);

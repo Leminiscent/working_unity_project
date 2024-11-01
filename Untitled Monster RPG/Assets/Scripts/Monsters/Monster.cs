@@ -88,7 +88,7 @@ public class Monster
 
     public MonsterSaveData GetSaveData()
     {
-        MonsterSaveData saveData = new MonsterSaveData()
+        MonsterSaveData saveData = new()
         {
             name = Base.name,
             hp = HP,
@@ -310,7 +310,7 @@ public class Monster
 
         float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
         float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
-        DamageDetails damageDetails = new DamageDetails()
+        DamageDetails damageDetails = new()
         {
             TypeEffectiveness = type,
             Critical = critical,

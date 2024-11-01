@@ -168,7 +168,7 @@ public class Inventory : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        InventorySaveData saveData = new InventorySaveData
+        InventorySaveData saveData = new()
         {
             recoveryItems = recoveryItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
             materials = materialSlots.Select(static slot => slot.GetSaveData()).ToList(),
@@ -219,7 +219,7 @@ public class ItemSlot
 
     public ItemSaveData GetSaveData()
     {
-        ItemSaveData saveData = new ItemSaveData
+        ItemSaveData saveData = new()
         {
             name = item.name,
             count = count

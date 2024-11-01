@@ -94,7 +94,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 
     public object CaptureState()
     {
-        MasterSaveData saveData = new MasterSaveData
+        MasterSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,

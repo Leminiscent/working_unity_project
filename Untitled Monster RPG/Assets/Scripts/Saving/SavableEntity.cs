@@ -7,14 +7,14 @@ using UnityEngine;
 public class SavableEntity : MonoBehaviour
 {
     [SerializeField] private string uniqueId = "";
-    private static Dictionary<string, SavableEntity> globalLookup = new Dictionary<string, SavableEntity>();
+    private static Dictionary<string, SavableEntity> globalLookup = new();
 
     public string UniqueId => uniqueId;
 
     // Used to capture state of the gameobject on which the savableEntity is attached
     public object CaptureState()
     {
-        Dictionary<string, object> state = new Dictionary<string, object>();
+        Dictionary<string, object> state = new();
         foreach (ISavable savable in GetComponents<ISavable>())
         {
             state[savable.GetType().ToString()] = savable.CaptureState();
@@ -53,7 +53,7 @@ public class SavableEntity : MonoBehaviour
             return;
         }
 
-        SerializedObject serializedObject = new SerializedObject(this);
+        SerializedObject serializedObject = new(this);
         SerializedProperty property = serializedObject.FindProperty("uniqueId");
 
         if (String.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))

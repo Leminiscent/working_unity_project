@@ -19,7 +19,7 @@ public class Move
 
     public MoveSaveData GetSaveData()
     {
-        MoveSaveData saveData = new MoveSaveData
+        MoveSaveData saveData = new()
         {
             name = Base.name,
             sp = SP

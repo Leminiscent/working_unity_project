@@ -13,9 +13,9 @@ public class MoveBase : ScriptableObject
     [SerializeField] private MoveEffects effects;
     [SerializeField] private List<SecondaryEffects> secondaryEffects;
     [SerializeField] private CritBehavior critBehavior;
-    [SerializeField] private RecoilMoveEffect recoil = new RecoilMoveEffect();
+    [SerializeField] private RecoilMoveEffect recoil = new();
     [SerializeField] private int drainPercentage = 0;
-    [SerializeField] private OneHitKOMoveEffect oneHitKO = new OneHitKOMoveEffect();
+    [SerializeField] private OneHitKOMoveEffect oneHitKO = new();
     [SerializeField] private MoveTarget target;
     [SerializeField] private Vector2Int hitRange;
     [SerializeField] private int power;

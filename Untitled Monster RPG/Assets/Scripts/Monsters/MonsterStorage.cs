@@ -47,7 +47,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        DepotSaveData saveData = new DepotSaveData()
+        DepotSaveData saveData = new()
         {
             depotSlots = new List<DepotSlotSaveData>()
         };
@@ -58,7 +58,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
             {
                 if (depots[depotIndex, slotIndex] != null)
                 {
-                    DepotSlotSaveData depotSlot = new DepotSlotSaveData()
+                    DepotSlotSaveData depotSlot = new()
                     {
                         monsterData = depots[depotIndex, slotIndex].GetSaveData(),
                         depotIndex = depotIndex,
