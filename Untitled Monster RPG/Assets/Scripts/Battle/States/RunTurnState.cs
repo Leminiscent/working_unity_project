@@ -177,14 +177,14 @@ public class RunTurnState : State<BattleSystem>
             {
                 return false;
             }
-            if (target.HasType(move.Base.OneHitKO.immunityType))
+            if (target.HasType(move.Base.OneHitKO.ImmunityType))
             {
                 return false;
             }
 
             int baseAccuracy = move.Base.Accuracy;
 
-            if (move.Base.OneHitKO.lowerOddsException)
+            if (move.Base.OneHitKO.LowerOddsException)
             {
                 baseAccuracy = source.HasType(move.Base.Type) ? baseAccuracy : baseAccuracy / 2;
             }
@@ -311,26 +311,26 @@ public class RunTurnState : State<BattleSystem>
             yield break;
         }
 
-        if (move.Recoil.recoilType != RecoilType.none)
+        if (move.Recoil.RecoilType != RecoilType.None)
         {
             int damage = 0;
 
-            switch (move.Recoil.recoilType)
+            switch (move.Recoil.RecoilType)
             {
                 case RecoilType.RecoilByMaxHP:
                     int maxHp = sourceUnit.Monster.MaxHP;
 
-                    damage = Mathf.FloorToInt(maxHp * (move.Recoil.recoilDamage / 100f));
+                    damage = Mathf.FloorToInt(maxHp * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByCurrentHP:
                     int currentHp = sourceUnit.Monster.HP;
 
-                    damage = Mathf.FloorToInt(currentHp * (move.Recoil.recoilDamage / 100f));
+                    damage = Mathf.FloorToInt(currentHp * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByDamage:
-                    damage = Mathf.FloorToInt(details.ActualDamageDealt * (move.Recoil.recoilDamage / 100f));
+                    damage = Mathf.FloorToInt(details.ActualDamageDealt * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 default:
