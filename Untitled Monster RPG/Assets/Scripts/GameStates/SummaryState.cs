@@ -11,12 +11,17 @@ public class SummaryState : State<GameController>
 
     public int SelectedMonsterIndex { get; set; }
     public static SummaryState Instance { get; set; }
+    
     private void Awake()
     {
-        Instance = this;
-    }
-    private void Start()
-    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(GameController owner)

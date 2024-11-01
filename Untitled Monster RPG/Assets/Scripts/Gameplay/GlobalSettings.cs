@@ -3,29 +3,36 @@ using UnityEngine;
 public class GlobalSettings : MonoBehaviour
 {
     [Header("Colors")]
-    [SerializeField] private Color activeColor;
-    [SerializeField] private Color inactiveColor;
-    [SerializeField] private Color emptyColor;
-    [SerializeField] private Color bgHighlightColor;
+    [SerializeField] private Color _activeColor;
+    [SerializeField] private Color _inactiveColor;
+    [SerializeField] private Color _emptyColor;
+    [SerializeField] private Color _bgHighlightColor;
 
     [Header("Monsters")]
-    [SerializeField] private int maxPvs;
-    [SerializeField] private int maxPvPerStat;
-    [SerializeField] private int maxLevel;
-    [SerializeField] private MoveBase backupMove;
+    [SerializeField] private int _maxPvs;
+    [SerializeField] private int _maxPvPerStat;
+    [SerializeField] private int _maxLevel;
+    [SerializeField] private MoveBase _backupMove;
 
-    public Color ActiveColor => activeColor;
-    public Color InactiveColor => inactiveColor;
-    public Color EmptyColor => emptyColor;
-    public Color BgHighlightColor => bgHighlightColor;
-    public int MaxPvs => maxPvs;
-    public int MaxPvPerStat => maxPvPerStat;
-    public int MaxLevel => maxLevel;
-    public MoveBase BackupMove => backupMove;
+    public Color ActiveColor => _activeColor;
+    public Color InactiveColor => _inactiveColor;
+    public Color EmptyColor => _emptyColor;
+    public Color BgHighlightColor => _bgHighlightColor;
+    public int MaxPvs => _maxPvs;
+    public int MaxPvPerStat => _maxPvPerStat;
+    public int MaxLevel => _maxLevel;
+    public MoveBase BackupMove => _backupMove;
     public static GlobalSettings Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 }

@@ -6,6 +6,13 @@ public class DialogueState : State<GameController>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 }

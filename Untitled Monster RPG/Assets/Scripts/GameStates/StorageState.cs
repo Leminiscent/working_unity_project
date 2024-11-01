@@ -14,7 +14,15 @@ public class StorageState : State<GameController>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         party = MonsterParty.GetPlayerParty();
     }
 

@@ -22,7 +22,15 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         _character = GetComponent<Character>();
         _deputy = FindObjectOfType<DeputyController>();
     }
@@ -61,7 +69,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
         if (collider != null)
         {
-            yield return collider.GetComponent<Interactable>()?.Interact(transform);
+            yield return collider.GetComponent<IInteractable>()?.Interact(transform);
         }
     }
 

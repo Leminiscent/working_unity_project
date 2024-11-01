@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Chest : MonoBehaviour, Interactable, ISavable
+public class Chest : MonoBehaviour, IInteractable, ISavable
 {
     [SerializeField] private ItemBase item;
     [SerializeField] private Sprite usedSprite;

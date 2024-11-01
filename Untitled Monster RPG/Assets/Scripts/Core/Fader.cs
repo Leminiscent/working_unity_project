@@ -6,12 +6,20 @@ using UnityEngine.UI;
 public class Fader : MonoBehaviour
 {
     private Image _image;
-    
+
     public static Fader Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         _image = GetComponent<Image>();
     }
 

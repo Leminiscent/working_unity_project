@@ -5,59 +5,67 @@ using Utils.StateMachine;
 
 public class ShopBuyingState : State<GameController>
 {
-    [SerializeField] private Vector2 shopCameraOffest;
-    [SerializeField] private ShopUI shopUI;
-    [SerializeField] private WalletUI walletUI;
-    [SerializeField] private CountSelectorUI countSelectorUI;
-    private GameController gameController;
-    private Inventory playerInventory;
-    private bool browseItems;
+    [SerializeField] private Vector2 _shopCameraOffest;
+    [SerializeField] private ShopUI _shopUI;
+    [SerializeField] private WalletUI _walletUI;
+    [SerializeField] private CountSelectorUI _countSelectorUI;
+
+    private GameController _gameController;
+    private Inventory _playerInventory;
+    private bool _browseItems;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopBuyingState Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     private void Start()
     {
-        playerInventory = Inventory.GetInventory();
+        _playerInventory = Inventory.GetInventory();
     }
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
-        browseItems = false;
+        _gameController = owner;
+        _browseItems = false;
         StartCoroutine(StartBuying());
     }
 
     public override void Execute()
     {
-        if (browseItems)
+        if (_browseItems)
         {
-            shopUI.HandleUpdate();
+            _shopUI.HandleUpdate();
         }
     }
 
     private IEnumerator StartBuying()
     {
-        yield return GameController.Instance.MoveCamera(shopCameraOffest);
-        walletUI.Show();
-        shopUI.Show(AvailableItems, (item) => StartCoroutine(BuyItem(item)), () => StartCoroutine(OnBackFromBuying()));
-        browseItems = true;
+        yield return GameController.Instance.MoveCamera(_shopCameraOffest);
+        _walletUI.Show();
+        _shopUI.Show(AvailableItems, (item) => StartCoroutine(BuyItem(item)), () => StartCoroutine(OnBackFromBuying()));
+        _browseItems = true;
     }
 
     private IEnumerator BuyItem(ItemBase item)
     {
-        browseItems = false;
+        _browseItems = false;
         yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}'s would you like?",
             waitForInput: false, autoClose: false);
 
         int countToBuy = 1;
 
-        yield return countSelectorUI.ShowSelector(99, item.Price,
+        yield return _countSelectorUI.ShowSelector(99, item.Price,
             selectedCount => countToBuy = selectedCount);
 
         DialogueManager.Instance.CloseDialogue();
@@ -76,7 +84,7 @@ public class ShopBuyingState : State<GameController>
             if (selectedChoice == 0)
             {
                 Wallet.Instance.SpendMoney(totalPrice);
-                playerInventory.AddItem(item, countToBuy);
+                _playerInventory.AddItem(item, countToBuy);
                 yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
             }
         }
@@ -84,14 +92,14 @@ public class ShopBuyingState : State<GameController>
         {
             yield return DialogueManager.Instance.ShowDialogueText("You don't have enough money for that.");
         }
-        browseItems = true;
+        _browseItems = true;
     }
 
     private IEnumerator OnBackFromBuying()
     {
-        yield return GameController.Instance.MoveCamera(-shopCameraOffest);
-        shopUI.Close();
-        walletUI.Close();
-        gameController.StateMachine.Pop();
+        yield return GameController.Instance.MoveCamera(-_shopCameraOffest);
+        _shopUI.Close();
+        _walletUI.Close();
+        _gameController.StateMachine.Pop();
     }
 }

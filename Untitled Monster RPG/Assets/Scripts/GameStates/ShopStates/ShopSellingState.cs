@@ -5,34 +5,42 @@ using Utils.StateMachine;
 
 public class ShopSellingState : State<GameController>
 {
-    [SerializeField] private InventoryUI playerInventoryUI;
-    [SerializeField] private WalletUI walletUI;
-    [SerializeField] private CountSelectorUI countSelectorUI;
-    private GameController gameController;
-    private Inventory playerInventory;
+    [SerializeField] private InventoryUI _playerInventoryUI;
+    [SerializeField] private WalletUI _walletUI;
+    [SerializeField] private CountSelectorUI _countSelectorUI;
+    
+    private GameController _gameController;
+    private Inventory _playerInventory;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopSellingState Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     private void Start()
     {
-        playerInventory = Inventory.GetInventory();
+        _playerInventory = Inventory.GetInventory();
     }
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
+        _gameController = owner;
         StartCoroutine(StartSelling());
     }
 
     private IEnumerator StartSelling()
     {
-        yield return gameController.StateMachine.PushAndWait(InventoryState.Instance);
+        yield return _gameController.StateMachine.PushAndWait(InventoryState.Instance);
 
         ItemBase selectedItem = InventoryState.Instance.SelectedItem;
 
@@ -43,7 +51,7 @@ public class ShopSellingState : State<GameController>
         }
         else
         {
-            gameController.StateMachine.Pop();
+            _gameController.StateMachine.Pop();
         }
     }
 
@@ -54,18 +62,18 @@ public class ShopSellingState : State<GameController>
             yield return DialogueManager.Instance.ShowDialogueText("I'm sorry, I can't buy this item from you.");
             yield break;
         }
-        walletUI.Show();
+        _walletUI.Show();
 
         float sellingPrice = Mathf.Round(item.Price * 0.5f);
         int countToSell = 1;
-        int itemCount = playerInventory.GetItemCount(item);
+        int itemCount = _playerInventory.GetItemCount(item);
 
         if (itemCount > 1)
         {
             yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name} would you like to sell?",
                 waitForInput: false, autoClose: false);
 
-            yield return countSelectorUI.ShowSelector(itemCount, sellingPrice,
+            yield return _countSelectorUI.ShowSelector(itemCount, sellingPrice,
                 selectedCount => countToSell = selectedCount);
 
             DialogueManager.Instance.CloseDialogue();
@@ -81,10 +89,10 @@ public class ShopSellingState : State<GameController>
 
         if (selectedChoice == 0)
         {
-            playerInventory.RemoveItem(item, countToSell);
+            _playerInventory.RemoveItem(item, countToSell);
             Wallet.Instance.AddMoney(sellingPrice);
             yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
         }
-        walletUI.Close();
+        _walletUI.Close();
     }
 }

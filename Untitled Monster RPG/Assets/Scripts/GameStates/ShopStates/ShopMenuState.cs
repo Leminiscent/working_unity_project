@@ -4,19 +4,26 @@ using Utils.StateMachine;
 
 public class ShopMenuState : State<GameController>
 {
-    private GameController gameController;
+    private GameController _gameController;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopMenuState Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
+        _gameController = owner;
         StartCoroutine(StartMenu());
     }
 
@@ -33,14 +40,14 @@ public class ShopMenuState : State<GameController>
         {
             // Buy
             ShopBuyingState.Instance.AvailableItems = AvailableItems;
-            yield return gameController.StateMachine.PushAndWait(ShopBuyingState.Instance);
+            yield return _gameController.StateMachine.PushAndWait(ShopBuyingState.Instance);
         }
         else if (selectedChoice == 1)
         {
             // Sell
-            yield return gameController.StateMachine.PushAndWait(ShopSellingState.Instance);
+            yield return _gameController.StateMachine.PushAndWait(ShopSellingState.Instance);
         }
 
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 }

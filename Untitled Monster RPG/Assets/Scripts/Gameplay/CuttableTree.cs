@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttableTree : MonoBehaviour, Interactable
+public class CuttableTree : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ItemBase requiredItem;
+    [SerializeField] private ItemBase _requiredItem;
 
     public IEnumerator Interact(Transform initiator)
     {
         yield return DialogueManager.Instance.ShowDialogueText("This tree looks like it can be cut down.");
-        if (initiator.GetComponent<Inventory>().HasItem(requiredItem))
+        if (initiator.GetComponent<Inventory>().HasItem(_requiredItem))
         {
             int selectedChoice = 0;
             string playerName = initiator.GetComponent<PlayerController>().Name;

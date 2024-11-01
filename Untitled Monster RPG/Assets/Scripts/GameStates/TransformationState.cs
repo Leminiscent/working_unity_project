@@ -13,7 +13,14 @@ public class TransformationState : State<GameController>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public IEnumerator Transform(Monster monster, Transformation transformation)

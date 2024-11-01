@@ -6,7 +6,14 @@ public class CutsceneState : State<GameController>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Execute()

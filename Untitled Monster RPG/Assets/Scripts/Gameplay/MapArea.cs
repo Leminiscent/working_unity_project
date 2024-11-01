@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MapArea : MonoBehaviour
 {
-    [SerializeField] private List<MonsterEncounterRecord> wildMonsters;
-    [SerializeField] private BattleTrigger terrain;
+    [SerializeField] private List<MonsterEncounterRecord> _wildMonsters;
+    [SerializeField] private BattleTrigger _terrain;
 
     [HideInInspector]
-    [SerializeField] private int totalChance = 0;
+    [SerializeField] private int _totalChance = 0;
 
-    public BattleTrigger Terrain => terrain;
+    public BattleTrigger Terrain => _terrain;
 
     private void OnValidate()
     {
@@ -24,28 +24,28 @@ public class MapArea : MonoBehaviour
 
     private void CalculateSpawnChance()
     {
-        totalChance = -1;
+        _totalChance = -1;
 
-        if (wildMonsters.Count > 0)
+        if (_wildMonsters.Count > 0)
         {
-            totalChance = 0;
-            foreach (MonsterEncounterRecord record in wildMonsters)
+            _totalChance = 0;
+            foreach (MonsterEncounterRecord record in _wildMonsters)
             {
-                record.ChanceLower = totalChance;
-                record.ChanceUpper = totalChance + record.spawnChance;
-                totalChance += record.spawnChance;
+                record.ChanceLower = _totalChance;
+                record.ChanceUpper = _totalChance + record.SpawnChance;
+                _totalChance += record.SpawnChance;
             }
         }
     }
 
     public Monster GetRandomWildMonster()
     {
-        List<MonsterEncounterRecord> monsterList = wildMonsters;
+        List<MonsterEncounterRecord> monsterList = _wildMonsters;
         int randVal = Random.Range(1, 101);
         MonsterEncounterRecord monsterRecord = monsterList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
-        Vector2Int levelRange = monsterRecord.levelRange;
+        Vector2Int levelRange = monsterRecord.LevelRange;
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
-        Monster wildMonster = new Monster(monsterRecord.monster, level);
+        Monster wildMonster = new(monsterRecord.Monster, level);
 
         wildMonster.Init();
         return wildMonster;
@@ -55,10 +55,9 @@ public class MapArea : MonoBehaviour
 [System.Serializable]
 public class MonsterEncounterRecord
 {
-    public MonsterBase monster;
-    public Vector2Int levelRange;
-    public int spawnChance;
-
+    public MonsterBase Monster;
+    public Vector2Int LevelRange;
+    public int SpawnChance;
     public int ChanceLower { get; set; }
     public int ChanceUpper { get; set; }
 }

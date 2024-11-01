@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour, Interactable, ISavable
+public class NPCController : MonoBehaviour, IInteractable, ISavable
 {
     [SerializeField] private Dialogue _dialogue;
 

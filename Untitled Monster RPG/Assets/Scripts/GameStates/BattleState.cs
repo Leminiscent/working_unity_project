@@ -13,7 +13,14 @@ public class BattleState : State<GameController>
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public override void Enter(GameController owner)

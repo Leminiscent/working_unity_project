@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Ledge : MonoBehaviour
 {
-    [SerializeField] private int xDir;
-    [SerializeField] private int yDir;
+    [SerializeField] private int _xDir;
+    [SerializeField] private int _yDir;
 
     private void Awake()
     {
@@ -12,7 +12,7 @@ public class Ledge : MonoBehaviour
 
     public bool CanJump(Vector2 moveDir)
     {
-        return moveDir.x == xDir && moveDir.y == yDir;
+        return moveDir.x == _xDir && moveDir.y == _yDir;
     }
 
 }

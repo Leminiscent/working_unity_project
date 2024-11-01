@@ -3,32 +3,39 @@ using UnityEngine;
 
 public class Wallet : MonoBehaviour, ISavable
 {
-    [SerializeField] private float money;
+    [SerializeField] private float _money;
 
+    public float Money => _money;
     public event Action OnMoneyChanged;
-
     public static Wallet Instance { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public void AddMoney(float amount)
     {
-        money += amount;
+        _money += amount;
         OnMoneyChanged?.Invoke();
     }
 
     public void SpendMoney(float amount)
     {
-        money -= amount;
+        _money -= amount;
         OnMoneyChanged?.Invoke();
     }
 
     public bool HasEnoughMoney(float amount)
     {
-        return money >= amount;
+        return _money >= amount;
     }
 
     public Wallet GetWallet()
@@ -38,13 +45,11 @@ public class Wallet : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        return money;
+        return _money;
     }
 
     public void RestoreState(object state)
     {
-        money = (float)state;
+        _money = (float)state;
     }
-
-    public float Money => money;
 }

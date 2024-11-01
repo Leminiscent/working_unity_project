@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class MasterController : MonoBehaviour, Interactable, ISavable
+public class MasterController : MonoBehaviour, IInteractable, ISavable
 {
     [SerializeField] private string _name;
     [SerializeField] private Sprite _sprite;
