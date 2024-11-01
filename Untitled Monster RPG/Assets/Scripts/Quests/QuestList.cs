@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class QuestList : MonoBehaviour, ISavable
 {
-    private List<Quest> quests = new();
+    private List<Quest> _quests = new();
 
     public event Action OnUpdated;
 
     public void AddQuest(Quest quest)
     {
-        if (!quests.Contains(quest))
+        if (!_quests.Contains(quest))
         {
-            quests.Add(quest);
+            _quests.Add(quest);
         }
 
         OnUpdated?.Invoke();
@@ -21,14 +21,14 @@ public class QuestList : MonoBehaviour, ISavable
 
     public bool IsStarted(string questName)
     {
-        QuestStatus? questStatus = quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
+        QuestStatus? questStatus = _quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
 
         return questStatus == QuestStatus.Started || questStatus == QuestStatus.Completed;
     }
 
     public bool IsCompleted(string questName)
     {
-        QuestStatus? questStatus = quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
+        QuestStatus? questStatus = _quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
 
         return questStatus == QuestStatus.Completed;
     }
@@ -40,16 +40,14 @@ public class QuestList : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
-        return quests.Select(static q => q.GetSaveData()).ToList();
+        return _quests.Select(static q => q.GetSaveData()).ToList();
     }
 
     public void RestoreState(object state)
     {
-        List<QuestSaveData> saveData = state as List<QuestSaveData>;
-
-        if (saveData != null)
+        if (state is List<QuestSaveData> saveData)
         {
-            quests = saveData.Select(static q => new Quest(q)).ToList();
+            _quests = saveData.Select(static q => new Quest(q)).ToList();
             OnUpdated?.Invoke();
         }
     }

@@ -23,9 +23,8 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     {
         foreach (ImageSlot slot in storageSlots)
         {
-            StorageSlotUI storageSlot = slot.GetComponent<StorageSlotUI>();
 
-            if (storageSlot != null)
+            if (slot.TryGetComponent(out StorageSlotUI storageSlot))
             {
                 depotSlots.Add(storageSlot);
             }

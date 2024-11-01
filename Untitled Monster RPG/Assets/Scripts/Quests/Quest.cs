@@ -16,8 +16,8 @@ public class Quest
     {
         QuestSaveData saveData = new()
         {
-            name = Base.name,
-            status = Status
+            Name = Base.name,
+            Status = Status
         };
 
         return saveData;
@@ -25,8 +25,8 @@ public class Quest
 
     public Quest(QuestSaveData saveData)
     {
-        Base = QuestDB.GetObjectByName(saveData.name);
-        Status = saveData.status;
+        Base = QuestDB.GetObjectByName(saveData.Name);
+        Status = saveData.Status;
     }
 
     public IEnumerator StartQuest()
@@ -82,8 +82,13 @@ public class Quest
 [System.Serializable]
 public class QuestSaveData
 {
-    public string name;
-    public QuestStatus status;
+    public string Name;
+    public QuestStatus Status;
 }
 
-public enum QuestStatus { None, Started, Completed }
+public enum QuestStatus
+{
+    None,
+    Started,
+    Completed
+}

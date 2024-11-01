@@ -69,14 +69,14 @@ public class GameMenuState : State<GameController>
     private IEnumerator SaveSelected()
     {
         yield return Fader.Instance.FadeIn(0.5f);
-        SavingSystem.i.Save("saveSlot1");
+        SavingSystem.Instance.Save("saveSlot1");
         yield return Fader.Instance.FadeOut(0.5f);
     }
 
     private IEnumerator LoadSelected()
     {
         yield return Fader.Instance.FadeIn(0.5f);
-        SavingSystem.i.Load("saveSlot1");
+        SavingSystem.Instance.Load("saveSlot1");
         yield return Fader.Instance.FadeOut(0.5f);
     }
 

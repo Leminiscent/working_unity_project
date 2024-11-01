@@ -2,64 +2,62 @@ using UnityEngine;
 
 public class QuestObject : MonoBehaviour
 {
-    [SerializeField] private QuestBase questToCheck;
-    [SerializeField] private ObjectActions onStart;
-    [SerializeField] private ObjectActions onComplete;
-    private QuestList questList;
+    [SerializeField] private QuestBase _questToCheck;
+    [SerializeField] private ObjectActions _onStart;
+    [SerializeField] private ObjectActions _onComplete;
+
+    private QuestList _questList;
 
     private void Start()
     {
-        questList = QuestList.GetQuestList();
-        questList.OnUpdated += UpdateObjectStatus;
+        _questList = QuestList.GetQuestList();
+        _questList.OnUpdated += UpdateObjectStatus;
 
         UpdateObjectStatus();
     }
 
     private void OnDestroy()
     {
-        questList.OnUpdated -= UpdateObjectStatus;
+        _questList.OnUpdated -= UpdateObjectStatus;
     }
 
     public void UpdateObjectStatus()
     {
-        if (onStart != ObjectActions.DoNothing && questList.IsStarted(questToCheck.Name))
+        if (_onStart != ObjectActions.DoNothing && _questList.IsStarted(_questToCheck.Name))
         {
             foreach (Transform child in transform)
             {
-                if (onStart == ObjectActions.Enable)
+                if (_onStart == ObjectActions.Enable)
                 {
                     child.gameObject.SetActive(true);
 
-                    SavableEntity savable = child.GetComponent<SavableEntity>();
-
-                    if (savable != null)
+                    if (child.TryGetComponent(out SavableEntity savable))
                     {
-                        SavingSystem.i.RestoreEntity(savable);
+                        SavingSystem.Instance.RestoreEntity(savable);
                     }
                 }
-                else if (onStart == ObjectActions.Disable)
+                else if (_onStart == ObjectActions.Disable)
                 {
                     child.gameObject.SetActive(false);
                 }
             }
         }
 
-        if (onComplete != ObjectActions.DoNothing && questList.IsCompleted(questToCheck.Name))
+        if (_onComplete != ObjectActions.DoNothing && _questList.IsCompleted(_questToCheck.Name))
         {
             foreach (Transform child in transform)
             {
-                if (onComplete == ObjectActions.Enable)
+                if (_onComplete == ObjectActions.Enable)
                 {
                     child.gameObject.SetActive(true);
 
-                    SavableEntity savable = child.GetComponent<SavableEntity>();
 
-                    if (savable != null)
+                    if (child.TryGetComponent(out SavableEntity savable))
                     {
-                        SavingSystem.i.RestoreEntity(savable);
+                        SavingSystem.Instance.RestoreEntity(savable);
                     }
                 }
-                else if (onComplete == ObjectActions.Disable)
+                else if (_onComplete == ObjectActions.Disable)
                 {
                     child.gameObject.SetActive(false);
                 }
@@ -68,4 +66,9 @@ public class QuestObject : MonoBehaviour
     }
 }
 
-public enum ObjectActions { DoNothing, Enable, Disable }
+public enum ObjectActions
+{
+    DoNothing,
+    Enable,
+    Disable
+}

@@ -5,19 +5,27 @@ using UnityEngine;
 
 public class SavingSystem : MonoBehaviour
 {
-    public static SavingSystem i { get; private set; }
+    private Dictionary<string, object> _gameState = new();
+
+    public static SavingSystem Instance { get; private set; }
+
     private void Awake()
     {
-        i = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
-
-    private Dictionary<string, object> gameState = new();
 
     public void CaptureEntityStates(List<SavableEntity> savableEntities)
     {
         foreach (SavableEntity savable in savableEntities)
         {
-            gameState[savable.UniqueId] = savable.CaptureState();
+            _gameState[savable.UniqueId] = savable.CaptureState();
         }
     }
 
@@ -26,23 +34,23 @@ public class SavingSystem : MonoBehaviour
         foreach (SavableEntity savable in savableEntities)
         {
             string id = savable.UniqueId;
-            if (gameState.ContainsKey(id))
+            if (_gameState.ContainsKey(id))
             {
-                savable.RestoreState(gameState[id]);
+                savable.RestoreState(_gameState[id]);
             }
         }
     }
 
     public void Save(string saveFile)
     {
-        CaptureState(gameState);
-        SaveFile(saveFile, gameState);
+        CaptureState(_gameState);
+        SaveFile(saveFile, _gameState);
     }
 
     public void Load(string saveFile)
     {
-        gameState = LoadFile(saveFile);
-        RestoreState(gameState);
+        _gameState = LoadFile(saveFile);
+        RestoreState(_gameState);
     }
 
     public void Delete(string saveFile)
@@ -74,9 +82,9 @@ public class SavingSystem : MonoBehaviour
 
     public void RestoreEntity(SavableEntity entity)
     {
-        if (gameState.ContainsKey(entity.UniqueId))
+        if (_gameState.ContainsKey(entity.UniqueId))
         {
-            entity.RestoreState(gameState[entity.UniqueId]);
+            entity.RestoreState(_gameState[entity.UniqueId]);
         }
     }
 
@@ -85,12 +93,10 @@ public class SavingSystem : MonoBehaviour
         string path = GetPath(saveFile);
         print($"saving to {path}");
 
-        using (FileStream fs = File.Open(path, FileMode.Create))
-        {
-            // Serialize our object
-            BinaryFormatter binaryFormatter = new();
-            binaryFormatter.Serialize(fs, state);
-        }
+        using FileStream fs = File.Open(path, FileMode.Create);
+        // Serialize our object
+        BinaryFormatter binaryFormatter = new();
+        binaryFormatter.Serialize(fs, state);
     }
 
     private Dictionary<string, object> LoadFile(string saveFile)
@@ -101,12 +107,10 @@ public class SavingSystem : MonoBehaviour
             return new Dictionary<string, object>();
         }
 
-        using (FileStream fs = File.Open(path, FileMode.Open))
-        {
-            // Deserialize our object
-            BinaryFormatter binaryFormatter = new();
-            return (Dictionary<string, object>)binaryFormatter.Deserialize(fs);
-        }
+        using FileStream fs = File.Open(path, FileMode.Open);
+        // Deserialize our object
+        BinaryFormatter binaryFormatter = new();
+        return (Dictionary<string, object>)binaryFormatter.Deserialize(fs);
     }
 
     private string GetPath(string saveFile)

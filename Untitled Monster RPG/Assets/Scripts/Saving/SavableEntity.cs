@@ -6,10 +6,11 @@ using UnityEngine;
 [ExecuteAlways]
 public class SavableEntity : MonoBehaviour
 {
-    [SerializeField] private string uniqueId = "";
-    private static Dictionary<string, SavableEntity> globalLookup = new();
+    [SerializeField] private string _uniqueId = "";
 
-    public string UniqueId => uniqueId;
+    private static Dictionary<string, SavableEntity> _globalLookup = new();
+
+    public string UniqueId => _uniqueId;
 
     // Used to capture state of the gameobject on which the savableEntity is attached
     public object CaptureState()
@@ -48,7 +49,7 @@ public class SavableEntity : MonoBehaviour
         }
 
         // don't generate Id for prefabs (prefab scene will have path as null)
-        if (String.IsNullOrEmpty(gameObject.scene.path))
+        if (string.IsNullOrEmpty(gameObject.scene.path))
         {
             return;
         }
@@ -56,39 +57,39 @@ public class SavableEntity : MonoBehaviour
         SerializedObject serializedObject = new(this);
         SerializedProperty property = serializedObject.FindProperty("uniqueId");
 
-        if (String.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
+        if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
         {
             property.stringValue = Guid.NewGuid().ToString();
             serializedObject.ApplyModifiedProperties();
         }
 
-        globalLookup[property.stringValue] = this;
+        _globalLookup[property.stringValue] = this;
     }
 #endif
 
     private bool IsUnique(string candidate)
     {
-        if (!globalLookup.ContainsKey(candidate))
+        if (!_globalLookup.ContainsKey(candidate))
         {
             return true;
         }
 
-        if (globalLookup[candidate] == this)
+        if (_globalLookup[candidate] == this)
         {
             return true;
         }
 
         // Handle scene unloading cases
-        if (globalLookup[candidate] == null)
+        if (_globalLookup[candidate] == null)
         {
-            globalLookup.Remove(candidate);
+            _globalLookup.Remove(candidate);
             return true;
         }
 
         // Handle edge cases like designer manually changing the UUID
-        if (globalLookup[candidate].UniqueId != candidate)
+        if (_globalLookup[candidate].UniqueId != candidate)
         {
-            globalLookup.Remove(candidate);
+            _globalLookup.Remove(candidate);
             return true;
         }
 
