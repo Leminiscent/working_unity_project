@@ -93,13 +93,9 @@ public class DeputyController : MonoBehaviour, ISavable
         {
             return new Vector2(Mathf.Sign(direction.x), 0);
         }
-        else if (Mathf.Abs(direction.y) > Mathf.Epsilon)
-        {
-            return new Vector2(0, Mathf.Sign(direction.y));
-        }
         else
         {
-            return Vector2.zero;
+            return Mathf.Abs(direction.y) > Mathf.Epsilon ? new Vector2(0, Mathf.Sign(direction.y)) : Vector2.zero;
         }
     }
 

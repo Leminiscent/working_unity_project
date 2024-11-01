@@ -10,28 +10,16 @@ public class SkillBook : ItemBase
     {
         get
         {
-            if (!isUnlimited)
-            {
-                return $"{move.Name} Skill Book";
-            }
-            else
-            {
-                return $"Ultimate {move.Name} Skill Book";
-            }
+            return !isUnlimited ? $"{move.Name} Skill Book" : $"Ultimate {move.Name} Skill Book";
         }
     }
     public override string Description
     {
         get
         {
-            if (!isUnlimited)
-            {
-                return $"A book that when read by a monster, teaches it the move {move.Name}. The book will be destroyed after a single use.";
-            }
-            else
-            {
-                return $"A book that when read by a monster, teaches it the move {move.Name}.";
-            }
+            return !isUnlimited
+                ? $"A book that when read by a monster, teaches it the move {move.Name}. The book will be destroyed after a single use."
+                : $"A book that when read by a monster, teaches it the move {move.Name}.";
         }
     }
 

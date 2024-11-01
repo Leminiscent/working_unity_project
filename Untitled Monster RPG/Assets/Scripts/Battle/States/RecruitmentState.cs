@@ -134,13 +134,11 @@ public class RecruitmentState : State<BattleSystem>
         {
             return _enemyMonster.Base.Name + " seems to like your answer.";
         }
-        else if (affinityScore == -1)
+        else
         {
-            return _enemyMonster.Base.Name + " seems to dislike your answer...";
-        }
-        else // affinityScore == -2
-        {
-            return _enemyMonster.Base.Name + " seems to hate your answer!";
+            return affinityScore == -1
+                ? _enemyMonster.Base.Name + " seems to dislike your answer..."
+                : _enemyMonster.Base.Name + " seems to hate your answer!";
         }
     }
 

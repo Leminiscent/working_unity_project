@@ -34,14 +34,9 @@ public class BattleDialogueBox : MonoBehaviour
             yield return new WaitForSeconds(1f / _lettersPerSecond);
         }
 
-        if (waitForInput)
-        {
-            yield return new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
-        }
-        else
-        {
-            yield return new WaitForSeconds(0.75f);
-        }
+        yield return waitForInput
+            ? new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
+            : new WaitForSeconds(0.75f);
     }
 
     public IEnumerator SetAndTypeDialogue(string setDialogue, string typeDialogue, bool waitForInput = false)
@@ -53,14 +48,9 @@ public class BattleDialogueBox : MonoBehaviour
             yield return new WaitForSeconds(1f / _lettersPerSecond);
         }
 
-        if (waitForInput)
-        {
-            yield return new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X));
-        }
-        else
-        {
-            yield return new WaitForSeconds(0.75f);
-        }
+        yield return waitForInput
+            ? new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
+            : new WaitForSeconds(0.75f);
     }
 
     public void EnableDialogueText(bool enabled)

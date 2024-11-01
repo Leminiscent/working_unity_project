@@ -38,13 +38,9 @@ public class CharacterAnimator : MonoBehaviour
             {
                 return FacingDirection.Up;
             }
-            else if (_currentAnim == _walkDownAnim)
-            {
-                return FacingDirection.Down;
-            }
             else
             {
-                return _defaultDirection;
+                return _currentAnim == _walkDownAnim ? FacingDirection.Down : _defaultDirection;
             }
         }
         set

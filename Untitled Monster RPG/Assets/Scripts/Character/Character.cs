@@ -69,7 +69,7 @@ public class Character : MonoBehaviour
 
         _animator.IsJumping = true;
 
-        Vector3 jumpDest = transform.position + new Vector3(moveDir.x, moveDir.y) * 2;
+        Vector3 jumpDest = transform.position + (new Vector3(moveDir.x, moveDir.y) * 2);
 
         yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
@@ -90,11 +90,7 @@ public class Character : MonoBehaviour
         Vector3 dir = diff.normalized;
         int collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer;
 
-        if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer) == true)
-        {
-            return false;
-        }
-        return true;
+        return !Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer);
     }
 
     private Ledge CheckForLedge(Vector3 targetPos)

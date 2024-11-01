@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
 
     private void EndBattle(bool won)
     {
-        if (master != null && won == true)
+        if (master != null && won)
         {
             master.BattleLost();
             master = null;

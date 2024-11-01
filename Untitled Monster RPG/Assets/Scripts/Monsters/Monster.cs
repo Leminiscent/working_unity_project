@@ -231,11 +231,7 @@ public class Monster
 
     public bool HasType(MonsterType type)
     {
-        if ((_base.Type1 == type) || (_base.Type2 == type))
-        {
-            return true;
-        }
-        return false;
+        return (_base.Type1 == type) || (_base.Type2 == type);
     }
 
     public Transformation CheckForTransformation()

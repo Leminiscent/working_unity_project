@@ -105,14 +105,7 @@ public class Inventory : MonoBehaviour, ISavable
         List<ItemSlot> currentSlots = GetSlotsByCategory(category);
         ItemSlot itemSlot = currentSlots.FirstOrDefault(slot => slot.Item == item);
 
-        if (itemSlot != null)
-        {
-            return itemSlot.Count;
-        }
-        else
-        {
-            return 0;
-        }
+        return itemSlot != null ? itemSlot.Count : 0;
     }
 
     public void RemoveItem(ItemBase item, int count = 1)
@@ -151,13 +144,9 @@ public class Inventory : MonoBehaviour, ISavable
         {
             return ItemCategory.TransformationItems;
         }
-        else if (item is SkillBook)
-        {
-            return ItemCategory.SkillBooks;
-        }
         else
         {
-            return ItemCategory.KeyItems;
+            return item is SkillBook ? ItemCategory.SkillBooks : ItemCategory.KeyItems;
         }
     }
 

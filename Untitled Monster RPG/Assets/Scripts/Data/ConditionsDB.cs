@@ -211,13 +211,9 @@ public class ConditionsDB
         {
             return 2f;
         }
-        else if (condition.ID == ConditionID.Psn || condition.ID == ConditionID.Brn || condition.ID == ConditionID.Par)
-        {
-            return 1.5f;
-        }
         else
         {
-            return 1f;
+            return condition.ID == ConditionID.Psn || condition.ID == ConditionID.Brn || condition.ID == ConditionID.Par ? 1.5f : 1f;
         }
     }
 }
