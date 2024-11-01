@@ -189,7 +189,7 @@ public class RecruitmentState : State<BattleSystem>
 
     private void HandleChoiceBoxInput()
     {
-        const float selectionSpeed = 5f;
+        const float SELECTION_SPEED = 5f;
         float v = Input.GetAxisRaw("Vertical");
 
         if (_selectionTimer > 0)
@@ -200,7 +200,7 @@ public class RecruitmentState : State<BattleSystem>
         if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
         {
             _yesSelected = !_yesSelected;
-            _selectionTimer = 1 / selectionSpeed;
+            _selectionTimer = 1 / SELECTION_SPEED;
             _dialogueBox.UpdateChoiceBox(_yesSelected);
         }
 
