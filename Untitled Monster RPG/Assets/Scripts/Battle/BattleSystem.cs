@@ -32,7 +32,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private Sprite _mountainBackground;
     [SerializeField] private Sprite _mountainCloudsBackground;
     [SerializeField] private Sprite _wastelandBackground;
-    
+
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
 

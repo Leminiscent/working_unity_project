@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour, ISavable
     public ItemBase UseItem(int itemIndex, Monster selectedMonster, int selectedCategory)
     {
         ItemBase item = GetItem(itemIndex, selectedCategory);
-        
+
         return UseItem(item, selectedMonster);
     }
 

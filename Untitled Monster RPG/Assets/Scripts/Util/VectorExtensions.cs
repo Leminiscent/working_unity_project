@@ -18,7 +18,7 @@ public static class VectorExtensions
         foreach (Vector2 dir in compass2D)
         {
             float t = Vector2.Dot(org, dir);
-            
+
             if (t > maxDot)
             {
                 ret = dir;

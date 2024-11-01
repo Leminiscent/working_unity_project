@@ -61,7 +61,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
         moveVector = new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
 
         yield return _character.Move(moveVector);
-        
+
         yield return DialogueManager.Instance.ShowDialogue(_dialogue);
         GameController.Instance.StateMachine.Pop();
         GameController.Instance.StartMasterBattle(this);

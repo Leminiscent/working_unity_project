@@ -4,8 +4,9 @@ using Utils.StateMachine;
 
 public class ForgettingMoveState : State<GameController>
 {
-    [SerializeField] private MoveForgettingUI moveForgettingUI;
-    private GameController gameController;
+    [SerializeField] private MoveForgettingUI _moveForgettingUI;
+
+    private GameController _gameController;
 
     public List<MoveBase> CurrentMoves { get; set; }
     public MoveBase NewMove { get; set; }
@@ -26,35 +27,35 @@ public class ForgettingMoveState : State<GameController>
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
+        _gameController = owner;
         Selection = 0;
-        moveForgettingUI.gameObject.SetActive(true);
-        moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
-        moveForgettingUI.OnSelected += OnMoveSelected;
-        moveForgettingUI.OnBack += OnBack;
+        _moveForgettingUI.gameObject.SetActive(true);
+        _moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
+        _moveForgettingUI.OnSelected += OnMoveSelected;
+        _moveForgettingUI.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        moveForgettingUI.HandleUpdate();
+        _moveForgettingUI.HandleUpdate();
     }
 
     public override void Exit()
     {
-        moveForgettingUI.gameObject.SetActive(false);
-        moveForgettingUI.OnSelected -= OnMoveSelected;
-        moveForgettingUI.OnBack -= OnBack;
+        _moveForgettingUI.gameObject.SetActive(false);
+        _moveForgettingUI.OnSelected -= OnMoveSelected;
+        _moveForgettingUI.OnBack -= OnBack;
     }
 
     private void OnMoveSelected(int selection)
     {
         Selection = selection;
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 
     private void OnBack()
     {
         Selection = -1;
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 }

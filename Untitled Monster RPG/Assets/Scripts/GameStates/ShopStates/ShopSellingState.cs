@@ -8,7 +8,7 @@ public class ShopSellingState : State<GameController>
     [SerializeField] private InventoryUI _playerInventoryUI;
     [SerializeField] private WalletUI _walletUI;
     [SerializeField] private CountSelectorUI _countSelectorUI;
-    
+
     private GameController _gameController;
     private Inventory _playerInventory;
 

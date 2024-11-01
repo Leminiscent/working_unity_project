@@ -3,7 +3,7 @@ using Utils.StateMachine;
 
 public class FreeRoamState : State<GameController>
 {
-    private GameController gameController;
+    private GameController _gameController;
 
     public static FreeRoamState Instance { get; private set; }
 
@@ -21,7 +21,7 @@ public class FreeRoamState : State<GameController>
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
+        _gameController = owner;
     }
 
     public override void Execute()
@@ -30,7 +30,7 @@ public class FreeRoamState : State<GameController>
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            gameController.StateMachine.Push(GameMenuState.Instance);
+            _gameController.StateMachine.Push(GameMenuState.Instance);
         }
     }
 }

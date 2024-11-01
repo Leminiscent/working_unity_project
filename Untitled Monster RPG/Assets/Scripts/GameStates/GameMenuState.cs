@@ -4,8 +4,9 @@ using Utils.StateMachine;
 
 public class GameMenuState : State<GameController>
 {
-    [SerializeField] private MenuController menuController;
-    private GameController gameController;
+    [SerializeField] private MenuController _menuController;
+
+    private GameController _gameController;
 
     public static GameMenuState Instance { get; private set; }
 
@@ -23,37 +24,37 @@ public class GameMenuState : State<GameController>
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
-        menuController.gameObject.SetActive(true);
-        menuController.OnSelected += OnMenuItemSelected;
-        menuController.OnBack += OnBack;
+        _gameController = owner;
+        _menuController.gameObject.SetActive(true);
+        _menuController.OnSelected += OnMenuItemSelected;
+        _menuController.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        menuController.HandleUpdate();
+        _menuController.HandleUpdate();
     }
 
     public override void Exit()
     {
-        menuController.gameObject.SetActive(false);
-        menuController.OnSelected -= OnMenuItemSelected;
-        menuController.OnBack -= OnBack;
+        _menuController.gameObject.SetActive(false);
+        _menuController.OnSelected -= OnMenuItemSelected;
+        _menuController.OnBack -= OnBack;
     }
 
     private void OnMenuItemSelected(int selection)
     {
         if (selection == 0)
         {
-            gameController.StateMachine.Push(PartyState.Instance);
+            _gameController.StateMachine.Push(PartyState.Instance);
         }
         else if (selection == 1)
         {
-            gameController.StateMachine.Push(InventoryState.Instance);
+            _gameController.StateMachine.Push(InventoryState.Instance);
         }
         else if (selection == 2)
         {
-            gameController.StateMachine.Push(StorageState.Instance);
+            _gameController.StateMachine.Push(StorageState.Instance);
         }
         else if (selection == 3)
         {
@@ -81,6 +82,6 @@ public class GameMenuState : State<GameController>
 
     private void OnBack()
     {
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 }

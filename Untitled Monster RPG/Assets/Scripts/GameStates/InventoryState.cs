@@ -4,9 +4,9 @@ using Utils.StateMachine;
 
 public class InventoryState : State<GameController>
 {
-    [SerializeField] private InventoryUI inventoryUI;
-    private GameController gameController;
-    private Inventory inventory;
+    [SerializeField] private InventoryUI _inventoryUI;
+
+    private GameController _gameController;
 
     public ItemBase SelectedItem { get; private set; }
     public static InventoryState Instance { get; private set; }
@@ -23,54 +23,49 @@ public class InventoryState : State<GameController>
         }
     }
 
-    private void Start()
-    {
-        inventory = Inventory.GetInventory();
-    }
-
     public override void Enter(GameController owner)
     {
-        gameController = owner;
-        inventoryUI.gameObject.SetActive(true);
+        _gameController = owner;
+        _inventoryUI.gameObject.SetActive(true);
         SelectedItem = null;
-        inventoryUI.OnSelected += OnItemSelected;
-        inventoryUI.OnBack += OnBack;
+        _inventoryUI.OnSelected += OnItemSelected;
+        _inventoryUI.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        inventoryUI.HandleUpdate();
+        _inventoryUI.HandleUpdate();
     }
 
     public override void Exit()
     {
-        inventoryUI.gameObject.SetActive(false);
-        inventoryUI.OnSelected -= OnItemSelected;
-        inventoryUI.OnBack -= OnBack;
+        _inventoryUI.gameObject.SetActive(false);
+        _inventoryUI.OnSelected -= OnItemSelected;
+        _inventoryUI.OnBack -= OnBack;
     }
 
     private void OnItemSelected(int selection)
     {
-        SelectedItem = inventoryUI.SelectedItem;
-        if (gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
+        SelectedItem = _inventoryUI.SelectedItem;
+        if (_gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
         {
             StartCoroutine(SelectMonsterAndUseItem());
         }
         else
         {
-            gameController.StateMachine.Pop();
+            _gameController.StateMachine.Pop();
         }
     }
 
     private void OnBack()
     {
         SelectedItem = null;
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 
     private IEnumerator SelectMonsterAndUseItem()
     {
-        State<GameController> prevState = gameController.StateMachine.GetPrevState();
+        State<GameController> prevState = _gameController.StateMachine.GetPrevState();
 
         if (!SelectedItem.DirectlyUsable)
         {
@@ -94,13 +89,13 @@ public class InventoryState : State<GameController>
             }
         }
 
-        yield return gameController.StateMachine.PushAndWait(PartyState.Instance);
+        yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);
 
         if (prevState == BattleState.Instance)
         {
             if (UseItemState.Instance.ItemUsed)
             {
-                gameController.StateMachine.Pop();
+                _gameController.StateMachine.Pop();
             }
         }
     }

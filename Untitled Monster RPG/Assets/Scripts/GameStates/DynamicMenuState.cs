@@ -4,9 +4,10 @@ using Utils.StateMachine;
 
 public class DynamicMenuState : State<GameController>
 {
-    [SerializeField] private DynamicMenuUI dynamicMenuUI;
-    [SerializeField] private TextSlot itemTextPrefab;
-    private GameController gameController;
+    [SerializeField] private DynamicMenuUI _dynamicMenuUI;
+    [SerializeField] private TextSlot _itemTextPrefab;
+
+    private GameController _gameController;
 
     public List<string> MenuItems { get; set; }
     public int? SelectedItem { get; private set; }
@@ -26,9 +27,9 @@ public class DynamicMenuState : State<GameController>
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
+        _gameController = owner;
 
-        foreach (Transform child in dynamicMenuUI.transform)
+        foreach (Transform child in _dynamicMenuUI.transform)
         {
             Destroy(child.gameObject);
         }
@@ -37,40 +38,40 @@ public class DynamicMenuState : State<GameController>
 
         foreach (string item in MenuItems)
         {
-            TextSlot itemTextSlot = Instantiate(itemTextPrefab, dynamicMenuUI.transform);
+            TextSlot itemTextSlot = Instantiate(_itemTextPrefab, _dynamicMenuUI.transform);
 
             itemTextSlot.SetText(item);
             itemTextSlots.Add(itemTextSlot);
         }
 
-        dynamicMenuUI.SetItems(itemTextSlots);
-        dynamicMenuUI.gameObject.SetActive(true);
-        dynamicMenuUI.OnSelected += OnItemSelected;
-        dynamicMenuUI.OnBack += OnBack;
+        _dynamicMenuUI.SetItems(itemTextSlots);
+        _dynamicMenuUI.gameObject.SetActive(true);
+        _dynamicMenuUI.OnSelected += OnItemSelected;
+        _dynamicMenuUI.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        dynamicMenuUI.HandleUpdate();
+        _dynamicMenuUI.HandleUpdate();
     }
 
     public override void Exit()
     {
-        dynamicMenuUI.ClearItems();
-        dynamicMenuUI.gameObject.SetActive(false);
-        dynamicMenuUI.OnSelected -= OnItemSelected;
-        dynamicMenuUI.OnBack -= OnBack;
+        _dynamicMenuUI.ClearItems();
+        _dynamicMenuUI.gameObject.SetActive(false);
+        _dynamicMenuUI.OnSelected -= OnItemSelected;
+        _dynamicMenuUI.OnBack -= OnBack;
     }
 
     private void OnItemSelected(int selection)
     {
         SelectedItem = selection;
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 
     private void OnBack()
     {
         SelectedItem = null;
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 }

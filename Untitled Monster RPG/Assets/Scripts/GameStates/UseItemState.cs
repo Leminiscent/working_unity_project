@@ -5,10 +5,11 @@ using Utils.StateMachine;
 
 public class UseItemState : State<GameController>
 {
-    [SerializeField] private PartyScreen partyScreen;
-    [SerializeField] private InventoryUI inventoryUI;
-    private GameController gameController;
-    private Inventory inventory;
+    [SerializeField] private PartyScreen _partyScreen;
+    [SerializeField] private InventoryUI _inventoryUI;
+    
+    private GameController _gameController;
+    private Inventory _inventory;
 
     public bool ItemUsed { get; private set; }
     public static UseItemState Instance { get; private set; }
@@ -24,12 +25,12 @@ public class UseItemState : State<GameController>
             Instance = this;
         }
 
-        inventory = Inventory.GetInventory();
+        _inventory = Inventory.GetInventory();
     }
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
+        _gameController = owner;
         ItemUsed = false;
 
         StartCoroutine(UseItem());
@@ -37,8 +38,8 @@ public class UseItemState : State<GameController>
 
     private IEnumerator UseItem()
     {
-        ItemBase item = inventoryUI.SelectedItem;
-        Monster monster = partyScreen.SelectedMember;
+        ItemBase item = _inventoryUI.SelectedItem;
+        Monster monster = _partyScreen.SelectedMember;
 
         if (item is SkillBook)
         {
@@ -57,12 +58,12 @@ public class UseItemState : State<GameController>
                 else
                 {
                     yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
-                    gameController.StateMachine.Pop();
+                    _gameController.StateMachine.Pop();
                     yield break;
                 }
             }
 
-            ItemBase usedItem = inventory.UseItem(item, monster);
+            ItemBase usedItem = _inventory.UseItem(item, monster);
 
             if (usedItem != null)
             {
@@ -75,26 +76,26 @@ public class UseItemState : State<GameController>
             }
             else
             {
-                if (inventoryUI.SelectedCategory == (int)ItemCategory.RecoveryItems)
+                if (_inventoryUI.SelectedCategory == (int)ItemCategory.RecoveryItems)
                 {
                     yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
                 }
             }
         }
 
-        gameController.StateMachine.Pop();
+        _gameController.StateMachine.Pop();
     }
 
     private IEnumerator HandleSkillBooks()
     {
-        SkillBook skillBook = inventoryUI.SelectedItem as SkillBook;
+        SkillBook skillBook = _inventoryUI.SelectedItem as SkillBook;
 
         if (skillBook == null)
         {
             yield break;
         }
 
-        Monster monster = partyScreen.SelectedMember;
+        Monster monster = _partyScreen.SelectedMember;
 
         if (monster.HasMove(skillBook.Move))
         {
@@ -120,7 +121,7 @@ public class UseItemState : State<GameController>
             yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", true, false);
             ForgettingMoveState.Instance.NewMove = skillBook.Move;
             ForgettingMoveState.Instance.CurrentMoves = monster.Moves.Select(static m => m.Base).ToList();
-            yield return gameController.StateMachine.PushAndWait(ForgettingMoveState.Instance);
+            yield return _gameController.StateMachine.PushAndWait(ForgettingMoveState.Instance);
 
             int moveIndex = ForgettingMoveState.Instance.Selection;
 

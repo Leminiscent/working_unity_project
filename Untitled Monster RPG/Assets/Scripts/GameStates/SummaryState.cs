@@ -4,14 +4,15 @@ using Utils.StateMachine;
 
 public class SummaryState : State<GameController>
 {
-    [SerializeField] private SummaryScreenUI summaryScreenUI;
-    private int selectedPage = 0;
-    private List<Monster> playerParty;
-    private GameController gameController;
+    [SerializeField] private SummaryScreenUI _summaryScreenUI;
+
+    private int _selectedPage = 0;
+    private List<Monster> _playerParty;
+    private GameController _gameController;
 
     public int SelectedMonsterIndex { get; set; }
     public static SummaryState Instance { get; set; }
-    
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -26,33 +27,32 @@ public class SummaryState : State<GameController>
 
     public override void Enter(GameController owner)
     {
-        gameController = owner;
-        playerParty = PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
-        summaryScreenUI.gameObject.SetActive(true);
-        summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
-        summaryScreenUI.ShowPage(selectedPage);
-
+        _gameController = owner;
+        _playerParty = PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
+        _summaryScreenUI.gameObject.SetActive(true);
+        _summaryScreenUI.SetBasicDetails(_playerParty[SelectedMonsterIndex]);
+        _summaryScreenUI.ShowPage(_selectedPage);
     }
 
     public override void Execute()
     {
-        if (!summaryScreenUI.InMoveSelection)
+        if (!_summaryScreenUI.InMoveSelection)
         {
             // Page Selection
-            int prevPage = selectedPage;
+            int prevPage = _selectedPage;
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                selectedPage = (selectedPage + 1) % 2;
+                _selectedPage = (_selectedPage + 1) % 2;
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                selectedPage = Mathf.Abs(selectedPage - 1) % 2;
+                _selectedPage = Mathf.Abs(_selectedPage - 1) % 2;
             }
 
-            if (prevPage != selectedPage)
+            if (prevPage != _selectedPage)
             {
-                summaryScreenUI.ShowPage(selectedPage);
+                _summaryScreenUI.ShowPage(_selectedPage);
             }
 
             // Monster Selection
@@ -62,7 +62,7 @@ public class SummaryState : State<GameController>
             {
                 SelectedMonsterIndex++;
 
-                if (SelectedMonsterIndex >= playerParty.Count)
+                if (SelectedMonsterIndex >= _playerParty.Count)
                 {
                     SelectedMonsterIndex = 0;
                 }
@@ -73,42 +73,42 @@ public class SummaryState : State<GameController>
 
                 if (SelectedMonsterIndex < 0)
                 {
-                    SelectedMonsterIndex = playerParty.Count - 1;
+                    SelectedMonsterIndex = _playerParty.Count - 1;
                 }
             }
 
             if (prevIndex != SelectedMonsterIndex)
             {
-                summaryScreenUI.SetBasicDetails(playerParty[SelectedMonsterIndex]);
-                summaryScreenUI.ShowPage(selectedPage);
+                _summaryScreenUI.SetBasicDetails(_playerParty[SelectedMonsterIndex]);
+                _summaryScreenUI.ShowPage(_selectedPage);
             }
         }
 
         if (Input.GetButtonDown("Action"))
         {
-            if (selectedPage == 1 && !summaryScreenUI.InMoveSelection)
+            if (_selectedPage == 1 && !_summaryScreenUI.InMoveSelection)
             {
-                summaryScreenUI.InMoveSelection = true;
+                _summaryScreenUI.InMoveSelection = true;
             }
         }
         else if (Input.GetButtonDown("Back"))
         {
-            if (summaryScreenUI.InMoveSelection)
+            if (_summaryScreenUI.InMoveSelection)
             {
-                summaryScreenUI.InMoveSelection = false;
+                _summaryScreenUI.InMoveSelection = false;
             }
             else
             {
-                gameController.StateMachine.Pop();
+                _gameController.StateMachine.Pop();
                 return;
             }
         }
 
-        summaryScreenUI.HandleUpdate();
+        _summaryScreenUI.HandleUpdate();
     }
 
     public override void Exit()
     {
-        summaryScreenUI.gameObject.SetActive(false);
+        _summaryScreenUI.gameObject.SetActive(false);
     }
 }

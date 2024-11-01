@@ -7,7 +7,7 @@ public class Merchant : MonoBehaviour
     [SerializeField] private List<ItemBase> _itemsForSale;
 
     public List<ItemBase> ItemsForSale => _itemsForSale;
-    
+
     public IEnumerator Trade()
     {
         ShopMenuState.Instance.AvailableItems = _itemsForSale;
