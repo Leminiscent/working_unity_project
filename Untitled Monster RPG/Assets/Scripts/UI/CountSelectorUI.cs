@@ -5,53 +5,54 @@ using UnityEngine;
 
 public class CountSelectorUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI countText;
-    [SerializeField] private TextMeshProUGUI priceText;
-    private bool selected;
-    private int currentCount;
-    private int maxCount;
-    private float pricePerUnit;
+    [SerializeField] private TextMeshProUGUI _countText;
+    [SerializeField] private TextMeshProUGUI _priceText;
+
+    private bool _selected;
+    private int _currentCount;
+    private int _maxCount;
+    private float _pricePerUnit;
 
     public IEnumerator ShowSelector(int maxCount, float pricePerUnit, Action<int> onCountSelected)
     {
-        this.maxCount = maxCount;
-        this.pricePerUnit = pricePerUnit;
+        _maxCount = maxCount;
+        _pricePerUnit = pricePerUnit;
 
-        selected = false;
-        currentCount = 1;
+        _selected = false;
+        _currentCount = 1;
         gameObject.SetActive(true);
         SetValues();
-        yield return new WaitUntil(() => selected);
-        onCountSelected?.Invoke(currentCount);
+        yield return new WaitUntil(() => _selected);
+        onCountSelected?.Invoke(_currentCount);
         gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        int prevCount = currentCount;
+        int prevCount = _currentCount;
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            ++currentCount;
+            ++_currentCount;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            --currentCount;
+            --_currentCount;
         }
-        currentCount = Mathf.Clamp(currentCount, 1, maxCount);
-        if (currentCount != prevCount)
+        _currentCount = Mathf.Clamp(_currentCount, 1, _maxCount);
+        if (_currentCount != prevCount)
         {
             SetValues();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            selected = true;
+            _selected = true;
         }
     }
 
     private void SetValues()
     {
-        countText.text = $"x {currentCount}";
-        priceText.text = $"{currentCount * pricePerUnit} GP";
+        _countText.text = $"x {_currentCount}";
+        _priceText.text = $"{_currentCount * _pricePerUnit} GP";
     }
 }

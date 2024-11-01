@@ -8,53 +8,54 @@ using Utils.GenericSelectionUI;
 public class SummaryScreenUI : SelectionUI<TextSlot>
 {
     [Header("Basic Details")]
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Image image;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private TextMeshProUGUI _levelText;
+    [SerializeField] private Image _image;
 
     [Header("Pages")]
-    [SerializeField] private TextMeshProUGUI pageNameText;
-    [SerializeField] private GameObject detailsPage;
-    [SerializeField] private GameObject movesPage;
+    [SerializeField] private TextMeshProUGUI _pageNameText;
+    [SerializeField] private GameObject _detailsPage;
+    [SerializeField] private GameObject _movesPage;
 
     [Header("Stats & Exp")]
-    [SerializeField] private TextMeshProUGUI hpText;
-    [SerializeField] private TextMeshProUGUI strengthText;
-    [SerializeField] private TextMeshProUGUI enduranceText;
-    [SerializeField] private TextMeshProUGUI intelligenceText;
-    [SerializeField] private TextMeshProUGUI fortitudeText;
-    [SerializeField] private TextMeshProUGUI agilityText;
-    [SerializeField] private TextMeshProUGUI expText;
-    [SerializeField] private TextMeshProUGUI expToNextLevelText;
-    [SerializeField] private Transform expBar;
+    [SerializeField] private TextMeshProUGUI _hpText;
+    [SerializeField] private TextMeshProUGUI _strengthText;
+    [SerializeField] private TextMeshProUGUI _enduranceText;
+    [SerializeField] private TextMeshProUGUI _intelligenceText;
+    [SerializeField] private TextMeshProUGUI _fortitudeText;
+    [SerializeField] private TextMeshProUGUI _agilityText;
+    [SerializeField] private TextMeshProUGUI _expText;
+    [SerializeField] private TextMeshProUGUI _expToNextLevelText;
+    [SerializeField] private Transform _expBar;
 
     [Header("Moves")]
-    [SerializeField] private List<TextMeshProUGUI> moveTypes;
-    [SerializeField] private List<TextMeshProUGUI> moveNames;
-    [SerializeField] private List<TextMeshProUGUI> moveSP;
-    [SerializeField] private TextMeshProUGUI moveDescriptionText;
-    [SerializeField] private TextMeshProUGUI movePowerText;
-    [SerializeField] private TextMeshProUGUI moveAccuracyText;
-    [SerializeField] private GameObject moveEffectsUI;
-    private List<TextSlot> moveSlots;
-    private Monster monster;
-    private bool inMoveSelection;
+    [SerializeField] private List<TextMeshProUGUI> _moveTypes;
+    [SerializeField] private List<TextMeshProUGUI> _moveNames;
+    [SerializeField] private List<TextMeshProUGUI> _moveSP;
+    [SerializeField] private TextMeshProUGUI _moveDescriptionText;
+    [SerializeField] private TextMeshProUGUI _movePowerText;
+    [SerializeField] private TextMeshProUGUI _moveAccuracyText;
+    [SerializeField] private GameObject _moveEffectsUI;
+
+    private List<TextSlot> _moveSlots;
+    private Monster _monster;
+    private bool _inMoveSelection;
 
     public bool InMoveSelection
     {
-        get => inMoveSelection;
+        get => _inMoveSelection;
         set
         {
-            inMoveSelection = value;
-            if (inMoveSelection)
+            _inMoveSelection = value;
+            if (_inMoveSelection)
             {
-                moveEffectsUI.SetActive(true);
-                SetItems(moveSlots.Take(monster.Moves.Count).ToList());
+                _moveEffectsUI.SetActive(true);
+                SetItems(_moveSlots.Take(_monster.Moves.Count).ToList());
             }
             else
             {
-                moveEffectsUI.SetActive(false);
-                moveDescriptionText.text = "";
+                _moveEffectsUI.SetActive(false);
+                _moveDescriptionText.text = "";
                 ClearItems();
             }
         }
@@ -62,80 +63,80 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     private void Start()
     {
-        moveSlots = moveNames.Select(static m => m.GetComponent<TextSlot>()).ToList();
-        moveEffectsUI.SetActive(false);
-        moveDescriptionText.text = "";
+        _moveSlots = _moveNames.Select(static m => m.GetComponent<TextSlot>()).ToList();
+        _moveEffectsUI.SetActive(false);
+        _moveDescriptionText.text = "";
     }
 
     public void SetBasicDetails(Monster monster)
     {
-        this.monster = monster;
+        _monster = monster;
 
-        nameText.text = monster.Base.Name;
-        levelText.text = "Lvl " + monster.Level;
-        image.sprite = monster.Base.Sprite;
+        _nameText.text = monster.Base.Name;
+        _levelText.text = "Lvl " + monster.Level;
+        _image.sprite = monster.Base.Sprite;
     }
 
     public void ShowPage(int index)
     {
         if (index == 0)
         {
-            pageNameText.text = "Monster Details";
-            detailsPage.SetActive(true);
-            movesPage.SetActive(false);
+            _pageNameText.text = "Monster Details";
+            _detailsPage.SetActive(true);
+            _movesPage.SetActive(false);
             SetStatsAndExp();
         }
         else if (index == 1)
         {
-            pageNameText.text = "Monster Moves";
-            movesPage.SetActive(true);
-            detailsPage.SetActive(false);
+            _pageNameText.text = "Monster Moves";
+            _movesPage.SetActive(true);
+            _detailsPage.SetActive(false);
             SetMoves();
         }
     }
 
     public void SetStatsAndExp()
     {
-        hpText.text = $"{monster.HP}/{monster.MaxHP}";
-        strengthText.text = "" + monster.Strength;
-        enduranceText.text = "" + monster.Endurance;
-        intelligenceText.text = "" + monster.Intelligence;
-        fortitudeText.text = "" + monster.Fortitude;
-        agilityText.text = "" + monster.Agility;
+        _hpText.text = $"{_monster.HP}/{_monster.MaxHP}";
+        _strengthText.text = "" + _monster.Strength;
+        _enduranceText.text = "" + _monster.Endurance;
+        _intelligenceText.text = "" + _monster.Intelligence;
+        _fortitudeText.text = "" + _monster.Fortitude;
+        _agilityText.text = "" + _monster.Agility;
 
-        expText.text = "" + monster.Exp;
+        _expText.text = "" + _monster.Exp;
 
-        if (monster.Level == GlobalSettings.Instance.MaxLevel)
+        if (_monster.Level == GlobalSettings.Instance.MaxLevel)
         {
-            expToNextLevelText.text = "0";
+            _expToNextLevelText.text = "0";
         }
         else
         {
-            int expToNextLevel = monster.Base.GetExpForLevel(monster.Level + 1) - monster.Exp;
+            int expToNextLevel = _monster.Base.GetExpForLevel(_monster.Level + 1) - _monster.Exp;
 
-            expToNextLevelText.text = "" + expToNextLevel;
+            _expToNextLevelText.text = "" + expToNextLevel;
         }
 
-        expBar.localScale = new Vector2(monster.GetNormalizedExp(), 1);
+        _expBar.localScale = new Vector2(_monster.GetNormalizedExp(), 1);
     }
 
     public void SetMoves()
     {
-        for (int i = 0; i < moveNames.Count; i++)
+        for (int i = 0; i < _moveNames.Count; i++)
         {
-            if (i < monster.Moves.Count)
+            if (i < _monster.Moves.Count)
             {
-                Move move = monster.Moves[i];
+                Move move = _monster.Moves[i];
 
-                moveTypes[i].text = move.Base.Type.ToString().ToUpper();
-                moveNames[i].text = move.Base.Name;
-                moveSP[i].text = $"SP {move.Sp}/{move.Base.SP}";
+                _moveTypes[i].text = move.Base.Type.ToString().ToUpper();
+                _moveNames[i].text = move.Base.Name;
+                _moveSP[i].text = $"SP {move.Sp}/{move.Base.SP}";
             }
             else
             {
-                moveTypes[i].text = "-";
-                moveNames[i].text = "-";
-                moveSP[i].text = "-";
+                _moveTypes[i].text = "-";
+                _moveNames[i].text = "-";
+                _moveSP[i].text = "-";
             }
         }
     }
@@ -152,10 +153,10 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         base.UpdateSelectionInUI();
 
-        Move move = monster.Moves[selectedItem];
+        Move move = _monster.Moves[selectedItem];
 
-        moveDescriptionText.text = move.Base.Description;
-        movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";
-        moveAccuracyText.text = move.Base.Accuracy > 0 ? move.Base.Accuracy.ToString() : "-";
+        _moveDescriptionText.text = move.Base.Description;
+        _movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";
+        _moveAccuracyText.text = move.Base.Accuracy > 0 ? move.Base.Accuracy.ToString() : "-";
     }
 }

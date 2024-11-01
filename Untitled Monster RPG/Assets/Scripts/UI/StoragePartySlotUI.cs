@@ -4,23 +4,23 @@ using UnityEngine.UI;
 
 public class StoragePartySlotUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Image image;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private TextMeshProUGUI _levelText;
+    [SerializeField] private Image _image;
 
     public void SetData(Monster monster)
     {
-        nameText.text = monster.Base.Name;
-        levelText.text = "" + monster.Level;
-        image.sprite = monster.Base.Sprite;
-        image.color = new Color(1, 1, 1, 1);
+        _nameText.text = monster.Base.Name;
+        _levelText.text = "" + monster.Level;
+        _image.sprite = monster.Base.Sprite;
+        _image.color = new Color(1, 1, 1, 1);
     }
 
     public void ClearData()
     {
-        nameText.text = "";
-        levelText.text = "";
-        image.sprite = null;
-        image.color = new Color(1, 1, 1, 0);
+        _nameText.text = "";
+        _levelText.text = "";
+        _image.sprite = null;
+        _image.color = new Color(1, 1, 1, 0);
     }
 }

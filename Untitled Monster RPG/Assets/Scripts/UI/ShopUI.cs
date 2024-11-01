@@ -6,30 +6,31 @@ using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
-    [SerializeField] private GameObject itemList;
-    [SerializeField] private ItemSlotUI itemSlotUI;
-    [SerializeField] private Image itemIcon;
-    [SerializeField] private TextMeshProUGUI itemDescription;
-    [SerializeField] private Image upArrow;
-    [SerializeField] private Image downArrow;
-    private int selectedItem;
-    private List<ItemBase> availableItems;
-    private Action<ItemBase> onItemSelected;
-    private Action onBack;
-    private List<ItemSlotUI> slotUIList;
-    private const int itemsInViewport = 8;
-    private RectTransform itemListRect;
+    [SerializeField] private GameObject _itemList;
+    [SerializeField] private ItemSlotUI _itemSlotUI;
+    [SerializeField] private Image _itemIcon;
+    [SerializeField] private TextMeshProUGUI _itemDescription;
+    [SerializeField] private Image _upArrow;
+    [SerializeField] private Image _downArrow;
+
+    private int _selectedItem;
+    private List<ItemBase> _availableItems;
+    private Action<ItemBase> _onItemSelected;
+    private Action _onBack;
+    private List<ItemSlotUI> _slotUIList;
+    private const int ITEMS_IN_VIEWPORT = 8;
+    private RectTransform _itemListRect;
 
     private void Awake()
     {
-        itemListRect = itemList.GetComponent<RectTransform>();
+        _itemListRect = _itemList.GetComponent<RectTransform>();
     }
 
     public void Show(List<ItemBase> availableItems, Action<ItemBase> onItemSelected, Action onBack)
     {
-        this.availableItems = availableItems;
-        this.onItemSelected = onItemSelected;
-        this.onBack = onBack;
+        _availableItems = availableItems;
+        _onItemSelected = onItemSelected;
+        _onBack = onBack;
 
         gameObject.SetActive(true);
         UpdateItemList();
@@ -42,46 +43,46 @@ public class ShopUI : MonoBehaviour
 
     public void HandleUpdate()
     {
-        int prevSelection = selectedItem;
+        int prevSelection = _selectedItem;
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            ++selectedItem;
+            ++_selectedItem;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            --selectedItem;
+            --_selectedItem;
         }
-        selectedItem = Mathf.Clamp(selectedItem, 0, availableItems.Count - 1);
-        if (prevSelection != selectedItem)
+        _selectedItem = Mathf.Clamp(_selectedItem, 0, _availableItems.Count - 1);
+        if (prevSelection != _selectedItem)
         {
             UpdateItemSelection();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            onItemSelected?.Invoke(availableItems[selectedItem]);
+            _onItemSelected?.Invoke(_availableItems[_selectedItem]);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            selectedItem = 0;
-            onBack?.Invoke();
+            _selectedItem = 0;
+            _onBack?.Invoke();
         }
     }
 
     private void UpdateItemList()
     {
-        foreach (Transform child in itemList.transform)
+        foreach (Transform child in _itemList.transform)
         {
             Destroy(child.gameObject);
         }
 
-        slotUIList = new List<ItemSlotUI>();
-        foreach (ItemBase item in availableItems)
+        _slotUIList = new List<ItemSlotUI>();
+        foreach (ItemBase item in _availableItems)
         {
-            ItemSlotUI slotUIObj = Instantiate(itemSlotUI, itemList.transform);
+            ItemSlotUI slotUIObj = Instantiate(_itemSlotUI, _itemList.transform);
 
             slotUIObj.SetNameAndPrice(item);
-            slotUIList.Add(slotUIObj);
+            _slotUIList.Add(slotUIObj);
         }
 
         UpdateItemSelection();
@@ -89,18 +90,18 @@ public class ShopUI : MonoBehaviour
 
     private void UpdateItemSelection()
     {
-        selectedItem = Mathf.Clamp(selectedItem, 0, availableItems.Count - 1);
-        for (int i = 0; i < slotUIList.Count; i++)
+        _selectedItem = Mathf.Clamp(_selectedItem, 0, _availableItems.Count - 1);
+        for (int i = 0; i < _slotUIList.Count; i++)
         {
-            slotUIList[i].NameText.color = i == selectedItem ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
+            _slotUIList[i].NameText.color = i == _selectedItem ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
         }
 
-        if (availableItems.Count > 0)
+        if (_availableItems.Count > 0)
         {
-            ItemBase item = availableItems[selectedItem];
+            ItemBase item = _availableItems[_selectedItem];
 
-            itemIcon.sprite = item.Icon;
-            itemDescription.text = item.Description;
+            _itemIcon.sprite = item.Icon;
+            _itemDescription.text = item.Description;
         }
 
         HandleScrolling();
@@ -108,18 +109,18 @@ public class ShopUI : MonoBehaviour
 
     private void HandleScrolling()
     {
-        if (slotUIList.Count <= itemsInViewport)
+        if (_slotUIList.Count <= ITEMS_IN_VIEWPORT)
         {
             return;
         }
 
-        int maxScrollIndex = slotUIList.Count - itemsInViewport;
-        float scrollPos = Mathf.Clamp(selectedItem - (itemsInViewport / 2), 0, maxScrollIndex) * slotUIList[0].Height;
-        bool showUpArrow = selectedItem > itemsInViewport / 2;
-        bool showDownArrow = selectedItem < maxScrollIndex + (itemsInViewport / 2);
+        int maxScrollIndex = _slotUIList.Count - ITEMS_IN_VIEWPORT;
+        float scrollPos = Mathf.Clamp(_selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex) * _slotUIList[0].Height;
+        bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
+        bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
 
-        itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
-        upArrow.gameObject.SetActive(showUpArrow);
-        downArrow.gameObject.SetActive(showDownArrow);
+        _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
+        _upArrow.gameObject.SetActive(showUpArrow);
+        _downArrow.gameObject.SetActive(showDownArrow);
     }
 }
