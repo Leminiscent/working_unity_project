@@ -437,7 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7394a34419024c45be59680b9314737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  MoveSpeed: 5
 --- !u!114 &8214133340752172489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,28 +450,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96777254abcf81c4687c34f8c87f26bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkDownSprites:
+  _walkDownSprites:
   - {fileID: -1005867165, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: 971494056, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: -1005867165, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: -120876599, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
-  walkUpSprites:
+  _walkUpSprites:
   - {fileID: -719423458, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: 1908142892, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: -719423458, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: -321681102, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
-  walkRightSprites:
+  _walkRightSprites:
   - {fileID: 1223167040, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: -1100190335, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: 1223167040, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: -634867956, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
-  walkLeftSprites:
+  _walkLeftSprites:
   - {fileID: 2006288933, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: 974025553, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: 2006288933, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
   - {fileID: 1766904397, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
-  sailSprites: []
-  defaultDirection: 1
+  _defaultDirection: 1
 --- !u!114 &6793306304818962487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,17 +483,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb11bc40a2ee4c2489ce11da712a3fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Fiona
-  sprite: {fileID: -1005867165, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
-  dialogue:
-    lines:
-    - Test
-  postBattleDialogue:
-    lines:
-    - Test post battle dialogue
-  exclamation: {fileID: 3437430905645947370}
-  los: {fileID: 1382861825079805321}
-  playerDetectedClip: {fileID: 8300000, guid: 8f8a38a21c0f5a7419c29024c41ad4e1, type: 3}
+  _name: Fiona
+  _sprite: {fileID: -1005867165, guid: 39ef85cf82d75974eb0f8300382b072b, type: 3}
+  _dialogue:
+    _lines:
+    - Fight me, coward!
+  _postBattleDialogue:
+    _lines:
+    - Damn, chill...
+  _exclamation: {fileID: 3437430905645947370}
+  _los: {fileID: 1382861825079805321}
+  _playerDetectedClip: {fileID: 0}
 --- !u!114 &9218253973310260364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,21 +506,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c610d9942153048930ee23f51158ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsters:
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 1
+  _monsters:
+  - _base: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+    _level: 100
 --- !u!114 &3666397894106037813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueId: 
+  _uniqueId: 
 --- !u!1 &7702503384249815315
 GameObject:
   m_ObjectHideFlags: 0

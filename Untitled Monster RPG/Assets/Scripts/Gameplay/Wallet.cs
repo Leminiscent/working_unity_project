@@ -11,14 +11,7 @@ public class Wallet : MonoBehaviour, ISavable
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
     }
 
     public void AddMoney(float amount)

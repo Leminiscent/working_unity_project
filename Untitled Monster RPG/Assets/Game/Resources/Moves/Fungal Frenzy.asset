@@ -12,25 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Fungal Frenzy
   m_EditorClassIdentifier: 
-  name: Fungal Frenzy
-  description: The user goes into a wild frenzy, attacking with an overwhelming force
-    but becoming confused afterward.
-  type: 5
-  category: 0
-  effects:
-    boosts: []
-    status: 0
-    volatileStatus: 0
-  secondaryEffects:
-  - boosts: []
-    status: 0
-    volatileStatus: 6
-    chance: 100
-    target: 1
-  target: 0
-  power: 120
-  accuracy: 85
-  alwaysHits: 0
-  sP: 10
-  priority: 0
-  sound: {fileID: 8300000, guid: 053b83879213fc74aba650a2a50c58c6, type: 3}
+  _name: Fungal Frenzy
+  _description: 
+  _type: 5
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts: []
+    _status: 0
+    _volatileStatus: 6
+    _weather: 0
+    _chance: 25
+    _target: 1
+  _critBehavior: 1
+  _recoil:
+    RecoilType: 3
+    RecoilDamage: 50
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 100
+  _accuracy: 80
+  _alwaysHits: 0
+  _sP: 5
+  _priority: 0
+  _sound: {fileID: 0}

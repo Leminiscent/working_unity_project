@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1507074992633447358}
   - component: {fileID: 1810711129107745403}
   - component: {fileID: 7807803717897968987}
-  - component: {fileID: 3369517469525453086}
   - component: {fileID: 9001890826660269442}
   m_Layer: 10
   m_Name: NPC
@@ -175,14 +174,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdf2538519499d41a08e1c19e0eb399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    lines:
-    - Hello!
-    - Hello?
-  questToStart: {fileID: 0}
-  questToComplete: {fileID: 0}
-  movementPattern: []
-  patternRate: 0
+  _dialogue:
+    _lines: []
+  _questToStart: {fileID: 0}
+  _questToComplete: {fileID: 0}
+  _movementPattern: []
+  _patternRate: 0
 --- !u!114 &1810711129107745403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7394a34419024c45be59680b9314737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  MoveSpeed: 5
 --- !u!114 &7807803717897968987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,45 +205,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96777254abcf81c4687c34f8c87f26bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkDownSprites:
+  _walkDownSprites:
   - {fileID: -1627446508, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: 1320016513, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: -1627446508, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: 1181327151, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
-  walkUpSprites:
+  _walkUpSprites:
   - {fileID: -365134505, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: -1047201078, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: -365134505, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: -2130743824, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
-  walkRightSprites:
+  _walkRightSprites:
   - {fileID: 996758465, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: -334292124, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: 996758465, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: -1178769184, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
-  walkLeftSprites:
-  - {fileID: 1208692783, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
+  _walkLeftSprites:
+  - {fileID: 923172702, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: 418369803, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: 1208692783, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
   - {fileID: 923172702, guid: 5ec589b0da5a41b489528f0d92b2ec39, type: 3}
-  sailSprites: []
-  defaultDirection: 1
---- !u!114 &3369517469525453086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5824711810266805622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b15cf51bf8297c4b910ef93a4325610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 30bcd45a212d8c54b81564d5c13e9155, type: 2}
-  count: 5
-  dialogue:
-    lines:
-    - Here, have some items!
+  _defaultDirection: 1
 --- !u!114 &9001890826660269442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,4 +238,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueId: f0005eaa-b556-4d21-8d94-c0b9a9f73512
+  _uniqueId: 

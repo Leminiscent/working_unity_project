@@ -49,15 +49,15 @@ public class SavableEntity : MonoBehaviour
         }
 
         // don't generate Id for prefabs (prefab scene will have path as null)
-        if (string.IsNullOrEmpty(gameObject.scene.path))
+        if (String.IsNullOrEmpty(gameObject.scene.path))
         {
             return;
         }
 
         SerializedObject serializedObject = new(this);
-        SerializedProperty property = serializedObject.FindProperty("uniqueId");
+        SerializedProperty property = serializedObject.FindProperty("_uniqueId");
 
-        if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
+        if (String.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
         {
             property.stringValue = Guid.NewGuid().ToString();
             serializedObject.ApplyModifiedProperties();

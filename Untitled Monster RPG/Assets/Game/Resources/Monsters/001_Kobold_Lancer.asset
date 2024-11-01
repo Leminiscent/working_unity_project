@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: 002_Kobold_Warrior
+  m_Name: 001_Kobold_Lancer
   m_EditorClassIdentifier: 
-  _name: Kobold Warrior
-  _description: A sturdy warrior with a sword and shield, built to endure attacks
-    and strike back hard.
-  _sprite: {fileID: 21300000, guid: a6a37a56c5fe78d4b88af890d57af16b, type: 3}
+  _name: Kobold Lancer
+  _description: Strikes swiftly with its spear, using hit-and-run tactics to wear
+    down enemies.
+  _sprite: {fileID: 21300000, guid: ce48215918750e04586e6d27dde83b77, type: 3}
   _type1: 9
-  _type2: 17
-  _hp: 100
-  _strength: 75
-  _endurance: 80
-  _intelligence: 50
-  _fortitude: 70
-  _agility: 75
+  _type2: 0
+  _hp: 85
+  _strength: 70
+  _endurance: 65
+  _intelligence: 55
+  _fortitude: 50
+  _agility: 95
   _hpPvYield: 4
   _strengthPvYield: 4
   _endurancePvYield: 4
@@ -43,11 +43,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c8bc67c1150c2ed46aee42da204461ae, type: 2}
   - {fileID: 11400000, guid: 33c0e645b37c08f4cbfce04083ba02c3, type: 2}
   _transformations:
-  - _transformsInto: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    _requiredLevel: 50
+  - _transformsInto: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+    _requiredLevel: 30
     _requiredItem: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
-  _expYield: 100
-  _growthRate: 2
+  _expYield: 50
+  _growthRate: 1
   _recruitRate: 200
   _recruitmentQuestions:
   - _questionText: Question 1

@@ -12,27 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Struggle
   m_EditorClassIdentifier: 
-  name: Struggle
-  description: This attack is used in desperation only if the user has no remaining
-    SP. It also damages the user a little.
-  type: 0
-  category: 0
-  effects:
-    boosts: []
-    status: 0
-    volatileStatus: 0
-    weather: 0
-  secondaryEffects: []
-  critBehavior: 3
-  recoil:
-    recoilType: 1
-    recoilDamage: 25
-  drainPercentage: 0
-  target: 0
-  hitRange: {x: 0, y: 0}
-  power: 50
-  accuracy: 100
-  alwaysHits: 1
-  sP: 1
-  priority: 0
-  sound: {fileID: 0}
+  _name: Struggle
+  _description: 
+  _type: 0
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects: []
+  _critBehavior: 3
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 40
+  _accuracy: 0
+  _alwaysHits: 1
+  _sP: 0
+  _priority: 0
+  _sound: {fileID: 0}

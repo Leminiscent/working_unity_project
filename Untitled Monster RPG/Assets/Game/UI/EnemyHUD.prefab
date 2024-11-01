@@ -875,17 +875,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61fc311b47c04fc41ae84a7fda9d5484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 3007666693429587729}
-  levelText: {fileID: 5182622967131496773}
-  statusText: {fileID: 5764042604592672453}
-  hpBar: {fileID: 8876244700133414513}
-  expBar: {fileID: 0}
-  affinityBar: {fileID: 2878091435609440658}
-  psnColor: {r: 0.8705883, g: 0.3529412, b: 0.83921576, a: 1}
-  brnColor: {r: 0.93725497, g: 0.48627454, b: 0.14509805, a: 1}
-  slpColor: {r: 0.6117647, g: 0.6117647, b: 0.6117647, a: 1}
-  parColor: {r: 1, g: 0.70980394, b: 0, a: 1}
-  frzColor: {r: 0.2901961, g: 0.5803922, b: 1, a: 1}
+  _nameText: {fileID: 3007666693429587729}
+  _levelText: {fileID: 5182622967131496773}
+  _statusText: {fileID: 5764042604592672453}
+  _hpBar: {fileID: 8876244700133414513}
+  _expBar: {fileID: 0}
+  _affinityBar: {fileID: 2878091435609440658}
+  _psnColor: {r: 0.8156863, g: 0.41960785, b: 1, a: 1}
+  _brnColor: {r: 1, g: 0.5176471, b: 0.15294118, a: 1}
+  _slpColor: {r: 0.5254902, g: 0.77254903, b: 1, a: 1}
+  _parColor: {r: 1, g: 0.8039216, b: 0.015686275, a: 1}
+  _frzColor: {r: 0.015686275, g: 0.99215686, b: 0.8509804, a: 1}
 --- !u!1 &7725610595623908425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1054,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 29.3, y: 0}
+  m_AnchoredPosition: {x: 29.300003, y: 0}
   m_SizeDelta: {x: -58.6, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6353889914503482066
@@ -1321,4 +1321,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c84e845e2be6864781d1f4307aed82e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 4275892070264590805}
+  _health: {fileID: 4275892070264590805}

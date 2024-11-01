@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4461930908464816043}
   - component: {fileID: 8684309933866674748}
   - component: {fileID: 6505984749640694848}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Deputy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2951097735671239233}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5, y: -1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -47,27 +47,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96777254abcf81c4687c34f8c87f26bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkDownSprites:
+  _walkDownSprites:
   - {fileID: 964375113, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: -1710584900, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 964375113, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 1744028229, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
-  walkUpSprites:
+  _walkUpSprites:
   - {fileID: 649353241, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 633241318, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 649353241, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 1509578849, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
-  walkRightSprites:
+  _walkRightSprites:
   - {fileID: -68048674, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 2118688008, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: -68048674, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 1039787076, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
-  walkLeftSprites:
+  _walkLeftSprites:
   - {fileID: -530636935, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: -1622062090, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: -530636935, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
   - {fileID: 777880757, guid: 9fdeac10d68d97e40a298b60282b8690, type: 3}
-  defaultDirection: 1
+  _defaultDirection: 1
 --- !u!212 &4461930908464816043
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -144,4 +144,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueId: 
+  _uniqueId: 485cae70-ff3a-4dcb-8c03-0b69c320d1cb

@@ -206,7 +206,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
       propertyPath: connectedScenes.Array.data[0]
+      value: 
+      objectReference: {fileID: 1647700579}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.data[0]
       value: 
       objectReference: {fileID: 1647700579}
     - target: {fileID: 8130068610937024761, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -254,18 +262,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aea56ece668cc346a19ac3e6b6b1440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wildMonsters:
-  - monster: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    levelRange: {x: 2, y: 5}
-    spawnChance: 75
-  - monster: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
-    levelRange: {x: 16, y: 20}
-    spawnChance: 20
-  - monster: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    levelRange: {x: 34, y: 40}
-    spawnChance: 5
-  terrain: 4
-  totalChance: 100
+  _wildMonsters:
+  - Monster: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
+    LevelRange: {x: 1, y: 20}
+    SpawnChance: 55
+  - Monster: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
+    LevelRange: {x: 21, y: 40}
+    SpawnChance: 30
+  - Monster: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
+    LevelRange: {x: 41, y: 60}
+    SpawnChance: 15
+  _terrain: 4
+  _totalChance: 100
 --- !u!1001 &725205645
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,7 +347,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
       propertyPath: connectedScenes.Array.data[0]
+      value: 
+      objectReference: {fileID: 82174751}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.data[0]
       value: 
       objectReference: {fileID: 82174751}
     - target: {fileID: 8130068610937024761, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -435,11 +451,23 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
       propertyPath: connectedScenes.Array.data[0]
       value: 
       objectReference: {fileID: 82174751}
     - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
       propertyPath: connectedScenes.Array.data[1]
+      value: 
+      objectReference: {fileID: 312975487}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.data[0]
+      value: 
+      objectReference: {fileID: 82174751}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.data[1]
       value: 
       objectReference: {fileID: 312975487}
     - target: {fileID: 8130068610937024761, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -471,15 +499,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aea56ece668cc346a19ac3e6b6b1440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wildMonsters:
-  - monster: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    levelRange: {x: 5, y: 10}
-    spawnChance: 60
-  - monster: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
-    levelRange: {x: 20, y: 28}
-    spawnChance: 40
-  terrain: 3
-  totalChance: 100
+  _wildMonsters: []
+  _terrain: 0
+  _totalChance: -1
 --- !u!114 &1647700579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -503,15 +525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aea56ece668cc346a19ac3e6b6b1440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wildMonsters:
-  - monster: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    levelRange: {x: 5, y: 10}
-    spawnChance: 60
-  - monster: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
-    levelRange: {x: 20, y: 28}
-    spawnChance: 40
-  terrain: 2
-  totalChance: 100
+  _wildMonsters: []
+  _terrain: 0
+  _totalChance: -1
 --- !u!1001 &1878940712108653051
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -523,10 +539,6 @@ PrefabInstance:
     - target: {fileID: 1805966050730252670, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: m_Name
       value: EssentialObjects
-      objectReference: {fileID: 0}
-    - target: {fileID: 1823438709708817165, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
-      propertyPath: uniqueId
-      value: e9027008-323e-4f59-b344-f04639f5233a
       objectReference: {fileID: 0}
     - target: {fileID: 2808156341160974150, guid: 31b08a05835bdb844b46c7c04add930f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -630,6 +642,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
       propertyPath: connectedScenes.Array.data[0]
       value: 
       objectReference: {fileID: 1647700579}
@@ -637,6 +653,14 @@ PrefabInstance:
       propertyPath: connectedScenes.Array.data[1]
       value: 
       objectReference: {fileID: 725205646}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.data[0]
+      value: 
+      objectReference: {fileID: 725205646}
+    - target: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
+      propertyPath: _connectedScenes.Array.data[1]
+      value: 
+      objectReference: {fileID: 1647700579}
     - target: {fileID: 8130068610937024761, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
       propertyPath: m_Name
       value: HUB

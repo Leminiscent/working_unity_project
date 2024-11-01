@@ -12,31 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Vine Lash
   m_EditorClassIdentifier: 
-  name: Vine Lash
-  description: The user lashes the target with vine-like appendages, dealing physical
-    damage.
-  type: 5
-  category: 0
-  effects:
-    boosts: []
-    status: 0
-    volatileStatus: 0
-    weather: 0
-  secondaryEffects: []
-  critBehavior: 1
-  recoil:
-    recoilType: 3
-    recoilDamage: 25
-  drainPercentage: 0
-  oneHitKO:
-    isOneHitKO: 0
-    lowerOddsException: 0
-    immunityType: 0
-  target: 0
-  hitRange: {x: 2, y: 5}
-  power: 45
-  accuracy: 100
-  alwaysHits: 0
-  sP: 10
-  priority: 0
-  sound: {fileID: 8300000, guid: d489a6e132e83d744933956157da356d, type: 3}
+  _name: Vine Lash
+  _description: 
+  _type: 5
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects: []
+  _critBehavior: 1
+  _recoil:
+    RecoilType: 3
+    RecoilDamage: 10
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 1, y: 4}
+  _power: 50
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}

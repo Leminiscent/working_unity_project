@@ -178,11 +178,11 @@ GameObject:
   - component: {fileID: 4648141534900121505}
   - component: {fileID: 5998477997217165119}
   - component: {fileID: 8861237823873326999}
-  - component: {fileID: 276598384876594380}
   - component: {fileID: 6813441202777455123}
   - component: {fileID: 2477540922031323674}
   - component: {fileID: 986390993288586152}
   - component: {fileID: 6913715058660160187}
+  - component: {fileID: 8006036485625975607}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -270,8 +270,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f653b01bdb48e2e48b8c7257b117c3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Lemmy
-  sprite: {fileID: 1089214349, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
+  _name: Lemmy
+  _sprite: {fileID: 1089214349, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
 --- !u!114 &1401619852097729857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,19 +284,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c610d9942153048930ee23f51158ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsters:
+  _monsters:
   - _base: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    level: 100
-  - _base: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    level: 50
+    _level: 100
   - _base: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
-    level: 26
-  - _base: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
-    level: 15
+    _level: 99
   - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 10
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    level: 5
+    _level: 98
 --- !u!114 &5331987254580021616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,27 +303,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96777254abcf81c4687c34f8c87f26bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkDownSprites:
+  _walkDownSprites:
   - {fileID: -1014627686, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -946356473, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -1014627686, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -2025213854, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
-  walkUpSprites:
+  _walkUpSprites:
   - {fileID: 1089214349, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -1333687537, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: 1089214349, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -889993606, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
-  walkRightSprites:
+  _walkRightSprites:
   - {fileID: -1554277351, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: 528424767, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -1554277351, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: 1707005886, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
-  walkLeftSprites:
+  _walkLeftSprites:
   - {fileID: -1999465375, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -168758418, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -1999465375, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -2002545065, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
-  defaultDirection: 1
+  _defaultDirection: 1
 --- !u!114 &4648141534900121505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7394a34419024c45be59680b9314737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  MoveSpeed: 5
 --- !u!50 &5998477997217165119
 Rigidbody2D:
   serializedVersion: 4
@@ -402,7 +396,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -413,21 +407,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 1.2}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &276598384876594380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6121344698676274057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uniqueId: 71b42f19-c070-437d-8575-a68db75ca7a3
 --- !u!114 &6813441202777455123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,29 +421,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 562e4410d071dd948a70b83efa8dac5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recoveryItemSlots:
-  - item: {fileID: 11400000, guid: 884b671c5c5620741b6bcdf368c0d84f, type: 2}
-    count: 99
-  - item: {fileID: 11400000, guid: 1de614676394da84bba22ea8d1218710, type: 2}
-    count: 99
-  - item: {fileID: 11400000, guid: 9e286084795dcde44ade52d881dda668, type: 2}
-    count: 99
-  - item: {fileID: 11400000, guid: 70c2a977dc3d97f45b3b022a7584555d, type: 2}
-    count: 99
-  materialSlots: []
-  transformationItemSlots:
-  - item: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
-    count: 9
-  skillBookSlots:
-  - item: {fileID: 11400000, guid: ce1d2d3f951622340bff0a8dd5dc9d4d, type: 2}
-    count: 99
-  - item: {fileID: 11400000, guid: 3ed66893df7881140b17a03d869ba509, type: 2}
-    count: 99
-  - item: {fileID: 11400000, guid: f325bd7605ca07d4294fe16e24f8edc3, type: 2}
-    count: 1
-  keyItemSlots:
-  - item: {fileID: 11400000, guid: 3ee5d74a31b6b874c963563aef648d1b, type: 2}
-    count: 1
+  _recoveryItemSlots:
+  - _item: {fileID: 11400000, guid: 884b671c5c5620741b6bcdf368c0d84f, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 1de614676394da84bba22ea8d1218710, type: 2}
+    _count: 2
+  - _item: {fileID: 11400000, guid: 9e286084795dcde44ade52d881dda668, type: 2}
+    _count: 5
+  - _item: {fileID: 11400000, guid: 70c2a977dc3d97f45b3b022a7584555d, type: 2}
+    _count: 12
+  _materialSlots:
+  - _item: {fileID: 11400000, guid: 30bcd45a212d8c54b81564d5c13e9155, type: 2}
+    _count: 4
+  - _item: {fileID: 11400000, guid: 68a33e7c81800154e8825f35d183d28c, type: 2}
+    _count: 10
+  _transformationItemSlots:
+  - _item: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
+    _count: 4
+  _skillBookSlots:
+  - _item: {fileID: 11400000, guid: ce1d2d3f951622340bff0a8dd5dc9d4d, type: 2}
+    _count: 1
+  - _item: {fileID: 11400000, guid: 3ed66893df7881140b17a03d869ba509, type: 2}
+    _count: 1
+  _keyItemSlots:
+  - _item: {fileID: 11400000, guid: 3ee5d74a31b6b874c963563aef648d1b, type: 2}
+    _count: 1
 --- !u!114 &2477540922031323674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adb2e9c68f8f954c821ef8b45371810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 1000
+  _money: 1000
 --- !u!114 &6913715058660160187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,3 +483,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a36946b15e2ea49a17a62bdae0f053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8006036485625975607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121344698676274057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
