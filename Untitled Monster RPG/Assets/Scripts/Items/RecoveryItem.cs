@@ -4,31 +4,31 @@ using UnityEngine;
 public class RecoveryItem : ItemBase
 {
     [Header("HP")]
-    [SerializeField] private int hpAmount;
-    [SerializeField] private bool restoreMaxHP;
+    [SerializeField] private int _hpAmount;
+    [SerializeField] private bool _restoreMaxHP;
 
     [Header("SP")]
-    [SerializeField] private int spAmount;
-    [SerializeField] private bool restoreMaxSP;
+    [SerializeField] private int _spAmount;
+    [SerializeField] private bool _restoreMaxSP;
 
     [Header("Status Conditions")]
-    [SerializeField] private ConditionID status;
-    [SerializeField] private bool recoverAllStatus;
+    [SerializeField] private ConditionID _status;
+    [SerializeField] private bool _recoverAllStatus;
 
     [Header("Revive")]
-    [SerializeField] private bool revive;
-    [SerializeField] private bool maxRevive;
+    [SerializeField] private bool _revive;
+    [SerializeField] private bool _maxRevive;
 
     public override bool Use(Monster monster)
     {
-        if (revive || maxRevive)
+        if (_revive || _maxRevive)
         {
             if (monster.HP > 0)
             {
                 return false;
             }
 
-            if (revive)
+            if (_revive)
             {
                 monster.IncreaseHP(monster.MaxHP / 2);
             }
@@ -46,42 +46,42 @@ public class RecoveryItem : ItemBase
             return false;
         }
 
-        if (restoreMaxHP || hpAmount > 0)
+        if (_restoreMaxHP || _hpAmount > 0)
         {
             if (monster.HP == monster.MaxHP)
             {
                 return false;
             }
 
-            if (restoreMaxHP)
+            if (_restoreMaxHP)
             {
                 monster.IncreaseHP(monster.MaxHP);
             }
             else
             {
-                monster.IncreaseHP(hpAmount);
+                monster.IncreaseHP(_hpAmount);
             }
         }
 
-        if (recoverAllStatus || status != ConditionID.None)
+        if (_recoverAllStatus || _status != ConditionID.None)
         {
             if (monster.Status == null && monster.VolatileStatus == null)
             {
                 return false;
             }
 
-            if (recoverAllStatus)
+            if (_recoverAllStatus)
             {
                 monster.CureStatus();
                 monster.CureVolatileStatus();
             }
             else
             {
-                if (monster.Status.ID == status)
+                if (monster.Status.ID == _status)
                 {
                     monster.CureStatus();
                 }
-                else if (monster.VolatileStatus.ID == status)
+                else if (monster.VolatileStatus.ID == _status)
                 {
                     monster.CureVolatileStatus();
                 }
@@ -92,13 +92,13 @@ public class RecoveryItem : ItemBase
             }
         }
 
-        if (restoreMaxSP)
+        if (_restoreMaxSP)
         {
             monster.Moves.ForEach(m => m.RestoreSP(m.Base.SP));
         }
-        else if (spAmount > 0)
+        else if (_spAmount > 0)
         {
-            monster.Moves.ForEach(m => m.RestoreSP(spAmount));
+            monster.Moves.ForEach(m => m.RestoreSP(_spAmount));
         }
 
         return true;

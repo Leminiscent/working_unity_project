@@ -25,5 +25,8 @@ public class CutsceneActor
     [SerializeField] private bool _isPlayer;
     [SerializeField] private Character _character;
 
-    public Character GetCharacter() => _isPlayer ? PlayerController.Instance.Character : _character;
+    public Character GetCharacter()
+    {
+        return _isPlayer ? PlayerController.Instance.Character : _character;
+    }
 }

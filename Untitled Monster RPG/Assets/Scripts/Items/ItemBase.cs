@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class ItemBase : ScriptableObject
 {
-    [SerializeField] private new string name;
-    [SerializeField] private string description;
-    [SerializeField] private string message;
-    [SerializeField] private Sprite icon;
-    [SerializeField] private float price;
-    [SerializeField] private bool isSellable;
+    [SerializeField] private string _name;
+    [SerializeField] private string _description;
+    [SerializeField] private string _message;
+    [SerializeField] private Sprite _icon;
+    [SerializeField] private float _price;
+    [SerializeField] private bool _isSellable;
 
-    public virtual string Name => name;
-    public virtual string Description => description;
-    public string Message => message;
-    public Sprite Icon => icon;
-    public float Price => price;
-    public bool IsSellable => isSellable;
-
-    public virtual bool Use(Monster monster) => false;
+    public virtual string Name => _name;
+    public virtual string Description => _description;
     public virtual bool IsReusable => false;
     public virtual bool DirectlyUsable => true;
     public virtual bool UsableInBattle => true;
     public virtual bool UsableOutsideBattle => true;
+    public string Message => _message;
+    public Sprite Icon => _icon;
+    public float Price => _price;
+    public bool IsSellable => _isSellable;
+
+    public virtual bool Use(Monster monster)
+    {
+        return false;
+    }
 }
