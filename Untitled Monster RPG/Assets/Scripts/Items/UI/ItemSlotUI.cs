@@ -3,25 +3,26 @@ using UnityEngine;
 
 public class ItemSlotUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI countText;
-    private RectTransform rectTransform;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private TextMeshProUGUI _countText;
 
-    public TextMeshProUGUI NameText => nameText;
-    public TextMeshProUGUI CountText => countText;
-    public float Height => rectTransform.rect.height;
+    private RectTransform _rectTransform;
+
+    public TextMeshProUGUI NameText => _nameText;
+    public TextMeshProUGUI CountText => _countText;
+    public float Height => _rectTransform.rect.height;
 
     public void SetData(ItemSlot itemSlot)
     {
-        rectTransform = GetComponent<RectTransform>();
-        nameText.text = itemSlot.Item.Name;
-        countText.text = $"X {itemSlot.Count}";
+        _rectTransform = GetComponent<RectTransform>();
+        _nameText.text = itemSlot.Item.Name;
+        _countText.text = $"X {itemSlot.Count}";
     }
 
     public void SetNameAndPrice(ItemBase item)
     {
-        rectTransform = GetComponent<RectTransform>();
-        nameText.text = item.Name;
-        countText.text = $"{item.Price} GP";
+        _rectTransform = GetComponent<RectTransform>();
+        _nameText.text = item.Name;
+        _countText.text = $"{item.Price} GP";
     }
 }

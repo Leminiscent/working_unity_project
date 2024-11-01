@@ -126,20 +126,13 @@ public class RecruitmentState : State<BattleSystem>
 
     private string GenerateReaction(int affinityScore)
     {
-        if (affinityScore == 2)
-        {
-            return _enemyMonster.Base.Name + " seems to love your answer!";
-        }
-        else if (affinityScore == 1)
-        {
-            return _enemyMonster.Base.Name + " seems to like your answer.";
-        }
-        else
-        {
-            return affinityScore == -1
-                ? _enemyMonster.Base.Name + " seems to dislike your answer..."
-                : _enemyMonster.Base.Name + " seems to hate your answer!";
-        }
+        return affinityScore == 2
+            ? _enemyMonster.Base.Name + " seems to love your answer!"
+            : affinityScore == 1
+                ? _enemyMonster.Base.Name + " seems to like your answer."
+                : affinityScore == -1
+                            ? _enemyMonster.Base.Name + " seems to dislike your answer..."
+                            : _enemyMonster.Base.Name + " seems to hate your answer!";
     }
 
     private IEnumerator AttemptRecruitment(Monster targetMonster)

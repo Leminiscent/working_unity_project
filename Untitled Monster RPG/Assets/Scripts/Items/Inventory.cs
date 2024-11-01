@@ -3,35 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum ItemCategory
-{
-    RecoveryItems,
-    Materials,
-    TransformationItems,
-    SkillBooks,
-    KeyItems
-}
-
 public class Inventory : MonoBehaviour, ISavable
 {
-    [SerializeField] private List<ItemSlot> recoveryItemSlots;
-    [SerializeField] private List<ItemSlot> materialSlots;
-    [SerializeField] private List<ItemSlot> transformationItemSlots;
-    [SerializeField] private List<ItemSlot> skillBookSlots;
-    [SerializeField] private List<ItemSlot> keyItemSlots;
-    private List<List<ItemSlot>> allSlots;
+    [SerializeField] private List<ItemSlot> _recoveryItemSlots;
+    [SerializeField] private List<ItemSlot> _materialSlots;
+    [SerializeField] private List<ItemSlot> _transformationItemSlots;
+    [SerializeField] private List<ItemSlot> _skillBookSlots;
+    [SerializeField] private List<ItemSlot> _keyItemSlots;
+
+    private List<List<ItemSlot>> _allSlots;
 
     public event Action OnUpdated;
 
     public void Awake()
     {
-        allSlots = new List<List<ItemSlot>>()
+        _allSlots = new List<List<ItemSlot>>()
         {
-            recoveryItemSlots,
-            materialSlots,
-            transformationItemSlots,
-            skillBookSlots,
-            keyItemSlots
+            _recoveryItemSlots,
+            _materialSlots,
+            _transformationItemSlots,
+            _skillBookSlots,
+            _keyItemSlots
         };
     }
 
@@ -46,7 +38,7 @@ public class Inventory : MonoBehaviour, ISavable
 
     public List<ItemSlot> GetSlotsByCategory(int categoryIndex)
     {
-        return allSlots[categoryIndex];
+        return _allSlots[categoryIndex];
     }
 
     public ItemBase GetItem(int itemIndex, int categoryIndex)
@@ -136,17 +128,13 @@ public class Inventory : MonoBehaviour, ISavable
         {
             return ItemCategory.RecoveryItems;
         }
-        else if (item is Material)
-        {
-            return ItemCategory.Materials;
-        }
-        else if (item is TransformationItem)
-        {
-            return ItemCategory.TransformationItems;
-        }
         else
         {
-            return item is SkillBook ? ItemCategory.SkillBooks : ItemCategory.KeyItems;
+            return item is Material
+                ? ItemCategory.Materials
+                : item is TransformationItem
+                            ? ItemCategory.TransformationItems
+                            : item is SkillBook ? ItemCategory.SkillBooks : ItemCategory.KeyItems;
         }
     }
 
@@ -159,11 +147,11 @@ public class Inventory : MonoBehaviour, ISavable
     {
         InventorySaveData saveData = new()
         {
-            recoveryItems = recoveryItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
-            materials = materialSlots.Select(static slot => slot.GetSaveData()).ToList(),
-            transformationItems = transformationItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
-            skillBooks = skillBookSlots.Select(static slot => slot.GetSaveData()).ToList(),
-            keyItems = keyItemSlots.Select(static slot => slot.GetSaveData()).ToList()
+            RecoveryItems = _recoveryItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            Materials = _materialSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            TransformationItems = _transformationItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            SkillBooks = _skillBookSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            KeyItems = _keyItemSlots.Select(static slot => slot.GetSaveData()).ToList()
         };
 
         return saveData;
@@ -173,19 +161,19 @@ public class Inventory : MonoBehaviour, ISavable
     {
         InventorySaveData saveData = state as InventorySaveData;
 
-        recoveryItemSlots = saveData.recoveryItems.Select(static data => new ItemSlot(data)).ToList();
-        materialSlots = saveData.materials.Select(static data => new ItemSlot(data)).ToList();
-        transformationItemSlots = saveData.transformationItems.Select(static data => new ItemSlot(data)).ToList();
-        skillBookSlots = saveData.skillBooks.Select(static data => new ItemSlot(data)).ToList();
-        keyItemSlots = saveData.keyItems.Select(static data => new ItemSlot(data)).ToList();
+        _recoveryItemSlots = saveData.RecoveryItems.Select(static data => new ItemSlot(data)).ToList();
+        _materialSlots = saveData.Materials.Select(static data => new ItemSlot(data)).ToList();
+        _transformationItemSlots = saveData.TransformationItems.Select(static data => new ItemSlot(data)).ToList();
+        _skillBookSlots = saveData.SkillBooks.Select(static data => new ItemSlot(data)).ToList();
+        _keyItemSlots = saveData.KeyItems.Select(static data => new ItemSlot(data)).ToList();
 
-        allSlots = new List<List<ItemSlot>>()
+        _allSlots = new List<List<ItemSlot>>()
         {
-            recoveryItemSlots,
-            materialSlots,
-            transformationItemSlots,
-            skillBookSlots,
-            keyItemSlots
+            _recoveryItemSlots,
+            _materialSlots,
+            _transformationItemSlots,
+            _skillBookSlots,
+            _keyItemSlots
         };
 
         OnUpdated?.Invoke();
@@ -195,45 +183,54 @@ public class Inventory : MonoBehaviour, ISavable
 [Serializable]
 public class ItemSlot
 {
-    [SerializeField] private ItemBase item;
-    [SerializeField] private int count;
+    [SerializeField] private ItemBase _item;
+    [SerializeField] private int _count;
 
     public ItemSlot() { }
 
     public ItemSlot(ItemSaveData saveData)
     {
-        item = ItemDB.GetObjectByName(saveData.name);
-        count = saveData.count;
+        _item = ItemDB.GetObjectByName(saveData.Name);
+        _count = saveData.Count;
     }
 
     public ItemSaveData GetSaveData()
     {
         ItemSaveData saveData = new()
         {
-            name = item.name,
-            count = count
+            Name = _item.name,
+            Count = _count
         };
 
         return saveData;
     }
 
-    public ItemBase Item { get => item; set => item = value; }
-    public int Count { get => count; set => count = value; }
+    public ItemBase Item { get => _item; set => _item = value; }
+    public int Count { get => _count; set => _count = value; }
+}
+
+public enum ItemCategory
+{
+    RecoveryItems,
+    Materials,
+    TransformationItems,
+    SkillBooks,
+    KeyItems
 }
 
 [Serializable]
 public class ItemSaveData
 {
-    public string name;
-    public int count;
+    public string Name;
+    public int Count;
 }
 
 [Serializable]
 public class InventorySaveData
 {
-    public List<ItemSaveData> recoveryItems;
-    public List<ItemSaveData> materials;
-    public List<ItemSaveData> transformationItems;
-    public List<ItemSaveData> skillBooks;
-    public List<ItemSaveData> keyItems;
+    public List<ItemSaveData> RecoveryItems;
+    public List<ItemSaveData> Materials;
+    public List<ItemSaveData> TransformationItems;
+    public List<ItemSaveData> SkillBooks;
+    public List<ItemSaveData> KeyItems;
 }

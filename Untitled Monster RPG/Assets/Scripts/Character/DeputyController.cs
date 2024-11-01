@@ -89,14 +89,9 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         Vector2 direction = toPosition - fromPosition;
 
-        if (Mathf.Abs(direction.x) > Mathf.Epsilon)
-        {
-            return new Vector2(Mathf.Sign(direction.x), 0);
-        }
-        else
-        {
-            return Mathf.Abs(direction.y) > Mathf.Epsilon ? new Vector2(0, Mathf.Sign(direction.y)) : Vector2.zero;
-        }
+        return Mathf.Abs(direction.x) > Mathf.Epsilon
+            ? new Vector2(Mathf.Sign(direction.x), 0)
+            : Mathf.Abs(direction.y) > Mathf.Epsilon ? new Vector2(0, Mathf.Sign(direction.y)) : Vector2.zero;
     }
 
     private Ledge CheckForLedge(Vector3 targetPos)

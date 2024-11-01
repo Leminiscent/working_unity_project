@@ -203,18 +203,11 @@ public class ConditionsDB
 
     public static float GetStatusBonus(Condition condition)
     {
-        if (condition == null)
-        {
-            return 1f;
-        }
-        else if (condition.ID == ConditionID.Slp || condition.ID == ConditionID.Frz)
-        {
-            return 2f;
-        }
-        else
-        {
-            return condition.ID == ConditionID.Psn || condition.ID == ConditionID.Brn || condition.ID == ConditionID.Par ? 1.5f : 1f;
-        }
+        return condition == null
+            ? 1f
+            : condition.ID == ConditionID.Slp || condition.ID == ConditionID.Frz
+                ? 2f
+                : condition.ID == ConditionID.Psn || condition.ID == ConditionID.Brn || condition.ID == ConditionID.Par ? 1.5f : 1f;
     }
 }
 

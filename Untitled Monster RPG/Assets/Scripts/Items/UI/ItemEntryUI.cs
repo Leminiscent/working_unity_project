@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class ItemEntryUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI itemNameText;
-    [SerializeField] private TextMeshProUGUI itemQuantityText;
+    [SerializeField] private TextMeshProUGUI _itemNameText;
+    [SerializeField] private TextMeshProUGUI _itemQuantityText;
 
     public void SetItem(ItemBase item, int quantity)
     {
-        itemNameText.text = item.Name;
-        itemQuantityText.text = $"x{quantity}";
+        _itemNameText.text = item.Name;
+        _itemQuantityText.text = $"x{quantity}";
     }
 }

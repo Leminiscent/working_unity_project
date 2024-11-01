@@ -3,22 +3,23 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour, IInteractable, ISavable
 {
-    [SerializeField] private ItemBase item;
-    [SerializeField] private Sprite usedSprite;
+    [SerializeField] private ItemBase _item;
+    [SerializeField] private Sprite _usedSprite;
+
     public bool Used { get; set; } = false;
 
     public IEnumerator Interact(Transform initiator)
     {
         if (!Used)
         {
-            initiator.GetComponent<Inventory>().AddItem(item);
+            initiator.GetComponent<Inventory>().AddItem(_item);
             Used = true;
-            GetComponent<SpriteRenderer>().sprite = usedSprite;
+            GetComponent<SpriteRenderer>().sprite = _usedSprite;
 
             string playerName = initiator.GetComponent<PlayerController>().Name;
 
             AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
-            yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {item.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {_item.Name}!");
         }
     }
 
@@ -32,7 +33,7 @@ public class Chest : MonoBehaviour, IInteractable, ISavable
         Used = (bool)state;
         if (Used)
         {
-            GetComponent<SpriteRenderer>().sprite = usedSprite;
+            GetComponent<SpriteRenderer>().sprite = _usedSprite;
         }
     }
 }
