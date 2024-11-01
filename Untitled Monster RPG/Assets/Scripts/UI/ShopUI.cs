@@ -114,9 +114,9 @@ public class ShopUI : MonoBehaviour
         }
 
         int maxScrollIndex = slotUIList.Count - itemsInViewport;
-        float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, maxScrollIndex) * slotUIList[0].Height;
+        float scrollPos = Mathf.Clamp(selectedItem - (itemsInViewport / 2), 0, maxScrollIndex) * slotUIList[0].Height;
         bool showUpArrow = selectedItem > itemsInViewport / 2;
-        bool showDownArrow = selectedItem < maxScrollIndex + itemsInViewport / 2;
+        bool showDownArrow = selectedItem < maxScrollIndex + (itemsInViewport / 2);
 
         itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
         upArrow.gameObject.SetActive(showUpArrow);

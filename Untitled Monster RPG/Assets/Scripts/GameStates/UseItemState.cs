@@ -7,7 +7,7 @@ public class UseItemState : State<GameController>
 {
     [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private InventoryUI _inventoryUI;
-    
+
     private GameController _gameController;
     private Inventory _inventory;
 

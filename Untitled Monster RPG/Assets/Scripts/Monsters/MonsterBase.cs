@@ -63,7 +63,7 @@ public class MonsterBase : ScriptableObject
 
                 if (level < 98)
                 {
-                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (1911 - 10 * level) / 3 / 500);
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (1911 - (10 * level)) / 3 / 500);
                 }
 
                 return Mathf.FloorToInt(Mathf.Pow(level, 3) * (160 - level) / 100);
@@ -72,13 +72,13 @@ public class MonsterBase : ScriptableObject
             case GrowthRate.MediumFast:
                 return Mathf.FloorToInt(Mathf.Pow(level, 3));
             case GrowthRate.MediumSlow:
-                return Mathf.FloorToInt(6f / 5 * Mathf.Pow(level, 3) - 15 * Mathf.Pow(level, 2) + 100 * level - 140);
+                return Mathf.FloorToInt((6f / 5 * Mathf.Pow(level, 3)) - (15 * Mathf.Pow(level, 2)) + (100 * level) - 140);
             case GrowthRate.Slow:
                 return Mathf.FloorToInt(5 * Mathf.Pow(level, 3) / 4);
             case GrowthRate.Fluctuating:
                 if (level < 15)
                 {
-                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level + 1) / 3 + 24) / 50);
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (((level + 1) / 3) + 24) / 50);
                 }
 
                 if (level < 36)
@@ -86,7 +86,7 @@ public class MonsterBase : ScriptableObject
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level + 14) / 50);
                 }
 
-                return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level / 2 + 32) / 50);
+                return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level / 2) + 32) / 50);
         }
         return -1;
     }

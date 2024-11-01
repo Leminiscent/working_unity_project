@@ -110,15 +110,15 @@ public class Monster
     {
         Stats = new Dictionary<Stat, int>
         {
-            { Stat.Strength, Mathf.FloorToInt(((2f * Base.Strength + (StatPerformanceValues[Stat.Strength] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Endurance, Mathf.FloorToInt(((2f * Base.Endurance + (StatPerformanceValues[Stat.Endurance] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Intelligence, Mathf.FloorToInt(((2f * Base.Intelligence + (StatPerformanceValues[Stat.Intelligence] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Fortitude, Mathf.FloorToInt(((2f * Base.Fortitude + (StatPerformanceValues[Stat.Fortitude] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Agility, Mathf.FloorToInt(((2f * Base.Agility + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) } // Todo Nature + IV's
+            { Stat.Strength, Mathf.FloorToInt((((2f * Base.Strength) + (StatPerformanceValues[Stat.Strength] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Endurance, Mathf.FloorToInt((((2f * Base.Endurance) + (StatPerformanceValues[Stat.Endurance] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Intelligence, Mathf.FloorToInt((((2f * Base.Intelligence) + (StatPerformanceValues[Stat.Intelligence] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Fortitude, Mathf.FloorToInt((((2f * Base.Fortitude) + (StatPerformanceValues[Stat.Fortitude] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
+            { Stat.Agility, Mathf.FloorToInt((((2f * Base.Agility) + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) } // Todo Nature + IV's
         };
 
         int prevMaxHP = MaxHP;
-        MaxHP = Mathf.FloorToInt(((2f * Base.HP + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
+        MaxHP = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
 
         if (prevMaxHP != 0)
         {
@@ -317,7 +317,7 @@ public class Monster
         float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
         float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
         float modifiers = Random.Range(0.85f, 1f) * type * critical * weatherMod;
-        float a = (2 * attacker.Level + 10) / 250f;
+        float a = ((2 * attacker.Level) + 10) / 250f;
         float d = a * move.Base.Power * (((float)attack / defense) + 2);
         int damage = Mathf.FloorToInt(d * modifiers);
 

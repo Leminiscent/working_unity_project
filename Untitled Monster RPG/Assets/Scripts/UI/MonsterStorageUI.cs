@@ -114,7 +114,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
         if (transferImage.gameObject.activeSelf)
         {
-            transferImage.transform.position = storageSlotImages[selectedItem].transform.position + Vector3.up * 50f;
+            transferImage.transform.position = storageSlotImages[selectedItem].transform.position + (Vector3.up * 50f);
         }
 
     }
@@ -147,7 +147,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
         else
         {
-            int depotSlotIndex = slotIndex - (slotIndex / totalColumns + 1);
+            int depotSlotIndex = slotIndex - ((slotIndex / totalColumns) + 1);
 
             monster = storage.GetMonster(SelectedDepot, depotSlotIndex);
             if (monster == null)
@@ -159,7 +159,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
 
         transferImage.sprite = storageSlotImages[slotIndex].sprite;
-        transferImage.transform.position = storageSlotImages[slotIndex].transform.position + Vector3.up * 50f;
+        transferImage.transform.position = storageSlotImages[slotIndex].transform.position + (Vector3.up * 50f);
         storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
         transferImage.gameObject.SetActive(true);
 
@@ -183,7 +183,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
         else
         {
-            int depotSlotIndex = slotIndex - (slotIndex / totalColumns + 1);
+            int depotSlotIndex = slotIndex - ((slotIndex / totalColumns) + 1);
 
             storage.AddMonster(monster, SelectedDepot, depotSlotIndex);
 

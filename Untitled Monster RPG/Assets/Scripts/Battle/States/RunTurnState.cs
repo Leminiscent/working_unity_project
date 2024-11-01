@@ -600,7 +600,7 @@ public class RunTurnState : State<BattleSystem>
         }
         else
         {
-            float f = (playerAgility * 128 / enemyAgility + 30 * _battleSystem.EscapeAttempts) % 256;
+            float f = ((playerAgility * 128 / enemyAgility) + (30 * _battleSystem.EscapeAttempts)) % 256;
 
             if (Random.Range(0, 256) < f)
             {

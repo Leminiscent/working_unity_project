@@ -15,11 +15,15 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private Image upArrow;
     [SerializeField] private Image downArrow;
+
     private int selectedCategory;
     private const int itemsInViewport = 8;
     private List<ItemSlotUI> slotUIList;
     private Inventory inventory;
     private RectTransform itemListRect;
+
+    public ItemBase SelectedItem => inventory.GetItem(selectedItem, selectedCategory);
+    public int SelectedCategory => selectedCategory;
 
     private void Awake()
     {
@@ -114,9 +118,9 @@ public class InventoryUI : SelectionUI<TextSlot>
         }
 
         int maxScrollIndex = slotUIList.Count - itemsInViewport;
-        float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, maxScrollIndex) * slotUIList[0].Height;
+        float scrollPos = Mathf.Clamp(selectedItem - (itemsInViewport / 2), 0, maxScrollIndex) * slotUIList[0].Height;
         bool showUpArrow = selectedItem > itemsInViewport / 2;
-        bool showDownArrow = selectedItem < maxScrollIndex + itemsInViewport / 2;
+        bool showDownArrow = selectedItem < maxScrollIndex + (itemsInViewport / 2);
 
         itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
         upArrow.gameObject.SetActive(showUpArrow);
@@ -164,9 +168,4 @@ public class InventoryUI : SelectionUI<TextSlot>
 
         return 0; // Fallback
     }
-
-
-    public ItemBase SelectedItem => inventory.GetItem(selectedItem, selectedCategory);
-
-    public int SelectedCategory => selectedCategory;
 }
