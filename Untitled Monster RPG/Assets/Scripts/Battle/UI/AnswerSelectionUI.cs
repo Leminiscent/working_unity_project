@@ -14,7 +14,7 @@ public class AnswerSelectionUI : SelectionUI<TextSlot>
 
     public void SetAnswers(List<RecruitmentAnswer> answers)
     {
-        selectedItem = 0;
+        _selectedItem = 0;
         SetItems(_answerTexts.Take(answers.Count).ToList());
 
         for (int i = 0; i < _answerTexts.Count; ++i)

@@ -22,7 +22,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     private Inventory _inventory;
     private RectTransform _itemListRect;
 
-    public ItemBase SelectedItem => _inventory.GetItem(selectedItem, _selectedCategory);
+    public ItemBase SelectedItem => _inventory.GetItem(_selectedItem, _selectedCategory);
     public int SelectedCategory => _selectedCategory;
 
     private void Awake()
@@ -99,7 +99,7 @@ public class InventoryUI : SelectionUI<TextSlot>
 
         if (slots.Count > 0)
         {
-            ItemBase item = slots[selectedItem].Item;
+            ItemBase item = slots[_selectedItem].Item;
 
             _itemIcon.sprite = item.Icon;
             _itemDescription.text = item.Description;
@@ -118,9 +118,9 @@ public class InventoryUI : SelectionUI<TextSlot>
         }
 
         int maxScrollIndex = _slotUIList.Count - ITEMS_IN_VIEWPORT;
-        float scrollPos = Mathf.Clamp(selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex) * _slotUIList[0].Height;
-        bool showUpArrow = selectedItem > ITEMS_IN_VIEWPORT / 2;
-        bool showDownArrow = selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
+        float scrollPos = Mathf.Clamp(_selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex) * _slotUIList[0].Height;
+        bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
+        bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
 
         _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
         _upArrow.gameObject.SetActive(showUpArrow);
@@ -129,7 +129,7 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     private void ResetSelction()
     {
-        selectedItem = 0;
+        _selectedItem = 0;
         _upArrow.gameObject.SetActive(false);
         _downArrow.gameObject.SetActive(false);
         _itemIcon.sprite = null;

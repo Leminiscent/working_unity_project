@@ -20,7 +20,7 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     public void SetMoves(List<Move> moves)
     {
         _moves = moves;
-        selectedItem = 0;
+        _selectedItem = 0;
         SetItems(_moveTexts.Take(moves.Count).ToList());
 
         for (int i = 0; i < _moveTexts.Count; ++i)
@@ -39,7 +39,7 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();
-        Move move = _moves[selectedItem];
+        Move move = _moves[_selectedItem];
 
         _spText.text = $"SP {move.Sp}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();

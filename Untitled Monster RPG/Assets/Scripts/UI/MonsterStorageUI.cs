@@ -113,7 +113,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
         if (_transferImage.gameObject.activeSelf)
         {
-            _transferImage.transform.position = _storageSlotImages[selectedItem].transform.position + (Vector3.up * 50f);
+            _transferImage.transform.position = _storageSlotImages[_selectedItem].transform.position + (Vector3.up * 50f);
         }
     }
 

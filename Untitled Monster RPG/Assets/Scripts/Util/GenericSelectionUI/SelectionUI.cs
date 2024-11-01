@@ -4,65 +4,64 @@ using UnityEngine;
 
 namespace Utils.GenericSelectionUI
 {
-    public enum SelectionType { List, Grid }
-
     public class SelectionUI<T> : MonoBehaviour where T : ISelectableItem
     {
-        private List<T> items;
-        protected int selectedItem = 0;
-        private SelectionType selectionType;
-        private int gridWidth = 2;
-        private float selectionTimer = 0;
-        private const float selectionSpeed = 5f;
+        private List<T> _items;
+        private SelectionType _selectionType;
+        private int _gridWidth = 2;
+        private float _selectionTimer = 0;
+        private const float SELCTION_SPEED = 5f;
+
+        protected int _selectedItem = 0;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
 
         public void SetSelectionSettings(SelectionType selectionType, int gridWidth)
         {
-            this.selectionType = selectionType;
-            this.gridWidth = gridWidth;
+            _selectionType = selectionType;
+            _gridWidth = gridWidth;
         }
 
         public void SetItems(List<T> items)
         {
-            this.items = items;
+            _items = items;
 
-            items.ForEach(static i => i.Init());
+            _items.ForEach(static i => i.Init());
             UpdateSelectionInUI();
         }
 
         public void ClearItems()
         {
-            items?.ForEach(static i => i.Clear());
+            _items?.ForEach(static i => i.Clear());
 
-            items = null;
+            _items = null;
         }
 
         public virtual void HandleUpdate()
         {
             UpdateSelectionTimer();
 
-            int prevSelection = selectedItem;
+            int prevSelection = _selectedItem;
 
-            if (selectionType == SelectionType.List)
+            if (_selectionType == SelectionType.List)
             {
                 HandleListSelection();
             }
-            else if (selectionType == SelectionType.Grid)
+            else if (_selectionType == SelectionType.Grid)
             {
                 HandleGridSelection();
             }
 
-            selectedItem = Mathf.Clamp(selectedItem, 0, items.Count - 1);
+            _selectedItem = Mathf.Clamp(_selectedItem, 0, _items.Count - 1);
 
-            if (selectedItem != prevSelection)
+            if (_selectedItem != prevSelection)
             {
                 UpdateSelectionInUI();
             }
             if (Input.GetButtonDown("Action"))
             {
-                OnSelected?.Invoke(selectedItem);
+                OnSelected?.Invoke(_selectedItem);
             }
             if (Input.GetButtonDown("Back"))
             {
@@ -75,10 +74,10 @@ namespace Utils.GenericSelectionUI
         {
             float v = Input.GetAxisRaw("Vertical");
 
-            if (selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
+            if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
             {
-                selectedItem += -(int)Mathf.Sign(v);
-                selectionTimer = 1 / selectionSpeed;
+                _selectedItem += -(int)Mathf.Sign(v);
+                _selectionTimer = 1 / SELCTION_SPEED;
             }
         }
 
@@ -87,40 +86,46 @@ namespace Utils.GenericSelectionUI
             float v = Input.GetAxisRaw("Vertical");
             float h = Input.GetAxisRaw("Horizontal");
 
-            if (selectionTimer == 0 && (Mathf.Abs(v) > 0.2f) || selectionTimer == 0 && (Mathf.Abs(h) > 0.2f))
+            if ((_selectionTimer == 0 && (Mathf.Abs(v) > 0.2f)) || (_selectionTimer == 0 && (Mathf.Abs(h) > 0.2f)))
             {
                 if (Mathf.Abs(h) > Mathf.Abs(v))
                 {
-                    selectedItem += (int)Mathf.Sign(h);
+                    _selectedItem += (int)Mathf.Sign(h);
                 }
                 else
                 {
-                    selectedItem += -(int)Mathf.Sign(v) * gridWidth;
+                    _selectedItem += -(int)Mathf.Sign(v) * _gridWidth;
                 }
-                selectionTimer = 1 / selectionSpeed;
+                _selectionTimer = 1 / SELCTION_SPEED;
             }
         }
 
         public virtual void UpdateSelectionInUI()
         {
-            for (int i = 0; i < items.Count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
-                items[i].OnSelectionChanged(i == selectedItem);
+                _items[i].OnSelectionChanged(i == _selectedItem);
             }
         }
 
         public void ResetSelection()
         {
-            selectedItem = 0;
+            _selectedItem = 0;
             UpdateSelectionInUI();
         }
 
         private void UpdateSelectionTimer()
         {
-            if (selectionTimer > 0)
+            if (_selectionTimer > 0)
             {
-                selectionTimer = Mathf.Clamp(selectionTimer - Time.deltaTime, 0, selectionTimer);
+                _selectionTimer = Mathf.Clamp(_selectionTimer - Time.deltaTime, 0, _selectionTimer);
             }
         }
+    }
+
+    public enum SelectionType
+    {
+        List,
+        Grid
     }
 }

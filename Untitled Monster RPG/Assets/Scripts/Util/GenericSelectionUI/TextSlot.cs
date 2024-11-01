@@ -3,26 +3,26 @@ using UnityEngine;
 
 public class TextSlot : MonoBehaviour, ISelectableItem
 {
-    [SerializeField] private TextMeshProUGUI text;
-    private Color originalColor;
+    [SerializeField] private TextMeshProUGUI _text;
+    private Color _originalColor;
 
     public void Init()
     {
-        originalColor = GlobalSettings.Instance.InactiveColor;
+        _originalColor = GlobalSettings.Instance.InactiveColor;
     }
 
     public void Clear()
     {
-        text.color = originalColor;
+        _text.color = _originalColor;
     }
 
     public void OnSelectionChanged(bool selected)
     {
-        text.color = selected ? GlobalSettings.Instance.ActiveColor : originalColor;
+        _text.color = selected ? GlobalSettings.Instance.ActiveColor : _originalColor;
     }
 
     public void SetText(string s)
     {
-        text.text = s;
+        _text.text = s;
     }
 }

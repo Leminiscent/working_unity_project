@@ -12,7 +12,7 @@ public class PartyScreen : SelectionUI<TextSlot>
     private List<Monster> _monsters;
     private MonsterParty _party;
 
-    public Monster SelectedMember => _monsters[selectedItem];
+    public Monster SelectedMember => _monsters[_selectedItem];
 
     public void Init()
     {

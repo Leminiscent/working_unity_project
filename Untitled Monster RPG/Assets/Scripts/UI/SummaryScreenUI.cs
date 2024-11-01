@@ -153,7 +153,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         base.UpdateSelectionInUI();
 
-        Move move = _monster.Moves[selectedItem];
+        Move move = _monster.Moves[_selectedItem];
 
         _moveDescriptionText.text = move.Base.Description;
         _movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";

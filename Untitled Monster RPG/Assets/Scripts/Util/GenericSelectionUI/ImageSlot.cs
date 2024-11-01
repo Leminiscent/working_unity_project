@@ -3,26 +3,26 @@ using UnityEngine.UI;
 
 public class ImageSlot : MonoBehaviour, ISelectableItem
 {
-    private Image bgImage;
-    private Color originalColor;
+    private Image _bgImage;
+    private Color _originalColor;
 
     private void Awake()
     {
-        bgImage = GetComponent<Image>();
+        _bgImage = GetComponent<Image>();
     }
 
     public void Init()
     {
-        originalColor = bgImage.color;
+        _originalColor = _bgImage.color;
     }
 
     public void Clear()
     {
-        bgImage.color = originalColor;
+        _bgImage.color = _originalColor;
     }
 
     public void OnSelectionChanged(bool selected)
     {
-        bgImage.color = selected ? GlobalSettings.Instance.BgHighlightColor : originalColor;
+        _bgImage.color = selected ? GlobalSettings.Instance.BgHighlightColor : _originalColor;
     }
 }
