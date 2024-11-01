@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneDetails : MonoBehaviour
 {
-    [SerializeField] private List<SceneDetails> connectedScenes;
-    [SerializeField] private AudioClip sceneMusic;
-    public bool IsLoaded { get; private set; }
+    [SerializeField] private List<SceneDetails> _connectedScenes;
+    [SerializeField] private AudioClip _sceneMusic;
 
-    private List<SavableEntity> savableEntities;
+    private List<SavableEntity> _savableEntities;
+
+    public bool IsLoaded { get; private set; }
+    public AudioClip SceneMusic => _sceneMusic;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,12 +20,12 @@ public class SceneDetails : MonoBehaviour
             LoadScene();
             GameController.Instance.SetCurrentScene(this);
 
-            if (sceneMusic != null)
+            if (_sceneMusic != null)
             {
-                AudioManager.Instance.PlayMusic(sceneMusic, fade: true);
+                AudioManager.Instance.PlayMusic(_sceneMusic, fade: true);
             }
 
-            foreach (SceneDetails scene in connectedScenes)
+            foreach (SceneDetails scene in _connectedScenes)
             {
                 scene.LoadScene();
             }
@@ -32,17 +34,17 @@ public class SceneDetails : MonoBehaviour
 
             if (prevScene != null)
             {
-                List<SceneDetails> previouslyLoadedScenes = prevScene.connectedScenes;
+                List<SceneDetails> previouslyLoadedScenes = prevScene._connectedScenes;
 
                 foreach (SceneDetails scene in previouslyLoadedScenes)
                 {
-                    if (!connectedScenes.Contains(scene) && scene != this)
+                    if (!_connectedScenes.Contains(scene) && scene != this)
                     {
                         scene.UnloadScene();
                     }
                 }
 
-                if (!connectedScenes.Contains(prevScene))
+                if (!_connectedScenes.Contains(prevScene))
                 {
                     prevScene.UnloadScene();
                 }
@@ -60,8 +62,8 @@ public class SceneDetails : MonoBehaviour
             IsLoaded = true;
             operation.completed += (AsyncOperation op) =>
             {
-                savableEntities = GetSavableEntitiesInScene();
-                SavingSystem.i.RestoreEntityStates(savableEntities);
+                _savableEntities = GetSavableEntitiesInScene();
+                SavingSystem.i.RestoreEntityStates(_savableEntities);
             };
         }
     }
@@ -70,7 +72,7 @@ public class SceneDetails : MonoBehaviour
     {
         if (IsLoaded)
         {
-            SavingSystem.i.CaptureEntityStates(savableEntities);
+            SavingSystem.i.CaptureEntityStates(_savableEntities);
             SceneManager.UnloadSceneAsync(gameObject.name);
             IsLoaded = false;
         }
@@ -83,6 +85,4 @@ public class SceneDetails : MonoBehaviour
 
         return savableEntities;
     }
-
-    public AudioClip SceneMusic => sceneMusic;
 }

@@ -41,8 +41,8 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
         base.UpdateSelectionInUI();
         Move move = _moves[selectedItem];
 
-        _spText.text = $"SP {move.SP}/{move.Base.SP}";
+        _spText.text = $"SP {move.Sp}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();
-        _spText.color = move.SP == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
+        _spText.color = move.Sp == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
     }
 }

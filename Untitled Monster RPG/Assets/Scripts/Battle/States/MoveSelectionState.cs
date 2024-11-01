@@ -30,7 +30,7 @@ public class MoveSelectionState : State<BattleSystem>
         _battleSystem = owner;
         _selectionUI.SetMoves(Moves);
 
-        if (Moves.Where(static m => m.SP > 0).Count() == 0)
+        if (Moves.Where(static m => m.Sp > 0).Count() == 0)
         {
             _battleSystem.SelectedMove = -1;
             _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);

@@ -129,7 +129,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
                 moveTypes[i].text = move.Base.Type.ToString().ToUpper();
                 moveNames[i].text = move.Base.Name;
-                moveSP[i].text = $"SP {move.SP}/{move.Base.SP}";
+                moveSP[i].text = $"SP {move.Sp}/{move.Base.SP}";
             }
             else
             {

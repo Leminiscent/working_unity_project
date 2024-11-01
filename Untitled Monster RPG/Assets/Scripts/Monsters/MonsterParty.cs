@@ -6,25 +6,25 @@ using UnityEngine;
 
 public class MonsterParty : MonoBehaviour
 {
-    [SerializeField] private List<Monster> monsters;
-    private MonsterStorage storage;
+    [SerializeField] private List<Monster> _monsters;
+
+    private MonsterStorage _storage;
 
     public event Action OnUpdated;
-
     public List<Monster> Monsters
     {
-        get => monsters;
+        get => _monsters;
         set
         {
-            monsters = value;
+            _monsters = value;
             OnUpdated?.Invoke();
         }
     }
 
     private void Awake()
     {
-        storage = GetComponent<MonsterStorage>();
-        foreach (Monster monster in monsters)
+        _storage = GetComponent<MonsterStorage>();
+        foreach (Monster monster in _monsters)
         {
             monster.Init();
         }
@@ -32,30 +32,30 @@ public class MonsterParty : MonoBehaviour
 
     public Monster GetHealthyMonster()
     {
-        return monsters.Where(static x => x.HP > 0).FirstOrDefault();
+        return _monsters.FirstOrDefault(static x => x.HP > 0);
     }
 
     public void AddMonster(Monster newMonster)
     {
-        if (monsters.Count < 6)
+        if (_monsters.Count < 6)
         {
-            monsters.Add(newMonster);
+            _monsters.Add(newMonster);
             OnUpdated?.Invoke();
         }
         else
         {
-            storage.AddMonsterToFirstEmptySlot(newMonster);
+            _storage.AddMonsterToFirstEmptySlot(newMonster);
         }
     }
 
     public bool CheckForTransformations()
     {
-        return monsters.Any(static m => m.CheckForTransformation() != null);
+        return _monsters.Any(static m => m.CheckForTransformation() != null);
     }
 
     public IEnumerator RunTransformations()
     {
-        foreach (Monster monster in monsters)
+        foreach (Monster monster in _monsters)
         {
             Transformation transformation = monster.CheckForTransformation();
 
@@ -68,7 +68,7 @@ public class MonsterParty : MonoBehaviour
 
     public void RestoreParty()
     {
-        foreach (Monster monster in monsters)
+        foreach (Monster monster in _monsters)
         {
             monster.CureStatus();
             monster.CureVolatileStatus();
@@ -77,7 +77,7 @@ public class MonsterParty : MonoBehaviour
 
             foreach (Move mov in monster.Moves)
             {
-                mov.SP = mov.Base.SP;
+                mov.Sp = mov.Base.SP;
             }
         }
     }

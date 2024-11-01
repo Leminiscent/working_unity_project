@@ -5,108 +5,107 @@ using UnityEngine;
 public class MoveBase : ScriptableObject
 {
     // Attributes
-    [SerializeField] private new string name;
+    [SerializeField] private string _name;
     [TextArea]
-    [SerializeField] private string description;
-    [SerializeField] private MonsterType type;
-    [SerializeField] private MoveCategory category;
-    [SerializeField] private MoveEffects effects;
-    [SerializeField] private List<SecondaryEffects> secondaryEffects;
-    [SerializeField] private CritBehavior critBehavior;
-    [SerializeField] private RecoilMoveEffect recoil = new();
-    [SerializeField] private int drainPercentage = 0;
-    [SerializeField] private OneHitKOMoveEffect oneHitKO = new();
-    [SerializeField] private MoveTarget target;
-    [SerializeField] private Vector2Int hitRange;
-    [SerializeField] private int power;
-    [SerializeField] private int accuracy;
-    [SerializeField] private bool alwaysHits;
-    [SerializeField] private int sP;
-    [SerializeField] private int priority;
-    [SerializeField] private AudioClip sound;
+    [SerializeField] private string _description;
+    [SerializeField] private MonsterType _type;
+    [SerializeField] private MoveCategory _category;
+    [SerializeField] private MoveEffects _effects;
+    [SerializeField] private List<SecondaryEffects> _secondaryEffects;
+    [SerializeField] private CritBehavior _critBehavior;
+    [SerializeField] private RecoilMoveEffect _recoil = new();
+    [SerializeField] private int _drainPercentage = 0;
+    [SerializeField] private OneHitKOMoveEffect _oneHitKO = new();
+    [SerializeField] private MoveTarget _target;
+    [SerializeField] private Vector2Int _hitRange;
+    [SerializeField] private int _power;
+    [SerializeField] private int _accuracy;
+    [SerializeField] private bool _alwaysHits;
+    [SerializeField] private int _sP;
+    [SerializeField] private int _priority;
+    [SerializeField] private AudioClip _sound;
 
     // Properties
     public int GetHitCount()
     {
         int hitCount;
 
-        if (hitRange == Vector2Int.zero)
+        if (_hitRange == Vector2Int.zero)
         {
             hitCount = 1;
         }
         else
         {
-            hitCount = hitRange.y == 0 ? hitRange.x : Random.Range(hitRange.x, hitRange.y + 1);
+            hitCount = _hitRange.y == 0 ? _hitRange.x : Random.Range(_hitRange.x, _hitRange.y + 1);
         }
 
         return hitCount;
     }
 
-    public string Name => name;
-    public string Description => description;
-    public MonsterType Type => type;
-    public CritBehavior CritBehavior => critBehavior;
-    public RecoilMoveEffect Recoil => recoil;
-    public int DrainPercentage => drainPercentage;
-    public OneHitKOMoveEffect OneHitKO => oneHitKO;
-    public int Power => power;
-    public int Accuracy => accuracy;
-    public bool AlwaysHits => alwaysHits;
-    public int SP => sP;
-    public int Priority => priority;
-    public MoveCategory Category => category;
-    public MoveEffects Effects => effects;
-    public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
-    public MoveTarget Target => target;
-    public AudioClip Sound => sound;
+    public string Name => _name;
+    public string Description => _description;
+    public MonsterType Type => _type;
+    public CritBehavior CritBehavior => _critBehavior;
+    public RecoilMoveEffect Recoil => _recoil;
+    public int DrainPercentage => _drainPercentage;
+    public OneHitKOMoveEffect OneHitKO => _oneHitKO;
+    public int Power => _power;
+    public int Accuracy => _accuracy;
+    public bool AlwaysHits => _alwaysHits;
+    public int SP => _sP;
+    public int Priority => _priority;
+    public MoveCategory Category => _category;
+    public MoveEffects Effects => _effects;
+    public List<SecondaryEffects> SecondaryEffects => _secondaryEffects;
+    public MoveTarget Target => _target;
+    public AudioClip Sound => _sound;
 }
 
 [System.Serializable]
 public class MoveEffects
 {
-    [SerializeField] private List<StatBoost> boosts;
-    [SerializeField] private ConditionID status;
-    [SerializeField] private ConditionID volatileStatus;
-    [SerializeField] private ConditionID weather;
+    [SerializeField] private List<StatBoost> _boosts;
+    [SerializeField] private ConditionID _status;
+    [SerializeField] private ConditionID _volatileStatus;
+    [SerializeField] private ConditionID _weather;
 
-    public List<StatBoost> Boosts => boosts;
-    public ConditionID Status => status;
-    public ConditionID VolatileStatus => volatileStatus;
-    public ConditionID Weather => weather;
+    public List<StatBoost> Boosts => _boosts;
+    public ConditionID Status => _status;
+    public ConditionID VolatileStatus => _volatileStatus;
+    public ConditionID Weather => _weather;
 }
 
 [System.Serializable]
 public class SecondaryEffects : MoveEffects
 {
-    [SerializeField] private int chance;
-    [SerializeField] private MoveTarget target;
+    [SerializeField] private int _chance;
+    [SerializeField] private MoveTarget _target;
 
-    public int Chance => chance;
-    public MoveTarget Target => target;
+    public int Chance => _chance;
+    public MoveTarget Target => _target;
 }
 
 [System.Serializable]
 public class StatBoost
 {
-    public Stat stat;
-    public int boost;
+    public Stat Stat;
+    public int Boost;
 }
 
 [System.Serializable]
 public class RecoilMoveEffect
 {
-    public RecoilType recoilType;
-    public int recoilDamage = 0;
+    public RecoilType RecoilType;
+    public int RecoilDamage = 0;
 }
 
 [System.Serializable]
 public class OneHitKOMoveEffect
 {
-    public bool isOneHitKO;
-    public bool lowerOddsException;
-    public MonsterType immunityType;
+    public bool IsOneHitKO;
+    public bool LowerOddsException;
+    public MonsterType ImmunityType;
 }
-
 
 public enum MoveCategory
 {
@@ -123,7 +122,7 @@ public enum MoveTarget
 
 public enum CritBehavior
 {
-    none,
+    None,
     HighCritRatio,
     AlwaysCrits,
     NeverCrits
@@ -131,7 +130,7 @@ public enum CritBehavior
 
 public enum RecoilType
 {
-    none,
+    None,
     RecoilByMaxHP,
     RecoilByCurrentHP,
     RecoilByDamage

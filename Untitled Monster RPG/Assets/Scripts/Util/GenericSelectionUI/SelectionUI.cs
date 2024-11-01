@@ -36,7 +36,7 @@ namespace Utils.GenericSelectionUI
         {
             items?.ForEach(static i => i.Clear());
 
-            this.items = null;
+            items = null;
         }
 
         public virtual void HandleUpdate()

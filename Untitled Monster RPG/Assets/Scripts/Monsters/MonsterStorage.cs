@@ -3,37 +3,37 @@ using UnityEngine;
 
 public class MonsterStorage : MonoBehaviour, ISavable
 {
-    private const int numberOfDepots = 10;
-    private const int numberOfSlots = 48; // 6 * 8
-    private Monster[,] depots = new Monster[numberOfDepots, numberOfSlots];
+    private const int NUMBER_OF_DEPOTS = 10;
+    private const int NUMBER_OF_SLOTS = 48; // 6 * 8
+    private Monster[,] _depots = new Monster[NUMBER_OF_DEPOTS, NUMBER_OF_SLOTS];
 
-    public int NumberOfDepots => numberOfDepots;
-    public int NumberOfSlots => numberOfSlots;
+    public int NumberOfDepots => NUMBER_OF_DEPOTS;
+    public int NumberOfSlots => NUMBER_OF_SLOTS;
 
     public void AddMonster(Monster monster, int depotIndex, int slotIndex)
     {
-        depots[depotIndex, slotIndex] = monster;
+        _depots[depotIndex, slotIndex] = monster;
     }
 
     public void RemoveMonster(int depotIndex, int slotIndex)
     {
-        depots[depotIndex, slotIndex] = null;
+        _depots[depotIndex, slotIndex] = null;
     }
 
     public Monster GetMonster(int depotIndex, int slotIndex)
     {
-        return depots[depotIndex, slotIndex];
+        return _depots[depotIndex, slotIndex];
     }
 
     public void AddMonsterToFirstEmptySlot(Monster monster)
     {
-        for (int depotIndex = 0; depotIndex < numberOfDepots; depotIndex++)
+        for (int depotIndex = 0; depotIndex < NUMBER_OF_DEPOTS; depotIndex++)
         {
-            for (int slotIndex = 0; slotIndex < numberOfSlots; slotIndex++)
+            for (int slotIndex = 0; slotIndex < NUMBER_OF_SLOTS; slotIndex++)
             {
-                if (depots[depotIndex, slotIndex] == null)
+                if (_depots[depotIndex, slotIndex] == null)
                 {
-                    depots[depotIndex, slotIndex] = monster;
+                    _depots[depotIndex, slotIndex] = monster;
                     return;
                 }
             }
@@ -49,23 +49,23 @@ public class MonsterStorage : MonoBehaviour, ISavable
     {
         DepotSaveData saveData = new()
         {
-            depotSlots = new List<DepotSlotSaveData>()
+            DepotSlots = new List<DepotSlotSaveData>()
         };
 
-        for (int depotIndex = 0; depotIndex < numberOfDepots; depotIndex++)
+        for (int depotIndex = 0; depotIndex < NUMBER_OF_DEPOTS; depotIndex++)
         {
-            for (int slotIndex = 0; slotIndex < numberOfSlots; slotIndex++)
+            for (int slotIndex = 0; slotIndex < NUMBER_OF_SLOTS; slotIndex++)
             {
-                if (depots[depotIndex, slotIndex] != null)
+                if (_depots[depotIndex, slotIndex] != null)
                 {
                     DepotSlotSaveData depotSlot = new()
                     {
-                        monsterData = depots[depotIndex, slotIndex].GetSaveData(),
-                        depotIndex = depotIndex,
-                        slotIndex = slotIndex
+                        MonsterData = _depots[depotIndex, slotIndex].GetSaveData(),
+                        DepotIndex = depotIndex,
+                        SlotIndex = slotIndex
                     };
 
-                    saveData.depotSlots.Add(depotSlot);
+                    saveData.DepotSlots.Add(depotSlot);
                 }
             }
         }
@@ -77,17 +77,17 @@ public class MonsterStorage : MonoBehaviour, ISavable
     {
         DepotSaveData saveData = state as DepotSaveData;
 
-        for (int depotIndex = 0; depotIndex < numberOfDepots; depotIndex++)
+        for (int depotIndex = 0; depotIndex < NUMBER_OF_DEPOTS; depotIndex++)
         {
-            for (int slotIndex = 0; slotIndex < numberOfSlots; slotIndex++)
+            for (int slotIndex = 0; slotIndex < NUMBER_OF_SLOTS; slotIndex++)
             {
-                depots[depotIndex, slotIndex] = null;
+                _depots[depotIndex, slotIndex] = null;
             }
         }
 
-        foreach (DepotSlotSaveData slot in saveData.depotSlots)
+        foreach (DepotSlotSaveData slot in saveData.DepotSlots)
         {
-            depots[slot.depotIndex, slot.slotIndex] = new Monster(slot.monsterData);
+            _depots[slot.DepotIndex, slot.SlotIndex] = new Monster(slot.MonsterData);
         }
     }
 }
@@ -95,13 +95,13 @@ public class MonsterStorage : MonoBehaviour, ISavable
 [System.Serializable]
 public class DepotSaveData
 {
-    public List<DepotSlotSaveData> depotSlots;
+    public List<DepotSlotSaveData> DepotSlots;
 }
 
 [System.Serializable]
 public class DepotSlotSaveData
 {
-    public MonsterSaveData monsterData;
-    public int depotIndex;
-    public int slotIndex;
+    public MonsterSaveData MonsterData;
+    public int DepotIndex;
+    public int SlotIndex;
 }

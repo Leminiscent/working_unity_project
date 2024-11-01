@@ -6,7 +6,7 @@ public class ItemGiver : MonoBehaviour, ISavable
     [SerializeField] private ItemBase _item;
     [SerializeField] private int _count = 1;
     [SerializeField] private Dialogue _dialogue;
-    
+
     private bool _used = false;
 
     public IEnumerator GiveItem(PlayerController player)

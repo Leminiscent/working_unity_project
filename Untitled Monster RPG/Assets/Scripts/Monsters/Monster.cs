@@ -6,17 +6,10 @@ using UnityEngine;
 public class Monster
 {
     [SerializeField] private MonsterBase _base;
-    [SerializeField] private int level;
+    [SerializeField] private int _level;
 
-    public Monster(MonsterBase pBase, int pLevel)
-    {
-        _base = pBase;
-        level = pLevel;
-
-        Init();
-    }
     public MonsterBase Base => _base;
-    public int Level => level;
+    public int Level => _level;
     public int Exp { get; set; }
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
@@ -31,6 +24,21 @@ public class Monster
     public int AffinityLevel { get; set; }
     public event System.Action OnStatusChanged;
     public event System.Action OnHPChanged;
+    public int MaxHP { get; private set; }
+    public int Strength => GetStat(Stat.Strength);
+    public int Endurance => GetStat(Stat.Endurance);
+    public int Intelligence => GetStat(Stat.Intelligence);
+    public int Fortitude => GetStat(Stat.Fortitude);
+    public int Agility => GetStat(Stat.Agility);
+    public Dictionary<Stat, int> StatPerformanceValues { get; private set; }
+
+    public Monster(MonsterBase pBase, int pLevel)
+    {
+        _base = pBase;
+        _level = pLevel;
+
+        Init();
+    }
 
     public void Init()
     {
@@ -70,15 +78,15 @@ public class Monster
 
     public Monster(MonsterSaveData saveData)
     {
-        _base = MonsterDB.GetObjectByName(saveData.name);
-        HP = saveData.hp;
-        level = saveData.level;
-        Exp = saveData.exp;
+        _base = MonsterDB.GetObjectByName(saveData.Name);
+        HP = saveData.HP;
+        _level = saveData.Level;
+        Exp = saveData.Exp;
 
-        Status = saveData.statusId != null ? ConditionsDB.Conditions[saveData.statusId.Value] : null;
+        Status = saveData.StatusId != null ? ConditionsDB.Conditions[saveData.StatusId.Value] : null;
 
-        Moves = saveData.moves.Select(static s => new Move(s)).ToList();
-        StatPerformanceValues = saveData.statPerformanceValues.ToDictionary(static s => s.stat, static s => s.pv);
+        Moves = saveData.Moves.Select(static s => new Move(s)).ToList();
+        StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.PV);
 
         CalculateStats();
         StatusChanges = new Queue<string>();
@@ -90,16 +98,16 @@ public class Monster
     {
         MonsterSaveData saveData = new()
         {
-            name = Base.name,
-            hp = HP,
-            level = Level,
-            exp = Exp,
-            statusId = Status?.ID,
-            moves = Moves.Select(static m => m.GetSaveData()).ToList(),
-            statPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
+            Name = Base.Name,
+            HP = HP,
+            Level = Level,
+            Exp = Exp,
+            StatusId = Status?.ID,
+            Moves = Moves.Select(static m => m.GetSaveData()).ToList(),
+            StatPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
             {
-                stat = s.Key,
-                pv = s.Value
+                Stat = s.Key,
+                PV = s.Value
             }).ToList()
         };
 
@@ -155,8 +163,8 @@ public class Monster
     {
         foreach (StatBoost statBoost in statBoosts)
         {
-            Stat stat = statBoost.stat;
-            int boost = statBoost.boost;
+            Stat stat = statBoost.Stat;
+            int boost = statBoost.Boost;
             bool changeIsPositive = boost > 0;
             string riseOrFall;
 
@@ -202,7 +210,7 @@ public class Monster
 
         if (Exp >= Base.GetExpForLevel(Level + 1))
         {
-            ++level;
+            ++_level;
             CalculateStats();
             return true;
         }
@@ -211,7 +219,7 @@ public class Monster
 
     public LearnableMove GetLearnableMoveAtCurrentLevel()
     {
-        return Base.LearnableMoves.Where(x => x.Level == level).FirstOrDefault();
+        return Base.LearnableMoves.FirstOrDefault(x => x.Level == Level);
     }
 
     public void LearnMove(MoveBase moveToLearn)
@@ -266,17 +274,9 @@ public class Monster
         return Mathf.Clamp01(normalizedExp);
     }
 
-    public int MaxHP { get; private set; }
-    public int Strength => GetStat(Stat.Strength);
-    public int Endurance => GetStat(Stat.Endurance);
-    public int Intelligence => GetStat(Stat.Intelligence);
-    public int Fortitude => GetStat(Stat.Fortitude);
-    public int Agility => GetStat(Stat.Agility);
-    public Dictionary<Stat, int> StatPerformanceValues { get; private set; }
-
     public DamageDetails TakeDamage(Move move, Monster attacker, Condition weather)
     {
-        if (move.Base.OneHitKO.isOneHitKO)
+        if (move.Base.OneHitKO.IsOneHitKO)
         {
             int oneHitDamage = HP;
 
@@ -304,7 +304,7 @@ public class Monster
             }
         }
 
-        float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
+        float type = TypeChart.GetEffectiveness(move.Base.Type, Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, Base.Type2);
         float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
         DamageDetails damageDetails = new()
         {
@@ -402,7 +402,7 @@ public class Monster
 
     public Move GetRandomMove()
     {
-        List<Move> movesWithSP = Moves.Where(static x => x.SP > 0).ToList();
+        List<Move> movesWithSP = Moves.Where(static x => x.Sp > 0).ToList();
 
         if (movesWithSP.Count == 0)
         {
@@ -462,18 +462,18 @@ public class DamageDetails
 [System.Serializable]
 public class MonsterSaveData
 {
-    public string name;
-    public int hp;
-    public int level;
-    public int exp;
-    public ConditionID? statusId;
-    public List<MoveSaveData> moves;
-    public List<StatPV> statPerformanceValues;
+    public string Name;
+    public int HP;
+    public int Level;
+    public int Exp;
+    public ConditionID? StatusId;
+    public List<MoveSaveData> Moves;
+    public List<StatPV> StatPerformanceValues;
 }
 
 [System.Serializable]
 public class StatPV
 {
-    public Stat stat;
-    public int pv;
+    public Stat Stat;
+    public int PV;
 }

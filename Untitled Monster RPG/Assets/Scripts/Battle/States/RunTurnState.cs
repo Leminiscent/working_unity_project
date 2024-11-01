@@ -171,7 +171,7 @@ public class RunTurnState : State<BattleSystem>
             return true;
         }
 
-        if (move.Base.OneHitKO.isOneHitKO)
+        if (move.Base.OneHitKO.IsOneHitKO)
         {
             if (source.Level < target.Level)
             {
@@ -231,7 +231,7 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
-        move.SP--;
+        move.Sp--;
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
         {

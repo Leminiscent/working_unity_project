@@ -30,7 +30,7 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
         GameController.Instance.PauseGame(true);
         yield return fader.FadeIn(0.5f);
 
-        LocationPortal destPortal = FindObjectsOfType<LocationPortal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
+        LocationPortal destPortal = FindObjectsOfType<LocationPortal>().First(x => x != this && x.destinationPortal == destinationPortal);
 
         player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
         player.Deputy.SetPosition();

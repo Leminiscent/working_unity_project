@@ -3,32 +3,33 @@ using UnityEngine;
 
 public class MonsterGiver : MonoBehaviour, ISavable
 {
-    [SerializeField] private Monster monster;
-    [SerializeField] private Dialogue dialogue;
-    private bool used = false;
+    [SerializeField] private Monster _monster;
+    [SerializeField] private Dialogue _dialogue;
+
+    private bool _used = false;
 
     public IEnumerator GiveMonster(PlayerController player)
     {
-        yield return DialogueManager.Instance.ShowDialogue(dialogue);
-        monster.Init();
-        player.GetComponent<MonsterParty>().AddMonster(monster);
-        used = true;
+        yield return DialogueManager.Instance.ShowDialogue(_dialogue);
+        _monster.Init();
+        player.GetComponent<MonsterParty>().AddMonster(_monster);
+        _used = true;
         AudioManager.Instance.PlaySFX(AudioID.MonsterObtained, pauseMusic: true);
-        yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {monster.Base.Name}!");
+        yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {_monster.Base.Name}!");
     }
 
     public bool CanBeGiven()
     {
-        return monster != null && !used;
+        return _monster != null && !_used;
     }
 
     public object CaptureState()
     {
-        return used;
+        return _used;
     }
 
     public void RestoreState(object state)
     {
-        used = (bool)state;
+        _used = (bool)state;
     }
 }

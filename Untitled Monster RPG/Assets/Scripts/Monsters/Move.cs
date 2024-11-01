@@ -3,39 +3,39 @@ using UnityEngine;
 public class Move
 {
     public MoveBase Base { get; set; }
-    public int SP { get; set; }
+    public int Sp { get; set; }
 
     public Move(MoveBase mBase)
     {
         Base = mBase;
-        SP = mBase.SP;
+        Sp = mBase.SP;
     }
 
     public Move(MoveSaveData saveData)
     {
-        Base = MoveDB.GetObjectByName(saveData.name);
-        SP = saveData.sp;
+        Base = MoveDB.GetObjectByName(saveData.Name);
+        Sp = saveData.Sp;
     }
 
     public MoveSaveData GetSaveData()
     {
         MoveSaveData saveData = new()
         {
-            name = Base.name,
-            sp = SP
+            Name = Base.name,
+            Sp = Sp
         };
         return saveData;
     }
 
     public void RestoreSP(int amount)
     {
-        SP = Mathf.Clamp(SP + amount, 0, Base.SP);
+        Sp = Mathf.Clamp(Sp + amount, 0, Base.SP);
     }
 }
 
 [System.Serializable]
 public class MoveSaveData
 {
-    public string name;
-    public int sp;
+    public string Name;
+    public int Sp;
 }

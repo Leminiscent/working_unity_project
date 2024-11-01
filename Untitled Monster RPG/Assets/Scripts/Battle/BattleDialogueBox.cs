@@ -96,9 +96,9 @@ public class BattleDialogueBox : MonoBehaviour
             _moveTexts[i].color = i == selectedMove ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
         }
 
-        _spText.text = $"SP {move.SP}/{move.Base.SP}";
+        _spText.text = $"SP {move.Sp}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();
-        _spText.color = move.SP == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
+        _spText.color = move.Sp == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
     }
 
     public void SetMoveNames(List<Move> moves)
