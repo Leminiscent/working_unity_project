@@ -3,32 +3,32 @@ using UnityEngine;
 
 public class ScriptableObjectDB<T> : MonoBehaviour where T : ScriptableObject
 {
-    private static Dictionary<string, T> objects;
+    private static Dictionary<string, T> _objects;
 
     public static void Init()
     {
-        objects = new Dictionary<string, T>();
+        _objects = new Dictionary<string, T>();
 
         T[] objectArray = Resources.LoadAll<T>("");
 
         foreach (T obj in objectArray)
         {
-            if (objects.ContainsKey(obj.name))
+            if (_objects.ContainsKey(obj.name))
             {
                 Debug.LogError($"There are two objects with the name {obj.name} in the database.");
                 continue;
             }
-            objects[obj.name] = obj;
+            _objects[obj.name] = obj;
         }
     }
 
     public static T GetObjectByName(string name)
     {
-        if (!objects.ContainsKey(name))
+        if (!_objects.ContainsKey(name))
         {
             Debug.LogError($"No object with the name {name} in the database.");
             return null;
         }
-        return objects[name];
+        return _objects[name];
     }
 }

@@ -7,14 +7,14 @@ namespace Utils.StateMachine
 {
     public class StateMachine<T>
     {
+        private T _owner;
+
         public State<T> CurrentState { get; private set; }
         public Stack<State<T>> StateStack { get; private set; }
 
-        private T owner;
-
         public StateMachine(T owner)
         {
-            this.owner = owner;
+            _owner = owner;
 
             StateStack = new Stack<State<T>>();
         }
@@ -28,7 +28,7 @@ namespace Utils.StateMachine
         {
             StateStack.Push(newState);
             CurrentState = newState;
-            CurrentState.Enter(owner);
+            CurrentState.Enter(_owner);
         }
 
         public void Pop()
@@ -47,7 +47,7 @@ namespace Utils.StateMachine
             }
             StateStack.Push(newState);
             CurrentState = newState;
-            CurrentState.Enter(owner);
+            CurrentState.Enter(_owner);
         }
 
         public IEnumerator PushAndWait(State<T> newState)

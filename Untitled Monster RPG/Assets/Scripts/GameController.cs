@@ -4,21 +4,33 @@ using Utils.StateMachine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private PlayerController playerController;
-    [SerializeField] private BattleSystem battleSystem;
-    [SerializeField] private Camera worldCamera;
-    [SerializeField] private PartyScreen partyScreen;
-    [SerializeField] private InventoryUI inventoryUI;
-    private MasterController master;
+    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private BattleSystem _battleSystem;
+    [SerializeField] private Camera _worldCamera;
+    [SerializeField] private PartyScreen _partyScreen;
+    [SerializeField] private InventoryUI _inventoryUI;
+
+    private MasterController _master;
 
     public StateMachine<GameController> StateMachine { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
     public SceneDetails PreviousScene { get; private set; }
     public static GameController Instance { get; private set; }
+    public PlayerController PlayerController => _playerController;
+    public Camera WorldCamera => _worldCamera;
+    public PartyScreen PartyScreen => _partyScreen;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         MonsterDB.Init();
@@ -32,8 +44,8 @@ public class GameController : MonoBehaviour
     {
         StateMachine = new StateMachine<GameController>(this);
         StateMachine.ChangeState(FreeRoamState.Instance);
-        battleSystem.OnBattleOver += EndBattle;
-        partyScreen.Init();
+        _battleSystem.OnBattleOver += EndBattle;
+        _partyScreen.Init();
         DialogueManager.Instance.OnShowDialogue += () => { StateMachine.Push(DialogueState.Instance); };
         DialogueManager.Instance.OnDialogueFinished += () => { StateMachine.Pop(); };
     }
@@ -65,21 +77,21 @@ public class GameController : MonoBehaviour
 
     public void OnEnterMasterView(MasterController master)
     {
-        StartCoroutine(master.TriggerBattle(playerController));
+        StartCoroutine(master.TriggerBattle(_playerController));
     }
 
     private void EndBattle(bool won)
     {
-        if (master != null && won)
+        if (_master != null && won)
         {
-            master.BattleLost();
-            master = null;
+            _master.BattleLost();
+            _master = null;
         }
-        partyScreen.SetPartyData();
-        battleSystem.gameObject.SetActive(false);
-        worldCamera.gameObject.SetActive(true);
+        _partyScreen.SetPartyData();
+        _battleSystem.gameObject.SetActive(false);
+        _worldCamera.gameObject.SetActive(true);
 
-        MonsterParty playerParty = playerController.GetComponent<MonsterParty>();
+        MonsterParty playerParty = _playerController.GetComponent<MonsterParty>();
         bool hasTransformations = playerParty.CheckForTransformations();
 
         if (hasTransformations)
@@ -106,7 +118,7 @@ public class GameController : MonoBehaviour
     public IEnumerator MoveCamera(Vector2 moveOffset, bool waitForFadeOut = false)
     {
         yield return Fader.Instance.FadeIn(0.5f);
-        worldCamera.transform.position += new Vector3(moveOffset.x, moveOffset.y);
+        _worldCamera.transform.position += new Vector3(moveOffset.x, moveOffset.y);
         if (waitForFadeOut)
         {
             yield return Fader.Instance.FadeOut(0.5f);
@@ -117,20 +129,16 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void OnGUI()
-    {
-        GUIStyle style = new()
-        {
-            fontSize = 40
-        };
-        // GUILayout.Label("STATE STACK", style);
-        // foreach (var state in StateMachine.StateStack)
-        // {
-        //     GUILayout.Label(state.GetType().ToString(), style);
-        // }
-    }
-
-    public PlayerController PlayerController => playerController;
-    public Camera WorldCamera => worldCamera;
-    public PartyScreen PartyScreen => partyScreen;
+    // private void OnGUI()
+    // {
+    //     GUIStyle style = new()
+    //     {
+    //         fontSize = 40
+    //     };
+    //     GUILayout.Label("STATE STACK", style);
+    //     foreach (var state in StateMachine.StateStack)
+    //     {
+    //         GUILayout.Label(state.GetType().ToString(), style);
+    //     }
+    // }
 }

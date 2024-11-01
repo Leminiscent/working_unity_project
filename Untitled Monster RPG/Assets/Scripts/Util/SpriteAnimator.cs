@@ -3,36 +3,36 @@ using UnityEngine;
 
 public class SpriteAnimator
 {
-    private SpriteRenderer renderer;
-    private List<Sprite> frames;
-    private float frameRate;
-    private int currentFrame;
-    private float timer;
+    private SpriteRenderer _renderer;
+    private List<Sprite> _frames;
+    private float _frameRate;
+    private int _currentFrame;
+    private float _timer;
+
+    public List<Sprite> Frames => _frames;
 
     public SpriteAnimator(List<Sprite> frames, SpriteRenderer renderer, float frameRate = 0.16f)
     {
-        this.frames = frames;
-        this.renderer = renderer;
-        this.frameRate = frameRate;
+        _frames = frames;
+        _renderer = renderer;
+        _frameRate = frameRate;
     }
 
     public void Start()
     {
-        currentFrame = 1;
-        timer = 0f;
-        renderer.sprite = frames[currentFrame];
+        _currentFrame = 1;
+        _timer = 0f;
+        _renderer.sprite = _frames[_currentFrame];
     }
 
     public void HandleUpdate()
     {
-        timer += Time.deltaTime;
-        if (timer > frameRate)
+        _timer += Time.deltaTime;
+        if (_timer > _frameRate)
         {
-            currentFrame = (currentFrame + 1) % frames.Count;
-            renderer.sprite = frames[currentFrame];
-            timer -= frameRate;
+            _currentFrame = (_currentFrame + 1) % _frames.Count;
+            _renderer.sprite = _frames[_currentFrame];
+            _timer -= _frameRate;
         }
     }
-
-    public List<Sprite> Frames => frames;
 }
