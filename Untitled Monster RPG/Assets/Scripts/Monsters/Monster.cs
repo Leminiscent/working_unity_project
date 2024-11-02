@@ -79,14 +79,14 @@ public class Monster
     public Monster(MonsterSaveData saveData)
     {
         _base = MonsterDB.GetObjectByName(saveData.Name);
-        Hp = saveData.HP;
+        Hp = saveData.Hp;
         _level = saveData.Level;
         Exp = saveData.Exp;
 
         Status = saveData.StatusId != null ? ConditionsDB.Conditions[saveData.StatusId.Value] : null;
 
         Moves = saveData.Moves.Select(static s => new Move(s)).ToList();
-        StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.PV);
+        StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.Pv);
 
         CalculateStats();
         StatusChanges = new Queue<string>();
@@ -99,7 +99,7 @@ public class Monster
         MonsterSaveData saveData = new()
         {
             Name = Base.Name,
-            HP = Hp,
+            Hp = Hp,
             Level = Level,
             Exp = Exp,
             StatusId = Status?.ID,
@@ -107,7 +107,7 @@ public class Monster
             StatPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
             {
                 Stat = s.Key,
-                PV = s.Value
+                Pv = s.Value
             }).ToList()
         };
 
@@ -125,12 +125,12 @@ public class Monster
             { Stat.Agility, Mathf.FloorToInt((((2f * Base.Agility) + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) } // Todo Nature + IV's
         };
 
-        int prevMaxHP = MaxHp;
+        int prevMaxHp = MaxHp;
         MaxHp = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
 
-        if (prevMaxHP != 0)
+        if (prevMaxHp != 0)
         {
-            Hp += MaxHp - prevMaxHP;
+            Hp += MaxHp - prevMaxHp;
         }
     }
 
@@ -463,7 +463,7 @@ public class DamageDetails
 public class MonsterSaveData
 {
     public string Name;
-    public int HP;
+    public int Hp;
     public int Level;
     public int Exp;
     public ConditionID? StatusId;
@@ -475,5 +475,5 @@ public class MonsterSaveData
 public class StatPV
 {
     public Stat Stat;
-    public int PV;
+    public int Pv;
 }
