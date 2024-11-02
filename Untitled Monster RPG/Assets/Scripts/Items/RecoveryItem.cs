@@ -23,39 +23,39 @@ public class RecoveryItem : ItemBase
     {
         if (_revive || _maxRevive)
         {
-            if (monster.HP > 0)
+            if (monster.Hp > 0)
             {
                 return false;
             }
 
             if (_revive)
             {
-                monster.IncreaseHP(monster.MaxHP / 2);
+                monster.IncreaseHP(monster.MaxHp / 2);
             }
             else
             {
-                monster.IncreaseHP(monster.MaxHP);
+                monster.IncreaseHP(monster.MaxHp);
             }
 
             monster.CureStatus();
             return true;
         }
 
-        if (monster.HP == 0)
+        if (monster.Hp == 0)
         {
             return false;
         }
 
         if (_restoreMaxHP || _hpAmount > 0)
         {
-            if (monster.HP == monster.MaxHP)
+            if (monster.Hp == monster.MaxHp)
             {
                 return false;
             }
 
             if (_restoreMaxHP)
             {
-                monster.IncreaseHP(monster.MaxHP);
+                monster.IncreaseHP(monster.MaxHp);
             }
             else
             {

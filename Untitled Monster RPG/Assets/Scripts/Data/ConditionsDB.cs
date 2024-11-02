@@ -25,7 +25,7 @@ public class ConditionsDB
                 StartMessage = " has been poisoned!",
                 OnEndOfTurn = static (Monster monster) =>
                 {
-                    monster.DecreaseHP(monster.MaxHP / 8);
+                    monster.DecreaseHP(monster.MaxHp / 8);
                     monster.StatusChanges.Enqueue(" is hurt by poison!");
                 }
             }
@@ -38,7 +38,7 @@ public class ConditionsDB
                 StartMessage = " has been burned!",
                 OnEndOfTurn = static (Monster monster) =>
                 {
-                    monster.DecreaseHP(monster.MaxHP / 16);
+                    monster.DecreaseHP(monster.MaxHp / 16);
                     monster.StatusChanges.Enqueue(" is hurt by its burn!");
                 }
             }
@@ -131,7 +131,7 @@ public class ConditionsDB
                     if (Random.Range(1, 4) == 1)
                     {
                         monster.StatusChanges.Enqueue(" is confused!");
-                        monster.DecreaseHP(Mathf.FloorToInt(monster.MaxHP / 8));
+                        monster.DecreaseHP(Mathf.FloorToInt(monster.MaxHp / 8));
                         monster.StatusChanges.Enqueue(" hurt itself in its confusion!");
                         return false;
                     }
@@ -194,7 +194,7 @@ public class ConditionsDB
                 EffectMessage = "The sandstorm rages!",
                 OnWeather = static (Monster monster) =>
                 {
-                    monster.DecreaseHP(Mathf.RoundToInt(monster.MaxHP / 16f));
+                    monster.DecreaseHP(Mathf.RoundToInt(monster.MaxHp / 16f));
                     monster.StatusChanges.Enqueue(" is buffeted by the sandstorm!");
                 }
             }

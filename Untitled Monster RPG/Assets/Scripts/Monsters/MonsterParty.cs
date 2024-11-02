@@ -32,7 +32,7 @@ public class MonsterParty : MonoBehaviour
 
     public Monster GetHealthyMonster()
     {
-        return _monsters.FirstOrDefault(static x => x.HP > 0);
+        return _monsters.FirstOrDefault(static x => x.Hp > 0);
     }
 
     public void AddMonster(Monster newMonster)

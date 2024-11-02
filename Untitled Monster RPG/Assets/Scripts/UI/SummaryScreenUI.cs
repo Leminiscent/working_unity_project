@@ -97,7 +97,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     public void SetStatsAndExp()
     {
-        _hpText.text = $"{_monster.HP}/{_monster.MaxHP}";
+        _hpText.text = $"{_monster.Hp}/{_monster.MaxHp}";
         _strengthText.text = "" + _monster.Strength;
         _enduranceText.text = "" + _monster.Endurance;
         _intelligenceText.text = "" + _monster.Intelligence;

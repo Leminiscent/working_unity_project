@@ -175,7 +175,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SwitchMonster(Monster newMonster)
     {
-        if (_playerUnit.Monster.HP > 0)
+        if (_playerUnit.Monster.Hp > 0)
         {
             yield return _dialogueBox.TypeDialogue("Come back " + _playerUnit.Monster.Base.Name + "!");
             _playerUnit.PlayExitAnimation();

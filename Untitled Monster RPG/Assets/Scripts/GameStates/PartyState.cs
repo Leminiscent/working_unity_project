@@ -80,7 +80,7 @@ public class PartyState : State<GameController>
             yield return _gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
             if (DynamicMenuState.Instance.SelectedItem == 0)
             {
-                if (SelectedMonster.HP <= 0)
+                if (SelectedMonster.Hp <= 0)
                 {
                     _partyScreen.SetMessageText(SelectedMonster.Base.Name + " is unable to fight!");
                     yield break;
@@ -161,7 +161,7 @@ public class PartyState : State<GameController>
         {
             BattleState battleState = prevState as BattleState;
 
-            if (battleState.BattleSystem.PlayerUnit.Monster.HP <= 0)
+            if (battleState.BattleSystem.PlayerUnit.Monster.Hp <= 0)
             {
                 _partyScreen.SetMessageText("You have to choose a monster!");
                 return;

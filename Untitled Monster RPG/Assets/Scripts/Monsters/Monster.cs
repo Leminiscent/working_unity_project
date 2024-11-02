@@ -11,7 +11,7 @@ public class Monster
     public MonsterBase Base => _base;
     public int Level => _level;
     public int Exp { get; set; }
-    public int HP { get; set; }
+    public int Hp { get; set; }
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
@@ -24,7 +24,7 @@ public class Monster
     public int AffinityLevel { get; set; }
     public event System.Action OnStatusChanged;
     public event System.Action OnHPChanged;
-    public int MaxHP { get; private set; }
+    public int MaxHp { get; private set; }
     public int Strength => GetStat(Stat.Strength);
     public int Endurance => GetStat(Stat.Endurance);
     public int Intelligence => GetStat(Stat.Intelligence);
@@ -67,7 +67,7 @@ public class Monster
 
         Exp = Base.GetExpForLevel(Level);
         CalculateStats();
-        HP = MaxHP;
+        Hp = MaxHp;
 
         StatusChanges = new Queue<string>();
         ResetStatBoosts();
@@ -79,7 +79,7 @@ public class Monster
     public Monster(MonsterSaveData saveData)
     {
         _base = MonsterDB.GetObjectByName(saveData.Name);
-        HP = saveData.HP;
+        Hp = saveData.HP;
         _level = saveData.Level;
         Exp = saveData.Exp;
 
@@ -99,7 +99,7 @@ public class Monster
         MonsterSaveData saveData = new()
         {
             Name = Base.Name,
-            HP = HP,
+            HP = Hp,
             Level = Level,
             Exp = Exp,
             StatusId = Status?.ID,
@@ -125,12 +125,12 @@ public class Monster
             { Stat.Agility, Mathf.FloorToInt((((2f * Base.Agility) + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) } // Todo Nature + IV's
         };
 
-        int prevMaxHP = MaxHP;
-        MaxHP = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
+        int prevMaxHP = MaxHp;
+        MaxHp = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
 
         if (prevMaxHP != 0)
         {
-            HP += MaxHP - prevMaxHP;
+            Hp += MaxHp - prevMaxHP;
         }
     }
 
@@ -260,7 +260,7 @@ public class Monster
 
     public void Heal()
     {
-        HP = MaxHP;
+        Hp = MaxHp;
         OnHPChanged?.Invoke();
         CureStatus();
     }
@@ -278,7 +278,7 @@ public class Monster
     {
         if (move.Base.OneHitKO.IsOneHitKO)
         {
-            int oneHitDamage = HP;
+            int oneHitDamage = Hp;
 
             DecreaseHP(oneHitDamage);
             return new DamageDetails() { TypeEffectiveness = 1f, Critical = 1f, Defeated = false };
@@ -322,7 +322,7 @@ public class Monster
         int damage = Mathf.FloorToInt(d * modifiers);
 
         damageDetails.TotalDamageDealt = damage;
-        damageDetails.ActualDamageDealt = Mathf.Min(damage, HP);
+        damageDetails.ActualDamageDealt = Mathf.Min(damage, Hp);
         DecreaseHP(damage);
         return damageDetails;
     }
@@ -349,13 +349,13 @@ public class Monster
 
     public void DecreaseHP(int damage)
     {
-        HP = Mathf.Clamp(HP - damage, 0, MaxHP);
+        Hp = Mathf.Clamp(Hp - damage, 0, MaxHp);
         OnHPChanged?.Invoke();
     }
 
     public void IncreaseHP(int heal)
     {
-        HP = Mathf.Clamp(HP + heal, 0, MaxHP);
+        Hp = Mathf.Clamp(Hp + heal, 0, MaxHp);
         OnHPChanged?.Invoke();
     }
 

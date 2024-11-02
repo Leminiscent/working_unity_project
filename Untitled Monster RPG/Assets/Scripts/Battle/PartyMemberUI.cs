@@ -22,7 +22,7 @@ public class PartyMemberUI : MonoBehaviour
     {
         _nameText.text = _monster.Base.Name;
         _levelText.text = $"Lvl {_monster.Level}";
-        _hpBar.SetHP((float)_monster.HP / _monster.MaxHP);
+        _hpBar.SetHP((float)_monster.Hp / _monster.MaxHp);
     }
 
     public void SetSelected(bool selected)

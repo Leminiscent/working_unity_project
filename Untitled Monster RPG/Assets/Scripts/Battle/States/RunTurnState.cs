@@ -80,7 +80,7 @@ public class RunTurnState : State<BattleSystem>
                 yield break;
             }
 
-            if (secondMonster.HP > 0)
+            if (secondMonster.Hp > 0)
             {
                 yield return RunMove(secondUnit, secondUnitName, firstUnit, firstUnitName, secondMonster.CurrentMove);
                 yield return RunAfterTurn(secondUnit, secondUnitName);
@@ -117,7 +117,7 @@ public class RunTurnState : State<BattleSystem>
             _field.Weather.OnWeather?.Invoke(_playerUnit.Monster);
             yield return ShowStatusChanges(_playerUnit.Monster, _playerMonsterName);
             yield return _playerUnit.Hud.WaitForHPUpdate();
-            if (_playerUnit.Monster.HP <= 0)
+            if (_playerUnit.Monster.Hp <= 0)
             {
                 yield return HandleMonsterDefeat(_playerUnit, _playerMonsterName);
             }
@@ -125,7 +125,7 @@ public class RunTurnState : State<BattleSystem>
             _field.Weather.OnWeather?.Invoke(_enemyUnit.Monster);
             yield return ShowStatusChanges(_enemyUnit.Monster, _enemyMonsterName);
             yield return _enemyUnit.Hud.WaitForHPUpdate();
-            if (_enemyUnit.Monster.HP <= 0)
+            if (_enemyUnit.Monster.Hp <= 0)
             {
                 yield return HandleMonsterDefeat(_enemyUnit, _enemyMonsterName);
             }
@@ -158,7 +158,7 @@ public class RunTurnState : State<BattleSystem>
         sourceUnit.Monster.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit.Monster, sourceUnitName);
         yield return sourceUnit.Hud.WaitForHPUpdate();
-        if (sourceUnit.Monster.HP <= 0)
+        if (sourceUnit.Monster.Hp <= 0)
         {
             yield return HandleMonsterDefeat(sourceUnit, sourceUnitName);
         }
@@ -267,7 +267,7 @@ public class RunTurnState : State<BattleSystem>
                     typeEffectiveness = damageDetails.TypeEffectiveness;
                 }
 
-                if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.HP > 0)
+                if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.Hp > 0)
                 {
                     foreach (SecondaryEffects effect in move.Base.SecondaryEffects)
                     {
@@ -281,7 +281,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return RunAfterMove(damageDetails, move.Base, sourceUnit, sourceUnitName, targetUnit, targetUnitName);
 
                 hit = i;
-                if (targetUnit.Monster.HP <= 0)
+                if (targetUnit.Monster.Hp <= 0)
                 {
                     break;
                 }
@@ -293,7 +293,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
             }
 
-            if (targetUnit.Monster.HP <= 0)
+            if (targetUnit.Monster.Hp <= 0)
             {
                 yield return HandleMonsterDefeat(targetUnit, targetUnitName);
             }
@@ -318,13 +318,13 @@ public class RunTurnState : State<BattleSystem>
             switch (move.Recoil.RecoilType)
             {
                 case RecoilType.RecoilByMaxHP:
-                    int maxHp = sourceUnit.Monster.MaxHP;
+                    int maxHp = sourceUnit.Monster.MaxHp;
 
                     damage = Mathf.FloorToInt(maxHp * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByCurrentHP:
-                    int currentHp = sourceUnit.Monster.HP;
+                    int currentHp = sourceUnit.Monster.Hp;
 
                     damage = Mathf.FloorToInt(currentHp * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
@@ -338,9 +338,9 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        if (move.DrainPercentage != 0 && sourceUnit.Monster.HP != sourceUnit.Monster.MaxHP)
+        if (move.DrainPercentage != 0 && sourceUnit.Monster.Hp != sourceUnit.Monster.MaxHp)
         {
-            int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHP);
+            int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
             string updatedTargetUnitName = targetUnitName;
 
             if (targetUnit.Monster == _enemyUnit.Monster)
