@@ -69,14 +69,14 @@ public class MonsterBase : ScriptableObject
     {
         get
         {
-            return GrowthRateCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
+            return AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
         }
     }
     public int RecruitRate
     {
         get
         {
-            return RecruitRateCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
+            return AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
         }
     }
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
@@ -233,70 +233,68 @@ public class TypeChart
     }
 }
 
-public class GrowthRateCalculator
+public class AttributeCalculator
 {
+    private static readonly Dictionary<Rarity, int> _rarityPoints = new()
+    {
+        { Rarity.Common, 1 },
+        { Rarity.Uncommon, 2 },
+        { Rarity.Rare, 3 },
+        { Rarity.Epic, 4 },
+        { Rarity.Legendary, 5 }
+    };
+
+    private static readonly Dictionary<GrowthRate, int> _growthRatePoints = new()
+    {
+        { GrowthRate.Erratic, 1 },
+        { GrowthRate.Fast, 2 },
+        { GrowthRate.MediumFast, 3 },
+        { GrowthRate.MediumSlow, 4 },
+        { GrowthRate.Slow, 5 },
+        { GrowthRate.Fluctuating, 6 }
+    };
+
+    private static readonly List<(int MaxValue, int Points)> _statsPointsRanges = new()
+    {
+        (128, 1),
+        (256, 2),
+        (384, 3),
+        (512, 4),
+        (int.MaxValue, 5)
+    };
+
+    private static readonly List<(int MaxPoints, GrowthRate Rate)> _growthRateMappings = new()
+    {
+        (2, GrowthRate.Erratic),
+        (4, GrowthRate.Fast),
+        (6, GrowthRate.MediumFast),
+        (8, GrowthRate.MediumSlow),
+        (10, GrowthRate.Slow),
+        (int.MaxValue, GrowthRate.Fluctuating)
+    };
+
+    private const int SINGLE_TYPE_POINTS = 1;
+    private const int DUAL_TYPE_POINTS = 2;
+    private const int MIN_TOTAL_POINTS = 4;
+    private const int MAX_TOTAL_POINTS = 18;
+
     public static GrowthRate CalculateGrowthRate(Rarity rarity, int totalStats, bool isDualType)
     {
         int rarityPoints = GetRarityPoints(rarity);
         int statsPoints = GetStatsPoints(totalStats);
-        int typingPoints = isDualType ? 2 : 1;
+        int typingPoints = isDualType ? DUAL_TYPE_POINTS : SINGLE_TYPE_POINTS;
 
         int totalPoints = rarityPoints + statsPoints + typingPoints;
 
         return MapPointsToGrowthRate(totalPoints);
     }
 
-    private static int GetRarityPoints(Rarity rarity)
-    {
-        return rarity switch
-        {
-            Rarity.Common => 1,
-            Rarity.Uncommon => 2,
-            Rarity.Rare => 3,
-            Rarity.Epic => 4,
-            Rarity.Legendary => 5,
-            _ => 1,
-        };
-    }
-
-    private static int GetStatsPoints(int totalStats)
-    {
-        return totalStats switch
-        {
-            <= 128 => 1,
-            <= 256 => 2,
-            <= 384 => 3,
-            <= 512 => 4,
-            _ => 5,
-        };
-    }
-
-    private static GrowthRate MapPointsToGrowthRate(int totalPoints)
-    {
-        return totalPoints switch
-        {
-            <= 2 => GrowthRate.Erratic,
-            <= 4 => GrowthRate.Fast,
-            <= 6 => GrowthRate.MediumFast,
-            <= 8 => GrowthRate.MediumSlow,
-            <= 10 => GrowthRate.Slow,
-            _ => GrowthRate.Fluctuating,
-        };
-    }
-}
-
-public class RecruitRateCalculator
-{
-    // Define minimum and maximum total points
-    private const int MIN_TOTAL_POINTS = 4;
-    private const int MAX_TOTAL_POINTS = 18;
-
     public static int CalculateRecruitRate(Rarity rarity, GrowthRate growthRate, int totalStats, bool isDualType)
     {
         int rarityPoints = GetRarityPoints(rarity);
         int growthRatePoints = GetGrowthRatePoints(growthRate);
         int statsPoints = GetStatsPoints(totalStats);
-        int typingPoints = isDualType ? 2 : 1;
+        int typingPoints = isDualType ? DUAL_TYPE_POINTS : SINGLE_TYPE_POINTS;
 
         int totalPoints = rarityPoints + growthRatePoints + statsPoints + typingPoints;
 
@@ -304,7 +302,6 @@ public class RecruitRateCalculator
 
         float rate = (float)(MAX_TOTAL_POINTS - totalPoints) / (MAX_TOTAL_POINTS - MIN_TOTAL_POINTS) * 255f;
 
-        // Clamp RecruitRate between 1 and 255
         rate = Mathf.Clamp(rate, 1f, 255f);
 
         return Mathf.RoundToInt(rate);
@@ -312,41 +309,34 @@ public class RecruitRateCalculator
 
     private static int GetRarityPoints(Rarity rarity)
     {
-        return rarity switch
-        {
-            Rarity.Common => 1,
-            Rarity.Uncommon => 2,
-            Rarity.Rare => 3,
-            Rarity.Epic => 4,
-            Rarity.Legendary => 5,
-            _ => 1,
-        };
+        return _rarityPoints.TryGetValue(rarity, out int points) ? points : 1;
     }
 
     private static int GetGrowthRatePoints(GrowthRate growthRate)
     {
-        return growthRate switch
-        {
-            GrowthRate.Erratic => 1,
-            GrowthRate.Fast => 2,
-            GrowthRate.MediumFast => 3,
-            GrowthRate.MediumSlow => 4,
-            GrowthRate.Slow => 5,
-            GrowthRate.Fluctuating => 6,
-            _ => 1,
-        };
+        return _growthRatePoints.TryGetValue(growthRate, out int points) ? points : 2;
     }
 
     private static int GetStatsPoints(int totalStats)
     {
-        return totalStats switch
+        foreach ((int MaxValue, int Points) in _statsPointsRanges)
         {
-            <= 128 => 1,
-            <= 256 => 2,
-            <= 384 => 3,
-            <= 512 => 4,
-            _ => 5,
-        };
+            if (totalStats <= MaxValue)
+                return Points;
+        }
+        return 1; // Default fallback
+    }
+
+    private static GrowthRate MapPointsToGrowthRate(int totalPoints)
+    {
+        foreach ((int MaxPoints, GrowthRate Rate) in _growthRateMappings)
+        {
+            if (totalPoints <= MaxPoints)
+                return Rate;
+        }
+
+        // Default GrowthRate if no mapping matches
+        return GrowthRate.MediumFast;
     }
 }
 
