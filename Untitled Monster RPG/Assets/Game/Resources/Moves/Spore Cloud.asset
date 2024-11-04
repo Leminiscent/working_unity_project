@@ -18,15 +18,21 @@ MonoBehaviour:
   _category: 1
   _effects:
     _boosts: []
-    _status: 1
+    _status: 0
     _volatileStatus: 0
-    _weather: 9
+    _weather: 0
   _secondaryEffects:
   - _boosts: []
     _status: 0
     _volatileStatus: 0
+    _weather: 9
+    _chance: 90
+    _target: 1
+  - _boosts: []
+    _status: 1
+    _volatileStatus: 0
     _weather: 0
-    _chance: 0
+    _chance: 70
     _target: 0
   _critBehavior: 0
   _recoil:
