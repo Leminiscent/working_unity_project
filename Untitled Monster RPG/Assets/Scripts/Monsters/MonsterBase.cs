@@ -11,6 +11,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] private Sprite _sprite;
     [SerializeField] private MonsterType _type1;
     [SerializeField] private MonsterType _type2;
+    [SerializeField] private Rarity _rarity;
 
     [Header("Stats")]
     [SerializeField] private int _hp;
@@ -43,6 +44,7 @@ public class MonsterBase : ScriptableObject
     public Sprite Sprite => _sprite;
     public MonsterType Type1 => _type1;
     public MonsterType Type2 => _type2;
+    public Rarity Rarity => _rarity;
     public int HP => _hp;
     public int Strength => _strength;
     public int Endurance => _endurance;
@@ -180,51 +182,6 @@ public class ItemDrop
     public float DropChance => _dropChance;
 }
 
-public enum MonsterType
-{
-    None,
-    Normal,
-    Fire,
-    Water,
-    Thunder,
-    Plant,
-    Ice,
-    Force,
-    Poison,
-    Earth,
-    Wind,
-    Mind,
-    Insect,
-    Stone,
-    Spirit,
-    Dragon,
-    Dark,
-    Metal,
-    Light
-}
-
-public enum GrowthRate
-{
-    Erratic,
-    Fast,
-    MediumFast,
-    MediumSlow,
-    Slow,
-    Fluctuating
-}
-
-public enum Stat
-{
-    HP,
-    Strength,
-    Endurance,
-    Intelligence,
-    Fortitude,
-    Agility,
-    Accuracy,
-    Evasion
-}
-
 public class TypeChart
 {
     private static float[][] _chart =
@@ -262,4 +219,58 @@ public class TypeChart
 
         return _chart[row][col];
     }
+}
+
+public enum MonsterType
+{
+    None,
+    Normal,
+    Fire,
+    Water,
+    Thunder,
+    Plant,
+    Ice,
+    Force,
+    Poison,
+    Earth,
+    Wind,
+    Mind,
+    Insect,
+    Stone,
+    Spirit,
+    Dragon,
+    Dark,
+    Metal,
+    Light
+}
+
+public enum Rarity
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
+}
+
+public enum Stat
+{
+    HP,
+    Strength,
+    Endurance,
+    Intelligence,
+    Fortitude,
+    Agility,
+    Accuracy,
+    Evasion
+}
+
+public enum GrowthRate
+{
+    Erratic,
+    Fast,
+    MediumFast,
+    MediumSlow,
+    Slow,
+    Fluctuating
 }
