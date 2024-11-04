@@ -20,14 +20,6 @@ public class MonsterBase : ScriptableObject
     [SerializeField] private int _fortitude;
     [SerializeField] private int _agility;
 
-    [Header("Performance Value Yield")]
-    [SerializeField] private int _hpPvYield = 0;
-    [SerializeField] private int _strengthPvYield = 0;
-    [SerializeField] private int _endurancePvYield = 0;
-    [SerializeField] private int _intelligencePvYield = 0;
-    [SerializeField] private int _fortitudePvYield = 0;
-    [SerializeField] private int _agilityPvYield = 0;
-
     [Header("Moves")]
     [SerializeField] private List<LearnableMove> _learnableMoves;
     [SerializeField] private List<MoveBase> _learnableBySkillBook;
@@ -59,12 +51,12 @@ public class MonsterBase : ScriptableObject
     public int Agility => _agility;
     public Dictionary<Stat, int> PvYield => new()
     {
-        { Stat.HP, _hpPvYield },
-        { Stat.Strength, _strengthPvYield },
-        { Stat.Endurance, _endurancePvYield },
-        { Stat.Intelligence, _intelligencePvYield },
-        { Stat.Fortitude, _fortitudePvYield },
-        { Stat.Agility, _agilityPvYield }
+        { Stat.HP, Mathf.FloorToInt(_hp * 0.01f) },
+        { Stat.Strength, Mathf.FloorToInt(_strength * 0.01f) },
+        { Stat.Endurance, Mathf.FloorToInt(_endurance * 0.01f) },
+        { Stat.Intelligence, Mathf.FloorToInt(_intelligence * 0.01f) },
+        { Stat.Fortitude, Mathf.FloorToInt(_fortitude * 0.01f) },
+        { Stat.Agility, Mathf.FloorToInt(_agility * 0.01f) }
     };
     public List<LearnableMove> LearnableMoves => _learnableMoves;
     public List<MoveBase> LearnableBySkillBook => _learnableBySkillBook;
