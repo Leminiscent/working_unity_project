@@ -30,10 +30,8 @@ public class MonsterBase : ScriptableObject
 
     [Header("Experience")]
     [SerializeField] private int _expYield;
-    [SerializeField] private GrowthRate _growthRate;
 
     [Header("Recruitment")]
-    [SerializeField] private int _recruitRate;
     [SerializeField] private List<RecruitmentQuestion> _recruitmentQuestions;
 
     [Header("Drops")]
@@ -44,6 +42,7 @@ public class MonsterBase : ScriptableObject
     public Sprite Sprite => _sprite;
     public MonsterType Type1 => _type1;
     public MonsterType Type2 => _type2;
+    public bool IsDualType => _type2 != MonsterType.None;
     public Rarity Rarity => _rarity;
     public int HP => _hp;
     public int Strength => _strength;
@@ -51,6 +50,7 @@ public class MonsterBase : ScriptableObject
     public int Intelligence => _intelligence;
     public int Fortitude => _fortitude;
     public int Agility => _agility;
+    public int TotalStats => _hp + _strength + _endurance + _intelligence + _fortitude + _agility;
     public Dictionary<Stat, int> PvYield => new()
     {
         { Stat.HP, Mathf.FloorToInt(_hp * 0.01f) },
@@ -65,14 +65,26 @@ public class MonsterBase : ScriptableObject
     public static int MaxMoveCount { get; set; } = 4;
     public List<Transformation> Transformations => _transformations;
     public int ExpYield => _expYield;
-    public GrowthRate GrowthRate => _growthRate;
-    public int RecruitRate => _recruitRate;
+    public GrowthRate GrowthRate
+    {
+        get
+        {
+            return GrowthRateCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
+        }
+    }
+    public int RecruitRate
+    {
+        get
+        {
+            return RecruitRateCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
+        }
+    }
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
     public DropTable DropTable => _dropTable;
 
     public int GetExpForLevel(int level)
     {
-        switch (_growthRate)
+        switch (GrowthRate)
         {
             case GrowthRate.Erratic:
                 if (level < 50)
@@ -218,6 +230,131 @@ public class TypeChart
         int col = (int)defenseType - 1;
 
         return _chart[row][col];
+    }
+}
+
+public class GrowthRateCalculator
+{
+    public static GrowthRate CalculateGrowthRate(Rarity rarity, int totalStats, bool isDualType)
+    {
+        int rarityPoints = GetRarityPoints(rarity);
+        int statsPoints = GetStatsPoints(totalStats);
+        int typingPoints = isDualType ? 2 : 1;
+
+        int totalPoints = rarityPoints + statsPoints + typingPoints;
+
+        return MapPointsToGrowthRate(totalPoints);
+    }
+
+    private static int GetRarityPoints(Rarity rarity)
+    {
+        return rarity switch
+        {
+            Rarity.Common => 1,
+            Rarity.Uncommon => 2,
+            Rarity.Rare => 3,
+            Rarity.Epic => 4,
+            Rarity.Legendary => 5,
+            _ => 1,
+        };
+    }
+
+    private static int GetStatsPoints(int totalStats)
+    {
+        return totalStats switch
+        {
+            <= 128 => 1,
+            <= 256 => 2,
+            <= 384 => 3,
+            <= 512 => 4,
+            _ => 5,
+        };
+    }
+
+    private static GrowthRate MapPointsToGrowthRate(int totalPoints)
+    {
+        return totalPoints switch
+        {
+            <= 2 => GrowthRate.Erratic,
+            <= 4 => GrowthRate.Fast,
+            <= 6 => GrowthRate.MediumFast,
+            <= 8 => GrowthRate.MediumSlow,
+            <= 10 => GrowthRate.Slow,
+            _ => GrowthRate.Fluctuating,
+        };
+    }
+}
+
+public class RecruitRateCalculator
+{
+    // Define minimum and maximum total points
+    private const int MIN_TOTAL_POINTS = 4;
+    private const int MAX_TOTAL_POINTS = 18;
+
+    public static int CalculateRecruitRate(Rarity rarity, GrowthRate growthRate, int totalStats, bool isDualType)
+    {
+        int rarityPoints = GetRarityPoints(rarity);
+        int growthRatePoints = GetGrowthRatePoints(growthRate);
+        int statsPoints = GetStatsPoints(totalStats);
+        int typingPoints = isDualType ? 2 : 1;
+
+        int totalPoints = rarityPoints + growthRatePoints + statsPoints + typingPoints;
+
+        totalPoints = Mathf.Clamp(totalPoints, MIN_TOTAL_POINTS, MAX_TOTAL_POINTS);
+
+        float rate = (float)(MAX_TOTAL_POINTS - totalPoints) / (MAX_TOTAL_POINTS - MIN_TOTAL_POINTS) * 255f;
+
+        // Clamp RecruitRate between 1 and 255
+        rate = Mathf.Clamp(rate, 1f, 255f);
+
+        return Mathf.RoundToInt(rate);
+    }
+
+    private static int GetRarityPoints(Rarity rarity)
+    {
+        return rarity switch
+        {
+            Rarity.Common => 1,
+            Rarity.Uncommon => 2,
+            Rarity.Rare => 3,
+            Rarity.Epic => 4,
+            Rarity.Legendary => 5,
+            _ => 1,
+        };
+    }
+
+    private static int GetGrowthRatePoints(GrowthRate growthRate)
+    {
+        return growthRate switch
+        {
+            GrowthRate.Fast => 1,
+            GrowthRate.MediumFast => 2,
+            GrowthRate.MediumSlow => 3,
+            GrowthRate.Slow => 4,
+            GrowthRate.Fluctuating => 5,
+            GrowthRate.Erratic => 6,
+            _ => 2,
+        };
+    }
+
+    private static int GetStatsPoints(int totalStats)
+    {
+        if (totalStats <= 150)
+        {
+            return 1;
+        }
+
+        if (totalStats <= 300)
+        {
+            return 2;
+        }
+
+        if (totalStats <= 450)
+        {
+            return 3;
+        }
+
+        return totalStats <= 600 ? 4 : 5;
     }
 }
 

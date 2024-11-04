@@ -26,16 +26,11 @@ public class CharacterAnimator : MonoBehaviour
     {
         get
         {
-            if (_currentAnim == _walkRightAnim)
-            {
-                return FacingDirection.Right;
-            }
-            else
-            {
-                return _currentAnim == _walkLeftAnim
+            return _currentAnim == _walkRightAnim
+                ? FacingDirection.Right
+                : _currentAnim == _walkLeftAnim
                     ? FacingDirection.Left
                     : _currentAnim == _walkUpAnim ? FacingDirection.Up : _currentAnim == _walkDownAnim ? FacingDirection.Down : _defaultDirection;
-            }
         }
         set
         {

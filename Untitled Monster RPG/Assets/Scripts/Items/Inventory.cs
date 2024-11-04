@@ -124,18 +124,13 @@ public class Inventory : MonoBehaviour, ISavable
 
     private ItemCategory GetCategoryFromItem(ItemBase item)
     {
-        if (item is RecoveryItem)
-        {
-            return ItemCategory.RecoveryItems;
-        }
-        else
-        {
-            return item is Material
+        return item is RecoveryItem
+            ? ItemCategory.RecoveryItems
+            : item is Material
                 ? ItemCategory.Materials
                 : item is TransformationItem
                             ? ItemCategory.TransformationItems
                             : item is SkillBook ? ItemCategory.SkillBooks : ItemCategory.KeyItems;
-        }
     }
 
     public static Inventory GetInventory()
