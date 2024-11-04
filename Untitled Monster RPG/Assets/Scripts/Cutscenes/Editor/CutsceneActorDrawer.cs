@@ -10,9 +10,9 @@ public class CutsceneActorDrawer : PropertyDrawer
 
         position = EditorGUI.PrefixLabel(position, label);
 
-        var togglePos = new Rect(position.x, position.y, 70, position.height);
-        var characterPos = new Rect(position.x + 70, position.y, position.width - 70, position.height);
-        var isPlayerProp = property.FindPropertyRelative("isPlayer");
+        Rect togglePos = new(position.x, position.y, 70, position.height);
+        Rect characterPos = new(position.x + 70, position.y, position.width - 70, position.height);
+        SerializedProperty isPlayerProp = property.FindPropertyRelative("isPlayer");
 
         isPlayerProp.boolValue = GUI.Toggle(togglePos, isPlayerProp.boolValue, "Is Player");
         isPlayerProp.serializedObject.ApplyModifiedProperties();

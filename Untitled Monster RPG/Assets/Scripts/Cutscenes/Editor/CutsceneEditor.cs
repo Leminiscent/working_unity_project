@@ -6,9 +6,9 @@ public class CutsceneEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        var cutscene = target as Cutscene;
+        Cutscene cutscene = target as Cutscene;
 
-        using (var scope = new GUILayout.HorizontalScope())
+        using (GUILayout.HorizontalScope scope = new())
         {
             if (GUILayout.Button("Dialogue"))
             {
@@ -24,7 +24,7 @@ public class CutsceneEditor : Editor
             }
         }
 
-        using (var scope = new GUILayout.HorizontalScope())
+        using (GUILayout.HorizontalScope scope = new())
         {
             if (GUILayout.Button("Teleport Object"))
             {
@@ -40,7 +40,7 @@ public class CutsceneEditor : Editor
             }
         }
 
-        using (var scope = new GUILayout.HorizontalScope())
+        using (GUILayout.HorizontalScope scope = new())
         {
             if (GUILayout.Button("NPC Interaction"))
             {

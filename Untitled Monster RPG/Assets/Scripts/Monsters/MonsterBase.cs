@@ -65,20 +65,8 @@ public class MonsterBase : ScriptableObject
     public static int MaxMoveCount { get; set; } = 4;
     public List<Transformation> Transformations => _transformations;
     public int ExpYield => _expYield;
-    public GrowthRate GrowthRate
-    {
-        get
-        {
-            return AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
-        }
-    }
-    public int RecruitRate
-    {
-        get
-        {
-            return AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
-        }
-    }
+    public GrowthRate GrowthRate => AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
+    public int RecruitRate => AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
     public DropTable DropTable => _dropTable;
 
