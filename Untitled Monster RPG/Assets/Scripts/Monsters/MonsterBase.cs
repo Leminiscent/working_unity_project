@@ -310,7 +310,9 @@ public class AttributeCalculator
         foreach ((int MaxValue, int Points) in _statsPointsRanges)
         {
             if (totalStats <= MaxValue)
+            {
                 return Points;
+            }
         }
         return 1; // Default fallback
     }
@@ -320,7 +322,9 @@ public class AttributeCalculator
         foreach ((int MaxPoints, GrowthRate Rate) in _growthRateMappings)
         {
             if (totalPoints <= MaxPoints)
+            {
                 return Rate;
+            }
         }
 
         // Default GrowthRate if no mapping matches
