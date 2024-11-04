@@ -36,13 +36,13 @@ public class RunTurnState : State<BattleSystem>
         _battleSystem = owner;
         _playerUnit = _battleSystem.PlayerUnit;
         _enemyUnit = _battleSystem.EnemyUnit;
-        _playerMonsterName = _playerUnit.Monster.Base.Name;
-        _enemyMonsterName = _isMasterBattle ? $"The enemy {_enemyUnit.Monster.Base.Name}" : $"The wild {_enemyUnit.Monster.Base.Name}";
         _dialogueBox = _battleSystem.DialogueBox;
         _playerParty = _battleSystem.PlayerParty;
         _enemyParty = _battleSystem.EnemyParty;
         _isMasterBattle = _battleSystem.IsMasterBattle;
         _field = _battleSystem.Field;
+        _playerMonsterName = _playerUnit.Monster.Base.Name;
+        _enemyMonsterName = _isMasterBattle ? $"The enemy {_enemyUnit.Monster.Base.Name}" : $"The wild {_enemyUnit.Monster.Base.Name}";
 
         StartCoroutine(RunTurns(_battleSystem.SelectedAction));
     }
