@@ -327,34 +327,26 @@ public class RecruitRateCalculator
     {
         return growthRate switch
         {
-            GrowthRate.Fast => 1,
-            GrowthRate.MediumFast => 2,
-            GrowthRate.MediumSlow => 3,
-            GrowthRate.Slow => 4,
-            GrowthRate.Fluctuating => 5,
-            GrowthRate.Erratic => 6,
-            _ => 2,
+            GrowthRate.Erratic => 1,
+            GrowthRate.Fast => 2,
+            GrowthRate.MediumFast => 3,
+            GrowthRate.MediumSlow => 4,
+            GrowthRate.Slow => 5,
+            GrowthRate.Fluctuating => 6,
+            _ => 1,
         };
     }
 
     private static int GetStatsPoints(int totalStats)
     {
-        if (totalStats <= 150)
+        return totalStats switch
         {
-            return 1;
-        }
-
-        if (totalStats <= 300)
-        {
-            return 2;
-        }
-
-        if (totalStats <= 450)
-        {
-            return 3;
-        }
-
-        return totalStats <= 600 ? 4 : 5;
+            <= 128 => 1,
+            <= 256 => 2,
+            <= 384 => 3,
+            <= 512 => 4,
+            _ => 5,
+        };
     }
 }
 
