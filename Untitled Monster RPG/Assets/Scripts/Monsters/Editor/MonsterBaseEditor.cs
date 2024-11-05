@@ -17,9 +17,9 @@ public class MonsterBaseEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Pv Yields", EditorStyles.boldLabel);
 
-        foreach (KeyValuePair<Stat, int> yield in monsterBase.PvYield)
+        foreach (KeyValuePair<Stat, float> yield in monsterBase.PvYield)
         {
-            EditorGUILayout.LabelField($"{yield.Key}", yield.Value.ToString());
+            EditorGUILayout.LabelField($"{yield.Key}", yield.Value.ToString("F2"));
         }
     }
 }

@@ -51,14 +51,14 @@ public class MonsterBase : ScriptableObject
     public int Fortitude => _fortitude;
     public int Agility => _agility;
     public int TotalStats => _hp + _strength + _endurance + _intelligence + _fortitude + _agility;
-    public Dictionary<Stat, int> PvYield => new()
+    public Dictionary<Stat, float> PvYield => new()
     {
-        { Stat.HP, Mathf.FloorToInt(_hp * 0.01f) },
-        { Stat.Strength, Mathf.FloorToInt(_strength * 0.01f) },
-        { Stat.Endurance, Mathf.FloorToInt(_endurance * 0.01f) },
-        { Stat.Intelligence, Mathf.FloorToInt(_intelligence * 0.01f) },
-        { Stat.Fortitude, Mathf.FloorToInt(_fortitude * 0.01f) },
-        { Stat.Agility, Mathf.FloorToInt(_agility * 0.01f) }
+        { Stat.HP, _hp * 0.01f },
+        { Stat.Strength, _strength * 0.01f },
+        { Stat.Endurance, _endurance * 0.01f },
+        { Stat.Intelligence, _intelligence * 0.01f },
+        { Stat.Fortitude, _fortitude * 0.01f },
+        { Stat.Agility, _agility * 0.01f }
     };
     public List<LearnableMove> LearnableMoves => _learnableMoves;
     public List<MoveBase> LearnableBySkillBook => _learnableBySkillBook;

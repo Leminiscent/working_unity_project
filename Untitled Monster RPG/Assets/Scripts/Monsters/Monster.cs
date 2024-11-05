@@ -30,7 +30,7 @@ public class Monster
     public int Intelligence => GetStat(Stat.Intelligence);
     public int Fortitude => GetStat(Stat.Fortitude);
     public int Agility => GetStat(Stat.Agility);
-    public Dictionary<Stat, int> StatPerformanceValues { get; private set; }
+    public Dictionary<Stat, float> StatPerformanceValues { get; private set; }
 
     public Monster(MonsterBase pBase, int pLevel)
     {
@@ -55,7 +55,7 @@ public class Monster
             }
         }
 
-        StatPerformanceValues = new Dictionary<Stat, int>()
+        StatPerformanceValues = new Dictionary<Stat, float>()
         {
             { Stat.HP, 0 },
             { Stat.Strength, 0 },
@@ -184,9 +184,9 @@ public class Monster
         }
     }
 
-    public void GainPvs(Dictionary<Stat, int> pvGained)
+    public void GainPvs(Dictionary<Stat, float> pvGained)
     {
-        foreach (KeyValuePair<Stat, int> spv in StatPerformanceValues.ToArray())
+        foreach (KeyValuePair<Stat, float> spv in StatPerformanceValues.ToArray())
         {
             if (spv.Value < GlobalSettings.Instance.MaxPvPerStat && GetTotalPvs() < GlobalSettings.Instance.MaxPvs)
             {
@@ -196,7 +196,7 @@ public class Monster
         }
     }
 
-    public int GetTotalPvs()
+    public float GetTotalPvs()
     {
         return StatPerformanceValues.Values.Sum();
     }
@@ -475,5 +475,5 @@ public class MonsterSaveData
 public class StatPV
 {
     public Stat Stat;
-    public int Pv;
+    public float Pv;
 }
