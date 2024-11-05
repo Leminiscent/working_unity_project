@@ -442,8 +442,11 @@ public class RunTurnState : State<BattleSystem>
                     {
                         int quantity = Random.Range(itemDrop.QuantityRange.x, itemDrop.QuantityRange.y + 1);
 
-                        lootDescriptions.Add($"{quantity}x {itemDrop.Item.Name}");
-                        Inventory.GetInventory().AddItem(itemDrop.Item, quantity);
+                        if (quantity > 0)
+                        {
+                            lootDescriptions.Add($"{quantity}x {itemDrop.Item.Name}");
+                            Inventory.GetInventory().AddItem(itemDrop.Item, quantity);
+                        }
                     }
                 }
 
