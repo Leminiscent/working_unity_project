@@ -11,6 +11,9 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private Image _image;
+    [SerializeField] private GameObject _monsterTypeUI;
+    [SerializeField] private TextMeshProUGUI _monsterType1;
+    [SerializeField] private TextMeshProUGUI _monsterType2;
 
     [Header("Pages")]
     [SerializeField] private TextMeshProUGUI _pageNameText;
@@ -75,6 +78,9 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         _nameText.text = monster.Base.Name;
         _levelText.text = "Lvl " + monster.Level;
         _image.sprite = monster.Base.Sprite;
+        
+        _monsterType1.text = monster.Base.Type1.ToString().ToUpper();
+        _monsterType2.text = monster.Base.Type2.ToString().ToUpper();
     }
 
     public void ShowPage(int index)
@@ -83,6 +89,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         {
             _pageNameText.text = "Monster Details";
             _detailsPage.SetActive(true);
+            _monsterTypeUI.SetActive(true);
             _movesPage.SetActive(false);
             SetStatsAndExp();
         }
@@ -91,6 +98,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
             _pageNameText.text = "Monster Moves";
             _movesPage.SetActive(true);
             _detailsPage.SetActive(false);
+            _monsterTypeUI.SetActive(false);
             SetMoves();
         }
     }
