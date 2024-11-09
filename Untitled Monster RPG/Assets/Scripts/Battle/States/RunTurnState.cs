@@ -286,7 +286,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return RunAfterMove(damageDetails, move.Base, sourceUnit, sourceUnitName, targetUnit, targetUnitName);
 
                 hit = i;
-                if (targetUnit.Monster.Hp <= 0)
+                if (targetUnit.Monster.Hp <= 0 || sourceUnit.Monster.Hp <= 0)
                 {
                     break;
                 }
@@ -305,6 +305,11 @@ public class RunTurnState : State<BattleSystem>
             if (targetUnit.Monster.Hp <= 0)
             {
                 yield return HandleMonsterDefeat(targetUnit, targetUnitName);
+            }
+
+            if (sourceUnit.Monster.Hp <= 0)
+            {
+                yield return HandleMonsterDefeat(sourceUnit, sourceUnitName);
             }
         }
         else
