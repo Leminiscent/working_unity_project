@@ -74,7 +74,6 @@ public class RunTurnState : State<BattleSystem>
             Monster secondMonster = secondUnit.Monster;
 
             yield return RunMove(firstUnit, firstUnitName, secondUnit, secondUnitName, firstUnit.Monster.CurrentMove);
-            yield return RunAfterTurn(firstUnit, firstUnitName);
             if (_battleSystem.BattleIsOver)
             {
                 yield break;
@@ -83,7 +82,6 @@ public class RunTurnState : State<BattleSystem>
             if (secondMonster.Hp > 0)
             {
                 yield return RunMove(secondUnit, secondUnitName, firstUnit, firstUnitName, secondMonster.CurrentMove);
-                yield return RunAfterTurn(secondUnit, secondUnitName);
                 if (_battleSystem.BattleIsOver)
                 {
                     yield break;
@@ -103,31 +101,35 @@ public class RunTurnState : State<BattleSystem>
 
             _enemyUnit.Monster.CurrentMove = _enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
             yield return RunMove(_enemyUnit, _enemyMonsterName, _playerUnit, _playerMonsterName, _enemyUnit.Monster.CurrentMove);
-            yield return RunAfterTurn(_enemyUnit, _enemyMonsterName);
             if (_battleSystem.BattleIsOver)
             {
                 yield break;
             }
         }
 
+        BattleUnit fasterUnit = _playerUnit.Monster.Agility >= _enemyUnit.Monster.Agility ? _playerUnit : _enemyUnit;
+        string fasterUnitName = fasterUnit == _playerUnit ? _playerMonsterName : _enemyMonsterName;
+        BattleUnit slowerUnit = fasterUnit == _playerUnit ? _enemyUnit : _playerUnit;
+        string slowerUnitName = slowerUnit == _playerUnit ? _playerMonsterName : _enemyMonsterName;
+
         if (_field.Weather != null)
         {
             yield return _dialogueBox.TypeDialogue(_field.Weather.EffectMessage);
 
-            _field.Weather.OnWeather?.Invoke(_playerUnit.Monster);
-            yield return ShowStatusChanges(_playerUnit.Monster, _playerMonsterName);
-            yield return _playerUnit.Hud.WaitForHPUpdate();
-            if (_playerUnit.Monster.Hp <= 0)
+            _field.Weather.OnWeather?.Invoke(fasterUnit.Monster);
+            yield return ShowStatusChanges(fasterUnit.Monster, fasterUnitName);
+            yield return fasterUnit.Hud.WaitForHPUpdate();
+            if (fasterUnit.Monster.Hp <= 0)
             {
-                yield return HandleMonsterDefeat(_playerUnit, _playerMonsterName);
+                yield return HandleMonsterDefeat(fasterUnit, fasterUnitName);
             }
 
-            _field.Weather.OnWeather?.Invoke(_enemyUnit.Monster);
-            yield return ShowStatusChanges(_enemyUnit.Monster, _enemyMonsterName);
-            yield return _enemyUnit.Hud.WaitForHPUpdate();
-            if (_enemyUnit.Monster.Hp <= 0)
+            _field.Weather.OnWeather?.Invoke(slowerUnit.Monster);
+            yield return ShowStatusChanges(slowerUnit.Monster, slowerUnitName);
+            yield return slowerUnit.Hud.WaitForHPUpdate();
+            if (slowerUnit.Monster.Hp <= 0)
             {
-                yield return HandleMonsterDefeat(_enemyUnit, _enemyMonsterName);
+                yield return HandleMonsterDefeat(slowerUnit, slowerUnitName);
             }
 
             if (_field.WeatherDuration != null)
@@ -141,6 +143,9 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
         }
+
+        yield return RunAfterTurn(fasterUnit, fasterUnitName);
+        yield return RunAfterTurn(slowerUnit, slowerUnitName);
 
         if (!_battleSystem.BattleIsOver)
         {
