@@ -286,7 +286,11 @@ public class RunTurnState : State<BattleSystem>
                     break;
                 }
             }
-            yield return ShowEffectiveness(typeEffectiveness);
+
+            if (move.Base.Category != MoveCategory.Status)
+            {
+                yield return ShowEffectiveness(typeEffectiveness);
+            }
 
             if (hit > 1)
             {
