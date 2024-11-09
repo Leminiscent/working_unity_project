@@ -10,6 +10,7 @@ public class Monster
 
     public MonsterBase Base => _base;
     public int Level => _level;
+    public bool HasJustLeveledUp { get; set; }
     public int Exp { get; set; }
     public int Hp { get; set; }
     public List<Move> Moves { get; set; }

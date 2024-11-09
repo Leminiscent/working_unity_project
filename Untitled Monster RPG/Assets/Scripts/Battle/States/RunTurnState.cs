@@ -486,6 +486,7 @@ public class RunTurnState : State<BattleSystem>
 
                 while (_playerUnit.Monster.CheckForLevelUp())
                 {
+                    _playerUnit.Monster.HasJustLeveledUp = true;
                     _playerUnit.Hud.SetLevel();
                     yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} grew to level {_playerUnit.Monster.Level}!");
 

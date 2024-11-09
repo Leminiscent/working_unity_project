@@ -50,21 +50,25 @@ public class MonsterParty : MonoBehaviour
 
     public bool CheckForTransformations()
     {
-        return _monsters.Any(static m => m.CheckForTransformation() != null);
+        return _monsters.Any(m => m.HasJustLeveledUp && m.CheckForTransformation() != null);
     }
+
 
     public IEnumerator RunTransformations()
     {
         foreach (Monster monster in _monsters)
         {
-            Transformation transformation = monster.CheckForTransformation();
-
-            if (transformation != null)
+            if (monster.HasJustLeveledUp)
             {
-                yield return TransformationState.Instance.Transform(monster, transformation);
+                Transformation transformation = monster.CheckForTransformation();
+                if (transformation != null)
+                {
+                    yield return TransformationState.Instance.Transform(monster, transformation);
+                }
             }
         }
     }
+
 
     public void RestoreParty()
     {

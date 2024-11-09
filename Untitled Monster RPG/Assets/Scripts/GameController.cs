@@ -102,6 +102,11 @@ public class GameController : MonoBehaviour
         {
             AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
         }
+
+        foreach (Monster monster in playerParty.Monsters)
+        {
+            monster.HasJustLeveledUp = false;
+        }
     }
 
     private void Update()
