@@ -78,9 +78,17 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         _nameText.text = monster.Base.Name;
         _levelText.text = "Lvl " + monster.Level;
         _image.sprite = monster.Base.Sprite;
-        
+
         _monsterType1.text = monster.Base.Type1.ToString().ToUpper();
-        _monsterType2.text = monster.Base.Type2.ToString().ToUpper();
+        if (monster.Base.Type2 != MonsterType.None)
+        {
+            _monsterType2.transform.parent.gameObject.SetActive(true);
+            _monsterType2.text = monster.Base.Type2.ToString().ToUpper();
+        }
+        else
+        {
+            _monsterType2.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     public void ShowPage(int index)
