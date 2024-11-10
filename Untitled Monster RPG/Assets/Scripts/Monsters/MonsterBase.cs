@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,20 +23,22 @@ public class MonsterBase : ScriptableObject
     [SerializeField] private int _agility;
 
     [Header("Moves")]
-    [SerializeField] private List<LearnableMove> _learnableMoves;
-    [SerializeField] private List<MoveBase> _learnableBySkillBook;
+    [SerializeField] private List<LearnableMove> _learnableMoves = new();
+    [SerializeField] private List<MoveBase> _learnableBySkillBook = new();
 
     [Header("Transformations")]
-    [SerializeField] private List<Transformation> _transformations;
+    [SerializeField] private List<Transformation> _transformations = new();
 
     [Header("Experience")]
     [SerializeField] private int _expYield;
 
     [Header("Recruitment")]
-    [SerializeField] private List<RecruitmentQuestion> _recruitmentQuestions;
+    [SerializeField] private List<RecruitmentQuestion> _recruitmentQuestions = new();
 
     [Header("Drops")]
     [SerializeField] private DropTable _dropTable;
+
+    private Dictionary<Stat, float> _pvYield;
 
     public string Name => _name;
     public string Description => _description;
@@ -51,7 +54,7 @@ public class MonsterBase : ScriptableObject
     public int Fortitude => _fortitude;
     public int Agility => _agility;
     public int TotalStats => _hp + _strength + _endurance + _intelligence + _fortitude + _agility;
-    public Dictionary<Stat, float> PvYield => new()
+    public Dictionary<Stat, float> PvYield => _pvYield ??= new Dictionary<Stat, float>()
     {
         { Stat.HP, _hp * 0.01f },
         { Stat.Strength, _strength * 0.01f },
@@ -62,7 +65,7 @@ public class MonsterBase : ScriptableObject
     };
     public List<LearnableMove> LearnableMoves => _learnableMoves;
     public List<MoveBase> LearnableBySkillBook => _learnableBySkillBook;
-    public static int MaxMoveCount { get; set; } = 4;
+    public static int MaxMoveCount { get; } = 4;
     public List<Transformation> Transformations => _transformations;
     public int ExpYield => _expYield;
     public GrowthRate GrowthRate => AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
@@ -89,16 +92,20 @@ public class MonsterBase : ScriptableObject
                 {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (1911 - (10 * level)) / 3 / 500);
                 }
-
                 return Mathf.FloorToInt(Mathf.Pow(level, 3) * (160 - level) / 100);
+
             case GrowthRate.Fast:
                 return Mathf.FloorToInt(4 * Mathf.Pow(level, 3) / 5);
+
             case GrowthRate.MediumFast:
                 return Mathf.FloorToInt(Mathf.Pow(level, 3));
+
             case GrowthRate.MediumSlow:
                 return Mathf.FloorToInt((6f / 5 * Mathf.Pow(level, 3)) - (15 * Mathf.Pow(level, 2)) + (100 * level) - 140);
+
             case GrowthRate.Slow:
                 return Mathf.FloorToInt(5 * Mathf.Pow(level, 3) / 4);
+
             case GrowthRate.Fluctuating:
                 if (level < 15)
                 {
@@ -109,16 +116,15 @@ public class MonsterBase : ScriptableObject
                 {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level + 14) / 50);
                 }
-
                 return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level / 2) + 32) / 50);
+
             default:
-                break;
+                throw new ArgumentOutOfRangeException();
         }
-        return -1;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class LearnableMove
 {
     [SerializeField] private MoveBase _moveBase;
@@ -128,7 +134,7 @@ public class LearnableMove
     public int Level => _level;
 }
 
-[System.Serializable]
+[Serializable]
 public class Transformation
 {
     [SerializeField] private MonsterBase _transformsInto;
@@ -140,17 +146,17 @@ public class Transformation
     public TransformationItem RequiredItem => _requiredItem;
 }
 
-[System.Serializable]
+[Serializable]
 public class RecruitmentQuestion
 {
     [SerializeField] private string _questionText;
-    [SerializeField] private List<RecruitmentAnswer> _answers;
+    [SerializeField] private List<RecruitmentAnswer> _answers = new();
 
     public string QuestionText => _questionText;
     public List<RecruitmentAnswer> Answers => _answers;
 }
 
-[System.Serializable]
+[Serializable]
 public class RecruitmentAnswer
 {
     [SerializeField] private string _answerText;
@@ -160,17 +166,17 @@ public class RecruitmentAnswer
     public int AffinityScore => _affinityScore;
 }
 
-[System.Serializable]
+[Serializable]
 public class DropTable
 {
     [SerializeField] private Vector2Int _gpDropped;
-    [SerializeField] private List<ItemDrop> _itemDrops;
+    [SerializeField] private List<ItemDrop> _itemDrops = new();
 
     public Vector2Int GpDropped => _gpDropped;
     public List<ItemDrop> ItemDrops => _itemDrops;
 }
 
-[System.Serializable]
+[Serializable]
 public class ItemDrop
 {
     [SerializeField] private ItemBase _item;
@@ -184,40 +190,40 @@ public class ItemDrop
 
 public class TypeChart
 {
-    private static float[][] _chart =
+    private static float[,] _chart =
     {
-        //                         NOR   FIR   WAT   THU   PLA   ICE   FOR   POI   EAR   WIN   MIN   INS   STO   SPI   DRA   DAR   MET   LIG
-        /*Normal*/   new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f },
-        /*Fire*/     new float[] { 1.0f, 0.5f, 0.5f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 0.5f, 1.0f, 2.0f, 1.0f },
-        /*Water*/    new float[] { 1.0f, 2.0f, 0.5f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f },
-        /*Thunder*/  new float[] { 1.0f, 1.0f, 2.0f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f },
-        /*Plant*/    new float[] { 1.0f, 0.5f, 2.0f, 1.0f, 0.5f, 1.0f, 1.0f, 0.5f, 2.0f, 0.5f, 1.0f, 0.5f, 2.0f, 1.0f, 0.5f, 1.0f, 0.5f, 1.0f },
-        /*Ice*/      new float[] { 1.0f, 0.5f, 0.5f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f },
-        /*Force*/    new float[] { 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 0.5f, 0.5f, 0.5f, 2.0f, 0.0f, 1.0f, 2.0f, 2.0f, 0.5f },
-        /*Poison*/   new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 2.0f },
-        /*Earth*/    new float[] { 1.0f, 2.0f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.5f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f },
-        /*Wind*/     new float[] { 1.0f, 1.0f, 1.0f, 0.5f, 2.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f },
-        /*Mind*/     new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.5f, 1.0f },
-        /*Insect*/   new float[] { 1.0f, 0.5f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 0.5f, 1.0f, 0.5f, 2.0f, 1.0f, 1.0f, 0.5f, 1.0f, 2.0f, 0.5f, 0.5f },
-        /*Stone*/    new float[] { 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 0.5f, 2.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f },
-        /*Spirit*/   new float[] { 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 1.0f },
-        /*Dragon*/   new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 0.0f },
-        /*Dark*/     new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 0.5f },
-        /*Metal*/    new float[] { 1.0f, 0.5f, 0.5f, 0.5f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 0.5f, 2.0f },
-        /*Light*/    new float[] { 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.5f, 1.0f }
+        //             NOR   FIR   WAT   THU   PLA   ICE   FOR   POI   EAR   WIN   MIN   INS   STO   SPI   DRA   DAR   MET   LIG
+        /*Normal*/   { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f },
+        /*Fire*/     { 1.0f, 0.5f, 0.5f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 0.5f, 1.0f, 2.0f, 1.0f },
+        /*Water*/    { 1.0f, 2.0f, 0.5f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f },
+        /*Thunder*/  { 1.0f, 1.0f, 2.0f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f },
+        /*Plant*/    { 1.0f, 0.5f, 2.0f, 1.0f, 0.5f, 1.0f, 1.0f, 0.5f, 2.0f, 0.5f, 1.0f, 0.5f, 2.0f, 1.0f, 0.5f, 1.0f, 0.5f, 1.0f },
+        /*Ice*/      { 1.0f, 0.5f, 0.5f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f },
+        /*Force*/    { 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 0.5f, 0.5f, 0.5f, 2.0f, 0.0f, 1.0f, 2.0f, 2.0f, 0.5f },
+        /*Poison*/   { 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 2.0f },
+        /*Earth*/    { 1.0f, 2.0f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.5f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f },
+        /*Wind*/     { 1.0f, 1.0f, 1.0f, 0.5f, 2.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f },
+        /*Mind*/     { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.5f, 1.0f },
+        /*Insect*/   { 1.0f, 0.5f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 0.5f, 1.0f, 0.5f, 2.0f, 1.0f, 1.0f, 0.5f, 1.0f, 2.0f, 0.5f, 0.5f },
+        /*Stone*/    { 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 0.5f, 2.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f },
+        /*Spirit*/   { 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 1.0f },
+        /*Dragon*/   { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 0.0f },
+        /*Dark*/     { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 0.5f },
+        /*Metal*/    { 1.0f, 0.5f, 0.5f, 0.5f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 0.5f, 2.0f },
+        /*Light*/    { 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.5f, 1.0f }
     };
 
     public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
     {
         if (attackType == MonsterType.None || defenseType == MonsterType.None)
         {
-            return 1;
+            return 1f;
         }
 
         int row = (int)attackType - 1;
         int col = (int)defenseType - 1;
 
-        return _chart[row][col];
+        return _chart[row, col];
     }
 }
 
@@ -289,7 +295,6 @@ public class AttributeCalculator
         totalPoints = Mathf.Clamp(totalPoints, MIN_TOTAL_POINTS, MAX_TOTAL_POINTS);
 
         float rate = (float)(MAX_TOTAL_POINTS - totalPoints) / (MAX_TOTAL_POINTS - MIN_TOTAL_POINTS) * 255f;
-
         rate = Mathf.Clamp(rate, 1f, 255f);
 
         return Mathf.RoundToInt(rate);
