@@ -14,13 +14,14 @@ public class MonsterBase : ScriptableObject
     [SerializeField] private MonsterType _type2;
     [SerializeField] private Rarity _rarity;
 
-    [Header("Stats")]
-    [SerializeField] private int _hp;
-    [SerializeField] private int _strength;
-    [SerializeField] private int _endurance;
-    [SerializeField] private int _intelligence;
-    [SerializeField] private int _fortitude;
-    [SerializeField] private int _agility;
+    [Header("Stat Weights")]
+    [SerializeField] private float _totalStatsWeight;
+    [SerializeField] private float _hpWeight;
+    [SerializeField] private float _strengthWeight;
+    [SerializeField] private float _enduranceWeight;
+    [SerializeField] private float _intelligenceWeight;
+    [SerializeField] private float _fortitudeWeight;
+    [SerializeField] private float _agilityWeight;
 
     [Header("Moves")]
     [SerializeField] private List<LearnableMove> _learnableMoves = new();
@@ -38,7 +39,25 @@ public class MonsterBase : ScriptableObject
     [Header("Drops")]
     [SerializeField] private DropTable _dropTable;
 
-    private Dictionary<Stat, float> _pvYield;
+    [HideInInspector]
+    [SerializeField]
+    private float _sumOfWeights;
+
+    private int _hp;
+    private int _strength;
+    private int _endurance;
+    private int _intelligence;
+    private int _fortitude;
+    private int _agility;
+
+    private static readonly Dictionary<Rarity, (int min, int max)> _rarityStatRanges = new()
+    {
+        { Rarity.Common,     (30, 306) },
+        { Rarity.Uncommon,   (307, 612) },
+        { Rarity.Rare,       (613, 918) },
+        { Rarity.Epic,       (919, 1224) },
+        { Rarity.Legendary,  (1225, 1530) }
+    };
 
     public string Name => _name;
     public string Description => _description;
@@ -47,6 +66,7 @@ public class MonsterBase : ScriptableObject
     public MonsterType Type2 => _type2;
     public bool IsDualType => _type2 != MonsterType.None;
     public Rarity Rarity => _rarity;
+
     public int HP => _hp;
     public int Strength => _strength;
     public int Endurance => _endurance;
@@ -54,7 +74,8 @@ public class MonsterBase : ScriptableObject
     public int Fortitude => _fortitude;
     public int Agility => _agility;
     public int TotalStats => _hp + _strength + _endurance + _intelligence + _fortitude + _agility;
-    public Dictionary<Stat, float> PvYield => _pvYield ??= new Dictionary<Stat, float>()
+
+    public Dictionary<Stat, float> PvYield => new()
     {
         { Stat.HP, _hp * 0.01f },
         { Stat.Strength, _strength * 0.01f },
@@ -63,6 +84,7 @@ public class MonsterBase : ScriptableObject
         { Stat.Fortitude, _fortitude * 0.01f },
         { Stat.Agility, _agility * 0.01f }
     };
+
     public List<LearnableMove> LearnableMoves => _learnableMoves;
     public List<MoveBase> LearnableBySkillBook => _learnableBySkillBook;
     public static int MaxMoveCount { get; } = 4;
@@ -72,6 +94,52 @@ public class MonsterBase : ScriptableObject
     public int RecruitRate => AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
     public DropTable DropTable => _dropTable;
+
+    private void OnValidate()
+    {
+        if (!_rarityStatRanges.ContainsKey(_rarity))
+        {
+            Debug.LogError($"Rarity {_rarity} does not have a defined stat range.");
+            return;
+        }
+
+        (int minTotal, int maxTotal) = _rarityStatRanges[_rarity];
+        float totalRange = maxTotal - minTotal;
+
+        int totalStats = Mathf.RoundToInt(_totalStatsWeight * totalRange) + minTotal;
+
+        totalStats = Mathf.Clamp(totalStats, 30, 1530);
+
+        float[] individualWeights = new float[]
+        {
+            _hpWeight,
+            _strengthWeight,
+            _enduranceWeight,
+            _intelligenceWeight,
+            _fortitudeWeight,
+            _agilityWeight
+        };
+
+        _sumOfWeights = 0f;
+        foreach (float weight in individualWeights)
+        {
+            _sumOfWeights += weight;
+        }
+
+        _hp = Mathf.RoundToInt(individualWeights[0] * totalStats);
+        _strength = Mathf.RoundToInt(individualWeights[1] * totalStats);
+        _endurance = Mathf.RoundToInt(individualWeights[2] * totalStats);
+        _intelligence = Mathf.RoundToInt(individualWeights[3] * totalStats);
+        _fortitude = Mathf.RoundToInt(individualWeights[4] * totalStats);
+        _agility = Mathf.RoundToInt(individualWeights[5] * totalStats);
+
+        _hp = Mathf.Clamp(_hp, 5, 255);
+        _strength = Mathf.Clamp(_strength, 5, 255);
+        _endurance = Mathf.Clamp(_endurance, 5, 255);
+        _intelligence = Mathf.Clamp(_intelligence, 5, 255);
+        _fortitude = Mathf.Clamp(_fortitude, 5, 255);
+        _agility = Mathf.Clamp(_agility, 5, 255);
+    }
 
     public int GetExpForLevel(int level)
     {

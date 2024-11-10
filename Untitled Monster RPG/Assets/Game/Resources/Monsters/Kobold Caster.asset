@@ -19,12 +19,13 @@ MonoBehaviour:
   _type1: 11
   _type2: 9
   _rarity: 0
-  _hp: 75
-  _strength: 40
-  _endurance: 50
-  _intelligence: 100
-  _fortitude: 60
-  _agility: 75
+  _totalStatsWeight: 0.96
+  _hpWeight: 0.15
+  _strengthWeight: 0.12
+  _enduranceWeight: 0.13
+  _intelligenceWeight: 0.23
+  _fortitudeWeight: 0.23
+  _agilityWeight: 0.14
   _learnableMoves:
   - _moveBase: {fileID: 11400000, guid: c8bc67c1150c2ed46aee42da204461ae, type: 2}
     _level: 5
@@ -119,3 +120,4 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: 68a33e7c81800154e8825f35d183d28c, type: 2}
       _quantityRange: {x: 0, y: 4}
       _dropChance: 33
+  _sumOfWeights: 1
