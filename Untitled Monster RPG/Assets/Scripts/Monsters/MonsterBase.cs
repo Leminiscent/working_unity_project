@@ -307,11 +307,11 @@ public class AttributeCalculator
 
     private static int GetStatsPoints(int totalStats)
     {
-        foreach ((int MaxValue, int Points) in _statsPointsRanges)
+        foreach ((int maxValue, int points) in _statsPointsRanges)
         {
-            if (totalStats <= MaxValue)
+            if (totalStats <= maxValue)
             {
-                return Points;
+                return points;
             }
         }
         return 1; // Default fallback
@@ -319,11 +319,11 @@ public class AttributeCalculator
 
     private static GrowthRate MapPointsToGrowthRate(int totalPoints)
     {
-        foreach ((int MaxPoints, GrowthRate Rate) in _growthRateMappings)
+        foreach ((int maxPoints, GrowthRate rate) in _growthRateMappings)
         {
-            if (totalPoints <= MaxPoints)
+            if (totalPoints <= maxPoints)
             {
-                return Rate;
+                return rate;
             }
         }
 
