@@ -13,7 +13,7 @@ public class MonsterBaseEditor : Editor
 
         if (sumOfWeights != 1)
         {
-            EditorGUILayout.HelpBox($"The sum of individual stat weights is {sumOfWeights}. It should be equal to 1", MessageType.Error);
+            EditorGUILayout.HelpBox($"The sum of all individual stat weights is {sumOfWeights}. It should be equal to 1", MessageType.Error);
         }
 
         EditorGUILayout.Space();
