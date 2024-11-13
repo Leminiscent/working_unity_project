@@ -134,16 +134,16 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // private void OnGUI()
-    // {
-    //     GUIStyle style = new()
-    //     {
-    //         fontSize = 40
-    //     };
-    //     GUILayout.Label("STATE STACK", style);
-    //     foreach (var state in StateMachine.StateStack)
-    //     {
-    //         GUILayout.Label(state.GetType().ToString(), style);
-    //     }
-    // }
+    private void OnGUI()
+    {
+        GUIStyle style = new()
+        {
+            fontSize = 40
+        };
+        GUILayout.Label("STATE STACK", style);
+        foreach (var state in StateMachine.StateStack)
+        {
+            GUILayout.Label(state.GetType().ToString(), style);
+        }
+    }
 }
