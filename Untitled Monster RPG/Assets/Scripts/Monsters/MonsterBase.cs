@@ -108,7 +108,7 @@ public class MonsterBase : ScriptableObject
 
         int totalStats = Mathf.RoundToInt(_totalStatsWeight * totalRange) + minTotal;
 
-        totalStats = Mathf.Clamp(totalStats, 30, 1530);
+        totalStats = Mathf.Clamp(totalStats, minTotal, maxTotal);
 
         float[] individualWeights = new float[]
         {
