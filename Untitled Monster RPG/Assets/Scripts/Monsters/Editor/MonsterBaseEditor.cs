@@ -33,6 +33,7 @@ public class MonsterBaseEditor : Editor
         EditorGUILayout.LabelField("Additional Derived Information", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.LabelField("Exp Yield", monsterBase.ExpYield.ToString());
         EditorGUILayout.LabelField("Growth Rate", monsterBase.GrowthRate.ToString());
         EditorGUILayout.LabelField("Recruit Rate", monsterBase.RecruitRate.ToString());
         EditorGUILayout.EndVertical();
