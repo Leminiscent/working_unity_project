@@ -255,35 +255,10 @@ public class RecruitmentAnswer
 [Serializable]
 public class DropTable
 {
+    [SerializeField] private Vector2Int _gpDropped;
     [SerializeField] private List<ItemDrop> _itemDrops = new();
 
-    private MonsterBase _monster;
-    private static readonly Dictionary<Rarity, float> _rarityGpMultipliers = new()
-    {
-        { Rarity.Common, 1.0f },
-        { Rarity.Uncommon, 1.1f },
-        { Rarity.Rare, 1.25f },
-        { Rarity.Epic, 1.5f },
-        { Rarity.Legendary, 2.0f }
-    };
-
-    public DropTable(MonsterBase monster)
-    {
-        _monster = monster;
-    }
-
-    public Vector2Int GpDropped
-    {
-        get
-        {
-            int baseGp = Mathf.RoundToInt(_monster.TotalStats * 0.05f);
-            float rarityMultiplier = _rarityGpMultipliers[_monster.Rarity];
-            int minGp = Mathf.RoundToInt(baseGp * 0.8f * rarityMultiplier);
-            int maxGp = Mathf.RoundToInt(baseGp * 1.2f * rarityMultiplier);
-            return new Vector2Int(minGp, maxGp);
-        }
-    }
-
+    public Vector2Int GpDropped => _gpDropped;
     public List<ItemDrop> ItemDrops => _itemDrops;
 }
 
