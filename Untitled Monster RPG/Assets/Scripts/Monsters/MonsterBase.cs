@@ -97,7 +97,7 @@ public class MonsterBase : ScriptableObject
 
     public List<Transformation> Transformations => _transformations;
 
-    public int BaseExp => Mathf.RoundToInt(TotalStats * 0.1f);
+    public int BaseExp => Mathf.RoundToInt(TotalStats * 0.25f);
     public int ExpYield
     {
         get
@@ -110,7 +110,7 @@ public class MonsterBase : ScriptableObject
 
     public int RecruitRate => AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
-    
+
     public DropTable DropTable => _dropTable;
 
     private void OnValidate()
