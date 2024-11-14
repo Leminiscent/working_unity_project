@@ -30,7 +30,7 @@ public class MonsterBaseEditor : Editor
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Additional Derived Information", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Derived Experience and Recruitment Attributes", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Exp Yield", monsterBase.ExpYield.ToString());
@@ -39,7 +39,7 @@ public class MonsterBaseEditor : Editor
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Pv Yields", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Derived Pv Yields", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginVertical("box");
         foreach (KeyValuePair<Stat, float> yield in monsterBase.PvYield)
