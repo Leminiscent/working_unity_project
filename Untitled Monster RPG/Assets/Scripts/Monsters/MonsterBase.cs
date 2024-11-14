@@ -381,7 +381,7 @@ public class AttributeCalculator
         totalPoints = Mathf.Clamp(totalPoints, MIN_TOTAL_POINTS, MAX_TOTAL_POINTS);
 
         float rate = (float)(MAX_TOTAL_POINTS - totalPoints) / (MAX_TOTAL_POINTS - MIN_TOTAL_POINTS) * 255f;
-        rate = Mathf.Clamp(rate, 1f, 255f);
+        rate = Mathf.Clamp(rate, 3f, 255f);
 
         return Mathf.RoundToInt(rate);
     }
