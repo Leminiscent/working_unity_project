@@ -30,9 +30,6 @@ public class MonsterBase : ScriptableObject
     [Header("Transformations")]
     [SerializeField] private List<Transformation> _transformations = new();
 
-    [Header("Experience")]
-    [SerializeField] private int _expYield;
-
     [Header("Recruitment")]
     [SerializeField] private List<RecruitmentQuestion> _recruitmentQuestions = new();
 
@@ -57,6 +54,15 @@ public class MonsterBase : ScriptableObject
         { Rarity.Rare,       (613, 918) },
         { Rarity.Epic,       (919, 1224) },
         { Rarity.Legendary,  (1225, 1530) }
+    };
+
+    private static readonly Dictionary<Rarity, float> _rarityExpMultipliers = new()
+    {
+        { Rarity.Common, 1.0f },
+        { Rarity.Uncommon, 1.2f },
+        { Rarity.Rare, 1.5f },
+        { Rarity.Epic, 1.8f },
+        { Rarity.Legendary, 2.0f }
     };
 
     public string Name => _name;
@@ -88,11 +94,23 @@ public class MonsterBase : ScriptableObject
     public List<LearnableMove> LearnableMoves => _learnableMoves;
     public List<MoveBase> LearnableBySkillBook => _learnableBySkillBook;
     public static int MaxMoveCount { get; } = 4;
+
     public List<Transformation> Transformations => _transformations;
-    public int ExpYield => _expYield;
+
+    public int BaseExp => Mathf.RoundToInt(TotalStats * 0.1f);
+    public int ExpYield
+    {
+        get
+        {
+            float rarityMultiplier = _rarityExpMultipliers[Rarity];
+            return Mathf.RoundToInt(BaseExp * rarityMultiplier);
+        }
+    }
     public GrowthRate GrowthRate => AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
+
     public int RecruitRate => AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
+    
     public DropTable DropTable => _dropTable;
 
     private void OnValidate()
