@@ -115,48 +115,53 @@ public class MonsterBase : ScriptableObject
 
     private void OnValidate()
     {
+        ValidateRarity();
+        CalculateStats();
+    }
+
+    private void ValidateRarity()
+    {
         if (!_rarityStatRanges.ContainsKey(_rarity))
         {
             Debug.LogError($"Rarity {_rarity} does not have a defined stat range.");
+        }
+    }
+
+    private void CalculateStats()
+    {
+        if (!_rarityStatRanges.TryGetValue(_rarity, out (int min, int max) statRange))
+        {
+            Debug.LogError($"Cannot calculate stats due to undefined rarity {_rarity}.");
             return;
         }
 
-        (int minTotal, int maxTotal) = _rarityStatRanges[_rarity];
+        int totalStats = CalculateTotalStats(statRange.min, statRange.max);
+        AssignIndividualStats(totalStats);
+    }
+
+    private int CalculateTotalStats(int minTotal, int maxTotal)
+    {
         float totalRange = maxTotal - minTotal;
-
         int totalStats = Mathf.RoundToInt(_totalStatsWeight * totalRange) + minTotal;
+        return Mathf.Clamp(totalStats, minTotal, maxTotal);
+    }
 
-        totalStats = Mathf.Clamp(totalStats, minTotal, maxTotal);
-
-        float[] individualWeights = new float[]
-        {
-            _hpWeight,
-            _strengthWeight,
-            _enduranceWeight,
-            _intelligenceWeight,
-            _fortitudeWeight,
-            _agilityWeight
-        };
-
+    private void AssignIndividualStats(int totalStats)
+    {
+        float[] weights = { _hpWeight, _strengthWeight, _enduranceWeight, _intelligenceWeight, _fortitudeWeight, _agilityWeight };
         _sumOfWeights = 0f;
-        foreach (float weight in individualWeights)
+
+        foreach (float weight in weights)
         {
             _sumOfWeights += weight;
         }
 
-        _hp = Mathf.RoundToInt(individualWeights[0] * totalStats);
-        _strength = Mathf.RoundToInt(individualWeights[1] * totalStats);
-        _endurance = Mathf.RoundToInt(individualWeights[2] * totalStats);
-        _intelligence = Mathf.RoundToInt(individualWeights[3] * totalStats);
-        _fortitude = Mathf.RoundToInt(individualWeights[4] * totalStats);
-        _agility = Mathf.RoundToInt(individualWeights[5] * totalStats);
-
-        _hp = Mathf.Clamp(_hp, 5, 255);
-        _strength = Mathf.Clamp(_strength, 5, 255);
-        _endurance = Mathf.Clamp(_endurance, 5, 255);
-        _intelligence = Mathf.Clamp(_intelligence, 5, 255);
-        _fortitude = Mathf.Clamp(_fortitude, 5, 255);
-        _agility = Mathf.Clamp(_agility, 5, 255);
+        _hp = Mathf.Clamp(Mathf.RoundToInt(weights[0] * totalStats), 5, 255);
+        _strength = Mathf.Clamp(Mathf.RoundToInt(weights[1] * totalStats), 5, 255);
+        _endurance = Mathf.Clamp(Mathf.RoundToInt(weights[2] * totalStats), 5, 255);
+        _intelligence = Mathf.Clamp(Mathf.RoundToInt(weights[3] * totalStats), 5, 255);
+        _fortitude = Mathf.Clamp(Mathf.RoundToInt(weights[4] * totalStats), 5, 255);
+        _agility = Mathf.Clamp(Mathf.RoundToInt(weights[5] * totalStats), 5, 255);
     }
 
     public int GetExpForLevel(int level)

@@ -42,7 +42,6 @@ MonoBehaviour:
   - _transformsInto: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
     _requiredLevel: 30
     _requiredItem: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
-  _expYield: 50
   _recruitmentQuestions:
   - _questionText: Question 1
     _answers:
@@ -115,7 +114,7 @@ MonoBehaviour:
     - _answerText: Answer 4
       _affinityScore: -2
   _dropTable:
-    _gpDropped: {x: 0, y: 45}
+    _gpDropped: {x: 0, y: 30}
     _itemDrops:
     - _item: {fileID: 11400000, guid: 30bcd45a212d8c54b81564d5c13e9155, type: 2}
       _quantityRange: {x: 0, y: 4}
@@ -123,3 +122,4 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: 68a33e7c81800154e8825f35d183d28c, type: 2}
       _quantityRange: {x: 0, y: 4}
       _dropChance: 33
+  _sumOfWeights: 1
