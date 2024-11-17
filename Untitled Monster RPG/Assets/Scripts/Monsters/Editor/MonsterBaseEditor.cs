@@ -39,7 +39,7 @@ public class MonsterBaseEditor : Editor
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Derived Pv Yields", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Derived PV Yields", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginVertical("box");
         foreach (KeyValuePair<Stat, float> yield in monsterBase.PvYield)
