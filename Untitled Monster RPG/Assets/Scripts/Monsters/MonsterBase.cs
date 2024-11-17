@@ -423,8 +423,7 @@ public class AttributeCalculator
             }
         }
 
-        // Default GrowthRate if no mapping matches
-        return GrowthRate.MediumFast;
+        return GrowthRate.MediumFast; // Default fallback
     }
 }
 
