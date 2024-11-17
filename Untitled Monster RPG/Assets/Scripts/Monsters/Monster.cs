@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class Monster
 {
     [SerializeField] private MonsterBase _base;
@@ -23,8 +24,8 @@ public class Monster
     public int VolatileStatusTime { get; set; }
     public Queue<string> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
-    public event System.Action OnStatusChanged;
-    public event System.Action OnHPChanged;
+    public event Action OnStatusChanged;
+    public event Action OnHPChanged;
     public int MaxHp { get; private set; }
     public int Strength => GetStat(Stat.Strength);
     public int Endurance => GetStat(Stat.Endurance);
@@ -298,7 +299,7 @@ public class Monster
                 int critChance = 0 + ((move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0); //Todo: Ability, HeldItem
                 float[] chances = new float[] { 4.167f, 12.5f, 50f, 100f };
 
-                if (Random.value * 100f <= chances[Mathf.Clamp(critChance, 0, 3)])
+                if (UnityEngine.Random.value * 100f <= chances[Mathf.Clamp(critChance, 0, 3)])
                 {
                     critical = 1.5f;
                 }
@@ -317,7 +318,7 @@ public class Monster
         };
         float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
         float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
-        float modifiers = Random.Range(0.85f, 1f) * type * critical * weatherMod;
+        float modifiers = UnityEngine.Random.Range(0.85f, 1f) * type * critical * weatherMod;
         float a = ((2 * attacker.Level) + 10) / 250f;
         float d = a * move.Base.Power * (((float)attack / defense) + 2);
         int damage = Mathf.FloorToInt(d * modifiers);
@@ -410,7 +411,7 @@ public class Monster
             return null;
         }
 
-        int randomIndex = Random.Range(0, movesWithSP.Count);
+        int randomIndex = UnityEngine.Random.Range(0, movesWithSP.Count);
 
         return movesWithSP[randomIndex];
     }
@@ -460,7 +461,7 @@ public class DamageDetails
     public int ActualDamageDealt { get; set; }
 }
 
-[System.Serializable]
+[Serializable]
 public class MonsterSaveData
 {
     public string Name;
@@ -472,7 +473,7 @@ public class MonsterSaveData
     public List<StatPV> StatPerformanceValues;
 }
 
-[System.Serializable]
+[Serializable]
 public class StatPV
 {
     public Stat Stat;
