@@ -47,6 +47,8 @@ public class MonsterBase : ScriptableObject
     private int _fortitude;
     private int _agility;
 
+    private Vector2Int _baseGp;
+
     private static readonly Dictionary<Rarity, (int min, int max)> _rarityStatRanges = new()
     {
         { Rarity.Common,     (30, 306) },
@@ -56,7 +58,7 @@ public class MonsterBase : ScriptableObject
         { Rarity.Legendary,  (1225, 1530) }
     };
 
-    private static readonly Dictionary<Rarity, float> _rarityExpMultipliers = new()
+    private static readonly Dictionary<Rarity, float> _rarityMultipliers = new()
     {
         { Rarity.Common, 1.0f },
         { Rarity.Uncommon, 1.2f },
@@ -81,6 +83,8 @@ public class MonsterBase : ScriptableObject
     public int Agility => _agility;
     public int TotalStats => _hp + _strength + _endurance + _intelligence + _fortitude + _agility;
 
+    public Vector2Int BaseGp => _baseGp;
+
     public Dictionary<Stat, float> PvYield => new()
     {
         { Stat.HP, _hp * 0.01f },
@@ -102,7 +106,7 @@ public class MonsterBase : ScriptableObject
     {
         get
         {
-            float rarityMultiplier = _rarityExpMultipliers[Rarity];
+            float rarityMultiplier = _rarityMultipliers[Rarity];
             return Mathf.RoundToInt(BaseExp * rarityMultiplier);
         }
     }
@@ -117,6 +121,7 @@ public class MonsterBase : ScriptableObject
     {
         ValidateRarity();
         CalculateStats();
+        CalculateBaseGP();
     }
 
     private void ValidateRarity()
@@ -162,6 +167,14 @@ public class MonsterBase : ScriptableObject
         _intelligence = Mathf.Clamp(Mathf.RoundToInt(weights[3] * totalStats), 5, 255);
         _fortitude = Mathf.Clamp(Mathf.RoundToInt(weights[4] * totalStats), 5, 255);
         _agility = Mathf.Clamp(Mathf.RoundToInt(weights[5] * totalStats), 5, 255);
+    }
+
+    private void CalculateBaseGP()
+    {
+        float rarityMultiplier = _rarityMultipliers.ContainsKey(Rarity) ? _rarityMultipliers[Rarity] : 1.0f;
+        float statsMultiplier = TotalStats * 0.05f;
+
+        _baseGp = new Vector2Int(Mathf.RoundToInt((1 * rarityMultiplier) + statsMultiplier), Mathf.RoundToInt((3 * rarityMultiplier) + statsMultiplier));
     }
 
     public int GetExpForLevel(int level)
@@ -213,6 +226,11 @@ public class MonsterBase : ScriptableObject
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+    public int CalculateGpYield()
+    {
+        return UnityEngine.Random.Range(_baseGp.x, _baseGp.y + 1);
+    }
 }
 
 [Serializable]
@@ -260,10 +278,8 @@ public class RecruitmentAnswer
 [Serializable]
 public class DropTable
 {
-    [SerializeField] private Vector2Int _gpDropped;
     [SerializeField] private List<ItemDrop> _itemDrops = new();
 
-    public Vector2Int GpDropped => _gpDropped;
     public List<ItemDrop> ItemDrops => _itemDrops;
 }
 

@@ -437,19 +437,24 @@ public class RunTurnState : State<BattleSystem>
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleVictoryMusic);
             }
 
+            int enemyLevel = defeatedUnit.Monster.Level;
+            float masterBonus = _isMasterBattle ? 1.5f : 1f;
+
+            List<string> lootDescriptions = new();
+
+            int gpYield = defeatedUnit.Monster.Base.CalculateGpYield();
+            int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * masterBonus / 7);
+
+            if (gpDropped > 0)
+            {
+                lootDescriptions.Add($"{gpDropped} GP");
+                Wallet.Instance.GetWallet().AddMoney(gpDropped);
+            }
+
             DropTable dropTable = defeatedUnit.Monster.Base.DropTable;
 
             if (dropTable != null)
             {
-                int gpDropped = Random.Range(dropTable.GpDropped.x, dropTable.GpDropped.y + 1);
-                List<string> lootDescriptions = new();
-
-                if (gpDropped > 0)
-                {
-                    lootDescriptions.Add($"{gpDropped} GP");
-                    Wallet.Instance.GetWallet().AddMoney(gpDropped);
-                }
-
                 foreach (ItemDrop itemDrop in dropTable.ItemDrops)
                 {
                     if (Random.Range(1, 101) <= itemDrop.DropChance)
@@ -463,25 +468,23 @@ public class RunTurnState : State<BattleSystem>
                         }
                     }
                 }
+            }
 
-                if (lootDescriptions.Count > 0)
+            if (lootDescriptions.Count > 0)
+            {
+                string initialMessage = $"{defeatedUnitName} dropped";
+
+                foreach (string loot in lootDescriptions)
                 {
-                    string initialMessage = $"{defeatedUnitName} dropped";
-
-                    foreach (string loot in lootDescriptions)
-                    {
-                        yield return loot != lootDescriptions.First()
-                            ? _dialogueBox.SetAndTypeDialogue(initialMessage, loot)
-                            : (object)_dialogueBox.TypeDialogue($"{initialMessage} {loot}");
-                    }
+                    yield return loot != lootDescriptions.First()
+                        ? _dialogueBox.SetAndTypeDialogue(initialMessage, loot)
+                        : (object)_dialogueBox.TypeDialogue($"{initialMessage} {loot}");
                 }
             }
 
             _playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
 
             int expYield = defeatedUnit.Monster.Base.ExpYield;
-            int enemyLevel = defeatedUnit.Monster.Level;
-            float masterBonus = _isMasterBattle ? 1.5f : 1f;
             int expGain = Mathf.FloorToInt(expYield * enemyLevel * masterBonus / 7);
 
             if (_playerUnit.Monster.Level < GlobalSettings.Instance.MaxLevel)
