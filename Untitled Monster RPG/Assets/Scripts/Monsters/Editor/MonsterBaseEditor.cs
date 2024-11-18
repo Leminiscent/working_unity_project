@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(MonsterBase))]
 public class MonsterBaseEditor : Editor
@@ -11,7 +12,7 @@ public class MonsterBaseEditor : Editor
 
         float sumOfWeights = serializedObject.FindProperty("_sumOfWeights").floatValue;
 
-        if (sumOfWeights != 1)
+        if (!Mathf.Approximately(sumOfWeights, 1f))
         {
             EditorGUILayout.HelpBox($"The sum of all individual stat weights is {sumOfWeights}. It should be equal to 1", MessageType.Error);
         }
