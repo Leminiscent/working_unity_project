@@ -1,0 +1,4577 @@
+{
+    "Normal": {
+        "OffensiveMoves": [
+            {
+                "Name": "Tackle",
+                "Description": "A physical attack in which the user charges and slams into the target with its whole body.",
+                "Type": "Normal",
+                "Category": "Physical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 35,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Headbutt",
+                "Description": "The user sticks its head out and attacks by charging straight into the target.",
+                "Type": "Normal",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Hyper Beam",
+                "Description": "A highly destructive beam. The user must rest on the next turn to regain its energy.",
+                "Type": "Normal",
+                "Category": "Magical",
+                "Power": 150,
+                "Accuracy": 90,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Effect": "RechargeMove"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Quick Attack",
+                "Description": "An almost invisibly fast attack that is certain to strike first.",
+                "Type": "Normal",
+                "Category": "Physical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 30,
+                "Priority": 1,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Giga Impact",
+                "Description": "The user charges at the target using every bit of its power. The user must rest on the next turn.",
+                "Type": "Normal",
+                "Category": "Physical",
+                "Power": 150,
+                "Accuracy": 90,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Effect": "RechargeMove"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Defense Curl",
+                "Description": "The user curls up to conceal weak spots and raise its Endurance.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 40,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Rest",
+                "Description": "The user goes to sleep for two turns. It fully restores the user's HP and cures any status conditions.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Effect": "SleepForTurns",
+                        "Turns": 2
+                    },
+                    {
+                        "Effect": "HealFull"
+                    },
+                    {
+                        "Effect": "CureStatus"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Protect",
+                "Description": "Enables the user to evade all attacks. Chance of failing rises if used in succession.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "Effect": "ProtectMove"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Detect",
+                "Description": "Enables the user to evade all attacks. Chance of failing rises if used in succession.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 5,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "Effect": "ProtectMove"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Endure",
+                "Description": "The user endures any attack with at least 1 HP. Chance of failing rises if used in succession.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "Effect": "Endure"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Growl",
+                "Description": "The user growls in an endearing way, making opposing monsters less wary and lowering their Strength.",
+                "Type": "Normal",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 40,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": -1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Helping Hand",
+                "Description": "The user assists an ally by boosting the power of its attack.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Effect": "BoostAllyMove",
+                        "PowerMultiplier": 1.5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Ally"
+            },
+            {
+                "Name": "Encore",
+                "Description": "The user compels the target to keep using the move it encored for three turns.",
+                "Type": "Normal",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Effect": "Encore",
+                        "Duration": 3
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Tail Whip",
+                "Description": "The user wags its tail cutely, making opposing monsters less wary and lowering their Endurance.",
+                "Type": "Normal",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 30,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": -1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Roar",
+                "Description": "The target is scared off and replaced by another monster in its party.",
+                "Type": "Normal",
+                "Category": "Status",
+                "SP": 20,
+                "Priority": -6,
+                "Effects": [
+                    {
+                        "Effect": "ForceSwitch"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Fire": {
+        "OffensiveMoves": [
+            {
+                "Name": "Ember",
+                "Description": "The target is attacked with small flames. This may also leave the target with a burn.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 25,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Flamethrower",
+                "Description": "The target is scorched with an intense blast of fire.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fire Blast",
+                "Description": "The target is attacked with an intense blast of all-consuming fire.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 110,
+                "Accuracy": 85,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fire Punch",
+                "Description": "The target is punched with a fiery fist.",
+                "Type": "Fire",
+                "Category": "Physical",
+                "Power": 75,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Flare Blitz",
+                "Description": "The user cloaks itself in fire and charges at the target. The user receives recoil damage.",
+                "Type": "Fire",
+                "Category": "Physical",
+                "Power": 120,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Recoil": {
+                            "Type": "Percentage",
+                            "Value": 33
+                        }
+                    }
+                ],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Will-O-Wisp",
+                "Description": "The user shoots a sinister flame at the target to inflict a burn.",
+                "Type": "Fire",
+                "Category": "Status",
+                "Accuracy": 85,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Status": "Burn"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fire Spin",
+                "Description": "The target becomes trapped within a fierce vortex of fire that rages for four to five turns.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 35,
+                "Accuracy": 85,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": "Binding",
+                        "Duration": "4-5"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Flame Shield",
+                "Description": "The user cloaks itself with fire, reducing damage from Physical attacks.",
+                "Type": "Fire",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": "PhysicalDamageReduction",
+                        "Value": 50,
+                        "Duration": 3
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Sunny Day",
+                "Description": "The user intensifies the sun for five turns, powering up Fire-type moves.",
+                "Type": "Fire",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Weather": "Harsh Sunlight",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Heat Wave",
+                "Description": "The user attacks by exhaling hot breath on opposing monsters.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 95,
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "All Enemies"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Overheat",
+                "Description": "The user attacks the target at full power. The attack's recoil harshly lowers the user's Intelligence.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 130,
+                "Accuracy": 90,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": -2
+                        },
+                        "Target": "Self"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Inferno",
+                "Description": "The user attacks by engulfing the target in an intense fire. This leaves the target with a burn.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 100,
+                "Accuracy": 50,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 100,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fire Fang",
+                "Description": "The user bites with flame-cloaked fangs.",
+                "Type": "Fire",
+                "Category": "Physical",
+                "Power": 65,
+                "Accuracy": 95,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    },
+                    {
+                        "Chance": 10,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Lava Plume",
+                "Description": "An inferno of scarlet flames washes over all monsters in battle.",
+                "Type": "Fire",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Burning Terrain",
+                "Description": "The user changes the terrain to Burning Terrain for five turns.",
+                "Type": "Fire",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "FieldEffect": "BurningTerrain",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            }
+        ]
+    },
+    "Water": {
+        "OffensiveMoves": [
+            {
+                "Name": "Water Gun",
+                "Description": "The target is blasted with a forceful shot of water.",
+                "Type": "Water",
+                "Category": "Magical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 25,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Hydro Pump",
+                "Description": "The target is blasted by a huge volume of water launched under great pressure.",
+                "Type": "Water",
+                "Category": "Magical",
+                "Power": 110,
+                "Accuracy": 80,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Aqua Tail",
+                "Description": "The user attacks by swinging its tail as if it were a vicious wave in a raging storm.",
+                "Type": "Water",
+                "Category": "Physical",
+                "Power": 90,
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Surf",
+                "Description": "The user attacks everything around it by swamping its surroundings with a giant wave.",
+                "Type": "Water",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Waterfall",
+                "Description": "The user charges at the target and may make it flinch.",
+                "Type": "Water",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 20,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Aqua Ring",
+                "Description": "The user envelops itself in a veil made of water. It regains some HP every turn.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "VolatileStatus": "HealOverTime",
+                        "HealAmount": "Small",
+                        "Duration": "Until Switch"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Withdraw",
+                "Description": "The user withdraws its body into its hard shell, raising its Endurance.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 40,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Rain Dance",
+                "Description": "The user summons a heavy rain that falls for five turns, powering up Water-type moves.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Weather": "Rain",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Soak",
+                "Description": "The user shoots a torrent of water at the target and changes the target's type to Water.",
+                "Type": "Water",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "TypeChange": "Water"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Bubble Shield",
+                "Description": "The user creates a protective bubble that reduces damage from Magical attacks.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": "MagicalDamageReduction",
+                        "Value": 50,
+                        "Duration": 3
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Heal Current",
+                "Description": "The user channels healing waters to restore an ally's HP.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Heals": "50% Max HP"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Ally"
+            },
+            {
+                "Name": "Water Sport",
+                "Description": "The user soaks the battlefield with water. This weakens Fire-type moves for five turns.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "FieldEffect": "FirePowerReduction",
+                        "Value": 50,
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Whirlpool",
+                "Description": "The user traps the target in a violent swirling whirlpool for four to five turns.",
+                "Type": "Water",
+                "Category": "Magical",
+                "Power": 35,
+                "Accuracy": 85,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": "Binding",
+                        "Duration": "4-5"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Aqua Veil",
+                "Description": "A veil of water prevents status conditions for the user's team for five turns.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 25,
+                "Effects": [
+                    {
+                        "TeamEffect": "PreventStatusConditions",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Calm Tide",
+                "Description": "The user calms its mind to boost its Intelligence and Fortitude.",
+                "Type": "Water",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": 1,
+                            "Fortitude": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ]
+    },
+    "Thunder": {
+        "OffensiveMoves": [
+            {
+                "Name": "Thunder Shock",
+                "Description": "A jolt of electricity crashes down on the target to inflict damage.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 30,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Paralysis"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Thunderbolt",
+                "Description": "A strong electric blast crashes down on the target.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Paralysis"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Thunder",
+                "Description": "A wicked thunderbolt is dropped on the target.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": 110,
+                "Accuracy": 70,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Paralysis"
+                    }
+                ],
+                "Target": "Enemy",
+                "SpecialNote": "Accuracy increases to 100 during Rain."
+            },
+            {
+                "Name": "Volt Tackle",
+                "Description": "The user electrifies itself to tackle the target. The user receives recoil damage.",
+                "Type": "Thunder",
+                "Category": "Physical",
+                "Power": 120,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Recoil": {
+                            "Type": "Percentage",
+                            "Value": 33
+                        }
+                    }
+                ],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Paralysis"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Wild Charge",
+                "Description": "The user shrouds itself in electricity and smashes into its target.",
+                "Type": "Thunder",
+                "Category": "Physical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Recoil": {
+                            "Type": "Percentage",
+                            "Value": 25
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Thunder Wave",
+                "Description": "The user launches a weak electric charge that paralyzes the target.",
+                "Type": "Thunder",
+                "Category": "Status",
+                "Accuracy": 90,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Status": "Paralysis"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Charge",
+                "Description": "The user boosts the power of its Thunder-type moves and raises its Fortitude.",
+                "Type": "Thunder",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": 1
+                        },
+                        "Effect": "NextThunderMoveBoost"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Magnetic Flux",
+                "Description": "The user manipulates magnetic fields to raise the Fortitude and Endurance of allies.",
+                "Type": "Thunder",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": 1,
+                            "Endurance": 1
+                        },
+                        "Target": "All Allies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Electric Terrain",
+                "Description": "The user electrifies the ground for five turns, boosting Thunder-type moves.",
+                "Type": "Thunder",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "FieldEffect": "ElectricTerrain",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Magnet Rise",
+                "Description": "The user levitates using electrically generated magnetism.",
+                "Type": "Thunder",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "VolatileStatus": "Levitate",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Electro Ball",
+                "Description": "The user hurls an electric orb. The faster the user is than the target, the greater the damage.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": "Varies",
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "DamageScalesWithSpeedDifference"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Volt Switch",
+                "Description": "After making its attack, the user rushes back to switch places with a party monster.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Effect": "SwitchOutAfterAttack"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Parabolic Charge",
+                "Description": "The user attacks everything around it and restores HP equal to half the damage dealt.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": 65,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "DrainPercentage": 50
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Eerie Impulse",
+                "Description": "The user's eerie impulse sharply lowers the target's Intelligence.",
+                "Type": "Thunder",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": -2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Discharge",
+                "Description": "A flare of electricity damages all nearby monsters. May cause paralysis.",
+                "Type": "Thunder",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Paralysis"
+                    }
+                ],
+                "Target": "All Adjacent Monsters"
+            }
+        ]
+    },
+    "Plant": {
+        "OffensiveMoves": [
+            {
+                "Name": "Vine Whip",
+                "Description": "The target is struck with slender, whip-like vines.",
+                "Type": "Plant",
+                "Category": "Physical",
+                "Power": 45,
+                "Accuracy": 100,
+                "SP": 25,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Razor Leaf",
+                "Description": "Sharp-edged leaves are launched to slash at the opposing monsters.",
+                "Type": "Plant",
+                "Category": "Physical",
+                "Power": 55,
+                "Accuracy": 95,
+                "SP": 25,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Energy Ball",
+                "Description": "The user draws power from nature and fires it at the target.",
+                "Type": "Plant",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Fortitude": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Giga Drain",
+                "Description": "A nutrient-draining attack. The user's HP is restored by half the damage taken by the target.",
+                "Type": "Plant",
+                "Category": "Magical",
+                "Power": 75,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "DrainPercentage": 50
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Leaf Storm",
+                "Description": "The user whips up a storm of leaves around the target. Harshly lowers the user's Intelligence.",
+                "Type": "Plant",
+                "Category": "Magical",
+                "Power": 130,
+                "Accuracy": 90,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": -2
+                        },
+                        "Target": "Self"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Synthesis",
+                "Description": "The user restores its own HP. The amount of HP regained varies with the weather.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Heals": "VariesWithWeather"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Leech Seed",
+                "Description": "A seed is planted on the target. It steals HP from the target every turn.",
+                "Type": "Plant",
+                "Category": "Status",
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "VolatileStatus": "LeechSeed"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Ingrain",
+                "Description": "The user lays roots that restore its HP every turn. It can't switch out.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "VolatileStatus": "Ingrain"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Spiky Shield",
+                "Description": "Protects the user and damages any opponent that makes direct contact.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "ProtectMove": true,
+                        "ContactDamage": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Cotton Guard",
+                "Description": "The user protects itself by wrapping its body in soft cotton, boosting Endurance sharply.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Sleep Powder",
+                "Description": "The user scatters a big cloud of sleep-inducing dust around the target.",
+                "Type": "Plant",
+                "Category": "Status",
+                "Accuracy": 75,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Status": "Sleep"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Stun Spore",
+                "Description": "The user scatters a cloud of numbing powder that paralyzes the target.",
+                "Type": "Plant",
+                "Category": "Status",
+                "Accuracy": 75,
+                "SP": 30,
+                "Effects": [
+                    {
+                        "Status": "Paralysis"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Aromatherapy",
+                "Description": "The user releases a soothing scent that heals status conditions of all allies.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "CureStatus": "AllAllies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Allies"
+            },
+            {
+                "Name": "Grassy Terrain",
+                "Description": "The ground turns to grass for five turns, restoring HP of monsters on the ground.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "FieldEffect": "GrassyTerrain",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Growth",
+                "Description": "The user stimulates its own growth, boosting Strength and Intelligence.",
+                "Type": "Plant",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": 1,
+                            "Intelligence": 1
+                        },
+                        "SpecialNote": "Boosts increase to +2 under Harsh Sunlight"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ]
+    },
+    "Ice": {
+        "OffensiveMoves": [
+            {
+                "Name": "Ice Beam",
+                "Description": "The user fires a beam of freezing energy at the target.",
+                "Type": "Ice",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Frozen"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Ice Punch",
+                "Description": "The user delivers a freezing punch that may freeze the target.",
+                "Type": "Ice",
+                "Category": "Physical",
+                "Power": 75,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Frozen"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Blizzard",
+                "Description": "A howling blizzard is summoned to strike opposing monsters.",
+                "Type": "Ice",
+                "Category": "Magical",
+                "Power": 110,
+                "Accuracy": 70,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Frozen"
+                    }
+                ],
+                "Target": "All Enemies",
+                "SpecialNote": "Accuracy increases to 100 during Hail."
+            },
+            {
+                "Name": "Frost Breath",
+                "Description": "The user exhales a breath of cold air that always results in a critical hit.",
+                "Type": "Ice",
+                "Category": "Magical",
+                "Power": 60,
+                "Accuracy": 90,
+                "SP": 10,
+                "CritBehavior": "AlwaysCrits",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Avalanche",
+                "Description": "An attack move that inflicts double the damage if the user has been hurt by the target in the same turn.",
+                "Type": "Ice",
+                "Category": "Physical",
+                "Power": 60,
+                "Accuracy": 100,
+                "SP": 10,
+                "Priority": -4,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "PowerDoublesIfDamaged"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Haze",
+                "Description": "Creates a black haze that eliminates every stat change among all monsters in battle.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 30,
+                "Effects": [
+                    {
+                        "Effect": "ResetAllStatChanges"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Monsters"
+            },
+            {
+                "Name": "Mist",
+                "Description": "The user cloaks itself and its allies in a white mist that prevents stat reductions.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 30,
+                "Effects": [
+                    {
+                        "TeamEffect": "PreventStatReductions",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Ice Barrier",
+                "Description": "The user creates a wall of ice to sharply raise its Fortitude.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Subzero Shield",
+                "Description": "Envelops the user in freezing air, reducing damage from Magical attacks.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": "MagicalDamageReduction",
+                        "Value": 50,
+                        "Duration": 3
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Snow Cloak",
+                "Description": "The user cloaks itself in snow, increasing its Evasion.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Evasion": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Hail",
+                "Description": "Summons a hailstorm that damages all monsters except Ice types.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Weather": "Hail",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Freeze-Dry",
+                "Description": "An Ice-type attack that's super effective against Water types and may freeze the target.",
+                "Type": "Ice",
+                "Category": "Magical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "SpecialEffect": "SuperEffectiveAgainstWater"
+                    }
+                ],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Frozen"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Aurora Veil",
+                "Description": "Reduces damage from both Physical and Magical attacks for five turns.",
+                "Type": "Ice",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "TeamEffect": "ReduceDamage",
+                        "Value": 50,
+                        "Duration": 5,
+                        "Condition": "HailOnly"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Icicle Crash",
+                "Description": "Drops large icicles on the target, potentially causing flinching.",
+                "Type": "Ice",
+                "Category": "Physical",
+                "Power": 85,
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Sheer Cold",
+                "Description": "A chilling attack that causes fainting in a single hit.",
+                "Type": "Ice",
+                "Category": "Magical",
+                "Power": null,
+                "Accuracy": 30,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "OneHitKO": true,
+                        "AccuracyAffectedByLevel": true,
+                        "Immunity": "IceTypesImmune"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Force": {
+        "OffensiveMoves": [
+            {
+                "Name": "Force Punch",
+                "Description": "The user delivers a powerful punch infused with force energy.",
+                "Type": "Force",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Pressure Slam",
+                "Description": "The user slams the target with overwhelming force, potentially lowering the target's Endurance.",
+                "Type": "Force",
+                "Category": "Physical",
+                "Power": 90,
+                "Accuracy": 95,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 20,
+                        "Boosts": {
+                            "Endurance": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gravity Well",
+                "Description": "The user creates a gravitational field to crush the target.",
+                "Type": "Force",
+                "Category": "Magical",
+                "Power": 100,
+                "Accuracy": 85,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Force Wave",
+                "Description": "The user unleashes a wave of force that damages all adjacent enemies.",
+                "Type": "Force",
+                "Category": "Magical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "All Adjacent Enemies"
+            },
+            {
+                "Name": "Impact Blast",
+                "Description": "A concentrated burst of force energy is fired at the target.",
+                "Type": "Force",
+                "Category": "Magical",
+                "Power": 85,
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Kinetic Barrier",
+                "Description": "The user creates a barrier of kinetic energy, boosting its Endurance.",
+                "Type": "Force",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Momentum Shift",
+                "Description": "The user manipulates force to reduce damage from Physical attacks.",
+                "Type": "Force",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "PhysicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Inertia Guard",
+                "Description": "The user increases its own mass temporarily, sharply boosting Fortitude.",
+                "Type": "Force",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Gravity Shift",
+                "Description": "The user alters gravity around itself, making it immune to Ground-based moves.",
+                "Type": "Force",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Levitate",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Pressure Field",
+                "Description": "The user generates a field of force that reduces opponents' Agility.",
+                "Type": "Force",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Agility": -1
+                        },
+                        "Target": "All Enemies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Force Boost",
+                "Description": "The user concentrates to increase its Strength and Intelligence.",
+                "Type": "Force",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": 1,
+                            "Intelligence": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Recoil Strike",
+                "Description": "A risky attack that deals massive damage but hurts the user significantly.",
+                "Type": "Force",
+                "Category": "Physical",
+                "Power": 120,
+                "Accuracy": 100,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Recoil": {
+                            "Type": "Percentage",
+                            "Value": 50
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Force Exchange",
+                "Description": "The user swaps its Strength and Fortitude stats with the target.",
+                "Type": "Force",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SwapStats": {
+                            "Stats": [
+                                "Strength",
+                                "Fortitude"
+                            ],
+                            "WithTarget": true
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gravitational Pull",
+                "Description": "Forces the target to stay in battle, preventing switching.",
+                "Type": "Force",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Trap",
+                            "Duration": "5"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Forceful Return",
+                "Description": "The user returns to its team, forcing the opponent to switch as well.",
+                "Type": "Force",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SwitchOut": true
+                    },
+                    {
+                        "ForceSwitch": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Poison": {
+        "OffensiveMoves": [
+            {
+                "Name": "Poison Jab",
+                "Description": "The user stabs the target with a poisonous stinger.",
+                "Type": "Poison",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Poison"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Sludge Bomb",
+                "Description": "Unsanitary sludge is hurled at the target.",
+                "Type": "Poison",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Poison"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Cross Poison",
+                "Description": "A slashing attack with poisonous blades that has a high critical-hit ratio.",
+                "Type": "Poison",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 20,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Poison"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gunk Shot",
+                "Description": "The user shoots filthy garbage at the target to attack.",
+                "Type": "Poison",
+                "Category": "Physical",
+                "Power": 120,
+                "Accuracy": 80,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Poison"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Venoshock",
+                "Description": "The user drenches the target in a special poisonous liquid. Its power doubles if the target is poisoned.",
+                "Type": "Poison",
+                "Category": "Magical",
+                "Power": 65,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Power doubles if the target is already poisoned"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Toxic",
+                "Description": "A move that leaves the target badly poisoned.",
+                "Type": "Poison",
+                "Category": "Status",
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Status": "Badly Poisoned"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Acid Armor",
+                "Description": "The user alters its cellular structure to liquefy itself, sharply raising Endurance.",
+                "Type": "Poison",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Poison Guard",
+                "Description": "The user surrounds itself with a poisonous barrier, reducing damage from Physical attacks.",
+                "Type": "Poison",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "PhysicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Venom Drench",
+                "Description": "Lowers the Strength, Intelligence, and Agility of poisoned targets.",
+                "Type": "Poison",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": -1,
+                            "Intelligence": -1,
+                            "Agility": -1
+                        },
+                        "Condition": "Only affects poisoned targets"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Poisoned Enemies"
+            },
+            {
+                "Name": "Purify",
+                "Description": "The user heals the target's status condition, restoring its own HP in the process.",
+                "Type": "Poison",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "CureStatus": "Target",
+                        "Heals": "User restores 50% of max HP"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy or Ally"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Toxic Spikes",
+                "Description": "The user lays a trap of poison spikes at the opponent's feet.",
+                "Type": "Poison",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "FieldEffect": "Sets a hazard that poisons enemies upon entering the battlefield"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy Field"
+            },
+            {
+                "Name": "Baneful Bunker",
+                "Description": "Protects the user and poisons any opponent that makes direct contact.",
+                "Type": "Poison",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "ProtectMove": true,
+                        "ContactEffect": {
+                            "Status": "Poison"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Corrosive Gas",
+                "Description": "The user surrounds everything with a poisonous gas that corrodes held items.",
+                "Type": "Poison",
+                "Category": "Status",
+                "SP": 40,
+                "Effects": [
+                    {
+                        "ItemEffect": "Removes held items from all adjacent monsters"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Gastro Acid",
+                "Description": "The user hurls up its stomach acids on the target. The fluid eliminates the target's ability.",
+                "Type": "Poison",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "NullifyAbility": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Clear Smog",
+                "Description": "The user attacks by throwing a clump of special mud. All stat changes are returned to normal.",
+                "Type": "Poison",
+                "Category": "Magical",
+                "Power": 50,
+                "Accuracy": null,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "ResetStats": "Target"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Earth": {
+        "OffensiveMoves": [
+            {
+                "Name": "Earthquake",
+                "Description": "The user causes a massive earthquake that strikes all adjacent monsters.",
+                "Type": "Earth",
+                "Category": "Physical",
+                "Power": 100,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Dig",
+                "Description": "The user burrows underground on the first turn and attacks on the next.",
+                "Type": "Earth",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "ChargeMove": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Bulldoze",
+                "Description": "The user stomps down on the ground, damaging everything around and lowering their Agility.",
+                "Type": "Earth",
+                "Category": "Physical",
+                "Power": 60,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 100,
+                        "Boosts": {
+                            "Agility": -1
+                        },
+                        "Target": "All Adjacent Monsters"
+                    }
+                ],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Mud-Slap",
+                "Description": "The user hurls mud in the target's face to inflict damage and lower its Accuracy.",
+                "Type": "Earth",
+                "Category": "Magical",
+                "Power": 20,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 100,
+                        "Boosts": {
+                            "Accuracy": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fissure",
+                "Description": "The user opens up a fissure in the ground to drop the target in. It causes a one-hit KO.",
+                "Type": "Earth",
+                "Category": "Physical",
+                "Power": null,
+                "Accuracy": 30,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "OneHitKO": true,
+                        "AccuracyAffectedByLevel": true,
+                        "Immunity": "Flying"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Sandstorm",
+                "Description": "A five-turn sandstorm is summoned to hurt all monsters except Earth, Stone, and Metal types.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Weather": "Sandstorm",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Mud Sport",
+                "Description": "The user covers the ground with mud, weakening Thunder-type moves.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "FieldEffect": "ReduceThunderPower",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Shore Up",
+                "Description": "The user regains HP. The amount of HP regained increases during a sandstorm.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Heals": "50% of max HP (66% during Sandstorm)"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Earth Shield",
+                "Description": "The user raises a protective barrier of earth, boosting its Endurance.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Stealth Rock",
+                "Description": "The user lays a trap of levitating stones around the opposing team.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "FieldEffect": "Stealth Rock"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy Field"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Sand Attack",
+                "Description": "The user kicks sand at the target to reduce its Accuracy.",
+                "Type": "Earth",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Accuracy": -1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Magnitude",
+                "Description": "The user generates a ground tremor of random intensity.",
+                "Type": "Earth",
+                "Category": "Physical",
+                "Power": "Varies",
+                "Accuracy": 100,
+                "SP": 30,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Power varies between 10 and 150"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Adjacent Monsters"
+            },
+            {
+                "Name": "Rototiller",
+                "Description": "Tills the soil to boost the Strength and Intelligence of Plant-type monsters.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": 1,
+                            "Intelligence": 1
+                        },
+                        "Target": "All Plant-type Allies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Plant-type Allies"
+            },
+            {
+                "Name": "Earth Power",
+                "Description": "The user makes the ground erupt with power. May lower the target's Fortitude.",
+                "Type": "Earth",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Fortitude": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gravity",
+                "Description": "Increases the gravity for five turns, preventing monsters from using moves that involve flying.",
+                "Type": "Earth",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "FieldEffect": "Gravity",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            }
+        ]
+    },
+    "Wind": {
+        "OffensiveMoves": [
+            {
+                "Name": "Air Slash",
+                "Description": "The user attacks with a blade of air that slices even the sky.",
+                "Type": "Wind",
+                "Category": "Magical",
+                "Power": 75,
+                "Accuracy": 95,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Hurricane",
+                "Description": "A powerful wind attack that may confuse the target.",
+                "Type": "Wind",
+                "Category": "Magical",
+                "Power": 110,
+                "Accuracy": 70,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Confusion"
+                    }
+                ],
+                "Target": "Enemy",
+                "SpecialNote": "Accuracy increases to 100 during Rain; decreases to 50 during Harsh Sunlight"
+            },
+            {
+                "Name": "Aerial Ace",
+                "Description": "The user confounds the target with speed, then slashes. This attack never misses.",
+                "Type": "Wind",
+                "Category": "Physical",
+                "Power": 60,
+                "Accuracy": null,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gust",
+                "Description": "A strong wind is whipped up to inflict damage.",
+                "Type": "Wind",
+                "Category": "Magical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 35,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Sky Attack",
+                "Description": "A two-turn attack that strikes with a high critical-hit ratio and may cause flinching.",
+                "Type": "Wind",
+                "Category": "Physical",
+                "Power": 140,
+                "Accuracy": 90,
+                "SP": 5,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [
+                    {
+                        "ChargeMove": true
+                    }
+                ],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Tailwind",
+                "Description": "The user creates a turbulent whirlwind that boosts the Agility of all allies.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Agility": 1
+                        },
+                        "Target": "All Allies",
+                        "Duration": 4
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Feather Dance",
+                "Description": "The user covers the target with a mass of down that harshly lowers its Strength.",
+                "Type": "Wind",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": -2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Air Shield",
+                "Description": "The user manipulates wind currents to form a protective barrier, reducing damage from Magical attacks.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "MagicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Defog",
+                "Description": "A strong wind blows away obstacles like barriers and field effects.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "FieldEffect": "RemoveBarriersAndHazards"
+                    },
+                    {
+                        "Boosts": {
+                            "Evasion": -1
+                        },
+                        "Target": "Enemy"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy Field"
+            },
+            {
+                "Name": "Roost",
+                "Description": "The user lands and rests its body, restoring its own HP.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Heals": "Restores 50% of max HP",
+                        "SpecialEffect": "User loses Wind typing until end of turn"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Whirlwind",
+                "Description": "The target is blown away, and a different monster is dragged out.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "ForceSwitch": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Mirror Move",
+                "Description": "The user counters the target by mimicking the target's last move.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "CopyMove": "Last move used by target"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Varies"
+            },
+            {
+                "Name": "Razor Wind",
+                "Description": "A two-turn attack that strikes with a blade of wind. High critical-hit ratio.",
+                "Type": "Wind",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 10,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [
+                    {
+                        "ChargeMove": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Air Cutter",
+                "Description": "The user launches razor-like wind to slash the opposing team.",
+                "Type": "Wind",
+                "Category": "Magical",
+                "Power": 60,
+                "Accuracy": 95,
+                "SP": 25,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Tailwind Burst",
+                "Description": "The user creates a sudden gust that sharply boosts an ally's Agility.",
+                "Type": "Wind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Agility": 2
+                        },
+                        "Target": "Ally"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Ally"
+            }
+        ]
+    },
+    "Mind": {
+        "OffensiveMoves": [
+            {
+                "Name": "Psychic",
+                "Description": "The target is hit by a strong telekinetic force.",
+                "Type": "Mind",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Fortitude": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Psybeam",
+                "Description": "The user fires a peculiar ray that may cause confusion.",
+                "Type": "Mind",
+                "Category": "Magical",
+                "Power": 65,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Confusion"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Zen Headbutt",
+                "Description": "The user focuses its willpower to its head and rams the target.",
+                "Type": "Mind",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 90,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 20,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Psycho Cut",
+                "Description": "The user tears at the target with blades formed by psychic energy. High critical-hit ratio.",
+                "Type": "Mind",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 20,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Future Sight",
+                "Description": "Two turns after this move is used, a powerful psychic attack hits the target.",
+                "Type": "Mind",
+                "Category": "Magical",
+                "Power": 120,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "DelayedDamage": {
+                            "TurnsLater": 2,
+                            "IgnoresDefenses": true,
+                            "IgnoresTypeEffectiveness": true
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Calm Mind",
+                "Description": "The user quietly focuses its mind and calms its spirit to raise its Intelligence and Fortitude.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": 1,
+                            "Fortitude": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Barrier",
+                "Description": "The user creates a powerful protective barrier, sharply raising its Fortitude.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Reflect",
+                "Description": "A wall of light is put up to weaken the power of Physical attacks for five turns.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "TeamEffect": {
+                            "Effect": "ReducePhysicalDamage",
+                            "Value": 50,
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Magic Coat",
+                "Description": "A barrier reflects back to the opponent moves like status conditions and stat reductions.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 15,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "ReflectStatus": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Light Screen",
+                "Description": "A wall of light is put up to weaken the power of Magical attacks for five turns.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 30,
+                "Effects": [
+                    {
+                        "TeamEffect": {
+                            "Effect": "ReduceMagicalDamage",
+                            "Value": 50,
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Hypnosis",
+                "Description": "The user employs hypnotic suggestion to put the target to sleep.",
+                "Type": "Mind",
+                "Category": "Status",
+                "Accuracy": 60,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Status": "Sleep"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Teleport",
+                "Description": "The user switches places with another monster, escaping from battle if in the wild.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "SwitchOut": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Trick Room",
+                "Description": "A distorted space is created where slower monsters move first for five turns.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "FieldEffect": {
+                            "Effect": "ReverseTurnOrder",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Heal Block",
+                "Description": "Prevents the target from using moves or items that recover HP for five turns.",
+                "Type": "Mind",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "HealBlock",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Role Play",
+                "Description": "The user mimics the target completely, copying the target's ability.",
+                "Type": "Mind",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "CopyAbility": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Insect": {
+        "OffensiveMoves": [
+            {
+                "Name": "X-Scissor",
+                "Description": "The user slashes at the target by crossing its scythes or claws as if they were scissors.",
+                "Type": "Insect",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Bug Buzz",
+                "Description": "The user generates a damaging sound wave by vibration.",
+                "Type": "Insect",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Fortitude": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Megahorn",
+                "Description": "The user attacks by pricking the target with a large horn.",
+                "Type": "Insect",
+                "Category": "Physical",
+                "Power": 120,
+                "Accuracy": 85,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "U-turn",
+                "Description": "After making its attack, the user rushes back to switch places with a party monster.",
+                "Type": "Insect",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "SwitchOut": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Leech Life",
+                "Description": "The user drains the target's vitality. The user's HP is restored by half the damage dealt.",
+                "Type": "Insect",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "DrainPercentage": 50
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Protect",
+                "Description": "Enables the user to evade all attacks for one turn.",
+                "Type": "Insect",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "ProtectMove": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Iron Defense",
+                "Description": "The user hardens its body's surface like iron, sharply raising its Endurance.",
+                "Type": "Insect",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "String Shot",
+                "Description": "The user shoots silk to entangle the target, lowering their Agility.",
+                "Type": "Insect",
+                "Category": "Status",
+                "Accuracy": 95,
+                "SP": 40,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Agility": -1
+                        },
+                        "Target": "All Enemies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Defend Order",
+                "Description": "The user calls out its underlings to shield itself, boosting Endurance and Fortitude.",
+                "Type": "Insect",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 1,
+                            "Fortitude": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Quiver Dance",
+                "Description": "The user performs a mystical dance to boost Intelligence, Fortitude, and Agility.",
+                "Type": "Insect",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": 1,
+                            "Fortitude": 1,
+                            "Agility": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Sticky Web",
+                "Description": "The user weaves a sticky net that lowers the Agility of opposing monsters upon entering battle.",
+                "Type": "Insect",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "FieldEffect": "SetStickyWeb"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy Field"
+            },
+            {
+                "Name": "Infestation",
+                "Description": "The target is infested and attacked for four to five turns.",
+                "Type": "Insect",
+                "Category": "Magical",
+                "Power": 20,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Binding",
+                            "Duration": "4-5"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Heal Order",
+                "Description": "The user calls out its underlings to heal itself.",
+                "Type": "Insect",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Heals": "50% of max HP"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Toxic Thread",
+                "Description": "The user shoots poisonous threads to poison the target and lower its Agility.",
+                "Type": "Insect",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Status": "Poison"
+                    },
+                    {
+                        "Boosts": {
+                            "Agility": -1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fell Stinger",
+                "Description": "If this move knocks out a target, it sharply raises the user's Strength.",
+                "Type": "Insect",
+                "Category": "Physical",
+                "Power": 50,
+                "Accuracy": 100,
+                "SP": 25,
+                "Effects": [
+                    {
+                        "SpecialEffect": "BoostStrengthOnKO",
+                        "BoostAmount": 2
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Stone": {
+        "OffensiveMoves": [
+            {
+                "Name": "Rock Slide",
+                "Description": "Large boulders are hurled at opposing monsters to inflict damage.",
+                "Type": "Stone",
+                "Category": "Physical",
+                "Power": 75,
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "All Adjacent Enemies"
+            },
+            {
+                "Name": "Stone Edge",
+                "Description": "The user stabs the target with sharpened stones.",
+                "Type": "Stone",
+                "Category": "Physical",
+                "Power": 100,
+                "Accuracy": 80,
+                "SP": 5,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Ancient Power",
+                "Description": "The user attacks with a prehistoric power.",
+                "Type": "Stone",
+                "Category": "Magical",
+                "Power": 60,
+                "Accuracy": 100,
+                "SP": 5,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Strength": 1,
+                            "Endurance": 1,
+                            "Fortitude": 1,
+                            "Intelligence": 1,
+                            "Agility": 1
+                        },
+                        "Target": "Self"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Rock Blast",
+                "Description": "The user hurls hard rocks at the target two to five times in a row.",
+                "Type": "Stone",
+                "Category": "Physical",
+                "Power": 25,
+                "Accuracy": 90,
+                "SP": 10,
+                "HitRange": {
+                    "MinHits": 2,
+                    "MaxHits": 5
+                },
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Power Gem",
+                "Description": "The user attacks with rays of light that sparkle like gemstones.",
+                "Type": "Stone",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Sandstorm",
+                "Description": "A five-turn sandstorm is summoned to hurt all monsters except Earth, Stone, and Metal types.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Weather": "Sandstorm",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Rock Polish",
+                "Description": "The user polishes its body to reduce drag, sharply raising its Agility.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Agility": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Stealth Rock",
+                "Description": "The user lays a trap of levitating stones around the opposing team.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "FieldEffect": "StealthRock"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy Field"
+            },
+            {
+                "Name": "Stone Shield",
+                "Description": "The user creates a shield of rocks, boosting its Endurance.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Wide Guard",
+                "Description": "The user and its allies are protected from wide-ranging attacks for one turn.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 3,
+                "Effects": [
+                    {
+                        "TeamEffect": {
+                            "Effect": "ProtectFromAreaMoves",
+                            "Duration": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self and Allies"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Sand Tomb",
+                "Description": "The user traps the target inside a harshly raging sandstorm for several turns.",
+                "Type": "Stone",
+                "Category": "Physical",
+                "Power": 35,
+                "Accuracy": 85,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Binding",
+                            "Duration": "4-5"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gravity",
+                "Description": "Gravity is intensified for five turns, making moves involving flying unusable and lowering Evasion.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "FieldEffect": {
+                            "Effect": "IntensifyGravity",
+                            "Duration": 5
+                        }
+                    },
+                    {
+                        "Boosts": {
+                            "Evasion": -2
+                        },
+                        "Target": "All Monsters"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Rock Tomb",
+                "Description": "Boulders are hurled at the target to inflict damage and lower its Agility.",
+                "Type": "Stone",
+                "Category": "Physical",
+                "Power": 60,
+                "Accuracy": 95,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 100,
+                        "Boosts": {
+                            "Agility": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Smack Down",
+                "Description": "Throws a stone or projectile to knock the target down to the ground.",
+                "Type": "Stone",
+                "Category": "Physical",
+                "Power": 50,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "SpecialEffect": "NullifyLevitation"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Shell Smash",
+                "Description": "The user breaks its protective shell, lowering Endurance and Fortitude but sharply boosting Strength, Intelligence, and Agility.",
+                "Type": "Stone",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": -1,
+                            "Fortitude": -1,
+                            "Strength": 2,
+                            "Intelligence": 2,
+                            "Agility": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ]
+    },
+    "Spirit": {
+        "OffensiveMoves": [
+            {
+                "Name": "Shadow Ball",
+                "Description": "The user hurls a shadowy orb at the target to inflict damage.",
+                "Type": "Spirit",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 20,
+                        "Boosts": {
+                            "Fortitude": -1
+                        },
+                        "Target": "Enemy"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Shadow Claw",
+                "Description": "The user slashes with sharp claws cloaked in shadows.",
+                "Type": "Spirit",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 15,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Hex",
+                "Description": "A relentless attack that deals massive damage to a target affected by a status condition.",
+                "Type": "Spirit",
+                "Category": "Magical",
+                "Power": 65,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Power doubles if the target has a status condition"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Shadow Sneak",
+                "Description": "The user extends its shadow and attacks the target. This move always goes first.",
+                "Type": "Spirit",
+                "Category": "Physical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 30,
+                "Priority": 1,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Phantom Force",
+                "Description": "The user vanishes on the first turn, then strikes on the next. Can hit through protective moves.",
+                "Type": "Spirit",
+                "Category": "Physical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "ChargeMove": true
+                    },
+                    {
+                        "BypassProtect": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Curse",
+                "Description": "A move that works differently for Spirit-type monsters. The user sacrifices HP to curse the target.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "UserSacrifice": "50% Max HP"
+                    },
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Curse",
+                            "DamagePerTurn": "25% Max HP",
+                            "Duration": "Until Faint or Switch"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Will-O-Wisp",
+                "Description": "The user shoots a sinister flame at the target to inflict a burn.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "Accuracy": 85,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Status": "Burn"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Shadow Shield",
+                "Description": "The user envelops itself in shadows, reducing damage from Magical attacks.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "MagicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Pain Split",
+                "Description": "The user adds its HP to the target's HP, then equally shares the combined total.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "HPAdjustment": "Average current HP between user and target"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy or Ally"
+            },
+            {
+                "Name": "Destiny Bond",
+                "Description": "If the user faints, the opponent that dealt the finishing blow also faints.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "DestinyBond",
+                            "Duration": "Until User's Next Turn"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Trick-or-Treat",
+                "Description": "The user adds the Spirit type to the target's type.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "TypeChange": "Adds Spirit type to target's existing type(s)"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Disable",
+                "Description": "For several turns, this move prevents the target from using its last used move.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Disable",
+                            "Duration": 4,
+                            "TargetMove": "Last used move"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Mean Look",
+                "Description": "The user pins the target with a dark, arresting look, preventing it from escaping.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Trap",
+                            "Duration": "Until User Faints or Switches Out"
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Perish Song",
+                "Description": "Any monster that hears this song faints in three turns unless it switches out.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "FieldEffect": {
+                            "Effect": "PerishSong",
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Monsters"
+            },
+            {
+                "Name": "Confuse Ray",
+                "Description": "The target is exposed to a sinister ray that triggers confusion.",
+                "Type": "Spirit",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "VolatileStatus": "Confusion"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Dragon": {
+        "OffensiveMoves": [
+            {
+                "Name": "Dragon Claw",
+                "Description": "The user slashes the target with sharp dragon claws.",
+                "Type": "Dragon",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dragon Pulse",
+                "Description": "The target is attacked with a shock wave generated by the user's gaping mouth.",
+                "Type": "Dragon",
+                "Category": "Magical",
+                "Power": 85,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Outrage",
+                "Description": "The user rampages and attacks for two to three turns, then becomes confused.",
+                "Type": "Dragon",
+                "Category": "Physical",
+                "Power": 120,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Locked into move for 2-3 turns"
+                    },
+                    {
+                        "AfterEffect": "Confusion"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dragon Tail",
+                "Description": "The user knocks away the target and drags out another monster.",
+                "Type": "Dragon",
+                "Category": "Physical",
+                "Power": 60,
+                "Accuracy": 90,
+                "SP": 10,
+                "Priority": -6,
+                "Effects": [
+                    {
+                        "ForceSwitch": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dual Chop",
+                "Description": "The user attacks the target by swinging its arms twice in succession.",
+                "Type": "Dragon",
+                "Category": "Physical",
+                "Power": 40,
+                "Accuracy": 90,
+                "SP": 15,
+                "HitRange": {
+                    "MinHits": 2,
+                    "MaxHits": 2
+                },
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Dragon Dance",
+                "Description": "The user vigorously performs a mystic, powerful dance that boosts its Strength and Agility.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": 1,
+                            "Agility": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Protect",
+                "Description": "Enables the user to evade all attacks for one turn.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 10,
+                "Priority": 4,
+                "Effects": [
+                    {
+                        "ProtectMove": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Scale Shield",
+                "Description": "The user hardens its scales, boosting its Endurance and Fortitude.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 1,
+                            "Fortitude": 1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Dragon Barrier",
+                "Description": "A mystical barrier that reduces damage from Magical attacks.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "MagicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Safeguard",
+                "Description": "A mystical force prevents the user's team from receiving status conditions for five turns.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 25,
+                "Effects": [
+                    {
+                        "TeamEffect": {
+                            "Effect": "PreventStatusConditions",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Roar",
+                "Description": "The target is scared off, and a different monster is dragged out.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 20,
+                "Priority": -6,
+                "Effects": [
+                    {
+                        "ForceSwitch": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dragon Breath",
+                "Description": "The user exhales a mighty gust that may paralyze the target.",
+                "Type": "Dragon",
+                "Category": "Magical",
+                "Power": 60,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Status": "Paralysis"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Draco Meteor",
+                "Description": "Comets are summoned down from the sky onto the target. Harshly lowers the user's Intelligence.",
+                "Type": "Dragon",
+                "Category": "Magical",
+                "Power": 130,
+                "Accuracy": 90,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": -2
+                        },
+                        "Target": "Self"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dragon Roar",
+                "Description": "The user emits a powerful roar that lowers the Strength and Intelligence of all opposing monsters.",
+                "Type": "Dragon",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": -1,
+                            "Intelligence": -1
+                        },
+                        "Target": "All Enemies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Dragon Tail",
+                "Description": "The user knocks away the target and drags out another monster.",
+                "Type": "Dragon",
+                "Category": "Physical",
+                "Power": 60,
+                "Accuracy": 90,
+                "SP": 10,
+                "Priority": -6,
+                "Effects": [
+                    {
+                        "ForceSwitch": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Dark": {
+        "OffensiveMoves": [
+            {
+                "Name": "Dark Pulse",
+                "Description": "The user releases a horrible aura imbued with dark thoughts.",
+                "Type": "Dark",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 20,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Night Slash",
+                "Description": "The user slashes the target the instant an opportunity arises. High critical-hit ratio.",
+                "Type": "Dark",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 15,
+                "CritBehavior": "HighCritRatio",
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Crunch",
+                "Description": "The user crunches up the target with sharp fangs. May lower the target's Endurance.",
+                "Type": "Dark",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 20,
+                        "Boosts": {
+                            "Endurance": -1
+                        },
+                        "Target": "Enemy"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Pursuit",
+                "Description": "An attack move that inflicts double damage if used on a target that is switching out of battle.",
+                "Type": "Dark",
+                "Category": "Physical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Power doubles if target is switching out"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Foul Play",
+                "Description": "The user turns the target's power against it. Uses the target's Strength stat in damage calculation.",
+                "Type": "Dark",
+                "Category": "Physical",
+                "Power": 95,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Uses target's Strength stat"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Taunt",
+                "Description": "The target is taunted into a rage that allows it to use only offensive moves for three turns.",
+                "Type": "Dark",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Taunt",
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Torment",
+                "Description": "The user torments and enrages the target, making it incapable of using the same move twice in a row.",
+                "Type": "Dark",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Torment",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dark Shield",
+                "Description": "The user envelops itself in a veil of darkness, reducing damage from Physical attacks.",
+                "Type": "Dark",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "PhysicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 3
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Embargo",
+                "Description": "Prevents the target from using items for five turns.",
+                "Type": "Dark",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Embargo",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Nasty Plot",
+                "Description": "The user stimulates its brain by thinking bad thoughts, sharply raising its Intelligence.",
+                "Type": "Dark",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Intelligence": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Sucker Punch",
+                "Description": "This move enables the user to attack first. It fails if the target is not readying an attack.",
+                "Type": "Dark",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 5,
+                "Priority": 1,
+                "Effects": [
+                    {
+                        "Condition": "Only works if target is using an offensive move"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Fake Tears",
+                "Description": "The user feigns crying to fluster the target, harshly lowering its Fortitude.",
+                "Type": "Dark",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": -2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Knock Off",
+                "Description": "The user slaps down the target's held item, preventing its use during the battle.",
+                "Type": "Dark",
+                "Category": "Physical",
+                "Power": 65,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "ItemEffect": "RemoveHeldItem"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Memento",
+                "Description": "The user faints to harshly lower the target's Strength and Intelligence.",
+                "Type": "Dark",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "UserFaint": true
+                    },
+                    {
+                        "Boosts": {
+                            "Strength": -2,
+                            "Intelligence": -2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Snatch",
+                "Description": "The user steals the effects of any healing or stat-changing move the target attempts to use.",
+                "Type": "Dark",
+                "Category": "Status",
+                "Priority": 4,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "StealHealingOrStatBoostingMove"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Metal": {
+        "OffensiveMoves": [
+            {
+                "Name": "Iron Bash",
+                "Description": "The user strikes the target with a spinning, heavy metal arm.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Steel Slash",
+                "Description": "Sharp metallic blades slash at the target with precision.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": 70,
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Strength": 1
+                        },
+                        "Target": "Self"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Photon Beam",
+                "Description": "The user emits a concentrated beam of metallic energy at the target.",
+                "Type": "Metal",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 90,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Fortitude": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Metal Whip",
+                "Description": "The user lashes the target with a flexible metal appendage.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": 95,
+                "Accuracy": 75,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Boosts": {
+                            "Endurance": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Quick Hammer",
+                "Description": "A swift metallic strike that often hits before the opponent can react.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": 40,
+                "Accuracy": 100,
+                "SP": 30,
+                "Priority": 1,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Metal Fortify",
+                "Description": "The user hardens its body with metallic energy, sharply boosting Endurance.",
+                "Type": "Metal",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Endurance": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Reflective Counter",
+                "Description": "The user absorbs the impact of an attack and retaliates with greater force.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": null,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Deals 1.5 times the damage received from the last attack"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Iron Barrier",
+                "Description": "The user creates a metallic barrier, reducing damage from Physical attacks.",
+                "Type": "Metal",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "PhysicalDamageReduction",
+                            "Value": 50,
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Magnetic Levitation",
+                "Description": "Using magnetic forces, the user hovers above the ground, becoming immune to Earth-type moves.",
+                "Type": "Metal",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "VolatileStatus": {
+                            "Effect": "Levitate",
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Sonic Screech",
+                "Description": "An ear-piercing metallic sound sharply reduces the target's Fortitude.",
+                "Type": "Metal",
+                "Category": "Status",
+                "Accuracy": 85,
+                "SP": 40,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": -2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Head Smash",
+                "Description": "The user charges the target with a hardened head, potentially causing the target to flinch.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 30,
+                        "Effect": "Flinch"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Gear Crush",
+                "Description": "The user attacks by clamping down on the target with heavy metal gears, hitting twice.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": 50,
+                "Accuracy": 85,
+                "SP": 15,
+                "HitRange": {
+                    "MinHits": 2,
+                    "MaxHits": 2
+                },
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Metal Shift",
+                "Description": "The user reconfigures its body, raising Strength and sharply boosting Agility.",
+                "Type": "Metal",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Strength": 1,
+                            "Agility": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Weight Crush",
+                "Description": "The user slams into the target with its massive body. Damage increases the heavier the user is compared to the target.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": null,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Power scales with weight difference between user and target"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Momentum Spin",
+                "Description": "The user spins rapidly to attack. The slower the user compared to the target, the higher the damage inflicted.",
+                "Type": "Metal",
+                "Category": "Physical",
+                "Power": null,
+                "Accuracy": 100,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Power increases with greater Agility difference favoring slower users"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    },
+    "Light": {
+        "OffensiveMoves": [
+            {
+                "Name": "Light Beam",
+                "Description": "The user fires a concentrated beam of pure light at the target.",
+                "Type": "Light",
+                "Category": "Magical",
+                "Power": 90,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Boosts": {
+                            "Fortitude": -1
+                        }
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Solar Blade",
+                "Description": "The user gathers light on the first turn and unleashes a powerful blade attack on the second.",
+                "Type": "Light",
+                "Category": "Physical",
+                "Power": 125,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [
+                    {
+                        "ChargeMove": true,
+                        "Condition": "No charge required under Harsh Sunlight"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Dazzling Gleam",
+                "Description": "The user damages opposing monsters by emitting a powerful flash.",
+                "Type": "Light",
+                "Category": "Magical",
+                "Power": 80,
+                "Accuracy": 100,
+                "SP": 10,
+                "Effects": [],
+                "SecondaryEffects": [],
+                "Target": "All Enemies"
+            },
+            {
+                "Name": "Photon Punch",
+                "Description": "The user delivers a punch infused with light energy.",
+                "Type": "Light",
+                "Category": "Physical",
+                "Power": 75,
+                "Accuracy": 100,
+                "SP": 15,
+                "Effects": [],
+                "SecondaryEffects": [
+                    {
+                        "Chance": 10,
+                        "Status": "Burn"
+                    }
+                ],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Prismatic Laser",
+                "Description": "The user shoots a powerful laser. The user can't move on the next turn.",
+                "Type": "Light",
+                "Category": "Magical",
+                "Power": 160,
+                "Accuracy": 100,
+                "SP": 5,
+                "Effects": [
+                    {
+                        "RechargeMove": true
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ],
+        "DefensiveMoves": [
+            {
+                "Name": "Light Screen",
+                "Description": "A wall of light is put up to weaken the power of Magical attacks for five turns.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 30,
+                "Effects": [
+                    {
+                        "TeamEffect": {
+                            "Effect": "ReduceMagicalDamage",
+                            "Value": 50,
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Healing Light",
+                "Description": "The user bathes itself in soothing light, restoring its own HP.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 10,
+                "Effects": [
+                    {
+                        "Heals": "50% of max HP"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Reflect",
+                "Description": "A barrier of light reduces damage from Physical attacks for five turns.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "TeamEffect": {
+                            "Effect": "ReducePhysicalDamage",
+                            "Value": 50,
+                            "Duration": 5
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Luminous Barrier",
+                "Description": "The user creates a protective shield of light, boosting its Fortitude.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 15,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Fortitude": 2
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Purify",
+                "Description": "The user releases a purifying light that heals status conditions of itself and allies.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "CureStatus": "All Allies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "All Allies"
+            }
+        ],
+        "SupportMoves": [
+            {
+                "Name": "Sunny Day",
+                "Description": "The user intensifies the sun's rays to gain an advantage.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Weather": "Harsh Sunlight",
+                        "Duration": 5
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Entire Field"
+            },
+            {
+                "Name": "Illuminate",
+                "Description": "The user illuminates the area, boosting the Accuracy of all allies.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Accuracy": 1
+                        },
+                        "Target": "All Allies"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Moonlight",
+                "Description": "The user restores its own HP. The amount of HP regained varies with the weather.",
+                "Type": "Light",
+                "Category": "Status",
+                "SP": 5,
+                "Effects": [
+                    {
+                        "Heals": "Varies with weather conditions"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Self"
+            },
+            {
+                "Name": "Mirror Coat",
+                "Description": "A retaliation move that counters any Magical attack, inflicting double the damage taken.",
+                "Type": "Light",
+                "Category": "Magical",
+                "Power": null,
+                "Accuracy": 100,
+                "Priority": -5,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "SpecialBehavior": "Reflects back double damage from Magical attacks taken this turn"
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            },
+            {
+                "Name": "Flash",
+                "Description": "A blinding light that reduces the target's Accuracy.",
+                "Type": "Light",
+                "Category": "Status",
+                "Accuracy": 100,
+                "SP": 20,
+                "Effects": [
+                    {
+                        "Boosts": {
+                            "Accuracy": -1
+                        }
+                    }
+                ],
+                "SecondaryEffects": [],
+                "Target": "Enemy"
+            }
+        ]
+    }
+}
