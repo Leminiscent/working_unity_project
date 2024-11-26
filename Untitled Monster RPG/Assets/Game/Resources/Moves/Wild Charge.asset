@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Wild Charge
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Wild Charge
+  _description: The user shrouds itself in electricity and smashes into its target.
+  _type: 4
   _category: 0
   _effects:
     _boosts: []
@@ -24,8 +24,8 @@ MonoBehaviour:
   _secondaryEffects: []
   _critBehavior: 0
   _recoil:
-    RecoilType: 0
-    RecoilDamage: 0
+    RecoilType: 3
+    RecoilDamage: 25
   _drainPercentage: 0
   _oneHitKO:
     IsOneHitKO: 0
@@ -33,9 +33,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 90
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
