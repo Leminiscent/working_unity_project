@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Ember
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Ember
+  _description: The target is attacked with small flames. This may also leave the
+    target with a burn.
+  _type: 2
+  _category: 1
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts: []
+    _status: 2
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 10
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,9 +40,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 40
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 25
   _priority: 0
   _sound: {fileID: 0}

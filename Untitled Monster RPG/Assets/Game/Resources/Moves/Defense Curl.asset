@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Defense Curl
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Defense Curl
+  _description: The user curls up to conceal weak spots and raise its Endurance.
+  _type: 1
+  _category: 2
   _effects:
-    _boosts: []
+    _boosts:
+    - Stat: 2
+      Boost: 1
     _status: 0
     _volatileStatus: 0
     _weather: 0
@@ -31,11 +33,11 @@ MonoBehaviour:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
+  _target: 1
   _hitRange: {x: 0, y: 0}
   _power: 0
   _accuracy: 0
-  _alwaysHits: 0
-  _sP: 0
+  _alwaysHits: 1
+  _sP: 40
   _priority: 0
   _sound: {fileID: 0}

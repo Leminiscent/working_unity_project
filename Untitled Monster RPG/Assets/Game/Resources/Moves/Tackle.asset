@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Tackle
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Tackle
+  _description: A physical attack in which the user charges and slams into the target
+    with its whole body.
+  _type: 1
   _category: 0
   _effects:
     _boosts: []
@@ -33,9 +34,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 40
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 35
   _priority: 0
   _sound: {fileID: 0}
