@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Razor Leaf
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Razor Leaf
+  _description: Sharp-edged leaves are launched to slash at the opposing monsters.
+  _type: 5
   _category: 0
   _effects:
     _boosts: []
@@ -22,7 +22,7 @@ MonoBehaviour:
     _volatileStatus: 0
     _weather: 0
   _secondaryEffects: []
-  _critBehavior: 0
+  _critBehavior: 1
   _recoil:
     RecoilType: 0
     RecoilDamage: 0
@@ -33,9 +33,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 55
+  _accuracy: 95
   _alwaysHits: 0
-  _sP: 0
+  _sP: 25
   _priority: 0
   _sound: {fileID: 0}
