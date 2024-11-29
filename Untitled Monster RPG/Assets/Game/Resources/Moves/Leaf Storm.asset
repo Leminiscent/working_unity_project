@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Leaf Storm
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Leaf Storm
+  _description: The user whips up a storm of leaves around the target. Harshly lowers
+    the user's Intelligence.
+  _type: 5
+  _category: 1
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 3
+      Boost: -2
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 100
+    _target: 1
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,9 +42,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 130
+  _accuracy: 90
   _alwaysHits: 0
-  _sP: 0
+  _sP: 5
   _priority: 0
   _sound: {fileID: 0}
