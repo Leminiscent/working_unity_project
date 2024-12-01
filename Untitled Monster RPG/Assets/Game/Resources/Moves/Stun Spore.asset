@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Stun Spore
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Stun Spore
+  _description: The user scatters a cloud of numbing powder that paralyzes the target.
+  _type: 5
+  _category: 2
   _effects:
     _boosts: []
-    _status: 0
+    _status: 4
     _volatileStatus: 0
     _weather: 0
   _secondaryEffects: []
@@ -34,8 +34,8 @@ MonoBehaviour:
   _target: 0
   _hitRange: {x: 0, y: 0}
   _power: 0
-  _accuracy: 0
+  _accuracy: 75
   _alwaysHits: 0
-  _sP: 0
+  _sP: 30
   _priority: 0
   _sound: {fileID: 0}
