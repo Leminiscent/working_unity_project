@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Force Wave
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Force Wave
+  _description: The user unleashes a wave of force that damages all adjacent enemies.
+  _type: 7
+  _category: 1
   _effects:
     _boosts: []
     _status: 0
@@ -33,9 +33,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 70
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
