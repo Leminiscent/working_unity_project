@@ -597,9 +597,13 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return _dialogueBox.TypeDialogue("It's super effective!");
         }
-        else if (typeEffectiveness < 1f)
+        else if (typeEffectiveness > 0f)
         {
             yield return _dialogueBox.TypeDialogue("It's not very effective!");
+        }
+        else if (typeEffectiveness == 0f)
+        {
+            yield return _dialogueBox.TypeDialogue("It has no effect!");
         }
     }
 
