@@ -1,4 +1,5 @@
 using System.Linq;
+using UnityEngine.SceneManagement;
 using Utils.GenericSelectionUI;
 
 public class MainMenuController : SelectionUI<TextSlot>
@@ -20,6 +21,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         if (selection == 0)
         {
             // Continue
+            SceneManager.LoadScene(1);
         }
         else if (selection == 1)
         {
