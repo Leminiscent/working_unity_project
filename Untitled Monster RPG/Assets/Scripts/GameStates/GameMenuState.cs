@@ -46,23 +46,37 @@ public class GameMenuState : State<GameController>
     {
         if (selection == 0)
         {
+            // Party
             _gameController.StateMachine.Push(PartyState.Instance);
         }
         else if (selection == 1)
         {
+            // Inventory
             _gameController.StateMachine.Push(InventoryState.Instance);
         }
         else if (selection == 2)
         {
+            // Storage
             _gameController.StateMachine.Push(StorageState.Instance);
         }
         else if (selection == 3)
         {
+            // Save
             StartCoroutine(SaveSelected());
         }
         else if (selection == 4)
         {
+            // Load
             StartCoroutine(LoadSelected());
+        }
+        else if (selection == 5)
+        {
+            // Quit
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
     }
 
