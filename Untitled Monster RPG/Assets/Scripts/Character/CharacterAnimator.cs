@@ -37,7 +37,7 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _walkDownAnim = new SpriteAnimator(_walkDownSprites, _spriteRenderer);
