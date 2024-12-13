@@ -24,19 +24,16 @@ public class CharacterAnimator : MonoBehaviour
     public FacingDirection DefaultDirection => _defaultDirection;
     public FacingDirection FacingDirection
     {
-        get
-        {
-            return _currentAnim == _walkRightAnim
+        get => _currentAnim == _walkRightAnim
                 ? FacingDirection.Right
                 : _currentAnim == _walkLeftAnim
                     ? FacingDirection.Left
                     : _currentAnim == _walkUpAnim ? FacingDirection.Up : _currentAnim == _walkDownAnim ? FacingDirection.Down : _defaultDirection;
-        }
         set
         {
             SetFacingDirection(value);
             _currentAnim = GetAnimForFacingDirection(value);
-            _currentAnim?.Start();
+            _currentAnim.Start();
         }
     }
 
@@ -79,7 +76,7 @@ public class CharacterAnimator : MonoBehaviour
 
         if (IsJumping)
         {
-            _spriteRenderer.sprite = _currentAnim.Frames[_currentAnim.Frames.Count - 1];
+            _spriteRenderer.sprite = _currentAnim.Frames[^1];
         }
         else if (IsMoving)
         {
