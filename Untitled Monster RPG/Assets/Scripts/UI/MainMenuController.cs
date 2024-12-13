@@ -7,4 +7,8 @@ public class MainMenuController : SelectionUI<TextSlot>
     {
         SetItems(GetComponentsInChildren<TextSlot>().ToList());
     }
+
+    private void Update()
+    {
+        HandleUpdate();    }
 }
