@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         StateMachine = new StateMachine<GameController>(this);
-        StateMachine.ChangeState(FreeRoamState.Instance);
+        StateMachine.ChangeState(PauseState.Instance);
         _battleSystem.OnBattleOver += EndBattle;
         _partyScreen.Init();
         DialogueManager.Instance.OnShowDialogue += () => { StateMachine.Push(DialogueState.Instance); };

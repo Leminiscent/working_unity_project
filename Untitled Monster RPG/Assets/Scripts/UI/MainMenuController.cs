@@ -39,6 +39,7 @@ public class MainMenuController : SelectionUI<TextSlot>
             // Continue
             DontDestroyOnLoad(gameObject);
 
+            GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
             SceneManager.LoadScene(1);
             SavingSystem.Instance.Load("saveSlot1");
 
@@ -47,6 +48,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         else if (selection == 1)
         {
             // New Game
+            GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
             SavingSystem.Instance.Delete("saveSlot1");
             SceneManager.LoadScene(1);
         }
