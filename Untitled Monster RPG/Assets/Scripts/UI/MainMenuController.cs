@@ -39,6 +39,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         if (selection == 0)
         {
             // Continue
+            transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
 
             GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
