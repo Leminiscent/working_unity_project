@@ -31,6 +31,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         else if (selection == 1)
         {
             // New Game
+            SceneManager.LoadScene(1);
         }
         else if (selection == 2)
         {
