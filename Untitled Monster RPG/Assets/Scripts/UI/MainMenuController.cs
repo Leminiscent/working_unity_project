@@ -21,7 +21,12 @@ public class MainMenuController : SelectionUI<TextSlot>
         if (selection == 0)
         {
             // Continue
+            DontDestroyOnLoad(gameObject);
+
             SceneManager.LoadScene(1);
+            SavingSystem.Instance.Load("saveSlot1");
+
+            Destroy(gameObject);
         }
         else if (selection == 1)
         {
