@@ -1,4 +1,5 @@
 using System.Linq;
+using TMPro;
 using UnityEngine.SceneManagement;
 using Utils.GenericSelectionUI;
 
@@ -6,7 +7,17 @@ public class MainMenuController : SelectionUI<TextSlot>
 {
     private void Start()
     {
-        SetItems(GetComponentsInChildren<TextSlot>().ToList());
+        var textSlots = GetComponentsInChildren<TextSlot>().ToList();
+
+        if (SavingSystem.Instance.CheckForExistingSave("saveSlot1"))
+        {
+            SetItems(textSlots);
+        }
+        else
+        {
+            SetItems(textSlots.TakeLast(2).ToList());
+            textSlots.First().GetComponent<TextMeshProUGUI>().color = GlobalSettings.Instance.EmptyColor;
+        }
 
         OnSelected += OnItemSelected;
     }
