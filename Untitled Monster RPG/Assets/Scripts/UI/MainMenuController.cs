@@ -47,6 +47,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         else if (selection == 1)
         {
             // New Game
+            SavingSystem.Instance.Delete("saveSlot1");
             SceneManager.LoadScene(1);
         }
         else if (selection == 2)

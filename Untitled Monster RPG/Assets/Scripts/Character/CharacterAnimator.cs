@@ -36,7 +36,7 @@ public class CharacterAnimator : MonoBehaviour
         {
             SetFacingDirection(value);
             _currentAnim = GetAnimForFacingDirection(value);
-            _currentAnim.Start();
+            _currentAnim?.Start();
         }
     }
 
