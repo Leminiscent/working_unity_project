@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 413485811}
   - component: {fileID: 413485810}
   - component: {fileID: 413485809}
+  - component: {fileID: 413485812}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -227,6 +228,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413485806}
   m_CullTransparentMesh: 1
+--- !u!114 &413485812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413485806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae8677b7467f9b46b68ac26aa1a5782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &439024965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -237,7 +250,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 590863763881749453, guid: 6b89a1490df84104d8cca387784264d1, type: 3}
       propertyPath: m_text
-      value: Party
+      value: Continue
       objectReference: {fileID: 0}
     - target: {fileID: 590863763881749453, guid: 6b89a1490df84104d8cca387784264d1, type: 3}
       propertyPath: m_fontSize
@@ -498,7 +511,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 590863763881749453, guid: 6b89a1490df84104d8cca387784264d1, type: 3}
       propertyPath: m_text
-      value: Barracks
+      value: Credits
       objectReference: {fileID: 0}
     - target: {fileID: 590863763881749453, guid: 6b89a1490df84104d8cca387784264d1, type: 3}
       propertyPath: m_fontSize
@@ -612,7 +625,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 590863763881749453, guid: 6b89a1490df84104d8cca387784264d1, type: 3}
       propertyPath: m_text
-      value: Inventory
+      value: New Game
       objectReference: {fileID: 0}
     - target: {fileID: 590863763881749453, guid: 6b89a1490df84104d8cca387784264d1, type: 3}
       propertyPath: m_fontSize
