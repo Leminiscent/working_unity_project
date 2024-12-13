@@ -29,6 +29,11 @@ public class MainMenuController : SelectionUI<TextSlot>
 
     void OnItemSelected(int selection)
     {
+        if (!SavingSystem.Instance.CheckForExistingSave("saveSlot1"))
+        {
+            selection++;
+        }
+
         if (selection == 0)
         {
             // Continue
