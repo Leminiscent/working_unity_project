@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Earthquake
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Earthquake
+  _description: The user causes a massive earthquake that strikes all adjacent monsters.
+  _type: 9
   _category: 0
   _effects:
     _boosts: []
@@ -33,9 +33,9 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 100
+  _accuracy: 100
   _alwaysHits: 0
   _sP: 0
-  _priority: 0
+  _priority: 10
   _sound: {fileID: 0}
