@@ -3,8 +3,7 @@ using UnityEngine;
 using Utils.StateMachine;
 
 public class GameController : MonoBehaviour
-{
-    [SerializeField] private PlayerController _playerController;
+{     [SerializeField] private PlayerController _playerController;
     [SerializeField] private BattleSystem _battleSystem;
     [SerializeField] private Camera _worldCamera;
     [SerializeField] private PartyScreen _partyScreen;
