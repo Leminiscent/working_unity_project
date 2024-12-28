@@ -205,16 +205,16 @@ public class BattleSystem : MonoBehaviour
         StateMachine.Execute();
     }
 
-    public IEnumerator SwitchMonster(Monster newMonster)
+    public IEnumerator SwitchMonster(Monster newMonster, BattleUnit unitToSwitch)
     {
-        if (_playerUnits.Monster.Hp > 0)
+        if (unitToSwitch.Monster.Hp > 0)
         {
-            yield return _dialogueBox.TypeDialogue($"Come back {_playerUnits.Monster.Base.Name}!");
-            _playerUnits.PlayExitAnimation();
+            yield return _dialogueBox.TypeDialogue($"Come back {unitToSwitch.Monster.Base.Name}!");
+            unitToSwitch.PlayExitAnimation();
             yield return new WaitForSeconds(0.75f);
         }
 
-        _playerUnits.Setup(newMonster);
+        unitToSwitch.Setup(newMonster);
         _dialogueBox.SetMoveNames(newMonster.Moves);
         yield return _dialogueBox.TypeDialogue($"Go {newMonster.Base.Name}!");
     }
@@ -223,7 +223,7 @@ public class BattleSystem : MonoBehaviour
     {
         Monster nextMonster = EnemyParty.GetHealthyMonster();
 
-        _enemyUnits.Setup(nextMonster);
+        _enemyUnits[0].Setup(nextMonster);
         yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {nextMonster.Base.Name}!");
     }
 }
