@@ -46,7 +46,7 @@ public class BattleSystem : MonoBehaviour
     public bool BattleIsOver { get; private set; }
     public MonsterParty PlayerParty { get; private set; }
     public MonsterParty EnemyParty { get; private set; }
-    public Monster WildMonster { get; private set; }
+    public Monster WildMonsters { get; private set; }
     public Field Field { get; private set; }
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
@@ -78,7 +78,7 @@ public class BattleSystem : MonoBehaviour
         IsMasterBattle = false;
 
         PlayerParty = playerParty;
-        WildMonster = wildMonsters;
+        WildMonsters = wildMonsters;
         _unitCount = unitCount;
 
         _battleTrigger = trigger;
@@ -119,7 +119,7 @@ public class BattleSystem : MonoBehaviour
         if (!IsMasterBattle)
         {
             _playerUnits.Setup(PlayerParty.GetHealthyMonster());
-            _enemyUnits.Setup(WildMonster);
+            _enemyUnits.Setup(WildMonsters);
 
             _dialogueBox.SetMoveNames(_playerUnits.Monster.Moves);
             yield return _dialogueBox.TypeDialogue("A wild " + _enemyUnits.Monster.Base.Name + " appeared!");
