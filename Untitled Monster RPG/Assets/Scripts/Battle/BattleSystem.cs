@@ -14,8 +14,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private Image _playerImage;
     [SerializeField] private Image _enemyImage;
-    [SerializeField] private MoveForgettingUI _moveForgettingUI;
-    [SerializeField] private InventoryUI _inventoryUI;
 
     [Header("Audio")]
     [SerializeField] private AudioClip _wildBattleMusic;
