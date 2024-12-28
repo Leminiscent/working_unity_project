@@ -18,6 +18,7 @@ public class RunTurnState : State<BattleSystem>
     private Field _field;
 
     public static RunTurnState Instance { get; private set; }
+    public List<BattleAction> BattleActions { get; set; }
 
     private void Awake()
     {

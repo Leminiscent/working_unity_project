@@ -212,6 +212,16 @@ public class BattleSystem : MonoBehaviour
 
         if (_battleActions.Count == _unitCount)
         {
+            foreach (BattleUnit enemyUnit in _enemyUnits)
+            {
+                _battleActions.Add(new BattleAction()
+                {
+                    ActionType = BattleActionType.Fight,
+                    SelectedMove = enemyUnit.Monster.GetRandomMove(),
+                    SourceUnit = enemyUnit,
+                    TargetUnit = _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)]
+                });
+            }
             StateMachine.ChangeState(RunTurnState.Instance);
         }
         else
