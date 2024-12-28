@@ -104,8 +104,11 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle()
     {
         StateMachine = new StateMachine<BattleSystem>(this);
-        _playerUnits.Clear();
-        _enemyUnits.Clear();
+        for (int i = 0; i < _unitCount; i++)
+        {
+            _playerUnits[i].Clear();
+            _enemyUnits[i].Clear();
+        }
 
         if (_backgroundMapping.ContainsKey(_battleTrigger))
         {
