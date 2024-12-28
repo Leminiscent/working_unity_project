@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
@@ -119,42 +119,65 @@ public class BattleSystem : MonoBehaviour
             _backgroundImage.sprite = _fieldBackground; // Fallback option
         }
 
+        List<Monster> playerMonsters = PlayerParty.GetHealthyMonsters(_unitCount);
+
         if (!IsMasterBattle)
         {
-            _playerUnits.Setup(PlayerParty.GetHealthyMonster());
-            _enemyUnits.Setup(WildMonsters);
+            for (int i = 0; i < _unitCount; i++)
+            {
+                _playerUnits[i].Setup(playerMonsters[i]);
+                _enemyUnits[i].Setup(WildMonsters[i]);
+            }
 
-            _dialogueBox.SetMoveNames(_playerUnits.Monster.Moves);
-            yield return _dialogueBox.TypeDialogue("A wild " + _enemyUnits.Monster.Base.Name + " appeared!");
+            string wildAppearance = WildMonsters.Count > 1
+                ? $"Wild {string.Join(", ", WildMonsters.Select(static m => m.Base.Name).Take(WildMonsters.Count - 1))} and {WildMonsters.Last().Base.Name} appeared!"
+                : $"A wild {WildMonsters[0].Base.Name} appeared!";
+
+            yield return _dialogueBox.TypeDialogue(wildAppearance);
         }
         else
         {
-            _playerUnits.gameObject.SetActive(false);
-            _enemyUnits.gameObject.SetActive(false);
+            for (int i = 0; i < _unitCount; i++)
+            {
+                _playerUnits[i].gameObject.SetActive(false);
+                _enemyUnits[i].gameObject.SetActive(false);
+            }
 
             _playerImage.gameObject.SetActive(true);
             _enemyImage.gameObject.SetActive(true);
             _playerImage.sprite = Player.Sprite;
             _enemyImage.sprite = Enemy.Sprite;
 
-            yield return _dialogueBox.TypeDialogue(Enemy.Name + " wants to battle!");
-
+            yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
             _enemyImage.gameObject.SetActive(false);
-            _enemyUnits.gameObject.SetActive(true);
 
-            Monster enemyMonster = EnemyParty.GetHealthyMonster();
+            List<Monster> enemyMonsters = EnemyParty.GetHealthyMonsters(_unitCount);
 
-            _enemyUnits.Setup(enemyMonster);
-            yield return _dialogueBox.TypeDialogue(Enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
+            for (int i = 0; i < _unitCount; i++)
+            {
+                _enemyUnits[i].gameObject.SetActive(true);
+                _enemyUnits[i].Setup(enemyMonsters[i]);
+            }
+
+            string monsterNames = enemyMonsters.Count > 1
+                ? $"{string.Join(", ", enemyMonsters.Select(static m => m.Base.Name).Take(enemyMonsters.Count - 1))} and {enemyMonsters.Last().Base.Name}"
+                : enemyMonsters[0].Base.Name;
+
+            yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {monsterNames}!");
 
             _playerImage.gameObject.SetActive(false);
-            _playerUnits.gameObject.SetActive(true);
 
-            Monster playerMonster = PlayerParty.GetHealthyMonster();
+            for (int i = 0; i < _unitCount; i++)
+            {
+                _playerUnits[i].gameObject.SetActive(true);
+                _playerUnits[i].Setup(playerMonsters[i]);
+            }
 
-            _playerUnits.Setup(playerMonster);
-            yield return _dialogueBox.TypeDialogue("Go " + playerMonster.Base.Name + "!");
-            _dialogueBox.SetMoveNames(_playerUnits.Monster.Moves);
+            monsterNames = playerMonsters.Count > 1
+                ? $"{string.Join(", ", playerMonsters.Select(static m => m.Base.Name).Take(playerMonsters.Count - 1))} and {playerMonsters.Last().Base.Name}"
+                : playerMonsters[0].Base.Name;
+
+            yield return _dialogueBox.TypeDialogue($"Go {monsterNames}!");
         }
 
         Field = new Field();
@@ -183,14 +206,14 @@ public class BattleSystem : MonoBehaviour
     {
         if (_playerUnits.Monster.Hp > 0)
         {
-            yield return _dialogueBox.TypeDialogue("Come back " + _playerUnits.Monster.Base.Name + "!");
+            yield return _dialogueBox.TypeDialogue($"Come back {_playerUnits.Monster.Base.Name}!");
             _playerUnits.PlayExitAnimation();
             yield return new WaitForSeconds(0.75f);
         }
 
         _playerUnits.Setup(newMonster);
         _dialogueBox.SetMoveNames(newMonster.Moves);
-        yield return _dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
+        yield return _dialogueBox.TypeDialogue($"Go {newMonster.Base.Name}!");
     }
 
     public IEnumerator SendNextMasterMonster()
@@ -198,7 +221,7 @@ public class BattleSystem : MonoBehaviour
         Monster nextMonster = EnemyParty.GetHealthyMonster();
 
         _enemyUnits.Setup(nextMonster);
-        yield return _dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
+        yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {nextMonster.Base.Name}!");
     }
 }
 

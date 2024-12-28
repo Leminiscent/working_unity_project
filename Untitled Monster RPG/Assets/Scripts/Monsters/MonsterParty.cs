@@ -35,6 +35,11 @@ public class MonsterParty : MonoBehaviour
         return _monsters.FirstOrDefault(static x => x.Hp > 0);
     }
 
+    public List<Monster> GetHealthyMonsters(int count)
+    {
+        return _monsters.Where(static x => x.Hp > 0).Take(count).ToList();
+    }
+
     public void AddMonster(Monster newMonster)
     {
         if (_monsters.Count < 6)
@@ -50,7 +55,7 @@ public class MonsterParty : MonoBehaviour
 
     public bool CheckForTransformations()
     {
-        return _monsters.Any(m => m.HasJustLeveledUp && m.CheckForTransformation() != null);
+        return _monsters.Any(static m => m.HasJustLeveledUp && m.CheckForTransformation() != null);
     }
 
 
