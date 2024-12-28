@@ -35,7 +35,7 @@ public class BattleState : State<GameController>
 
         if (Master == null)
         {
-            List<Monster> wildMonsters = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonsters(count: Random.Range(1, 4));
+            List<Monster> wildMonsters = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonsters(Random.Range(1, 4));
             List<Monster> wildMonsterCopies = new();
 
             for (int i = 0; i < wildMonsters.Count; i++)
@@ -43,12 +43,12 @@ public class BattleState : State<GameController>
                 wildMonsterCopies.Add(new(wildMonsters[i].Base, wildMonsters[i].Level));
             }
 
-            _battleSystem.StartWildBattle(playerParty, wildMonsterCopies, Trigger);
+            _battleSystem.StartWildBattle(playerParty, wildMonsterCopies, Trigger, wildMonsters.Count);
         }
         else
         {
             MonsterParty enemyParty = Master.GetComponent<MonsterParty>();
-            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger);
+            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger, enemyParty.Monsters.Count);
         }
 
         _battleSystem.OnBattleOver += EndBattle;
