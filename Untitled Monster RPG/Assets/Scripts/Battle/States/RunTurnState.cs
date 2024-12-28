@@ -34,8 +34,8 @@ public class RunTurnState : State<BattleSystem>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
-        _playerUnit = _battleSystem.PlayerUnit;
-        _enemyUnit = _battleSystem.EnemyUnit;
+        _playerUnit = _battleSystem.PlayerUnits;
+        _enemyUnit = _battleSystem.EnemyUnits;
         _dialogueBox = _battleSystem.DialogueBox;
         _playerParty = _battleSystem.PlayerParty;
         _enemyParty = _battleSystem.EnemyParty;

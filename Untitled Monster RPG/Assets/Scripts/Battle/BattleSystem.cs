@@ -8,8 +8,8 @@ using Utils.StateMachine;
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] private BattleUnit _playerUnit;
-    [SerializeField] private BattleUnit _enemyUnit;
+    [SerializeField] private List<BattleUnit> _playerUnits;
+    [SerializeField] private List<BattleUnit> _enemyUnits;
     [SerializeField] private BattleDialogueBox _dialogueBox;
     [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private Image _playerImage;
@@ -35,6 +35,7 @@ public class BattleSystem : MonoBehaviour
 
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
+    private int _unitCount;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public event Action<bool> OnBattleOver;
@@ -53,8 +54,8 @@ public class BattleSystem : MonoBehaviour
     public PlayerController Player { get; private set; }
     public BattleDialogueBox DialogueBox => _dialogueBox;
     public PartyScreen PartyScreen => _partyScreen;
-    public BattleUnit PlayerUnit => _playerUnit;
-    public BattleUnit EnemyUnit => _enemyUnit;
+    public List<BattleUnit> PlayerUnits => _playerUnits;
+    public List<BattleUnit> EnemyUnits => _enemyUnits;
     public AudioClip BattleVictoryMusic => _battleVictoryMusic;
 
     private void Awake()
@@ -72,24 +73,26 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    public void StartWildBattle(MonsterParty playerParty, Monster wildMonster, BattleTrigger trigger)
+    public void StartWildBattle(MonsterParty playerParty, List<Monster> wildMonsters, BattleTrigger trigger, int unitCount = 1)
     {
         IsMasterBattle = false;
 
         PlayerParty = playerParty;
-        WildMonster = wildMonster;
+        WildMonster = wildMonsters;
+        _unitCount = unitCount;
 
         _battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(_wildBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
-    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger)
+    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger, int unitCount = 1)
     {
         IsMasterBattle = true;
 
         PlayerParty = playerParty;
         EnemyParty = enemyParty;
+        _unitCount = unitCount;
 
         Player = playerParty.GetComponent<PlayerController>();
         Enemy = enemyParty.GetComponent<MasterController>();
@@ -101,8 +104,8 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle()
     {
         StateMachine = new StateMachine<BattleSystem>(this);
-        _playerUnit.Clear();
-        _enemyUnit.Clear();
+        _playerUnits.Clear();
+        _enemyUnits.Clear();
 
         if (_backgroundMapping.ContainsKey(_battleTrigger))
         {
@@ -115,16 +118,16 @@ public class BattleSystem : MonoBehaviour
 
         if (!IsMasterBattle)
         {
-            _playerUnit.Setup(PlayerParty.GetHealthyMonster());
-            _enemyUnit.Setup(WildMonster);
+            _playerUnits.Setup(PlayerParty.GetHealthyMonster());
+            _enemyUnits.Setup(WildMonster);
 
-            _dialogueBox.SetMoveNames(_playerUnit.Monster.Moves);
-            yield return _dialogueBox.TypeDialogue("A wild " + _enemyUnit.Monster.Base.Name + " appeared!");
+            _dialogueBox.SetMoveNames(_playerUnits.Monster.Moves);
+            yield return _dialogueBox.TypeDialogue("A wild " + _enemyUnits.Monster.Base.Name + " appeared!");
         }
         else
         {
-            _playerUnit.gameObject.SetActive(false);
-            _enemyUnit.gameObject.SetActive(false);
+            _playerUnits.gameObject.SetActive(false);
+            _enemyUnits.gameObject.SetActive(false);
 
             _playerImage.gameObject.SetActive(true);
             _enemyImage.gameObject.SetActive(true);
@@ -134,21 +137,21 @@ public class BattleSystem : MonoBehaviour
             yield return _dialogueBox.TypeDialogue(Enemy.Name + " wants to battle!");
 
             _enemyImage.gameObject.SetActive(false);
-            _enemyUnit.gameObject.SetActive(true);
+            _enemyUnits.gameObject.SetActive(true);
 
             Monster enemyMonster = EnemyParty.GetHealthyMonster();
 
-            _enemyUnit.Setup(enemyMonster);
+            _enemyUnits.Setup(enemyMonster);
             yield return _dialogueBox.TypeDialogue(Enemy.Name + " sent out " + enemyMonster.Base.Name + "!");
 
             _playerImage.gameObject.SetActive(false);
-            _playerUnit.gameObject.SetActive(true);
+            _playerUnits.gameObject.SetActive(true);
 
             Monster playerMonster = PlayerParty.GetHealthyMonster();
 
-            _playerUnit.Setup(playerMonster);
+            _playerUnits.Setup(playerMonster);
             yield return _dialogueBox.TypeDialogue("Go " + playerMonster.Base.Name + "!");
-            _dialogueBox.SetMoveNames(_playerUnit.Monster.Moves);
+            _dialogueBox.SetMoveNames(_playerUnits.Monster.Moves);
         }
 
         Field = new Field();
@@ -162,8 +165,8 @@ public class BattleSystem : MonoBehaviour
     {
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
-        _playerUnit.Hud.ClearData();
-        _enemyUnit.Hud.ClearData();
+        _playerUnits.Hud.ClearData();
+        _enemyUnits.Hud.ClearData();
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
         OnBattleOver(won);
     }
@@ -175,14 +178,14 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SwitchMonster(Monster newMonster)
     {
-        if (_playerUnit.Monster.Hp > 0)
+        if (_playerUnits.Monster.Hp > 0)
         {
-            yield return _dialogueBox.TypeDialogue("Come back " + _playerUnit.Monster.Base.Name + "!");
-            _playerUnit.PlayExitAnimation();
+            yield return _dialogueBox.TypeDialogue("Come back " + _playerUnits.Monster.Base.Name + "!");
+            _playerUnits.PlayExitAnimation();
             yield return new WaitForSeconds(0.75f);
         }
 
-        _playerUnit.Setup(newMonster);
+        _playerUnits.Setup(newMonster);
         _dialogueBox.SetMoveNames(newMonster.Moves);
         yield return _dialogueBox.TypeDialogue("Go " + newMonster.Base.Name + "!");
     }
@@ -191,7 +194,7 @@ public class BattleSystem : MonoBehaviour
     {
         Monster nextMonster = EnemyParty.GetHealthyMonster();
 
-        _enemyUnit.Setup(nextMonster);
+        _enemyUnits.Setup(nextMonster);
         yield return _dialogueBox.TypeDialogue(Enemy.Name + " sent out " + nextMonster.Base.Name + "!");
     }
 }

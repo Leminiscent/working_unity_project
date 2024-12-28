@@ -34,7 +34,7 @@ public class RecruitmentState : State<BattleSystem>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
-        _enemyMonster = _battleSystem.EnemyUnit.Monster;
+        _enemyMonster = _battleSystem.EnemyUnits.Monster;
         _dialogueBox = _battleSystem.DialogueBox;
         StartCoroutine(StartRecruitment());
     }
@@ -105,7 +105,7 @@ public class RecruitmentState : State<BattleSystem>
 
         // Update affinity level
         _enemyMonster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
-        yield return _battleSystem.EnemyUnit.Hud.SetAffinitySmooth();
+        yield return _battleSystem.EnemyUnits.Hud.SetAffinitySmooth();
 
         // Show reaction
         _dialogueBox.EnableDialogueText(true);
