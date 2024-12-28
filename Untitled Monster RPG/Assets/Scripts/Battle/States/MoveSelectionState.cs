@@ -32,8 +32,11 @@ public class MoveSelectionState : State<BattleSystem>
 
         if (Moves.Where(static m => m.Sp > 0).Count() == 0)
         {
-            _battleSystem.SelectedMove = -1;
-            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            _battleSystem.AddBattleAction(new BattleAction()
+            {
+                ActionType = BattleActionType.Fight,
+                SelectedMove = new Move(GlobalSettings.Instance.BackupMove)
+            });
             return;
         }
 

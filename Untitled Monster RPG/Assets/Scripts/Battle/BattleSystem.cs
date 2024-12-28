@@ -35,7 +35,8 @@ public class BattleSystem : MonoBehaviour
 
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
-    private int _unitCount;
+    private int _unitCount = 1;
+    private int _selectingUnitIndex = 0;
     private List<BattleAction> _battleActions;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
@@ -53,6 +54,7 @@ public class BattleSystem : MonoBehaviour
     public PartyScreen PartyScreen => _partyScreen;
     public List<BattleUnit> PlayerUnits => _playerUnits;
     public List<BattleUnit> EnemyUnits => _enemyUnits;
+    public BattleUnit SelectingUnit => PlayerUnits[_selectingUnitIndex];
     public AudioClip BattleVictoryMusic => _battleVictoryMusic;
 
     private void Awake()
@@ -182,6 +184,7 @@ public class BattleSystem : MonoBehaviour
         BattleIsOver = false;
         EscapeAttempts = 0;
         _partyScreen.Init();
+        _selectingUnitIndex = 0;
         StateMachine.ChangeState(ActionSelectionState.Instance);
     }
 
@@ -213,6 +216,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            _selectingUnitIndex++;
             StateMachine.ChangeState(ActionSelectionState.Instance);
         }
     }
@@ -220,6 +224,7 @@ public class BattleSystem : MonoBehaviour
     public void ClearBattleActions()
     {
         _battleActions = new List<BattleAction>();
+        _selectingUnitIndex = 0;
     }
 
     public IEnumerator SwitchMonster(Monster newMonster, BattleUnit unitToSwitch)

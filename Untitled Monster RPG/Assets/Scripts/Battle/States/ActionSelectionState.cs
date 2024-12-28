@@ -48,7 +48,7 @@ public class ActionSelectionState : State<BattleSystem>
         {
             case 0:
                 // Fight
-                MoveSelectionState.Instance.Moves = _battleSystem.PlayerUnits.Monster.Moves;
+                MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Monster.Moves;
                 _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
                 break;
             case 1:
