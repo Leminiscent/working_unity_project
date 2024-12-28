@@ -67,7 +67,8 @@ public class MoveSelectionState : State<BattleSystem>
         _battleSystem.AddBattleAction(new BattleAction()
         {
             ActionType = BattleActionType.Fight,
-            SelectedMove = Moves[selection]
+            SelectedMove = Moves[selection],
+            TargetUnit = _battleSystem.EnemyUnits[0]
         });
     }
 

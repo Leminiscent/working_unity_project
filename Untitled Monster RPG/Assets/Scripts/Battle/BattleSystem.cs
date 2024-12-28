@@ -208,6 +208,7 @@ public class BattleSystem : MonoBehaviour
 
     public void AddBattleAction(BattleAction battleAction)
     {
+        battleAction.SourceUnit = SelectingUnit;
         _battleActions.Add(battleAction);
 
         if (_battleActions.Count == _unitCount)
