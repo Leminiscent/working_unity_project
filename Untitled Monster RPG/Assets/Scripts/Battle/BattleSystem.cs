@@ -203,6 +203,25 @@ public class BattleSystem : MonoBehaviour
         StateMachine.Execute();
     }
 
+    public void AddBattleAction(BattleAction battleAction)
+    {
+        _battleActions.Add(battleAction);
+
+        if (_battleActions.Count == _unitCount)
+        {
+            StateMachine.ChangeState(RunTurnState.Instance);
+        }
+        else
+        {
+            StateMachine.ChangeState(ActionSelectionState.Instance);
+        }
+    }
+
+    public void ClearBattleActions()
+    {
+        _battleActions = new List<BattleAction>();
+    }
+
     public IEnumerator SwitchMonster(Monster newMonster, BattleUnit unitToSwitch)
     {
         if (unitToSwitch.Monster.Hp > 0)

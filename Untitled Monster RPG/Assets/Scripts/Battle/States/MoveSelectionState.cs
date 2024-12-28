@@ -61,8 +61,11 @@ public class MoveSelectionState : State<BattleSystem>
 
     private void OnMoveSelected(int selection)
     {
-        _battleSystem.SelectedMove = selection;
-        _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+        _battleSystem.AddBattleAction(new BattleAction()
+        {
+            ActionType = BattleActionType.Fight,
+            SelectedMove = Moves[selection]
+        });
     }
 
     private void OnBack()

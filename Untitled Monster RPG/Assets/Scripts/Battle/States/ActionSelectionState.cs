@@ -48,14 +48,15 @@ public class ActionSelectionState : State<BattleSystem>
         {
             case 0:
                 // Fight
-                _battleSystem.SelectedAction = BattleActionType.Fight;
                 MoveSelectionState.Instance.Moves = _battleSystem.PlayerUnits.Monster.Moves;
                 _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
                 break;
             case 1:
                 // Talk
-                _battleSystem.SelectedAction = BattleActionType.Talk;
-                _battleSystem.StateMachine.ChangeState(RecruitmentState.Instance);
+                _battleSystem.AddBattleAction(new BattleAction()
+                {
+                    ActionType = BattleActionType.Talk
+                });
                 break;
             case 2:
                 // Item
@@ -71,8 +72,10 @@ public class ActionSelectionState : State<BattleSystem>
                 break;
             case 5:
                 // Run
-                _battleSystem.SelectedAction = BattleActionType.Run;
-                _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+                _battleSystem.AddBattleAction(new BattleAction()
+                {
+                    ActionType = BattleActionType.Run
+                });
                 break;
             default:
                 Debug.LogWarning("Invalid action selection: " + selection);
@@ -87,9 +90,11 @@ public class ActionSelectionState : State<BattleSystem>
         ItemBase selectedItem = InventoryState.Instance.SelectedItem;
         if (selectedItem != null)
         {
-            _battleSystem.SelectedAction = BattleActionType.UseItem;
-            _battleSystem.SelectedItem = selectedItem;
-            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            _battleSystem.AddBattleAction(new BattleAction()
+            {
+                ActionType = BattleActionType.UseItem,
+                SelectedItem = selectedItem
+            });
         }
     }
 
@@ -100,9 +105,11 @@ public class ActionSelectionState : State<BattleSystem>
         Monster selectedMonster = PartyState.Instance.SelectedMonster;
         if (selectedMonster != null)
         {
-            _battleSystem.SelectedAction = BattleActionType.SwitchMonster;
-            _battleSystem.SelectedMonster = selectedMonster;
-            _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
+            _battleSystem.AddBattleAction(new BattleAction()
+            {
+                ActionType = BattleActionType.SwitchMonster,
+                SelectedMonster = selectedMonster
+            });
         }
     }
 }
