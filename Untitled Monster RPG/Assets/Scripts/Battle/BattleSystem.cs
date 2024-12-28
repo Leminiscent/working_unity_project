@@ -228,15 +228,6 @@ public class BattleSystem : MonoBehaviour
     }
 }
 
-public enum BattleActionType
-{
-    Fight,
-    Talk,
-    UseItem,
-    SwitchMonster,
-    Run
-}
-
 public enum BattleTrigger
 {
     Desert,
