@@ -36,13 +36,10 @@ public class BattleSystem : MonoBehaviour
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
     private int _unitCount;
+    private List<BattleAction> _battleActions;
 
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public event Action<bool> OnBattleOver;
-    public int SelectedMove { get; set; }
-    public BattleActionType SelectedAction { get; set; }
-    public Monster SelectedMonster { get; set; }
-    public ItemBase SelectedItem { get; set; }
     public bool BattleIsOver { get; private set; }
     public MonsterParty PlayerParty { get; private set; }
     public MonsterParty EnemyParty { get; private set; }
@@ -104,6 +101,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle()
     {
         StateMachine = new StateMachine<BattleSystem>(this);
+        _battleActions = new List<BattleAction>();
         for (int i = 0; i < _unitCount; i++)
         {
             _playerUnits[i].Clear();
