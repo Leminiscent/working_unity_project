@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -34,10 +35,15 @@ public class BattleState : State<GameController>
 
         if (Master == null)
         {
-            Monster wildMonster = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
-            Monster wildMonsterCopy = new(wildMonster.Base, wildMonster.Level);
+            List<Monster> wildMonsters = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonsters(count: Random.Range(1, 4));
+            List<Monster> wildMonsterCopies = new();
 
-            _battleSystem.StartWildBattle(playerParty, wildMonsterCopy, Trigger);
+            for (int i = 0; i < wildMonsters.Count; i++)
+            {
+                wildMonsterCopies.Add(new(wildMonsters[i].Base, wildMonsters[i].Level));
+            }
+
+            _battleSystem.StartWildBattle(playerParty, wildMonsterCopies, Trigger);
         }
         else
         {

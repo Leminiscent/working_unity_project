@@ -50,6 +50,18 @@ public class MapArea : MonoBehaviour
         wildMonster.Init();
         return wildMonster;
     }
+
+    public List<Monster> GetRandomWildMonsters(int count)
+    {
+        List<Monster> monsters = new();
+
+        for (int i = 0; i < count; i++)
+        {
+            Monster monster = GetRandomWildMonster();
+            monsters.Add(monster);
+        }
+        return monsters;
+    }
 }
 
 [System.Serializable]

@@ -46,7 +46,7 @@ public class BattleSystem : MonoBehaviour
     public bool BattleIsOver { get; private set; }
     public MonsterParty PlayerParty { get; private set; }
     public MonsterParty EnemyParty { get; private set; }
-    public Monster WildMonsters { get; private set; }
+    public List<Monster> WildMonsters { get; private set; }
     public Field Field { get; private set; }
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
