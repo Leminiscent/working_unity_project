@@ -47,9 +47,9 @@ public class RunTurnState : State<BattleSystem>
         StartCoroutine(RunTurns(_battleSystem.SelectedAction));
     }
 
-    private IEnumerator RunTurns(BattleAction playerAction)
+    private IEnumerator RunTurns(BattleActionType playerAction)
     {
-        if (playerAction == BattleAction.Fight)
+        if (playerAction == BattleActionType.Fight)
         {
             _playerUnit.Monster.CurrentMove = (_battleSystem.SelectedMove != -1) ? _playerUnit.Monster.Moves[_battleSystem.SelectedMove] : new Move(GlobalSettings.Instance.BackupMove);
             _enemyUnit.Monster.CurrentMove = _enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
@@ -90,11 +90,11 @@ public class RunTurnState : State<BattleSystem>
         }
         else
         {
-            if (playerAction == BattleAction.SwitchMonster)
+            if (playerAction == BattleActionType.SwitchMonster)
             {
                 yield return _battleSystem.SwitchMonster(_battleSystem.SelectedMonster);
             }
-            else if (playerAction == BattleAction.Run)
+            else if (playerAction == BattleActionType.Run)
             {
                 yield return AttemptEscape();
             }

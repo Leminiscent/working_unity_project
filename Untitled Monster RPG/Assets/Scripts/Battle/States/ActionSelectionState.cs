@@ -48,13 +48,13 @@ public class ActionSelectionState : State<BattleSystem>
         {
             case 0:
                 // Fight
-                _battleSystem.SelectedAction = BattleAction.Fight;
+                _battleSystem.SelectedAction = BattleActionType.Fight;
                 MoveSelectionState.Instance.Moves = _battleSystem.PlayerUnits.Monster.Moves;
                 _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
                 break;
             case 1:
                 // Talk
-                _battleSystem.SelectedAction = BattleAction.Talk;
+                _battleSystem.SelectedAction = BattleActionType.Talk;
                 _battleSystem.StateMachine.ChangeState(RecruitmentState.Instance);
                 break;
             case 2:
@@ -71,7 +71,7 @@ public class ActionSelectionState : State<BattleSystem>
                 break;
             case 5:
                 // Run
-                _battleSystem.SelectedAction = BattleAction.Run;
+                _battleSystem.SelectedAction = BattleActionType.Run;
                 _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
                 break;
             default:
@@ -87,7 +87,7 @@ public class ActionSelectionState : State<BattleSystem>
         ItemBase selectedItem = InventoryState.Instance.SelectedItem;
         if (selectedItem != null)
         {
-            _battleSystem.SelectedAction = BattleAction.UseItem;
+            _battleSystem.SelectedAction = BattleActionType.UseItem;
             _battleSystem.SelectedItem = selectedItem;
             _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
@@ -100,7 +100,7 @@ public class ActionSelectionState : State<BattleSystem>
         Monster selectedMonster = PartyState.Instance.SelectedMonster;
         if (selectedMonster != null)
         {
-            _battleSystem.SelectedAction = BattleAction.SwitchMonster;
+            _battleSystem.SelectedAction = BattleActionType.SwitchMonster;
             _battleSystem.SelectedMonster = selectedMonster;
             _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }

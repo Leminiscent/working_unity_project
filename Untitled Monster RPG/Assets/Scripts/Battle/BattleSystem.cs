@@ -40,7 +40,7 @@ public class BattleSystem : MonoBehaviour
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public event Action<bool> OnBattleOver;
     public int SelectedMove { get; set; }
-    public BattleAction SelectedAction { get; set; }
+    public BattleActionType SelectedAction { get; set; }
     public Monster SelectedMonster { get; set; }
     public ItemBase SelectedItem { get; set; }
     public bool BattleIsOver { get; private set; }
@@ -228,7 +228,7 @@ public class BattleSystem : MonoBehaviour
     }
 }
 
-public enum BattleAction
+public enum BattleActionType
 {
     Fight,
     Talk,
