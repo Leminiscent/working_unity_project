@@ -318,14 +318,8 @@ public class RunTurnState : State<BattleSystem>
         if (move.DrainPercentage != 0 && sourceUnit.Monster.Hp != sourceUnit.Monster.MaxHp)
         {
             int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
-            string updatedTargetUnitName = targetUnit.Monster.Base.Name;
 
-            if (targetUnit.Monster == _enemyUnit.Monster)
-            {
-                updatedTargetUnitName = _isMasterBattle ? $"the enemy {targetUnit.Monster.Base.Name}" : $"the wild {targetUnit.Monster.Base.Name}";
-            }
-
-            sourceUnit.Monster.DrainHealth(heal, updatedTargetUnitName);
+            sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster.Base.Name);
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
