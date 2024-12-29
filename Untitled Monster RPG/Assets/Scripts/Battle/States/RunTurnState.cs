@@ -66,7 +66,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.SwitchMonster)
             {
-
+                yield return _battleSystem.SwitchMonster(action.SelectedMonster, action.SourceUnit);
             }
             else if (action.ActionType == BattleActionType.Run)
             {
