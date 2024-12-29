@@ -7,10 +7,6 @@ using Utils.StateMachine;
 public class RunTurnState : State<BattleSystem>
 {
     private BattleSystem _battleSystem;
-    private BattleUnit _playerUnit;
-    private BattleUnit _enemyUnit;
-    private string _playerMonsterName;
-    private string _enemyMonsterName;
     private BattleDialogueBox _dialogueBox;
     private MonsterParty _playerParty;
     private MonsterParty _enemyParty;
@@ -35,18 +31,16 @@ public class RunTurnState : State<BattleSystem>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
-        _playerUnit = _battleSystem.PlayerUnits;
-        _enemyUnit = _battleSystem.EnemyUnits;
         _dialogueBox = _battleSystem.DialogueBox;
         _playerParty = _battleSystem.PlayerParty;
         _enemyParty = _battleSystem.EnemyParty;
         _isMasterBattle = _battleSystem.IsMasterBattle;
         _field = _battleSystem.Field;
 
-        StartCoroutine(RunTurns(_battleSystem.SelectedAction));
+        StartCoroutine(RunTurns());
     }
 
-    private IEnumerator RunTurns(BattleActionType playerAction)
+    private IEnumerator RunTurns()
     {
         foreach (BattleAction action in BattleActions)
         {
@@ -54,7 +48,6 @@ public class RunTurnState : State<BattleSystem>
             {
                 action.SourceUnit.Monster.CurrentMove = action.SelectedMove;
                 yield return RunMove(action.SourceUnit, action.TargetUnit, action.SelectedMove);
-                yield return RunAfterTurn(action.SourceUnit);
             }
             else if (action.ActionType == BattleActionType.Talk)
             {
@@ -70,91 +63,30 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.Run)
             {
-
-            }
-        }
-
-        if (playerAction == BattleActionType.Fight)
-        {
-            _playerUnit.Monster.CurrentMove = (_battleSystem.SelectedMove != -1) ? _playerUnit.Monster.Moves[_battleSystem.SelectedMove] : new Move(GlobalSettings.Instance.BackupMove);
-            _enemyUnit.Monster.CurrentMove = _enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
-
-            int playerMovePriority = _playerUnit.Monster.CurrentMove.Base.Priority;
-            int enemyMovePriority = _enemyUnit.Monster.CurrentMove.Base.Priority;
-            bool playerGoesFirst = true;
-
-            if (enemyMovePriority > playerMovePriority)
-            {
-                playerGoesFirst = false;
-            }
-            else if (enemyMovePriority == playerMovePriority)
-            {
-                playerGoesFirst = _playerUnit.Monster.Agility >= _enemyUnit.Monster.Agility;
-            }
-
-            BattleUnit firstUnit = playerGoesFirst ? _playerUnit : _enemyUnit;
-            string firstUnitName = playerGoesFirst ? _playerMonsterName : _enemyMonsterName;
-            BattleUnit secondUnit = playerGoesFirst ? _enemyUnit : _playerUnit;
-            string secondUnitName = playerGoesFirst ? _enemyMonsterName : _playerMonsterName;
-            Monster secondMonster = secondUnit.Monster;
-
-            yield return RunMove(firstUnit, secondUnit, firstUnit.Monster.CurrentMove);
-            if (_battleSystem.BattleIsOver)
-            {
-                yield break;
-            }
-
-            if (secondMonster.Hp > 0)
-            {
-                yield return RunMove(secondUnit, firstUnit, secondMonster.CurrentMove);
-                if (_battleSystem.BattleIsOver)
-                {
-                    yield break;
-                }
-            }
-        }
-        else
-        {
-            if (playerAction == BattleActionType.SwitchMonster)
-            {
-                yield return _battleSystem.SwitchMonster(_battleSystem.SelectedMonster);
-            }
-            else if (playerAction == BattleActionType.Run)
-            {
                 yield return AttemptEscape();
             }
 
-            _enemyUnit.Monster.CurrentMove = _enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
-            yield return RunMove(_enemyUnit, _playerUnit, _enemyUnit.Monster.CurrentMove);
             if (_battleSystem.BattleIsOver)
             {
                 yield break;
             }
         }
 
-        BattleUnit fasterUnit = _playerUnit.Monster.Agility >= _enemyUnit.Monster.Agility ? _playerUnit : _enemyUnit;
-        string fasterUnitName = fasterUnit == _playerUnit ? _playerMonsterName : _enemyMonsterName;
-        BattleUnit slowerUnit = fasterUnit == _playerUnit ? _enemyUnit : _playerUnit;
-        string slowerUnitName = slowerUnit == _playerUnit ? _playerMonsterName : _enemyMonsterName;
+        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).OrderByDescending(u => u.Monster.Agility).ToList();
 
         if (_field.Weather != null)
         {
             yield return _dialogueBox.TypeDialogue(_field.Weather.EffectMessage);
 
-            _field.Weather.OnWeather?.Invoke(fasterUnit.Monster);
-            yield return ShowStatusChanges(fasterUnit.Monster);
-            yield return fasterUnit.Hud.WaitForHPUpdate();
-            if (fasterUnit.Monster.Hp <= 0)
+            foreach (BattleUnit unit in agilitySortedUnits)
             {
-                yield return HandleMonsterDefeat(fasterUnit);
-            }
-
-            _field.Weather.OnWeather?.Invoke(slowerUnit.Monster);
-            yield return ShowStatusChanges(slowerUnit.Monster);
-            yield return slowerUnit.Hud.WaitForHPUpdate();
-            if (slowerUnit.Monster.Hp <= 0)
-            {
-                yield return HandleMonsterDefeat(slowerUnit);
+                _field.Weather.OnWeather?.Invoke(unit.Monster);
+                yield return ShowStatusChanges(unit.Monster);
+                yield return unit.Hud.WaitForHPUpdate();
+                if (unit.Monster.Hp <= 0)
+                {
+                    yield return HandleMonsterDefeat(unit);
+                }
             }
 
             if (_field.WeatherDuration != null)
@@ -169,8 +101,12 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        yield return RunAfterTurn(fasterUnit);
-        yield return RunAfterTurn(slowerUnit);
+        foreach (BattleUnit unit in agilitySortedUnits)
+        {
+            yield return RunAfterTurn(unit);
+        }
+
+        _battleSystem.ClearBattleActions();
 
         if (!_battleSystem.BattleIsOver)
         {
@@ -396,7 +332,7 @@ public class RunTurnState : State<BattleSystem>
         yield return ShowStatusChanges(targetUnit.Monster);
     }
 
-    private IEnumerator RunMoveEffects(MoveEffects effects, Monster source, string sourceName, Monster target, string targetName, MoveTarget moveTarget)
+    private IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)
     {
         // Stat Boosts
         if (effects.Boosts != null)
@@ -580,7 +516,7 @@ public class RunTurnState : State<BattleSystem>
             if (nextMonster != null)
             {
                 yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
-                yield return _battleSystem.SwitchMonster(PartyState.Instance.SelectedMonster);
+                yield return _battleSystem.SwitchMonster(PartyState.Instance.SelectedMonster, defeatedUnit);
             }
             else
             {

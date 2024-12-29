@@ -218,7 +218,7 @@ public class BattleSystem : MonoBehaviour
                 _battleActions.Add(new BattleAction()
                 {
                     ActionType = BattleActionType.Fight,
-                    SelectedMove = enemyUnit.Monster.GetRandomMove(),
+                    SelectedMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove),
                     SourceUnit = enemyUnit,
                     TargetUnit = _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)]
                 });
