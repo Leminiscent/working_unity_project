@@ -72,7 +72,7 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).OrderByDescending(u => u.Monster.Agility).ToList();
+        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).OrderByDescending(static u => u.Monster.Agility).ToList();
 
         if (_field.Weather != null)
         {
