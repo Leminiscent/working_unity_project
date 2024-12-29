@@ -50,6 +50,30 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator RunTurns(BattleActionType playerAction)
     {
+        foreach (BattleAction action in BattleActions)
+        {
+            if (action.ActionType == BattleActionType.Fight)
+            {
+                
+            }
+            else if (action.ActionType == BattleActionType.Talk)
+            {
+
+            }
+            else if (action.ActionType == BattleActionType.UseItem)
+            {
+
+            }
+            else if (action.ActionType == BattleActionType.SwitchMonster)
+            {
+
+            }
+            else if (action.ActionType == BattleActionType.Run)
+            {
+
+            }
+        }
+
         if (playerAction == BattleActionType.Fight)
         {
             _playerUnit.Monster.CurrentMove = (_battleSystem.SelectedMove != -1) ? _playerUnit.Monster.Moves[_battleSystem.SelectedMove] : new Move(GlobalSettings.Instance.BackupMove);
