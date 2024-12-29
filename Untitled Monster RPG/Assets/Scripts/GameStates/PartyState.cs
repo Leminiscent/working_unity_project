@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -85,7 +86,7 @@ public class PartyState : State<GameController>
                     _partyScreen.SetMessageText(SelectedMonster.Base.Name + " is unable to fight!");
                     yield break;
                 }
-                if (SelectedMonster == battleState.BattleSystem.PlayerUnits.Monster)
+                if (battleState.BattleSystem.PlayerUnits.Any(u => u.Monster == SelectedMonster))
                 {
                     _partyScreen.SetMessageText(SelectedMonster.Base.Name + " is already in battle!");
                     yield break;
@@ -161,7 +162,7 @@ public class PartyState : State<GameController>
         {
             BattleState battleState = prevState as BattleState;
 
-            if (battleState.BattleSystem.PlayerUnits.Monster.Hp <= 0)
+            if (battleState.BattleSystem.PlayerUnits.Any(static u => u.Monster.Hp <= 0))
             {
                 _partyScreen.SetMessageText("You have to choose a monster!");
                 return;

@@ -55,7 +55,9 @@ public class ActionSelectionState : State<BattleSystem>
                 // Talk
                 _battleSystem.AddBattleAction(new BattleAction()
                 {
-                    ActionType = BattleActionType.Talk
+                    ActionType = BattleActionType.Talk,
+                    TargetUnit = _battleSystem.EnemyUnits[0] // TODO: Implement multiple enemies
+
                 });
                 break;
             case 2:

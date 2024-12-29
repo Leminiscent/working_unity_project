@@ -9,7 +9,6 @@ public class RecruitmentState : State<BattleSystem>
     [SerializeField] private AnswerSelectionUI _selectionUI;
 
     private BattleSystem _battleSystem;
-    private Monster _enemyMonster;
     private BattleDialogueBox _dialogueBox;
     private List<RecruitmentQuestion> _questions;
     private List<RecruitmentQuestion> _selectedQuestions;
@@ -18,6 +17,7 @@ public class RecruitmentState : State<BattleSystem>
     private float _selectionTimer = 0;
 
     public static RecruitmentState Instance { get; private set; }
+    public BattleUnit TargetUnit { get; set; }
 
     private void Awake()
     {
@@ -34,7 +34,6 @@ public class RecruitmentState : State<BattleSystem>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
-        _enemyMonster = _battleSystem.EnemyUnits.Monster;
         _dialogueBox = _battleSystem.DialogueBox;
         StartCoroutine(StartRecruitment());
     }
@@ -70,7 +69,7 @@ public class RecruitmentState : State<BattleSystem>
         yield return _dialogueBox.TypeDialogue("Alright, let's talk!");
 
         // Select 3 random questions
-        _questions = _enemyMonster.Base.RecruitmentQuestions.OrderBy(static q => Random.value).ToList();
+        _questions = TargetUnit.Monster.Base.RecruitmentQuestions.OrderBy(static q => Random.value).ToList();
         _selectedQuestions = _questions.Take(3).ToList();
         _currentQuestionIndex = 0;
         yield return PresentQuestion();
@@ -104,8 +103,8 @@ public class RecruitmentState : State<BattleSystem>
         RecruitmentAnswer selectedAnswer = currentQuestion.Answers[selectedAnswerIndex];
 
         // Update affinity level
-        _enemyMonster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
-        yield return _battleSystem.EnemyUnits.Hud.SetAffinitySmooth();
+        TargetUnit.Monster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
+        yield return TargetUnit.Hud.SetAffinitySmooth();
 
         // Show reaction
         _dialogueBox.EnableDialogueText(true);
@@ -120,25 +119,25 @@ public class RecruitmentState : State<BattleSystem>
         else
         {
             // Attempt recruitment
-            yield return AttemptRecruitment(_enemyMonster);
+            yield return AttemptRecruitment();
         }
     }
 
     private string GenerateReaction(int affinityScore)
     {
         return affinityScore == 2
-            ? _enemyMonster.Base.Name + " seems to love your answer!"
+            ? TargetUnit.Monster.Base.Name + " seems to love your answer!"
             : affinityScore == 1
-                ? _enemyMonster.Base.Name + " seems to like your answer."
+                ? TargetUnit.Monster.Base.Name + " seems to like your answer."
                 : affinityScore == -1
-                            ? _enemyMonster.Base.Name + " seems to dislike your answer..."
-                            : _enemyMonster.Base.Name + " seems to hate your answer!";
+                            ? TargetUnit.Monster.Base.Name + " seems to dislike your answer..."
+                            : TargetUnit.Monster.Base.Name + " seems to hate your answer!";
     }
 
-    private IEnumerator AttemptRecruitment(Monster targetMonster)
+    private IEnumerator AttemptRecruitment()
     {
         // Calculate recruitment chance
-        float a = Mathf.Min(Mathf.Max(targetMonster.AffinityLevel - 3, 0), 3) * ((3 * targetMonster.MaxHp) - (2 * targetMonster.Hp)) * targetMonster.Base.RecruitRate * ConditionsDB.GetStatusBonus(targetMonster.Status) / (3 * targetMonster.MaxHp);
+        float a = Mathf.Min(Mathf.Max(TargetUnit.Monster.AffinityLevel - 3, 0), 3) * ((3 * TargetUnit.Monster.MaxHp) - (2 * TargetUnit.Monster.Hp)) * TargetUnit.Monster.Base.RecruitRate * ConditionsDB.GetStatusBonus(TargetUnit.Monster.Status) / (3 * TargetUnit.Monster.MaxHp);
         bool canRecruit;
 
         if (a >= 255)
@@ -154,7 +153,7 @@ public class RecruitmentState : State<BattleSystem>
 
         if (canRecruit)
         {
-            yield return _dialogueBox.TypeDialogue(_enemyMonster.Base.Name + " wants to join your party! Will you accept?");
+            yield return _dialogueBox.TypeDialogue(TargetUnit.Monster.Base.Name + " wants to join your party! Will you accept?");
 
             // Present choice to accept or reject
             _dialogueBox.EnableDialogueText(false);
@@ -164,7 +163,7 @@ public class RecruitmentState : State<BattleSystem>
         }
         else
         {
-            yield return _dialogueBox.TypeDialogue(_enemyMonster.Base.Name + " refused to join you.");
+            yield return _dialogueBox.TypeDialogue(TargetUnit.Monster.Base.Name + " refused to join you.");
             _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }
@@ -175,14 +174,14 @@ public class RecruitmentState : State<BattleSystem>
         if (selection == 0)
         {
             // Yes
-            yield return _dialogueBox.TypeDialogue($"{_enemyMonster.Base.Name} was recruited!");
-            _battleSystem.PlayerParty.AddMonster(_enemyMonster);
+            yield return _dialogueBox.TypeDialogue($"{TargetUnit.Monster.Base.Name} was recruited!");
+            _battleSystem.PlayerParty.AddMonster(TargetUnit.Monster);
             _battleSystem.BattleOver(true);
         }
         else
         {
             // No
-            yield return _dialogueBox.TypeDialogue($"{_enemyMonster.Base.Name} was rejected.");
+            yield return _dialogueBox.TypeDialogue($"{TargetUnit.Monster.Base.Name} was rejected.");
             _battleSystem.StateMachine.ChangeState(RunTurnState.Instance);
         }
     }

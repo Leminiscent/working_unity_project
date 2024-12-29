@@ -35,7 +35,8 @@ public class MoveSelectionState : State<BattleSystem>
             _battleSystem.AddBattleAction(new BattleAction()
             {
                 ActionType = BattleActionType.Fight,
-                SelectedMove = new Move(GlobalSettings.Instance.BackupMove)
+                SelectedMove = new Move(GlobalSettings.Instance.BackupMove),
+                TargetUnit = _battleSystem.EnemyUnits[0] // TODO: Implement multiple enemies
             });
             return;
         }
@@ -68,7 +69,7 @@ public class MoveSelectionState : State<BattleSystem>
         {
             ActionType = BattleActionType.Fight,
             SelectedMove = Moves[selection],
-            TargetUnit = _battleSystem.EnemyUnits[0]
+            TargetUnit = _battleSystem.EnemyUnits[0] // TODO: Implement multiple enemies
         });
     }
 
