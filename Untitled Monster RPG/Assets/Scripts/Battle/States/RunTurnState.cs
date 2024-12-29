@@ -437,65 +437,69 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
 
-            _playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
-
             int expYield = defeatedUnit.Monster.Base.ExpYield;
-            int expGain = Mathf.FloorToInt(expYield * enemyLevel * masterBonus / 7);
+            int expGain = Mathf.FloorToInt(expYield * enemyLevel * masterBonus / 7) / _battleSystem.PlayerUnits.Count;
 
-            if (_playerUnit.Monster.Level < GlobalSettings.Instance.MaxLevel)
+            for (int i = 0; i < _battleSystem.PlayerUnits.Count; i++)
             {
-                int maxExp = _playerUnit.Monster.Base.GetExpForLevel(GlobalSettings.Instance.MaxLevel);
-                int expNeeded = maxExp - _playerUnit.Monster.Exp;
+                BattleUnit playerUnit = _battleSystem.PlayerUnits[i];
+                playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
 
-                expGain = Mathf.Min(expGain, expNeeded);
-                _playerUnit.Monster.Exp += expGain;
-                yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} gained {expGain} experience!");
-                yield return _playerUnit.Hud.SetExpSmooth();
-
-                while (_playerUnit.Monster.CheckForLevelUp())
+                if (playerUnit.Monster.Level < GlobalSettings.Instance.MaxLevel)
                 {
-                    _playerUnit.Monster.HasJustLeveledUp = true;
-                    _playerUnit.Hud.SetLevel();
-                    yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} grew to level {_playerUnit.Monster.Level}!");
+                    int maxExp = playerUnit.Monster.Base.GetExpForLevel(GlobalSettings.Instance.MaxLevel);
+                    int expNeeded = maxExp - playerUnit.Monster.Exp;
 
-                    LearnableMove newMove = _playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
+                    expGain = Mathf.Min(expGain, expNeeded);
+                    playerUnit.Monster.Exp += expGain;
+                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
+                    yield return playerUnit.Hud.SetExpSmooth();
 
-                    if (newMove != null)
+                    while (playerUnit.Monster.CheckForLevelUp())
                     {
-                        if (_playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
+                        playerUnit.Monster.HasJustLeveledUp = true;
+                        playerUnit.Hud.SetLevel();
+                        yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} grew to level {playerUnit.Monster.Level}!");
+
+                        LearnableMove newMove = playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
+
+                        if (newMove != null)
                         {
-                            _playerUnit.Monster.LearnMove(newMove.Base);
-                            yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} learned {newMove.Base.Name}!");
-                            _dialogueBox.SetMoveNames(_playerUnit.Monster.Moves);
-                        }
-                        else
-                        {
-                            yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} is trying to learn {newMove.Base.Name}!");
-                            yield return _dialogueBox.TypeDialogue($"But {_playerMonsterName} already knows {MonsterBase.MaxMoveCount} moves!");
-                            yield return _dialogueBox.TypeDialogue($"Choose a move to forget.");
-
-                            ForgettingMoveState.Instance.CurrentMoves = _playerUnit.Monster.Moves.Select(static m => m.Base).ToList();
-                            ForgettingMoveState.Instance.NewMove = newMove.Base;
-                            yield return GameController.Instance.StateMachine.PushAndWait(ForgettingMoveState.Instance);
-
-                            int moveIndex = ForgettingMoveState.Instance.Selection;
-
-                            if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
+                            if (playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
                             {
-                                yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} did not learn {newMove.Base.Name}!");
+                                playerUnit.Monster.LearnMove(newMove.Base);
+                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} learned {newMove.Base.Name}!");
+                                _dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
                             }
                             else
                             {
-                                Move selectedMove = _playerUnit.Monster.Moves[moveIndex];
+                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
+                                yield return _dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
+                                yield return _dialogueBox.TypeDialogue($"Choose a move to forget.");
 
-                                yield return _dialogueBox.TypeDialogue($"{_playerMonsterName} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
-                                _playerUnit.Monster.Moves[moveIndex] = new Move(newMove.Base);
+                                ForgettingMoveState.Instance.CurrentMoves = playerUnit.Monster.Moves.Select(static m => m.Base).ToList();
+                                ForgettingMoveState.Instance.NewMove = newMove.Base;
+                                yield return GameController.Instance.StateMachine.PushAndWait(ForgettingMoveState.Instance);
+
+                                int moveIndex = ForgettingMoveState.Instance.Selection;
+
+                                if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
+                                {
+                                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} did not learn {newMove.Base.Name}!");
+                                }
+                                else
+                                {
+                                    Move selectedMove = playerUnit.Monster.Moves[moveIndex];
+
+                                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
+                                    playerUnit.Monster.Moves[moveIndex] = new Move(newMove.Base);
+                                }
                             }
                         }
+                        yield return playerUnit.Hud.SetExpSmooth(true);
                     }
-                    yield return _playerUnit.Hud.SetExpSmooth(true);
+                    yield return new WaitForSeconds(0.75f);
                 }
-                yield return new WaitForSeconds(0.75f);
             }
         }
 
@@ -572,17 +576,17 @@ public class RunTurnState : State<BattleSystem>
 
         ++_battleSystem.EscapeAttempts;
 
-        int playerAgility = _playerUnit.Monster.Agility;
-        int enemyAgility = _enemyUnit.Monster.Agility;
+        int minPlayerAgility = _battleSystem.PlayerUnits.Min(static u => u.Monster.Agility);
+        int maxEnemyAgility = _battleSystem.EnemyUnits.Max(static u => u.Monster.Agility);
 
-        if (playerAgility >= enemyAgility)
+        if (minPlayerAgility >= maxEnemyAgility)
         {
             yield return _dialogueBox.TypeDialogue("You got away safely!");
             _battleSystem.BattleOver(true);
         }
         else
         {
-            float f = ((playerAgility * 128 / enemyAgility) + (30 * _battleSystem.EscapeAttempts)) % 256;
+            float f = ((minPlayerAgility * 128 / maxEnemyAgility) + (30 * _battleSystem.EscapeAttempts)) % 256;
 
             if (Random.Range(0, 256) < f)
             {
