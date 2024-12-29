@@ -39,6 +39,12 @@ public class BattleUnit : MonoBehaviour
         PlayEnterAnimation();
     }
 
+    public void SetPosition(Vector3 newPosition)
+    {
+        _image.transform.localPosition = newPosition;
+        _originalPos = newPosition;
+    }
+
     public void Clear()
     {
         _hud.gameObject.SetActive(false);

@@ -33,6 +33,16 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private Sprite _mountainCloudsBackground;
     [SerializeField] private Sprite _wastelandBackground;
 
+    [Header("Player Unit Positions")]
+    [SerializeField] private Vector3[] _playerPositionsSingle;
+    [SerializeField] private Vector3[] _playerPositionsDouble;
+    [SerializeField] private Vector3[] _playerPositionsTriple;
+
+    [Header("Enemy Unit Positions")]
+    [SerializeField] private Vector3[] _enemyPositionsSingle;
+    [SerializeField] private Vector3[] _enemyPositionsDouble;
+    [SerializeField] private Vector3[] _enemyPositionsTriple;
+
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
     private int _playerUnitCount = 1;
@@ -73,7 +83,29 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    public void StartWildBattle(MonsterParty playerParty, List<Monster> wildMonsters, BattleTrigger trigger, int unitCount = 1)
+    private Vector3[] GetPlayerPositions(int unitCount)
+    {
+        return unitCount switch
+        {
+            1 => _playerPositionsSingle,
+            2 => _playerPositionsDouble,
+            3 => _playerPositionsTriple,
+            _ => _playerPositionsSingle,
+        };
+    }
+
+    private Vector3[] GetEnemyPositions(int unitCount)
+    {
+        return unitCount switch
+        {
+            1 => _enemyPositionsSingle,
+            2 => _enemyPositionsDouble,
+            3 => _enemyPositionsTriple,
+            _ => _enemyPositionsSingle,
+        };
+    }
+
+    public void StartWildBattle(MonsterParty playerParty, List<Monster> wildMonsters, BattleTrigger trigger, int unitCount)
     {
         IsMasterBattle = false;
 
@@ -86,7 +118,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger, int unitCount = 1)
+    public void StartMasterBattle(MonsterParty playerParty, MonsterParty enemyParty, BattleTrigger trigger, int unitCount)
     {
         IsMasterBattle = true;
 
@@ -107,13 +139,15 @@ public class BattleSystem : MonoBehaviour
         _battleActions = new List<BattleAction>();
         _playerUnitCount = Mathf.Min(PlayerParty.Monsters.Count, 3);
 
-        for (int i = 0; i < Mathf.Min(_playerUnitCount, 3); i++)
+        for (int i = 0; i < _playerUnits.Count; i++)
         {
             _playerUnits[i].Clear();
+            _playerUnits[i].gameObject.SetActive(i < _playerUnitCount);
         }
-        for (int i = 0; i < _enemyUnitCount; i++)
+        for (int i = 0; i < _enemyUnits.Count; i++)
         {
             _enemyUnits[i].Clear();
+            _enemyUnits[i].gameObject.SetActive(i < _enemyUnitCount);
         }
 
         if (_backgroundMapping.ContainsKey(_battleTrigger))
@@ -122,20 +156,25 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            _backgroundImage.sprite = _fieldBackground; // Fallback option
+            _backgroundImage.sprite = _fieldBackground; // Default background
         }
 
         List<Monster> playerMonsters = PlayerParty.GetHealthyMonsters(_playerUnitCount);
+
+        Vector3[] playerPositions = GetPlayerPositions(_playerUnitCount);
+        Vector3[] enemyPositions = GetEnemyPositions(_enemyUnitCount);
 
         if (!IsMasterBattle)
         {
             for (int i = 0; i < _playerUnitCount; i++)
             {
                 _playerUnits[i].Setup(playerMonsters[i]);
+                _playerUnits[i].SetPosition(playerPositions[i]);
             }
             for (int i = 0; i < _enemyUnitCount; i++)
             {
                 _enemyUnits[i].Setup(WildMonsters[i]);
+                _enemyUnits[i].SetPosition(enemyPositions[i]);
             }
 
             string wildAppearance = WildMonsters.Count > 1
@@ -169,6 +208,7 @@ public class BattleSystem : MonoBehaviour
             {
                 _enemyUnits[i].gameObject.SetActive(true);
                 _enemyUnits[i].Setup(enemyMonsters[i]);
+                _enemyUnits[i].SetPosition(enemyPositions[i]);
             }
 
             string monsterNames = enemyMonsters.Count > 1
@@ -183,6 +223,7 @@ public class BattleSystem : MonoBehaviour
             {
                 _playerUnits[i].gameObject.SetActive(true);
                 _playerUnits[i].Setup(playerMonsters[i]);
+                _playerUnits[i].SetPosition(playerPositions[i]);
             }
 
             monsterNames = playerMonsters.Count > 1
@@ -269,12 +310,10 @@ public class BattleSystem : MonoBehaviour
         yield return _dialogueBox.TypeDialogue($"Go {newMonster.Base.Name}!");
     }
 
-    public IEnumerator SendNextMasterMonster()
+    public IEnumerator SendNextMasterMonster(Monster newMonster, BattleUnit defeatedUnit)
     {
-        Monster nextMonster = EnemyParty.GetHealthyMonster();
-
-        _enemyUnits[0].Setup(nextMonster);
-        yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {nextMonster.Base.Name}!");
+        defeatedUnit.Setup(newMonster);
+        yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {newMonster.Base.Name}!");
     }
 }
 

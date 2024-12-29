@@ -533,7 +533,7 @@ public class RunTurnState : State<BattleSystem>
                 Monster nextMonster = _enemyParty.GetHealthyMonster();
                 if (nextMonster != null)
                 {
-                    StartCoroutine(_battleSystem.SendNextMasterMonster());
+                    StartCoroutine(_battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit));
                 }
                 else
                 {
