@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class BattleAction
     public Move SelectedMove { get; set; }
     public Monster SelectedMonster { get; set; }
     public ItemBase SelectedItem { get; set; }
+    public int Priority => (ActionType == BattleActionType.Fight) ? SelectedMove.Base.Priority : 99;
 }
 
 public enum BattleActionType
