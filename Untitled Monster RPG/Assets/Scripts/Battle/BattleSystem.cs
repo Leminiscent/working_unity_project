@@ -224,6 +224,7 @@ public class BattleSystem : MonoBehaviour
                 });
             }
             _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Base.Agility).ToList();
+            RunTurnState.Instance.BattleActions = _battleActions;
             StateMachine.ChangeState(RunTurnState.Instance);
         }
         else
