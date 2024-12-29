@@ -78,7 +78,6 @@ public class ActionSelectionState : State<BattleSystem>
                 });
                 break;
             default:
-                Debug.LogWarning("Invalid action selection: " + selection);
                 break;
         }
     }

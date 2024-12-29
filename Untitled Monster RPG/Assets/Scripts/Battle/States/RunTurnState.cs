@@ -51,7 +51,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.Talk)
             {
-
+                _battleSystem.StateMachine.ChangeState(RecruitmentState.Instance);
             }
             else if (action.ActionType == BattleActionType.UseItem)
             {
