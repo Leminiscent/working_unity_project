@@ -48,7 +48,7 @@ public class BattleState : State<GameController>
         else
         {
             MonsterParty enemyParty = Master.GetComponent<MonsterParty>();
-            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger, enemyParty.Monsters.Count);
+            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger, Mathf.Min(enemyParty.Monsters.Count, 3));
         }
 
         _battleSystem.OnBattleOver += EndBattle;

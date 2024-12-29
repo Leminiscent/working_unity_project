@@ -35,7 +35,8 @@ public class BattleSystem : MonoBehaviour
 
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
-    private int _unitCount = 1;
+    private int _playerUnitCount = 1;
+    private int _enemyUnitCount = 1;
     private int _selectingUnitIndex = 0;
     private List<BattleAction> _battleActions;
 
@@ -78,7 +79,7 @@ public class BattleSystem : MonoBehaviour
 
         PlayerParty = playerParty;
         WildMonsters = wildMonsters;
-        _unitCount = unitCount;
+        _enemyUnitCount = unitCount;
 
         _battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(_wildBattleMusic);
@@ -91,7 +92,7 @@ public class BattleSystem : MonoBehaviour
 
         PlayerParty = playerParty;
         EnemyParty = enemyParty;
-        _unitCount = unitCount;
+        _enemyUnitCount = unitCount;
 
         Player = playerParty.GetComponent<PlayerController>();
         Enemy = enemyParty.GetComponent<MasterController>();
@@ -104,9 +105,14 @@ public class BattleSystem : MonoBehaviour
     {
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
-        for (int i = 0; i < _unitCount; i++)
+        _playerUnitCount = Mathf.Min(PlayerParty.Monsters.Count, 3);
+
+        for (int i = 0; i < Mathf.Min(_playerUnitCount, 3); i++)
         {
             _playerUnits[i].Clear();
+        }
+        for (int i = 0; i < _enemyUnitCount; i++)
+        {
             _enemyUnits[i].Clear();
         }
 
@@ -119,27 +125,33 @@ public class BattleSystem : MonoBehaviour
             _backgroundImage.sprite = _fieldBackground; // Fallback option
         }
 
-        List<Monster> playerMonsters = PlayerParty.GetHealthyMonsters(_unitCount);
+        List<Monster> playerMonsters = PlayerParty.GetHealthyMonsters(_playerUnitCount);
 
         if (!IsMasterBattle)
         {
-            for (int i = 0; i < _unitCount; i++)
+            for (int i = 0; i < _playerUnitCount; i++)
             {
                 _playerUnits[i].Setup(playerMonsters[i]);
+            }
+            for (int i = 0; i < _enemyUnitCount; i++)
+            {
                 _enemyUnits[i].Setup(WildMonsters[i]);
             }
 
             string wildAppearance = WildMonsters.Count > 1
-                ? $"Wild {string.Join(", ", WildMonsters.Select(static m => m.Base.Name).Take(WildMonsters.Count - 1))} and {WildMonsters.Last().Base.Name} appeared!"
-                : $"A wild {WildMonsters[0].Base.Name} appeared!";
+                ? $"Wild {string.Join(", ", WildMonsters.Select(static m => m.Base.Name).Take(WildMonsters.Count - 1))} and {WildMonsters.Last().Base.Name} have appeared!"
+                : $"A wild {WildMonsters[0].Base.Name} has appeared!";
 
             yield return _dialogueBox.TypeDialogue(wildAppearance);
         }
         else
         {
-            for (int i = 0; i < _unitCount; i++)
+            for (int i = 0; i < _playerUnitCount; i++)
             {
                 _playerUnits[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < _enemyUnitCount; i++)
+            {
                 _enemyUnits[i].gameObject.SetActive(false);
             }
 
@@ -151,9 +163,9 @@ public class BattleSystem : MonoBehaviour
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
             _enemyImage.gameObject.SetActive(false);
 
-            List<Monster> enemyMonsters = EnemyParty.GetHealthyMonsters(_unitCount);
+            List<Monster> enemyMonsters = EnemyParty.GetHealthyMonsters(_enemyUnitCount);
 
-            for (int i = 0; i < _unitCount; i++)
+            for (int i = 0; i < _enemyUnitCount; i++)
             {
                 _enemyUnits[i].gameObject.SetActive(true);
                 _enemyUnits[i].Setup(enemyMonsters[i]);
@@ -167,7 +179,7 @@ public class BattleSystem : MonoBehaviour
 
             _playerImage.gameObject.SetActive(false);
 
-            for (int i = 0; i < _unitCount; i++)
+            for (int i = 0; i < _playerUnitCount; i++)
             {
                 _playerUnits[i].gameObject.SetActive(true);
                 _playerUnits[i].Setup(playerMonsters[i]);
@@ -192,9 +204,12 @@ public class BattleSystem : MonoBehaviour
     {
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
-        for (int i = 0; i < _unitCount; i++)
+        for (int i = 0; i < _playerUnitCount; i++)
         {
             _playerUnits[i].Hud.ClearData();
+        }
+        for (int i = 0; i < _enemyUnitCount; i++)
+        {
             _enemyUnits[i].Hud.ClearData();
         }
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
@@ -211,7 +226,7 @@ public class BattleSystem : MonoBehaviour
         battleAction.SourceUnit = SelectingUnit;
         _battleActions.Add(battleAction);
 
-        if (_battleActions.Count == _unitCount)
+        if (_battleActions.Count == _playerUnitCount)
         {
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
