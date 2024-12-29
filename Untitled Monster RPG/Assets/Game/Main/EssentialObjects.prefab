@@ -3798,9 +3798,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerUnits:
-  - {fileID: 8312686947697919906}
-  - {fileID: 4389037757822546034}
   - {fileID: 1076178838632886603}
+  - {fileID: 4389037757822546034}
+  - {fileID: 8312686947697919906}
   _enemyUnits:
   - {fileID: 1002776376797544074}
   - {fileID: 8355224647124606273}
@@ -7389,6 +7389,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 882303378455787476}
     m_Modifications:
+    - target: {fileID: 2297753451923177831, guid: 067580c4cec2ebd46abc4c64ddd8ee8f, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9490196
+      objectReference: {fileID: 0}
     - target: {fileID: 3900584345240620950, guid: 067580c4cec2ebd46abc4c64ddd8ee8f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
