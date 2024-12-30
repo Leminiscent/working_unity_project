@@ -269,12 +269,10 @@ public class BattleSystem : MonoBehaviour
         yield return _dialogueBox.TypeDialogue($"Go {newMonster.Base.Name}!");
     }
 
-    public IEnumerator SendNextMasterMonster()
+    public IEnumerator SendNextMasterMonster(Monster newMonster, BattleUnit defeatedUnit)
     {
-        Monster nextMonster = EnemyParty.GetHealthyMonster();
-
-        _enemyUnits[0].Setup(nextMonster);
-        yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {nextMonster.Base.Name}!");
+        defeatedUnit.Setup(newMonster);
+        yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {newMonster.Base.Name}!");
     }
 }
 
