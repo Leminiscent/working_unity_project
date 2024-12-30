@@ -8,8 +8,12 @@ using Utils.StateMachine;
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] private List<BattleUnit> _playerUnits;
-    [SerializeField] private List<BattleUnit> _enemyUnits;
+    [SerializeField] private BattleUnit _playerUnitSingle;
+    [SerializeField] private BattleUnit _enemyUnitSingle;
+    [SerializeField] private List<BattleUnit> _playerUnitsDouble;
+    [SerializeField] private List<BattleUnit> _enemyUnitsDouble;
+    [SerializeField] private List<BattleUnit> _playerUnitsTriple;
+    [SerializeField] private List<BattleUnit> _enemyUnitsTriple;
     [SerializeField] private BattleDialogueBox _dialogueBox;
     [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private Image _playerImage;
@@ -35,6 +39,8 @@ public class BattleSystem : MonoBehaviour
 
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
+    private List<BattleUnit> _playerUnits;
+    private List<BattleUnit> _enemyUnits;
     private int _playerUnitCount = 1;
     private int _enemyUnitCount = 1;
     private int _selectingUnitIndex = 0;
@@ -106,6 +112,31 @@ public class BattleSystem : MonoBehaviour
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
         _playerUnitCount = Mathf.Min(PlayerParty.Monsters.Count, 3);
+
+        switch (_playerUnitCount)
+        {
+            case 1:
+                _playerUnits = new List<BattleUnit> { _playerUnitSingle };
+                break;
+            case 2:
+                _playerUnits = _playerUnitsDouble.GetRange(0, _playerUnitsDouble.Count);
+                break;
+            case 3:
+                _playerUnits = _playerUnitsTriple.GetRange(0, _playerUnitsTriple.Count);
+                break;
+        }
+        switch (_enemyUnitCount)
+        {
+            case 1:
+                _enemyUnits = new List<BattleUnit> { _enemyUnitSingle };
+                break;
+            case 2:
+                _enemyUnits = _enemyUnitsDouble.GetRange(0, _enemyUnitsDouble.Count);
+                break;
+            case 3:
+                _enemyUnits = _enemyUnitsTriple.GetRange(0, _enemyUnitsTriple.Count);
+                break;
+        }
 
         for (int i = 0; i < Mathf.Min(_playerUnitCount, 3); i++)
         {
