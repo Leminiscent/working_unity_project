@@ -27,12 +27,6 @@ public class BattleUnit : MonoBehaviour
         Monster = monster;
         _image.sprite = Monster.Base.Sprite;
         _image.SetNativeSize();
-
-        float originalSize = _image.rectTransform.rect.height;
-        float newSize = originalSize;
-
-        _originalPos.y = (newSize - originalSize) / 2;
-        _image.transform.localPosition = new Vector3(_originalPos.x, _originalPos.y);
         _hud.gameObject.SetActive(true);
         _hud.SetData(monster);
         _image.color = _originalColor;
@@ -46,7 +40,7 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayEnterAnimation()
     {
-        int offsetX = 1500;
+        int offsetX = 15;
 
         _image.transform.localPosition = _isPlayerUnit ? new Vector3(-offsetX, _originalPos.y) : new Vector3(offsetX, _originalPos.y);
 
@@ -55,7 +49,7 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayExitAnimation()
     {
-        int offsetX = 1500;
+        int offsetX = 15;
 
         _image.transform.localPosition = _originalPos;
 
@@ -75,11 +69,11 @@ public class BattleUnit : MonoBehaviour
 
         if (_isPlayerUnit)
         {
-            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x + 75f, _originalPos.y), 0.25f));
+            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x + 0.75f, _originalPos.y), 0.25f));
         }
         else
         {
-            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 75f, _originalPos.y), 0.25f));
+            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 0.75f, _originalPos.y), 0.25f));
         }
 
         sequence.Append(_image.transform.DOLocalMove(_originalPos, 0.25f));
@@ -91,11 +85,11 @@ public class BattleUnit : MonoBehaviour
 
         if (_isPlayerUnit)
         {
-            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 15f, _originalPos.y), 0.25f));
+            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 0.15f, _originalPos.y), 0.25f));
         }
         else
         {
-            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x + 15f, _originalPos.y), 0.25f));
+            sequence.Append(_image.transform.DOLocalMove(new Vector3(_originalPos.x + 0.15f, _originalPos.y), 0.25f));
         }
         sequence.Join(_image.DOColor(Color.gray, 0.1f));
 
@@ -107,7 +101,7 @@ public class BattleUnit : MonoBehaviour
     {
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(_image.transform.DOLocalMoveY(_originalPos.y - 50f, 0.5f));
+        sequence.Append(_image.transform.DOLocalMoveY(_originalPos.y - 0.5f, 0.5f));
         sequence.Join(_image.DOFade(0f, 0.5f));
     }
 }
