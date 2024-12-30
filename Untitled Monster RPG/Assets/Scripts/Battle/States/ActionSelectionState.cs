@@ -28,7 +28,7 @@ public class ActionSelectionState : State<BattleSystem>
         _battleSystem = owner;
         _selectionUI.gameObject.SetActive(true);
         _selectionUI.OnSelected += OnActionSelected;
-        _battleSystem.DialogueBox.SetDialogue("Choose an action!");
+        _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Monster.Base.Name}!");
     }
 
     public override void Execute()

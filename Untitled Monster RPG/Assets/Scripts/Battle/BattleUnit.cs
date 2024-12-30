@@ -33,7 +33,6 @@ public class BattleUnit : MonoBehaviour
 
         _originalPos.y = (newSize - originalSize) / 2;
         _image.transform.localPosition = new Vector3(_originalPos.x, _originalPos.y);
-        _image.transform.localScale = Vector3.one;
         _hud.gameObject.SetActive(true);
         _hud.SetData(monster);
         _image.color = _originalColor;
