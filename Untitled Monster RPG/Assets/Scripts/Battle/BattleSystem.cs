@@ -20,6 +20,12 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private Image _enemyImage;
     [SerializeField] private MoveForgettingUI _moveForgettingUI;
     [SerializeField] private InventoryUI _inventoryUI;
+    [SerializeField] private GameObject _playerElementsSingle;
+    [SerializeField] private GameObject _playerElementsDouble;
+    [SerializeField] private GameObject _playerElementsTriple;
+    [SerializeField] private GameObject _enemyElementsSingle;
+    [SerializeField] private GameObject _enemyElementsDouble;
+    [SerializeField] private GameObject _enemyElementsTriple;
 
     [Header("Audio")]
     [SerializeField] private AudioClip _wildBattleMusic;
@@ -112,6 +118,13 @@ public class BattleSystem : MonoBehaviour
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
         _playerUnitCount = Mathf.Min(PlayerParty.Monsters.Count, 3);
+
+        _playerElementsSingle.SetActive(_playerUnitCount == 1);
+        _playerElementsDouble.SetActive(_playerUnitCount == 2);
+        _playerElementsTriple.SetActive(_playerUnitCount == 3);
+        _enemyElementsSingle.SetActive(_enemyUnitCount == 1);
+        _enemyElementsDouble.SetActive(_enemyUnitCount == 2);
+        _enemyElementsTriple.SetActive(_enemyUnitCount == 3);
 
         switch (_playerUnitCount)
         {
