@@ -38,6 +38,11 @@ public class BattleUnit : MonoBehaviour
         _hud.gameObject.SetActive(false);
     }
 
+    public void SetSelected(bool selected)
+    {
+        _image.color = selected ? GlobalSettings.Instance.BgHighlightColor : _originalColor;
+    }
+
     public void PlayEnterAnimation()
     {
         int offsetX = 15;
