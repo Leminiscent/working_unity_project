@@ -53,6 +53,8 @@ public class TargetSelectionState : State<BattleSystem>
             _selectedTarget--;
         }
 
+        _selectedTarget = Mathf.Clamp(_selectedTarget, 0, _battleSystem.EnemyUnits.Count - 1);
+
         if (_selectedTarget != prevSelection)
         {
             UpdateSelectionInUI();
@@ -68,5 +70,10 @@ public class TargetSelectionState : State<BattleSystem>
             SelectionMade = false;
             _battleSystem.StateMachine.Pop();
         }
+    }
+
+    public override void Exit()
+    {
+        _battleSystem.EnemyUnits[_selectedTarget].SetSelected(false);
     }
 }

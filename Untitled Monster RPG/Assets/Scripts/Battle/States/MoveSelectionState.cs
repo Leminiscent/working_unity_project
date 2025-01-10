@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -65,11 +66,28 @@ public class MoveSelectionState : State<BattleSystem>
 
     private void OnMoveSelected(int selection)
     {
+        StartCoroutine(OnMoveSelectedAsync(selection));
+    }
+
+    private IEnumerator OnMoveSelectedAsync(int selection)
+    {
+        int moveTarget = 0;
+
+        if (_battleSystem.EnemyUnits.Count > 1)
+        {
+            yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
+            if (!TargetSelectionState.Instance.SelectionMade)
+            {
+                yield break;
+            }
+            moveTarget = TargetSelectionState.Instance.SelectedTarget;
+        }
+
         _battleSystem.AddBattleAction(new BattleAction()
         {
             ActionType = BattleActionType.Fight,
             SelectedMove = Moves[selection],
-            TargetUnit = _battleSystem.EnemyUnits[0] // TODO: Implement multiple enemies
+            TargetUnit = _battleSystem.EnemyUnits[moveTarget]
         });
     }
 
