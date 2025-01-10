@@ -42,11 +42,11 @@ public class TargetSelectionState : State<BattleSystem>
     {
         int prevSelection = _selectedTarget;
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             _selectedTarget++;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             _selectedTarget--;
         }
