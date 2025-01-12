@@ -70,7 +70,7 @@ public class ShopSellingState : State<GameController>
 
         if (itemCount > 1)
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name} would you like to sell?",
+            yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}s would you like to sell?",
                 waitForInput: false, autoClose: false);
 
             yield return _countSelectorUI.ShowSelector(itemCount, sellingPrice,
@@ -82,7 +82,7 @@ public class ShopSellingState : State<GameController>
 
         int selectedChoice = 0;
 
-        yield return DialogueManager.Instance.ShowDialogueText($"I can buy {countToSell} {item.Name} from you for {sellingPrice} gold. Do we have a deal?",
+        yield return DialogueManager.Instance.ShowDialogueText($"I can buy {countToSell} {(countToSell == 1 ? item.Name : $"{item.Name}s")} from you for {sellingPrice} gold. Do we have a deal?",
             waitForInput: false,
             choices: new List<string> { "Yes", "No" },
             onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);
