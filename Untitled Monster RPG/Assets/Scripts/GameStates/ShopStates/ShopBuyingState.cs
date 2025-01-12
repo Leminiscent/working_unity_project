@@ -60,7 +60,7 @@ public class ShopBuyingState : State<GameController>
     private IEnumerator BuyItem(ItemBase item)
     {
         _browseItems = false;
-        yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}'s would you like?",
+        yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}s would you like?",
             waitForInput: false, autoClose: false);
 
         int countToBuy = 1;
