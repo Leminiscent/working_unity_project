@@ -44,6 +44,11 @@ public class RunTurnState : State<BattleSystem>
     {
         foreach (BattleAction action in BattleActions)
         {
+            if (!action.IsValid)
+            {
+                continue;
+            }
+
             if (action.ActionType == BattleActionType.Fight)
             {
                 action.SourceUnit.Monster.CurrentMove = action.SelectedMove;
@@ -376,6 +381,13 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
     {
+        BattleAction invalidAction = BattleActions.FirstOrDefault(a => a.SourceUnit == defeatedUnit || a.TargetUnit == defeatedUnit);
+
+        if (invalidAction != null)
+        {
+            invalidAction.IsValid = false;
+        }
+
         yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Monster.Base.Name} has been defeated!");
         defeatedUnit.PlayDefeatAnimation();
         yield return new WaitForSeconds(1f);
@@ -388,7 +400,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 battleWon = _enemyParty.GetHealthyMonster() == null;
             }
-            
+
             if (battleWon)
             {
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleVictoryMusic);
