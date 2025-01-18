@@ -248,7 +248,7 @@ public class BattleSystem : MonoBehaviour
     {
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
-        
+
         PlayerUnits.ForEach(static u => u.Hud.ClearData());
         EnemyUnits.ForEach(static u => u.Hud.ClearData());
 
@@ -268,6 +268,7 @@ public class BattleSystem : MonoBehaviour
 
         if (_battleActions.Count == _playerUnitCount)
         {
+            _selectingUnitIndex = 0;
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
                 _battleActions.Add(new BattleAction()
