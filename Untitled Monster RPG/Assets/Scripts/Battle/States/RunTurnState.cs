@@ -520,7 +520,8 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (nextMonster == null && activeMonsters.Count > 0)
             {
-
+                _battleSystem.PlayerUnits.Remove(defeatedUnit);
+                defeatedUnit.Hud.gameObject.SetActive(false);
             }
             else if (nextMonster != null)
             {
@@ -530,22 +531,11 @@ public class RunTurnState : State<BattleSystem>
         }
         else
         {
-            if (!_isMasterBattle)
+            List<Monster> activeMonsters = _battleSystem.EnemyUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
+
+            if (!_isMasterBattle && activeMonsters.Count == 0)
             {
                 _battleSystem.BattleOver(true);
-            }
-            else
-            {
-                Monster nextMonster = _enemyParty.GetHealthyMonster();
-
-                if (nextMonster != null)
-                {
-                    StartCoroutine(_battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit));
-                }
-                else
-                {
-                    _battleSystem.BattleOver(true);
-                }
             }
         }
     }
