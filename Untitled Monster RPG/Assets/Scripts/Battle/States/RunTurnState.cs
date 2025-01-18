@@ -515,11 +515,11 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator CheckForBattleOver(BattleUnit defeatedUnit)
     {
-        BattleAction invalidAction = BattleActions.FirstOrDefault(a => a.SourceUnit == defeatedUnit || a.TargetUnit == defeatedUnit);
+        BattleAction defeatedUnitAction = BattleActions.FirstOrDefault(a => a.SourceUnit == defeatedUnit);
 
-        if (invalidAction != null)
+        if (defeatedUnitAction != null)
         {
-            invalidAction.IsValid = false;
+            defeatedUnitAction.IsValid = false;
         }
 
         if (defeatedUnit.IsPlayerUnit)
