@@ -266,9 +266,8 @@ public class BattleSystem : MonoBehaviour
         battleAction.SourceUnit = SelectingUnit;
         _battleActions.Add(battleAction);
 
-        if (_battleActions.Count == _playerUnitCount)
+        if (_battleActions.Count == _playerUnits.Count)
         {
-            _selectingUnitIndex = 0;
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
                 _battleActions.Add(new BattleAction()
