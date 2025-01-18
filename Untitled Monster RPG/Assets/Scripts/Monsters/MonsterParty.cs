@@ -30,9 +30,16 @@ public class MonsterParty : MonoBehaviour
         }
     }
 
-    public Monster GetHealthyMonster()
+    public Monster GetHealthyMonster(List<Monster> excludedMonsters = null)
     {
-        return _monsters.FirstOrDefault(static x => x.Hp > 0);
+        List<Monster> healthyMonsters = _monsters.Where(static x => x.Hp > 0).ToList();
+
+        if (excludedMonsters != null)
+        {
+            healthyMonsters = healthyMonsters.Where(x => !excludedMonsters.Contains(x)).ToList();
+        }
+
+        return healthyMonsters.FirstOrDefault();
     }
 
     public List<Monster> GetHealthyMonsters(int count)
