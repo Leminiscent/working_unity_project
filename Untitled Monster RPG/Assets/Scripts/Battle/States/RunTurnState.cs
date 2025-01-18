@@ -381,13 +381,6 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
     {
-        BattleAction invalidAction = BattleActions.FirstOrDefault(a => a.SourceUnit == defeatedUnit || a.TargetUnit == defeatedUnit);
-
-        if (invalidAction != null)
-        {
-            invalidAction.IsValid = false;
-        }
-
         yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Monster.Base.Name} has been defeated!");
         defeatedUnit.PlayDefeatAnimation();
         yield return new WaitForSeconds(1f);
@@ -522,6 +515,13 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator CheckForBattleOver(BattleUnit defeatedUnit)
     {
+        BattleAction invalidAction = BattleActions.FirstOrDefault(a => a.SourceUnit == defeatedUnit || a.TargetUnit == defeatedUnit);
+
+        if (invalidAction != null)
+        {
+            invalidAction.IsValid = false;
+        }
+
         if (defeatedUnit.IsPlayerUnit)
         {
             List<Monster> activeMonsters = _battleSystem.PlayerUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
