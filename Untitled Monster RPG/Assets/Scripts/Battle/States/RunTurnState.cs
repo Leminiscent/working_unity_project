@@ -511,17 +511,21 @@ public class RunTurnState : State<BattleSystem>
     {
         if (defeatedUnit.IsPlayerUnit)
         {
-            List<Monster> activeMonsters = _battleSystem.PlayerUnits.Select(static u => u.Monster).ToList();
+            List<Monster> activeMonsters = _battleSystem.PlayerUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
             Monster nextMonster = _playerParty.GetHealthyMonster();
 
-            if (nextMonster != null)
+            if (nextMonster == null && activeMonsters.Count == 0)
+            {
+                _battleSystem.BattleOver(false);
+            }
+            else if (nextMonster == null && activeMonsters.Count > 0)
+            {
+
+            }
+            else if (nextMonster != null)
             {
                 yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
                 yield return _battleSystem.SwitchMonster(PartyState.Instance.SelectedMonster, defeatedUnit);
-            }
-            else
-            {
-                _battleSystem.BattleOver(false);
             }
         }
         else
