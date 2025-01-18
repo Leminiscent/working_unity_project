@@ -537,7 +537,6 @@ public class RunTurnState : State<BattleSystem>
                 defeatedUnit.Hud.gameObject.SetActive(false);
 
                 List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnit == defeatedUnit).ToList();
-                
                 actionsToAdjust.ForEach(a => a.TargetUnit = _battleSystem.PlayerUnits[Random.Range(0, _battleSystem.PlayerUnits.Count)]);
             }
             else if (nextMonster != null)
@@ -555,6 +554,11 @@ public class RunTurnState : State<BattleSystem>
                 if (activeMonsters.Count == 0)
                 {
                     _battleSystem.BattleOver(true);
+                }
+                else
+                {
+                    _battleSystem.EnemyUnits.Remove(defeatedUnit);
+                    defeatedUnit.Hud.gameObject.SetActive(false);
                 }
             }
             else
