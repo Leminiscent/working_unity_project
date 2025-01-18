@@ -559,6 +559,9 @@ public class RunTurnState : State<BattleSystem>
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.Hud.gameObject.SetActive(false);
+
+                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnit == defeatedUnit).ToList();
+                    actionsToAdjust.ForEach(a => a.TargetUnit = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
                 }
             }
             else
@@ -573,6 +576,9 @@ public class RunTurnState : State<BattleSystem>
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.Hud.gameObject.SetActive(false);
+
+                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnit == defeatedUnit).ToList();
+                    actionsToAdjust.ForEach(a => a.TargetUnit = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
                 }
                 else if (nextMonster != null)
                 {
