@@ -382,12 +382,13 @@ public class RunTurnState : State<BattleSystem>
 
         if (!defeatedUnit.IsPlayerUnit)
         {
-            bool battleWon = true;
+            bool battleWon = _battleSystem.EnemyUnits.All(static u => u.Monster.Hp == 0);
 
             if (_isMasterBattle)
             {
                 battleWon = _enemyParty.GetHealthyMonster() == null;
             }
+            
             if (battleWon)
             {
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleVictoryMusic);
@@ -512,7 +513,7 @@ public class RunTurnState : State<BattleSystem>
         if (defeatedUnit.IsPlayerUnit)
         {
             List<Monster> activeMonsters = _battleSystem.PlayerUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
-            Monster nextMonster = _playerParty.GetHealthyMonster();
+            Monster nextMonster = _playerParty.GetHealthyMonster(excludedMonsters: activeMonsters);
 
             if (nextMonster == null && activeMonsters.Count == 0)
             {
@@ -533,9 +534,30 @@ public class RunTurnState : State<BattleSystem>
         {
             List<Monster> activeMonsters = _battleSystem.EnemyUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
 
-            if (!_isMasterBattle && activeMonsters.Count == 0)
+            if (!_isMasterBattle)
             {
-                _battleSystem.BattleOver(true);
+                if (activeMonsters.Count == 0)
+                {
+                    _battleSystem.BattleOver(true);
+                }
+            }
+            else
+            {
+                Monster nextMonster = _enemyParty.GetHealthyMonster(excludedMonsters: activeMonsters);
+
+                if (nextMonster == null && activeMonsters.Count == 0)
+                {
+                    _battleSystem.BattleOver(true);
+                }
+                else if (nextMonster == null && activeMonsters.Count > 0)
+                {
+                    _battleSystem.EnemyUnits.Remove(defeatedUnit);
+                    defeatedUnit.Hud.gameObject.SetActive(false);
+                }
+                else if (nextMonster != null)
+                {
+                    StartCoroutine(_battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit));
+                }
             }
         }
     }
