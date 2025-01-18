@@ -511,7 +511,9 @@ public class RunTurnState : State<BattleSystem>
     {
         if (defeatedUnit.IsPlayerUnit)
         {
+            List<Monster> activeMonsters = _battleSystem.PlayerUnits.Select(static u => u.Monster).ToList();
             Monster nextMonster = _playerParty.GetHealthyMonster();
+
             if (nextMonster != null)
             {
                 yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
@@ -531,6 +533,7 @@ public class RunTurnState : State<BattleSystem>
             else
             {
                 Monster nextMonster = _enemyParty.GetHealthyMonster();
+
                 if (nextMonster != null)
                 {
                     StartCoroutine(_battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit));
