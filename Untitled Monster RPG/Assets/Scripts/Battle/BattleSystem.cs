@@ -248,14 +248,10 @@ public class BattleSystem : MonoBehaviour
     {
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
-        for (int i = 0; i < _playerUnitCount; i++)
-        {
-            _playerUnits[i].Hud.ClearData();
-        }
-        for (int i = 0; i < _enemyUnitCount; i++)
-        {
-            _enemyUnits[i].Hud.ClearData();
-        }
+        
+        PlayerUnits.ForEach(static u => u.Hud.ClearData());
+        EnemyUnits.ForEach(static u => u.Hud.ClearData());
+
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
         OnBattleOver(won);
     }
