@@ -71,8 +71,20 @@ public class MoveSelectionState : State<BattleSystem>
 
     private IEnumerator OnMoveSelectedAsync(int selection)
     {
-        int moveTarget = 0;
+        Move selectedMove = Moves[selection];
 
+        if (selectedMove.Base.Target == MoveTarget.Self)
+        {
+            _battleSystem.AddBattleAction(new BattleAction()
+            {
+                ActionType = BattleActionType.Fight,
+                SelectedMove = selectedMove,
+                TargetUnit = _battleSystem.SelectingUnit
+            });
+            yield break;
+        }
+
+        int moveTarget = 0;
         if (_battleSystem.EnemyUnits.Count > 1)
         {
             yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
@@ -86,7 +98,7 @@ public class MoveSelectionState : State<BattleSystem>
         _battleSystem.AddBattleAction(new BattleAction()
         {
             ActionType = BattleActionType.Fight,
-            SelectedMove = Moves[selection],
+            SelectedMove = selectedMove,
             TargetUnit = _battleSystem.EnemyUnits[moveTarget]
         });
     }
