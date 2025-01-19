@@ -162,6 +162,7 @@ public class RunTurnState : State<BattleSystem>
             }
 
             int chance = source.Level - target.Level + baseAccuracy;
+            
             return Random.Range(1, 101) <= chance;
         }
 
