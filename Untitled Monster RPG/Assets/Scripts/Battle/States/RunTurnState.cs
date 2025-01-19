@@ -162,7 +162,7 @@ public class RunTurnState : State<BattleSystem>
             }
 
             int chance = source.Level - target.Level + baseAccuracy;
-            
+
             return Random.Range(1, 101) <= chance;
         }
 
@@ -195,7 +195,6 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
         bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
-
         if (!canRunMove)
         {
             yield return ShowStatusChanges(sourceUnit.Monster);
@@ -204,6 +203,7 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
+        
         move.Sp--;
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
