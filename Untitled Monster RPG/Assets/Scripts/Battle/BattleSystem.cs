@@ -278,7 +278,7 @@ public class BattleSystem : MonoBehaviour
                     TargetUnit = _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)]
                 });
             }
-            _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Base.Agility).ToList();
+            _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Agility).ToList();
             RunTurnState.Instance.BattleActions = _battleActions;
             StateMachine.ChangeState(RunTurnState.Instance);
         }
