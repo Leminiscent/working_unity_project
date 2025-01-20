@@ -176,13 +176,12 @@ public class RecruitmentState : State<BattleSystem>
         {
             // Yes
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Monster.Base.Name} was recruited!");
-            
+
             RecruitTarget.PlayExitAnimation();
             RecruitTarget.Hud.gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.75f);
-
             _battleSystem.EnemyUnits.Remove(RecruitTarget);
             _battleSystem.PlayerParty.AddMonster(RecruitTarget.Monster);
+            yield return new WaitForSeconds(0.75f);
 
             if (_battleSystem.EnemyUnits.Count == 0)
             {
