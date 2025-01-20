@@ -176,8 +176,11 @@ public class RecruitmentState : State<BattleSystem>
         {
             // Yes
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Monster.Base.Name} was recruited!");
+            
             RecruitTarget.PlayExitAnimation();
             RecruitTarget.Hud.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.75f);
+
             _battleSystem.EnemyUnits.Remove(RecruitTarget);
             _battleSystem.PlayerParty.AddMonster(RecruitTarget.Monster);
 
@@ -187,6 +190,12 @@ public class RecruitmentState : State<BattleSystem>
             }
             else
             {
+                BattleAction defeatedUnitAction = RunTurnState.Instance.BattleActions.FirstOrDefault(a => a.SourceUnit == RecruitTarget);
+                if (defeatedUnitAction != null)
+                {
+                    defeatedUnitAction.IsValid = false;
+                }
+
                 List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions.Where(a => a.TargetUnit == RecruitTarget).ToList();
                 actionsToAdjust.ForEach(a => a.TargetUnit = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
             }
