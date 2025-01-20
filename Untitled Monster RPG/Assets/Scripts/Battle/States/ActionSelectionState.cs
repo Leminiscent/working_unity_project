@@ -53,7 +53,12 @@ public class ActionSelectionState : State<BattleSystem>
                 break;
             case 1:
                 // Talk
-                StartCoroutine(SelectRecruitTarget());
+                _battleSystem.AddBattleAction(new BattleAction()
+                {
+                    ActionType = BattleActionType.Talk,
+                    TargetUnit = _battleSystem.EnemyUnits[0] // TODO: Implement multiple enemies
+
+                });
                 break;
             case 2:
                 // Item
@@ -77,26 +82,6 @@ public class ActionSelectionState : State<BattleSystem>
             default:
                 break;
         }
-    }
-
-    private IEnumerator SelectRecruitTarget()
-    {
-        int recruitTarget = 0;
-        if (_battleSystem.EnemyUnits.Count > 1)
-        {
-            yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
-            if (!TargetSelectionState.Instance.SelectionMade)
-            {
-                yield break;
-            }
-            recruitTarget = TargetSelectionState.Instance.SelectedTarget;
-        }
-        _battleSystem.AddBattleAction(new BattleAction()
-        {
-            ActionType = BattleActionType.Talk,
-            TargetUnit = _battleSystem.EnemyUnits[recruitTarget]
-
-        });
     }
 
     private IEnumerator GoToInventoryState()
