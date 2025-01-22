@@ -25,9 +25,19 @@ public class TargetSelectionState : State<BattleSystem>
 
     private void UpdateSelectionInUI()
     {
-        for (int i = 0; i < _battleSystem.EnemyUnits.Count; i++)
+        if (IsTargetingAllies)
         {
-            _battleSystem.EnemyUnits[i].SetSelected(i == _selectedTarget);
+            for (int i = 0; i < _battleSystem.PlayerUnits.Count; i++)
+            {
+                _battleSystem.PlayerUnits[i].SetSelected(i == _selectedTarget);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _battleSystem.EnemyUnits.Count; i++)
+            {
+                _battleSystem.EnemyUnits[i].SetSelected(i == _selectedTarget);
+            }
         }
     }
 
@@ -52,7 +62,7 @@ public class TargetSelectionState : State<BattleSystem>
             _selectedTarget--;
         }
 
-        _selectedTarget = Mathf.Clamp(_selectedTarget, 0, _battleSystem.EnemyUnits.Count - 1);
+        _selectedTarget = Mathf.Clamp(_selectedTarget, 0, IsTargetingAllies ? _battleSystem.PlayerUnits.Count - 1 : _battleSystem.EnemyUnits.Count - 1);
 
         if (_selectedTarget != prevSelection)
         {
@@ -73,6 +83,13 @@ public class TargetSelectionState : State<BattleSystem>
 
     public override void Exit()
     {
-        _battleSystem.EnemyUnits[_selectedTarget].SetSelected(false);
+        if (IsTargetingAllies)
+        {
+            _battleSystem.PlayerUnits[_selectedTarget].SetSelected(false);
+        }
+        else
+        {
+            _battleSystem.EnemyUnits[_selectedTarget].SetSelected(false);
+        }
     }
 }
