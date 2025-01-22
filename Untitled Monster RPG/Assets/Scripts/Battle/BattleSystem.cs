@@ -275,7 +275,7 @@ public class BattleSystem : MonoBehaviour
                     ActionType = BattleActionType.Fight,
                     SelectedMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove),
                     SourceUnit = enemyUnit,
-                    TargetUnit = _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)]
+                    TargetUnits = _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)]
                 });
             }
             _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Agility).ToList();

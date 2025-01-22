@@ -37,7 +37,7 @@ public class MoveSelectionState : State<BattleSystem>
             {
                 ActionType = BattleActionType.Fight,
                 SelectedMove = new Move(GlobalSettings.Instance.BackupMove),
-                TargetUnit = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]
+                TargetUnits = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]
             });
             return;
         }
@@ -79,7 +79,7 @@ public class MoveSelectionState : State<BattleSystem>
             {
                 ActionType = BattleActionType.Fight,
                 SelectedMove = selectedMove,
-                TargetUnit = _battleSystem.SelectingUnit
+                TargetUnits = _battleSystem.SelectingUnit
             });
             yield break;
         }
@@ -99,7 +99,7 @@ public class MoveSelectionState : State<BattleSystem>
         {
             ActionType = BattleActionType.Fight,
             SelectedMove = selectedMove,
-            TargetUnit = _battleSystem.EnemyUnits[moveTarget]
+            TargetUnits = _battleSystem.EnemyUnits[moveTarget]
         });
     }
 

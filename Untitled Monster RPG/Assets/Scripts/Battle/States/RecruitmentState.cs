@@ -195,8 +195,8 @@ public class RecruitmentState : State<BattleSystem>
                     defeatedUnitAction.IsValid = false;
                 }
 
-                List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions.Where(a => a.TargetUnit == RecruitTarget).ToList();
-                actionsToAdjust.ForEach(a => a.TargetUnit = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
+                List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions.Where(a => a.TargetUnits == RecruitTarget).ToList();
+                actionsToAdjust.ForEach(a => a.TargetUnits = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
             }
         }
         else

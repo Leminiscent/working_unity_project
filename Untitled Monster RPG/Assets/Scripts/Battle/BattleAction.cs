@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 public class BattleAction
 {
     public BattleActionType ActionType { get; set; }
     public BattleUnit SourceUnit { get; set; }
-    public BattleUnit TargetUnit { get; set; }
+    public List<BattleUnit> TargetUnits { get; set; }
     public Move SelectedMove { get; set; }
     public Monster SelectedMonster { get; set; }
     public ItemBase SelectedItem { get; set; }

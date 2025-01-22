@@ -94,7 +94,7 @@ public class ActionSelectionState : State<BattleSystem>
         _battleSystem.AddBattleAction(new BattleAction()
         {
             ActionType = BattleActionType.Talk,
-            TargetUnit = _battleSystem.EnemyUnits[recruitTarget]
+            TargetUnits = _battleSystem.EnemyUnits[recruitTarget]
 
         });
     }
