@@ -9,6 +9,7 @@ public class TargetSelectionState : State<BattleSystem>
     public static TargetSelectionState Instance { get; private set; }
     public bool SelectionMade { get; private set; }
     public int SelectedTarget => _selectedTarget;
+    public bool IsTargetingAllies { get; set; }
 
     private void Awake()
     {

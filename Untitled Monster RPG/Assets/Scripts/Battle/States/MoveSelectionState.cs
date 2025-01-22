@@ -92,6 +92,7 @@ public class MoveSelectionState : State<BattleSystem>
         int moveTarget = 0;
         if (selectedMove.Base.Target is MoveTarget.Enemy && _battleSystem.EnemyUnits.Count > 1 || selectedMove.Base.Target is MoveTarget.Ally && _battleSystem.PlayerUnits.Count > 1)
         {
+            TargetSelectionState.Instance.IsTargetingAllies = selectedMove.Base.Target is MoveTarget.Ally;
             yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
             if (!TargetSelectionState.Instance.SelectionMade)
             {
