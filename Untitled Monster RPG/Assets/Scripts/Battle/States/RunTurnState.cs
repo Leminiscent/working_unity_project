@@ -56,12 +56,12 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.Talk)
             {
-                RecruitmentState.Instance.RecruitTarget = action.TargetUnits;
+                RecruitmentState.Instance.RecruitTarget = action.TargetUnits[0];
                 yield return _battleSystem.StateMachine.PushAndWait(RecruitmentState.Instance);
             }
             else if (action.ActionType == BattleActionType.UseItem)
             {
-                
+                // TODO: Implement item actions
             }
             else if (action.ActionType == BattleActionType.SwitchMonster)
             {
@@ -145,11 +145,7 @@ public class RunTurnState : State<BattleSystem>
 
         if (move.Base.OneHitKO.IsOneHitKO)
         {
-            if (source.Level < target.Level)
-            {
-                return false;
-            }
-            if (target.HasType(move.Base.OneHitKO.ImmunityType))
+            if (source.Level < target.Level || target.HasType(move.Base.OneHitKO.ImmunityType))
             {
                 return false;
             }
@@ -162,7 +158,6 @@ public class RunTurnState : State<BattleSystem>
             }
 
             int chance = source.Level - target.Level + baseAccuracy;
-
             return Random.Range(1, 101) <= chance;
         }
 
@@ -203,7 +198,7 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
-        
+
         move.Sp--;
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
