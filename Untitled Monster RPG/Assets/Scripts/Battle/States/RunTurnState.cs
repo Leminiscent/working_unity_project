@@ -529,8 +529,15 @@ public class RunTurnState : State<BattleSystem>
                 _battleSystem.PlayerUnits.Remove(defeatedUnit);
                 defeatedUnit.Hud.gameObject.SetActive(false);
 
-                List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits == defeatedUnit).ToList();
-                actionsToAdjust.ForEach(a => a.TargetUnits = _battleSystem.PlayerUnits[Random.Range(0, _battleSystem.PlayerUnits.Count)]);
+                List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits.Contains(defeatedUnit)).ToList();
+                foreach (BattleAction a in actionsToAdjust)
+                {
+                    a.TargetUnits.Remove(defeatedUnit);
+                    if (a.TargetUnits.Count == 0)
+                    {
+                        a.TargetUnits.Add(_battleSystem.PlayerUnits[Random.Range(0, _battleSystem.PlayerUnits.Count)]);
+                    }
+                }
             }
             else if (nextMonster != null)
             {
@@ -553,8 +560,15 @@ public class RunTurnState : State<BattleSystem>
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.Hud.gameObject.SetActive(false);
 
-                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits == defeatedUnit).ToList();
-                    actionsToAdjust.ForEach(a => a.TargetUnits = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
+                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits.Contains(defeatedUnit)).ToList();
+                    foreach (BattleAction a in actionsToAdjust)
+                    {
+                        a.TargetUnits.Remove(defeatedUnit);
+                        if (a.TargetUnits.Count == 0)
+                        {
+                            a.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
+                        }
+                    }
                 }
             }
             else
@@ -570,8 +584,15 @@ public class RunTurnState : State<BattleSystem>
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.Hud.gameObject.SetActive(false);
 
-                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits == defeatedUnit).ToList();
-                    actionsToAdjust.ForEach(a => a.TargetUnits = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
+                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits.Contains(defeatedUnit)).ToList();
+                    foreach (BattleAction a in actionsToAdjust)
+                    {
+                        a.TargetUnits.Remove(defeatedUnit);
+                        if (a.TargetUnits.Count == 0)
+                        {
+                            a.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
+                        }
+                    }
                 }
                 else if (nextMonster != null)
                 {
