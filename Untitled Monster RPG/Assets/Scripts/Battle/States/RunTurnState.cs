@@ -187,7 +187,7 @@ public class RunTurnState : State<BattleSystem>
         return Random.Range(1, 101) <= moveAccuracy;
     }
 
-    private IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
+    private IEnumerator RunMove(BattleUnit sourceUnit, List<BattleUnit> targetUnits, Move move)
     {
         bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
         if (!canRunMove)
@@ -207,77 +207,80 @@ public class RunTurnState : State<BattleSystem>
         }
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
 
-        if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
+        foreach (BattleUnit targetUnit in targetUnits)
         {
-            int hitCount = move.Base.GetHitCount();
-            float typeEffectiveness = 1f;
-            int hit = 1;
-
-            for (int i = 1; i <= hitCount; i++)
+            if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
             {
-                DamageDetails damageDetails = new();
+                int hitCount = move.Base.GetHitCount();
+                float typeEffectiveness = 1f;
+                int hit = 1;
 
-                sourceUnit.PlayAttackAnimation();
-                AudioManager.Instance.PlaySFX(move.Base.Sound);
-                yield return new WaitForSeconds(0.75f);
-                targetUnit.PlayHitAnimation();
-                AudioManager.Instance.PlaySFX(AudioID.Hit);
+                for (int i = 1; i <= hitCount; i++)
+                {
+                    DamageDetails damageDetails = new();
 
-                if (move.Base.Category == MoveCategory.Status)
-                {
-                    yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
-                }
-                else
-                {
-                    damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, _field.Weather);
-                    yield return targetUnit.Hud.WaitForHPUpdate();
-                    yield return ShowDamageDetails(damageDetails);
-                    typeEffectiveness = damageDetails.TypeEffectiveness;
-                }
+                    sourceUnit.PlayAttackAnimation();
+                    AudioManager.Instance.PlaySFX(move.Base.Sound);
+                    yield return new WaitForSeconds(0.75f);
+                    targetUnit.PlayHitAnimation();
+                    AudioManager.Instance.PlaySFX(AudioID.Hit);
 
-                if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.Hp > 0)
-                {
-                    foreach (SecondaryEffects effect in move.Base.SecondaryEffects)
+                    if (move.Base.Category == MoveCategory.Status)
                     {
-                        int rnd = Random.Range(1, 101);
-                        if (rnd <= effect.Chance)
+                        yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
+                    }
+                    else
+                    {
+                        damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, _field.Weather);
+                        yield return targetUnit.Hud.WaitForHPUpdate();
+                        yield return ShowDamageDetails(damageDetails);
+                        typeEffectiveness = damageDetails.TypeEffectiveness;
+                    }
+
+                    if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.Hp > 0)
+                    {
+                        foreach (SecondaryEffects effect in move.Base.SecondaryEffects)
                         {
-                            yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                            int rnd = Random.Range(1, 101);
+                            if (rnd <= effect.Chance)
+                            {
+                                yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                            }
                         }
                     }
-                }
-                yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
+                    yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
 
-                hit = i;
-                if (targetUnit.Monster.Hp <= 0 || sourceUnit.Monster.Hp <= 0)
+                    hit = i;
+                    if (targetUnit.Monster.Hp <= 0 || sourceUnit.Monster.Hp <= 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (move.Base.Category != MoveCategory.Status)
                 {
-                    break;
+                    yield return ShowEffectiveness(typeEffectiveness);
+                }
+
+                if (hit > 1)
+                {
+                    yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
+                }
+
+                if (targetUnit.Monster.Hp <= 0)
+                {
+                    yield return HandleMonsterDefeat(targetUnit);
+                }
+
+                if (sourceUnit.Monster.Hp <= 0)
+                {
+                    yield return HandleMonsterDefeat(sourceUnit);
                 }
             }
-
-            if (move.Base.Category != MoveCategory.Status)
+            else
             {
-                yield return ShowEffectiveness(typeEffectiveness);
+                yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name}'s attack missed!");
             }
-
-            if (hit > 1)
-            {
-                yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
-            }
-
-            if (targetUnit.Monster.Hp <= 0)
-            {
-                yield return HandleMonsterDefeat(targetUnit);
-            }
-
-            if (sourceUnit.Monster.Hp <= 0)
-            {
-                yield return HandleMonsterDefeat(sourceUnit);
-            }
-        }
-        else
-        {
-            yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name}'s attack missed!");
         }
     }
 
