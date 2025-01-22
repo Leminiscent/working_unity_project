@@ -37,7 +37,10 @@ public class MoveSelectionState : State<BattleSystem>
             {
                 ActionType = BattleActionType.Fight,
                 SelectedMove = new Move(GlobalSettings.Instance.BackupMove),
-                TargetUnits = _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]
+                TargetUnits = new List<BattleUnit>
+                {
+                    _battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]
+                }
             });
             return;
         }
