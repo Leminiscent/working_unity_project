@@ -117,6 +117,9 @@ public enum MoveCategory
 public enum MoveTarget
 {
     Enemy,
+    Ally,
+    AllEnemies,
+    AllAllies,
     Self
 }
 
