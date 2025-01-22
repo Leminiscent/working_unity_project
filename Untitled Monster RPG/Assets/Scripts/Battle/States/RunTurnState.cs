@@ -207,7 +207,8 @@ public class RunTurnState : State<BattleSystem>
         }
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
 
-        foreach (BattleUnit targetUnit in targetUnits)
+        List<BattleUnit> targetUnitsCopy = new(targetUnits);
+        foreach (BattleUnit targetUnit in targetUnitsCopy)
         {
             if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
             {
