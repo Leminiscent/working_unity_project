@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -94,7 +95,7 @@ public class ActionSelectionState : State<BattleSystem>
         _battleSystem.AddBattleAction(new BattleAction()
         {
             ActionType = BattleActionType.Talk,
-            TargetUnits = _battleSystem.EnemyUnits[recruitTarget]
+            TargetUnits = new List<BattleUnit> { _battleSystem.EnemyUnits[recruitTarget] }
 
         });
     }
