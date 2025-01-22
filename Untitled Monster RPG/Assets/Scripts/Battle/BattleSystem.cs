@@ -270,12 +270,17 @@ public class BattleSystem : MonoBehaviour
         {
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
+                Move selectedMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
                 _battleActions.Add(new BattleAction()
                 {
                     ActionType = BattleActionType.Fight,
-                    SelectedMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove),
+                    SelectedMove = selectedMove,
                     SourceUnit = enemyUnit,
-                    TargetUnits = _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)]
+                    TargetUnits = selectedMove.Base.Target == MoveTarget.Self ? new List<BattleUnit> { enemyUnit }
+                        : selectedMove.Base.Target == MoveTarget.AllAllies ? _enemyUnits
+                        : selectedMove.Base.Target == MoveTarget.AllEnemies ? _playerUnits
+                        : selectedMove.Base.Target == MoveTarget.Ally ? new List<BattleUnit> { _enemyUnits[UnityEngine.Random.Range(0, _enemyUnits.Count)] }
+                        : new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] }
                 });
             }
             _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Agility).ToList();
