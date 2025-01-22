@@ -31,7 +31,7 @@ public class MoveSelectionState : State<BattleSystem>
         _battleSystem = owner;
         _selectionUI.SetMoves(Moves);
 
-        if (Moves.Where(static m => m.Sp > 0).Count() == 0)
+        if (Moves.Count(static m => m.Sp > 0) == 0)
         {
             _battleSystem.AddBattleAction(new BattleAction()
             {
@@ -76,13 +76,15 @@ public class MoveSelectionState : State<BattleSystem>
     {
         Move selectedMove = Moves[selection];
 
-        if (selectedMove.Base.Target == MoveTarget.Self)
+        if (selectedMove.Base.Target is MoveTarget.Self or MoveTarget.AllAllies or MoveTarget.AllEnemies)
         {
             _battleSystem.AddBattleAction(new BattleAction()
             {
                 ActionType = BattleActionType.Fight,
                 SelectedMove = selectedMove,
-                TargetUnits = new List<BattleUnit> { _battleSystem.SelectingUnit }
+                TargetUnits = selectedMove.Base.Target is MoveTarget.Self ? new List<BattleUnit> { _battleSystem.SelectingUnit }
+                    : selectedMove.Base.Target is MoveTarget.AllAllies ? _battleSystem.PlayerUnits.ToList()
+                    : _battleSystem.EnemyUnits.ToList()
             });
             yield break;
         }
@@ -102,7 +104,7 @@ public class MoveSelectionState : State<BattleSystem>
         {
             ActionType = BattleActionType.Fight,
             SelectedMove = selectedMove,
-            TargetUnits = _battleSystem.EnemyUnits[moveTarget]
+            TargetUnits = new List<BattleUnit> { _battleSystem.EnemyUnits[moveTarget] }
         });
     }
 
