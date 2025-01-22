@@ -299,21 +299,17 @@ public class RunTurnState : State<BattleSystem>
             {
                 case RecoilType.RecoilByMaxHP:
                     int maxHp = sourceUnit.Monster.MaxHp;
-
                     damage = Mathf.FloorToInt(maxHp * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByCurrentHP:
                     int currentHp = sourceUnit.Monster.Hp;
-
                     damage = Mathf.FloorToInt(currentHp * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByDamage:
                     damage = Mathf.FloorToInt(details.ActualDamageDealt * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
-                    break;
-                case RecoilType.None:
                     break;
                 default:
                     break;
@@ -323,7 +319,6 @@ public class RunTurnState : State<BattleSystem>
         if (move.DrainPercentage != 0 && sourceUnit.Monster.Hp != sourceUnit.Monster.MaxHp)
         {
             int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
-
             sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster.Base.Name);
         }
 
@@ -373,7 +368,6 @@ public class RunTurnState : State<BattleSystem>
         while (monster.StatusChanges.Count > 0)
         {
             string message = monster.StatusChanges.Dequeue();
-
             yield return _dialogueBox.TypeDialogue($"{monster.Base.Name}{message}");
         }
     }
