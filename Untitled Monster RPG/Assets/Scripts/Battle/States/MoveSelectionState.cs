@@ -82,7 +82,7 @@ public class MoveSelectionState : State<BattleSystem>
             {
                 ActionType = BattleActionType.Fight,
                 SelectedMove = selectedMove,
-                TargetUnits = _battleSystem.SelectingUnit
+                TargetUnits = new List<BattleUnit> { _battleSystem.SelectingUnit }
             });
             yield break;
         }
