@@ -120,7 +120,8 @@ public enum MoveTarget
     Ally,
     AllEnemies,
     AllAllies,
-    Self
+    Self,
+    AllUnits
 }
 
 public enum CritBehavior

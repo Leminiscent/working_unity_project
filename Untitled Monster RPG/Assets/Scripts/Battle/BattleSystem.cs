@@ -280,7 +280,8 @@ public class BattleSystem : MonoBehaviour
                         : selectedMove.Base.Target == MoveTarget.AllAllies ? _enemyUnits
                         : selectedMove.Base.Target == MoveTarget.AllEnemies ? _playerUnits
                         : selectedMove.Base.Target == MoveTarget.Ally ? new List<BattleUnit> { _enemyUnits[UnityEngine.Random.Range(0, _enemyUnits.Count)] }
-                        : new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] }
+                        : selectedMove.Base.Target == MoveTarget.Enemy ? new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] }
+                        : _playerUnits.Concat(_enemyUnits).ToList()
                 });
             }
             _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Agility).ToList();
