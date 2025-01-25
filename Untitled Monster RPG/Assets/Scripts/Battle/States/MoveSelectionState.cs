@@ -76,7 +76,7 @@ public class MoveSelectionState : State<BattleSystem>
     {
         Move selectedMove = Moves[selection];
 
-        if (selectedMove.Base.Target is MoveTarget.Self or MoveTarget.AllAllies or MoveTarget.AllEnemies)
+        if (selectedMove.Base.Target is MoveTarget.Self or MoveTarget.AllAllies or MoveTarget.AllEnemies or MoveTarget.AllUnits)
         {
             _battleSystem.AddBattleAction(new BattleAction()
             {
@@ -84,7 +84,8 @@ public class MoveSelectionState : State<BattleSystem>
                 SelectedMove = selectedMove,
                 TargetUnits = selectedMove.Base.Target is MoveTarget.Self ? new List<BattleUnit> { _battleSystem.SelectingUnit }
                     : selectedMove.Base.Target is MoveTarget.AllAllies ? _battleSystem.PlayerUnits
-                    : _battleSystem.EnemyUnits
+                    : selectedMove.Base.Target is MoveTarget.AllEnemies ? _battleSystem.EnemyUnits
+                    : _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).ToList()
             });
             yield break;
         }
