@@ -281,7 +281,7 @@ public class BattleSystem : MonoBehaviour
                         : selectedMove.Base.Target == MoveTarget.AllEnemies ? _playerUnits
                         : selectedMove.Base.Target == MoveTarget.Ally ? new List<BattleUnit> { _enemyUnits[UnityEngine.Random.Range(0, _enemyUnits.Count)] }
                         : selectedMove.Base.Target == MoveTarget.Enemy ? new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] }
-                        : _enemyUnits.Where(u => u != enemyUnit).ToList().Concat(_playerUnits).ToList()
+                        : _enemyUnits.Where(u => u != enemyUnit).Concat(_playerUnits).ToList()
                 });
             }
             _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Agility).ToList();
