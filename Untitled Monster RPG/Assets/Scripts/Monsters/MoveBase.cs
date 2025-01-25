@@ -121,7 +121,7 @@ public enum MoveTarget
     AllEnemies,
     AllAllies,
     Self,
-    AllUnits
+    Others
 }
 
 public enum CritBehavior
