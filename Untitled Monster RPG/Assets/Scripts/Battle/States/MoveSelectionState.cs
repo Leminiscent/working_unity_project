@@ -85,7 +85,7 @@ public class MoveSelectionState : State<BattleSystem>
                 TargetUnits = selectedMove.Base.Target is MoveTarget.Self ? new List<BattleUnit> { _battleSystem.SelectingUnit }
                     : selectedMove.Base.Target is MoveTarget.AllAllies ? _battleSystem.PlayerUnits
                     : selectedMove.Base.Target is MoveTarget.AllEnemies ? _battleSystem.EnemyUnits
-                    : _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).ToList()
+                    : _battleSystem.EnemyUnits.Concat(_battleSystem.PlayerUnits).ToList()
             });
             yield break;
         }
