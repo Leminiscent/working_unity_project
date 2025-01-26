@@ -205,6 +205,7 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} has no SP left!");
         }
+        
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
