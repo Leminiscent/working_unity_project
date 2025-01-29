@@ -89,14 +89,21 @@ public class InventoryState : State<GameController>
             }
         }
 
-        yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);
-
-        if (prevState == BattleState.Instance)
+        if (prevState != BattleState.Instance)
         {
-            if (UseItemState.Instance.ItemUsed)
-            {
-                _gameController.StateMachine.Pop();
-            }
+            yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);
         }
+        else
+        {
+            _gameController.StateMachine.Pop();
+        }
+
+        // if (prevState == BattleState.Instance)
+        // {
+        //     if (UseItemState.Instance.ItemUsed)
+        //     {
+        //         _gameController.StateMachine.Pop();
+        //     }
+        // }
     }
 }
