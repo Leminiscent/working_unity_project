@@ -82,30 +82,37 @@ public class GameController : MonoBehaviour
 
     private void EndBattle(bool won)
     {
-        if (_master != null && won)
+        if (won)
         {
-            _master.BattleLost();
-            _master = null;
-        }
-        _partyScreen.SetPartyData();
-        _battleSystem.gameObject.SetActive(false);
-        _worldCamera.gameObject.SetActive(true);
+            if (_master != null)
+            {
+                _master.BattleLost();
+                _master = null;
+            }
+            _partyScreen.SetPartyData();
+            _battleSystem.gameObject.SetActive(false);
+            _worldCamera.gameObject.SetActive(true);
 
-        MonsterParty playerParty = _playerController.GetComponent<MonsterParty>();
-        bool hasTransformations = playerParty.CheckForTransformations();
+            MonsterParty playerParty = _playerController.GetComponent<MonsterParty>();
+            bool hasTransformations = playerParty.CheckForTransformations();
 
-        if (hasTransformations)
-        {
-            StartCoroutine(playerParty.RunTransformations());
+            if (hasTransformations)
+            {
+                StartCoroutine(playerParty.RunTransformations());
+            }
+            else
+            {
+                AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
+            }
+
+            foreach (Monster monster in playerParty.Monsters)
+            {
+                monster.HasJustLeveledUp = false;
+            }
         }
         else
         {
-            AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
-        }
-
-        foreach (Monster monster in playerParty.Monsters)
-        {
-            monster.HasJustLeveledUp = false;
+            // Game over
         }
     }
 
