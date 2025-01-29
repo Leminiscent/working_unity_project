@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -58,7 +59,7 @@ public class ActionSelectionState : State<BattleSystem>
                 break;
             case 2:
                 // Item
-                StartCoroutine(GoToInventoryState());
+                StartCoroutine(SelectItemAndTarget());
                 break;
             case 3:
                 // Guard
@@ -100,17 +101,45 @@ public class ActionSelectionState : State<BattleSystem>
         });
     }
 
-    private IEnumerator GoToInventoryState()
+    private IEnumerator SelectItemAndTarget()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
 
         ItemBase selectedItem = InventoryState.Instance.SelectedItem;
         if (selectedItem != null)
         {
+            if (selectedItem.Target is MoveTarget.Self or MoveTarget.AllAllies or MoveTarget.AllEnemies or MoveTarget.Others)
+            {
+                _battleSystem.AddBattleAction(new BattleAction()
+                {
+                    ActionType = BattleActionType.UseItem,
+                    SelectedItem = selectedItem,
+                    TargetUnits = selectedItem.Target is MoveTarget.Self ? new List<BattleUnit> { _battleSystem.SelectingUnit }
+                        : selectedItem.Target is MoveTarget.AllAllies ? _battleSystem.PlayerUnits
+                        : selectedItem.Target is MoveTarget.AllEnemies ? _battleSystem.EnemyUnits
+                        : _battleSystem.PlayerUnits.Where(u => u != _battleSystem.SelectingUnit).Concat(_battleSystem.EnemyUnits).ToList()
+                });
+                yield break;
+            }
+
+            int itemTarget = 0;
+            if ((selectedItem.Target is MoveTarget.Enemy && _battleSystem.EnemyUnits.Count > 1) || (selectedItem.Target is MoveTarget.Ally && _battleSystem.PlayerUnits.Count > 1))
+            {
+                TargetSelectionState.Instance.IsTargetingAllies = selectedItem.Target is MoveTarget.Ally;
+                yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
+                if (!TargetSelectionState.Instance.SelectionMade)
+                {
+                    yield break;
+                }
+                itemTarget = TargetSelectionState.Instance.SelectedTarget;
+            }
+
             _battleSystem.AddBattleAction(new BattleAction()
             {
                 ActionType = BattleActionType.UseItem,
-                SelectedItem = selectedItem
+                SelectedItem = selectedItem,
+                TargetUnits = selectedItem.Target is MoveTarget.Enemy ? new List<BattleUnit> { _battleSystem.EnemyUnits[itemTarget] }
+                    : new List<BattleUnit> { _battleSystem.PlayerUnits[itemTarget] }
             });
         }
     }

@@ -61,7 +61,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.UseItem)
             {
-                // TODO: Implement item actions
+                yield return UseItem(action.SourceUnit, action.TargetUnits, action.SelectedItem);
             }
             else if (action.ActionType == BattleActionType.SwitchMonster)
             {
@@ -205,7 +205,7 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} has no SP left!");
         }
-        
+
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
@@ -371,6 +371,56 @@ public class RunTurnState : State<BattleSystem>
         {
             string message = monster.StatusChanges.Dequeue();
             yield return _dialogueBox.TypeDialogue($"{monster.Base.Name}{message}");
+        }
+    }
+
+    private IEnumerator UseItem(BattleUnit sourceUnit, List<BattleUnit> targetUnits, ItemBase item)
+    {
+        bool canUseItem = sourceUnit.Monster.OnStartOfTurn();
+        if (!canUseItem)
+        {
+            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield return sourceUnit.Hud.WaitForHPUpdate();
+            yield break;
+        }
+        yield return ShowStatusChanges(sourceUnit.Monster);
+
+        Inventory inventory = Inventory.GetInventory();
+        if (inventory.GetItemCount(item) == 0)
+        {
+            yield return _dialogueBox.TypeDialogue($"There are no {item.Name}s remaining to use!");
+            yield break;
+        }
+        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {item.Name}!");
+
+        sourceUnit.PlayAttackAnimation();
+        yield return new WaitForSeconds(0.75f);
+
+        List<BattleUnit> targetUnitsCopy = new(targetUnits);
+        foreach (BattleUnit targetUnit in targetUnitsCopy)
+        {
+            bool itemUsed = item.Use(targetUnit.Monster);
+            if (itemUsed)
+            {
+                targetUnit.PlayHitAnimation();
+                AudioManager.Instance.PlaySFX(AudioID.Hit);
+                if (item is RecoveryItem)
+                {
+                    yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {item.Message}!");
+                }
+            }
+            else
+            {
+                if (item is RecoveryItem)
+                {
+                    yield return _dialogueBox.TypeDialogue($"The {item.Name} didn't have any effect on {targetUnit.Monster.Base.Name}!");
+                }
+            }
+        }
+
+        if (!item.IsReusable)
+        {
+            inventory.RemoveItem(item);
         }
     }
 

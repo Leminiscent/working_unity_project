@@ -70,6 +70,7 @@ public class InventoryState : State<GameController>
         if (!SelectedItem.DirectlyUsable)
         {
             yield return DialogueManager.Instance.ShowDialogueText("This item can't be used directly!");
+            SelectedItem = null;
             yield break;
         }
         else if (prevState == BattleState.Instance)
@@ -77,6 +78,7 @@ public class InventoryState : State<GameController>
             if (!SelectedItem.UsableInBattle)
             {
                 yield return DialogueManager.Instance.ShowDialogueText("This item can't be used in battle!");
+                SelectedItem = null;
                 yield break;
             }
         }
@@ -85,18 +87,18 @@ public class InventoryState : State<GameController>
             if (!SelectedItem.UsableOutsideBattle)
             {
                 yield return DialogueManager.Instance.ShowDialogueText("This item can't be used outside of battle!");
+                SelectedItem = null;
                 yield break;
             }
         }
 
-        yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);
-
-        if (prevState == BattleState.Instance)
+        if (prevState != BattleState.Instance)
         {
-            if (UseItemState.Instance.ItemUsed)
-            {
-                _gameController.StateMachine.Pop();
-            }
+            yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);
+        }
+        else
+        {
+            _gameController.StateMachine.Pop();
         }
     }
 }

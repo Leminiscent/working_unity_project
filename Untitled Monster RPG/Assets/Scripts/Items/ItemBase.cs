@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemBase : ScriptableObject
@@ -15,6 +16,7 @@ public class ItemBase : ScriptableObject
     public virtual bool DirectlyUsable => true;
     public virtual bool UsableInBattle => true;
     public virtual bool UsableOutsideBattle => true;
+    public virtual MoveTarget Target => MoveTarget.Ally;
     public string Message => _message;
     public Sprite Icon => _icon;
     public float Price => _price;

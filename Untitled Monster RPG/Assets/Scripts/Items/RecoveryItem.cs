@@ -77,11 +77,11 @@ public class RecoveryItem : ItemBase
             }
             else
             {
-                if (monster.Status.ID == _status)
+                if (monster.Status != null && monster.Status.ID == _status)
                 {
                     monster.CureStatus();
                 }
-                else if (monster.VolatileStatus.ID == _status)
+                else if (monster.VolatileStatus != null && monster.VolatileStatus.ID == _status)
                 {
                     monster.CureVolatileStatus();
                 }
