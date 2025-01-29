@@ -68,12 +68,14 @@ public class BattleState : State<GameController>
 
     private void EndBattle(bool won)
     {
-        if (Master != null && won)
+        if (won)
         {
-            Master.BattleLost();
-            Master = null;
+            if (Master != null)
+            {
+                Master.BattleLost();
+                Master = null;
+            }
+            _gameController.StateMachine.Pop();
         }
-
-        _gameController.StateMachine.Pop();
     }
 }

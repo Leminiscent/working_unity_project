@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils.StateMachine;
 
 public class GameController : MonoBehaviour
@@ -9,8 +10,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private Camera _worldCamera;
     [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private InventoryUI _inventoryUI;
-
-    private MasterController _master;
 
     public StateMachine<GameController> StateMachine { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
@@ -84,11 +83,6 @@ public class GameController : MonoBehaviour
     {
         if (won)
         {
-            if (_master != null)
-            {
-                _master.BattleLost();
-                _master = null;
-            }
             _partyScreen.SetPartyData();
             _battleSystem.gameObject.SetActive(false);
             _worldCamera.gameObject.SetActive(true);
@@ -112,7 +106,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            // Game over
+            SceneManager.LoadScene(0);
         }
     }
 
