@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(0);
+            // Game Over
         }
     }
 
