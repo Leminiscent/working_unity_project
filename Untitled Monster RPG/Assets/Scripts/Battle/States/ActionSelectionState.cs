@@ -105,18 +105,6 @@ public class ActionSelectionState : State<BattleSystem>
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
 
         ItemBase selectedItem = InventoryState.Instance.SelectedItem;
-
-        // if (selectedMove.Base.Target is MoveTarget.Enemy && _battleSystem.EnemyUnits.Count > 1 || selectedMove.Base.Target is MoveTarget.Ally && _battleSystem.PlayerUnits.Count > 1)
-        // {
-        //     TargetSelectionState.Instance.IsTargetingAllies = selectedMove.Base.Target is MoveTarget.Ally;
-        //     yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
-        //     if (!TargetSelectionState.Instance.SelectionMade)
-        //     {
-        //         yield break;
-        //     }
-        //     moveTarget = TargetSelectionState.Instance.SelectedTarget;
-        // }
-
         if (selectedItem != null)
         {
             _battleSystem.AddBattleAction(new BattleAction()
