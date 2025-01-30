@@ -288,7 +288,7 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, BattleUnit targetUnit)
     {
-        if (details == null)
+        if (details == null || details.TypeEffectiveness == 0f)
         {
             yield break;
         }
