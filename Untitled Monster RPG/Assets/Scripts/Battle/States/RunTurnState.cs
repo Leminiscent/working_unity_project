@@ -648,7 +648,7 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else if (nextMonster != null)
                 {
-                    StartCoroutine(_battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit));
+                    yield return _battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit);
                 }
             }
         }
