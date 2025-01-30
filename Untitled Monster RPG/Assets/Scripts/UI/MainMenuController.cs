@@ -9,7 +9,7 @@ public class MainMenuController : SelectionUI<TextSlot>
 {
     private void Start()
     {
-        var textSlots = GetComponentsInChildren<TextSlot>().ToList();
+        List<TextSlot> textSlots = GetComponentsInChildren<TextSlot>().ToList();
 
         if (SavingSystem.Instance.CheckForExistingSave("saveSlot1"))
         {

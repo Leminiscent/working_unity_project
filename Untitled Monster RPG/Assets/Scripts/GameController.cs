@@ -106,7 +106,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            // Game Over
+            AudioManager.Instance.StopMusic();
+            StartCoroutine(PerformGameOver());
         }
     }
 
@@ -133,6 +134,26 @@ public class GameController : MonoBehaviour
         {
             StartCoroutine(Fader.Instance.FadeOut(0.5f));
         }
+    }
+
+    private IEnumerator PerformGameOver()
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneAt(i);
+            if (scene.isLoaded && scene.name != "Main Menu")
+            {
+                yield return SceneManager.UnloadSceneAsync(scene);
+            }
+        }
+
+        EssentialObjects essentialObjects = FindObjectOfType<EssentialObjects>();
+        if (essentialObjects != null)
+        {
+            Destroy(essentialObjects.gameObject);
+        }
+
+        SceneManager.LoadScene("Main Menu");
     }
 
     // private void OnGUI()
