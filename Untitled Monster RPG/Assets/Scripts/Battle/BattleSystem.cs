@@ -201,8 +201,8 @@ public class BattleSystem : MonoBehaviour
 
             _playerImage.gameObject.SetActive(true);
             _enemyImage.gameObject.SetActive(true);
-            _playerImage.sprite = Player.Sprite;
-            _enemyImage.sprite = Enemy.Sprite;
+            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[8];
+            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[12];
 
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
             _enemyImage.gameObject.SetActive(false);

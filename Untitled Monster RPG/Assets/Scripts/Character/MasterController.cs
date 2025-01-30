@@ -17,6 +17,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 
     public string Name => _name;
     public Sprite Sprite => _sprite;
+    public Character Character => _character;
 
     private void Awake()
     {

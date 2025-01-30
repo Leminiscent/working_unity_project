@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
@@ -90,6 +91,18 @@ public class CharacterAnimator : MonoBehaviour
         _wasMoving = IsMoving;
     }
 
+    private SpriteAnimator GetAnimForFacingDirection(FacingDirection dir)
+    {
+        return dir switch
+        {
+            FacingDirection.Up => _walkUpAnim,
+            FacingDirection.Down => _walkDownAnim,
+            FacingDirection.Left => _walkLeftAnim,
+            FacingDirection.Right => _walkRightAnim,
+            _ => _walkDownAnim,
+        };
+    }
+
     public void SetFacingDirection(FacingDirection dir)
     {
         MoveX = 0;
@@ -113,16 +126,9 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
-    private SpriteAnimator GetAnimForFacingDirection(FacingDirection dir)
+    public List<Sprite> GetAllSprites()
     {
-        return dir switch
-        {
-            FacingDirection.Up => _walkUpAnim,
-            FacingDirection.Down => _walkDownAnim,
-            FacingDirection.Left => _walkLeftAnim,
-            FacingDirection.Right => _walkRightAnim,
-            _ => _walkDownAnim,
-        };
+        return new List<Sprite>(_walkDownSprites.Concat(_walkUpSprites).Concat(_walkRightSprites).Concat(_walkLeftSprites).ToList());
     }
 }
 
