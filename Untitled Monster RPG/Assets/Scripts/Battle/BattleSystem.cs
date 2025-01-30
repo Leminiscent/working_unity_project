@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
@@ -201,10 +202,13 @@ public class BattleSystem : MonoBehaviour
 
             _playerImage.gameObject.SetActive(true);
             _enemyImage.gameObject.SetActive(true);
-            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[8];
-            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[12];
+            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[8]; // Right-facing
+            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[12]; // Left-facing
 
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
+
+            _enemyImage.transform.DOLocalMoveX(2000, 1.2f);
+            yield return new WaitForSeconds(0.75f);
             _enemyImage.gameObject.SetActive(false);
 
             List<Monster> enemyMonsters = EnemyParty.GetHealthyMonsters(_enemyUnitCount);
@@ -221,6 +225,8 @@ public class BattleSystem : MonoBehaviour
 
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {monsterNames}!");
 
+            _playerImage.transform.DOLocalMoveX(-2000, 1.2f);
+            yield return new WaitForSeconds(0.75f);
             _playerImage.gameObject.SetActive(false);
 
             for (int i = 0; i < _playerUnitCount; i++)
