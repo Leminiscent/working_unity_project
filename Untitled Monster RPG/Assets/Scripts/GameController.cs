@@ -138,6 +138,8 @@ public class GameController : MonoBehaviour
 
     private IEnumerator PerformGameOver()
     {
+        yield return Fader.Instance.FadeIn(0.5f);
+
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
             Scene scene = SceneManager.GetSceneAt(i);
