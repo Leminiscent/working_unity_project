@@ -202,12 +202,13 @@ public class BattleSystem : MonoBehaviour
 
             _playerImage.gameObject.SetActive(true);
             _enemyImage.gameObject.SetActive(true);
-            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[8]; // Right-facing
-            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[12]; // Left-facing
+            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[8];
+            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[12];
 
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
 
-            _enemyImage.transform.DOLocalMoveX(2000, 1.2f);
+            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[8];
+            _enemyImage.transform.DOLocalMoveX(1500, 1.2f);
             yield return new WaitForSeconds(0.75f);
             _enemyImage.gameObject.SetActive(false);
 
@@ -225,7 +226,8 @@ public class BattleSystem : MonoBehaviour
 
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {monsterNames}!");
 
-            _playerImage.transform.DOLocalMoveX(-2000, 1.2f);
+            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[12];
+            _playerImage.transform.DOLocalMoveX(-1500, 1.2f);
             yield return new WaitForSeconds(0.75f);
             _playerImage.gameObject.SetActive(false);
 
