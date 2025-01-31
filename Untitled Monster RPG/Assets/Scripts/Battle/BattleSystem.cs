@@ -327,9 +327,9 @@ public class BattleSystem : MonoBehaviour
         yield return _dialogueBox.TypeDialogue($"Go {newMonster.Base.Name}!");
     }
 
-    public bool IsAvailableToSwitch(Monster monster)
+    public bool NotAvailableToSwitch(Monster monster)
     {
-        return !_battleActions.Any(a => a.ActionType == BattleActionType.SwitchMonster && a.SelectedMonster == monster);
+        return _battleActions.Any(a => a.ActionType == BattleActionType.SwitchMonster && a.SelectedMonster == monster);
     }
 
     public IEnumerator SendNextMasterMonster(Monster newMonster, BattleUnit defeatedUnit)
