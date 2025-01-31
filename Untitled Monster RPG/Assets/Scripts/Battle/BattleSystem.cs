@@ -329,7 +329,7 @@ public class BattleSystem : MonoBehaviour
 
     public bool IsAvailableToSwitch(Monster monster)
     {
-        return _battleActions.Any(a => a.ActionType == BattleActionType.SwitchMonster && a.SelectedMonster == monster);
+        return !_battleActions.Any(a => a.ActionType == BattleActionType.SwitchMonster && a.SelectedMonster == monster);
     }
 
     public IEnumerator SendNextMasterMonster(Monster newMonster, BattleUnit defeatedUnit)

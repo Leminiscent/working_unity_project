@@ -83,12 +83,17 @@ public class PartyState : State<GameController>
             {
                 if (SelectedMonster.Hp <= 0)
                 {
-                    _partyScreen.SetMessageText(SelectedMonster.Base.Name + " is unable to fight!");
+                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is unable to fight!");
                     yield break;
                 }
                 if (battleState.BattleSystem.PlayerUnits.Any(u => u.Monster == SelectedMonster))
                 {
-                    _partyScreen.SetMessageText(SelectedMonster.Base.Name + " is already in battle!");
+                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already in battle!");
+                    yield break;
+                }
+                if (battleState.BattleSystem.IsAvailableToSwitch(SelectedMonster))
+                {
+                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already in battle!");
                     yield break;
                 }
 
