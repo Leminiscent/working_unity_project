@@ -313,6 +313,8 @@ public class RunTurnState : State<BattleSystem>
                     damage = Mathf.FloorToInt(details.ActualDamageDealt * (move.Recoil.RecoilDamage / 100f));
                     sourceUnit.Monster.TakeRecoilDamage(damage);
                     break;
+                case RecoilType.None:
+                    break;
                 default:
                     break;
             }

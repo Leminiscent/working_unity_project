@@ -138,6 +138,8 @@ public class BattleSystem : MonoBehaviour
             case 3:
                 _playerUnits = _playerUnitsTriple.GetRange(0, _playerUnitsTriple.Count);
                 break;
+            default:
+                break;
         }
         switch (_enemyUnitCount)
         {
@@ -149,6 +151,8 @@ public class BattleSystem : MonoBehaviour
                 break;
             case 3:
                 _enemyUnits = _enemyUnitsTriple.GetRange(0, _enemyUnitsTriple.Count);
+                break;
+            default:
                 break;
         }
 
