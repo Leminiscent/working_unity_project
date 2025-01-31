@@ -93,7 +93,7 @@ public class PartyState : State<GameController>
                 }
                 if (battleState.BattleSystem.IsAvailableToSwitch(SelectedMonster))
                 {
-                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already in battle!");
+                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already preparing to enter battle!");
                     yield break;
                 }
 
