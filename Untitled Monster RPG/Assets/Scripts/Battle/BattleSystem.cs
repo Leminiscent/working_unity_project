@@ -327,6 +327,11 @@ public class BattleSystem : MonoBehaviour
         yield return _dialogueBox.TypeDialogue($"Go {newMonster.Base.Name}!");
     }
 
+    public bool IsAvailableToSwitch()
+    {
+        return PlayerParty.GetHealthyMonsters(_playerUnitCount).Count > 1;
+    }
+
     public IEnumerator SendNextMasterMonster(Monster newMonster, BattleUnit defeatedUnit)
     {
         defeatedUnit.Setup(newMonster);
