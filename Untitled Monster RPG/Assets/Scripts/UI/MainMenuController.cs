@@ -60,28 +60,28 @@ public class MainMenuController : SelectionUI<TextSlot>
 
     private IEnumerator ContinueSelected()
     {
-        yield return Fader.Instance.FadeIn(1f);
+        yield return Fader.Instance.FadeIn(0.1f);
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadScene(1);
         SavingSystem.Instance.Load("saveSlot1");
 
         Destroy(gameObject);
 
-        yield return Fader.Instance.FadeOut(1f);
+        yield return Fader.Instance.FadeOut(0.75f);
     }
 
     private IEnumerator NewGameSelected()
     {
-        yield return Fader.Instance.FadeIn(1f);
+        yield return Fader.Instance.FadeIn(0.1f);
 
         GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
         SavingSystem.Instance.Delete("saveSlot1");
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadScene(1);
         
-        yield return Fader.Instance.FadeOut(1f);
+        yield return Fader.Instance.FadeOut(0.75f);
     }
 }
