@@ -47,8 +47,11 @@ public class ShopMenuState : State<GameController>
             // Sell
             yield return _gameController.StateMachine.PushAndWait(ShopSellingState.Instance);
         }
-
-        yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!", true);
-        _gameController.StateMachine.Pop();
+        else
+        {
+            // Leave
+            yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!", true);
+            _gameController.StateMachine.Pop();
+        }
     }
 }
