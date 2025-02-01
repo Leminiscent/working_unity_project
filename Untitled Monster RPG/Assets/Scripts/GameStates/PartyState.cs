@@ -37,7 +37,6 @@ public class PartyState : State<GameController>
     {
         _gameController = owner;
         SelectedMonster = null;
-        _partyScreen.SetMessageText("Choose a Monster!");
         _partyScreen.gameObject.SetActive(true);
         _partyScreen.OnSelected += OnMonsterSelected;
         _partyScreen.OnBack += OnBack;
@@ -161,7 +160,6 @@ public class PartyState : State<GameController>
     private void OnBack()
     {
         SelectedMonster = null;
-        _isSwitchingPosition = false;
 
         State<GameController> prevState = _gameController.StateMachine.GetPrevState();
 
