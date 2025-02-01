@@ -118,8 +118,7 @@ public class BattleSystem : MonoBehaviour
     {
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
-        _playerUnitCount = Mathf.Min(PlayerParty.Monsters.Count, 3);
-
+        _playerUnitCount = Mathf.Min(PlayerParty.Monsters.Count(static m => m.Hp > 0), 3);
         _playerElementsSingle.SetActive(_playerUnitCount == 1);
         _playerElementsDouble.SetActive(_playerUnitCount == 2);
         _playerElementsTriple.SetActive(_playerUnitCount == 3);
