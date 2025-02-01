@@ -79,34 +79,33 @@ public class PartyState : State<GameController>
                 "Back"
             };
             yield return _gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
-            if (DynamicMenuState.Instance.SelectedItem == 0)
-            {
-                if (SelectedMonster.Hp <= 0)
-                {
-                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is unable to fight!");
-                    yield break;
-                }
-                if (battleState.BattleSystem.PlayerUnits.Any(u => u.Monster == SelectedMonster))
-                {
-                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already in battle!");
-                    yield break;
-                }
-                if (battleState.BattleSystem.UnableToSwitch(SelectedMonster))
-                {
-                    _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already preparing for battle!");
-                    yield break;
-                }
 
-                _gameController.StateMachine.Pop();
-            }
-            else if (DynamicMenuState.Instance.SelectedItem == 1)
+            switch (DynamicMenuState.Instance.SelectedItem)
             {
-                SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
-                yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
-            }
-            else
-            {
-                yield break;
+                case 0:
+                    if (SelectedMonster.Hp <= 0)
+                    {
+                        _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is unable to fight!");
+                        yield break;
+                    }
+                    if (battleState.BattleSystem.PlayerUnits.Any(u => u.Monster == SelectedMonster))
+                    {
+                        _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already in battle!");
+                        yield break;
+                    }
+                    if (battleState.BattleSystem.UnableToSwitch(SelectedMonster))
+                    {
+                        _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already preparing for battle!");
+                        yield break;
+                    }
+                    _gameController.StateMachine.Pop();
+                    break;
+                case 1:
+                    SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
+                    yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
+                    break;
+                default:
+                    yield break;
             }
         }
         else
@@ -133,20 +132,19 @@ public class PartyState : State<GameController>
             };
             yield return _gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
 
-            if (DynamicMenuState.Instance.SelectedItem == 0)
+            switch (DynamicMenuState.Instance.SelectedItem)
             {
-                SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
-                yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
-            }
-            else if (DynamicMenuState.Instance.SelectedItem == 1)
-            {
-                _isSwitchingPosition = true;
-                _selectedSwitchToIndex = selectedMonsterIndex;
-                _partyScreen.SetMessageText($"Choose a monster to switch with {_playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
-            }
-            else
-            {
-                yield break;
+                case 0:
+                    SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
+                    yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
+                    break;
+                case 1:
+                    _isSwitchingPosition = true;
+                    _selectedSwitchToIndex = selectedMonsterIndex;
+                    _partyScreen.SetMessageText($"Choose a monster to switch with {_playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
+                    break;
+                default:
+                    yield break;
             }
         }
     }

@@ -10,7 +10,7 @@ public class DynamicMenuState : State<GameController>
     private GameController _gameController;
 
     public List<string> MenuItems { get; set; }
-    public int? SelectedItem { get; private set; }
+    public int? SelectedItem { get; set; }
     public static DynamicMenuState Instance { get; private set; }
 
     private void Awake()
