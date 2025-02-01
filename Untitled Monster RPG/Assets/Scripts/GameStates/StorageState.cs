@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -52,14 +54,7 @@ public class StorageState : State<GameController>
     {
         if (!_isMovingMonster)
         {
-            Monster monster = _storageUI.TakeMonsterFromSlot(slotIndex);
-
-            if (monster != null)
-            {
-                _isMovingMonster = true;
-                _selectedSlotToMove = slotIndex;
-                _selectedMonsterToMove = monster;
-            }
+            StartCoroutine(HandleMonsterSelection(slotIndex));
         }
         else
         {
@@ -86,6 +81,45 @@ public class StorageState : State<GameController>
             _party.PartyUpdated();
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();
+        }
+    }
+
+    private IEnumerator HandleMonsterSelection(int slotIndex)
+    {
+        Monster monster = _storageUI.PeekMonsterInSlot(slotIndex);
+        if (monster == null)
+        {
+            yield break;
+        }
+
+        DynamicMenuState.Instance.MenuItems = new List<string>
+        {
+            "Move",
+            "Summary",
+            "Back"
+        };
+        yield return _gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
+        switch (DynamicMenuState.Instance.SelectedItem)
+        {
+            case 0:
+                Monster removedMonster = _storageUI.TakeMonsterFromSlot(slotIndex);
+                if (removedMonster != null)
+                {
+                    _isMovingMonster = true;
+                    _selectedSlotToMove = slotIndex;
+                    _selectedMonsterToMove = removedMonster;
+                }
+                break;
+            case 1:
+                List<Monster> monsters = _storageUI.GetAllMonsters();
+                SummaryState.Instance.MonstersList = monsters;
+                int index = monsters.IndexOf(monster);
+                SummaryState.Instance.SelectedMonsterIndex = index < 0 ? 0 : index;
+                yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
+                SummaryState.Instance.MonstersList = null;
+                break;
+            default:
+                break;
         }
     }
 

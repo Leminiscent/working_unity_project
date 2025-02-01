@@ -7,10 +7,11 @@ public class SummaryState : State<GameController>
     [SerializeField] private SummaryScreenUI _summaryScreenUI;
 
     private int _selectedPage = 0;
-    private List<Monster> _playerParty;
+    private List<Monster> _currentMonsterList;
     private GameController _gameController;
 
     public int SelectedMonsterIndex { get; set; }
+    public List<Monster> MonstersList { get; set; }
     public static SummaryState Instance { get; set; }
 
     private void Awake()
@@ -28,9 +29,17 @@ public class SummaryState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        _playerParty = PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
+        _currentMonsterList = MonstersList ?? PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
+        if (_currentMonsterList == null || _currentMonsterList.Count == 0)
+        {
+            _currentMonsterList = new List<Monster>();
+        }
+        if (SelectedMonsterIndex < 0 || SelectedMonsterIndex >= _currentMonsterList.Count)
+        {
+            SelectedMonsterIndex = 0;
+        }
         _summaryScreenUI.gameObject.SetActive(true);
-        _summaryScreenUI.SetBasicDetails(_playerParty[SelectedMonsterIndex]);
+        _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
         _summaryScreenUI.ShowPage(_selectedPage);
     }
 
@@ -38,7 +47,6 @@ public class SummaryState : State<GameController>
     {
         if (!_summaryScreenUI.InMoveSelection)
         {
-            // Page Selection
             int prevPage = _selectedPage;
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -55,14 +63,12 @@ public class SummaryState : State<GameController>
                 _summaryScreenUI.ShowPage(_selectedPage);
             }
 
-            // Monster Selection
             int prevIndex = SelectedMonsterIndex;
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 SelectedMonsterIndex++;
-
-                if (SelectedMonsterIndex >= _playerParty.Count)
+                if (SelectedMonsterIndex >= _currentMonsterList.Count)
                 {
                     SelectedMonsterIndex = 0;
                 }
@@ -70,16 +76,15 @@ public class SummaryState : State<GameController>
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 SelectedMonsterIndex--;
-
                 if (SelectedMonsterIndex < 0)
                 {
-                    SelectedMonsterIndex = _playerParty.Count - 1;
+                    SelectedMonsterIndex = _currentMonsterList.Count - 1;
                 }
             }
 
             if (prevIndex != SelectedMonsterIndex)
             {
-                _summaryScreenUI.SetBasicDetails(_playerParty[SelectedMonsterIndex]);
+                _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
                 _summaryScreenUI.ShowPage(_selectedPage);
             }
         }
@@ -110,5 +115,6 @@ public class SummaryState : State<GameController>
     public override void Exit()
     {
         _summaryScreenUI.gameObject.SetActive(false);
+        MonstersList = null;
     }
 }

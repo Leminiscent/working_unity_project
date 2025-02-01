@@ -122,6 +122,31 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         return slotIndex % _totalColumns == 0;
     }
 
+    public Monster PeekMonsterInSlot(int slotIndex)
+    {
+        Monster monster;
+
+        if (IsPartySlot(slotIndex))
+        {
+            int partyIndex = slotIndex / _totalColumns;
+
+            if (partyIndex >= _party.Monsters.Count)
+            {
+                return null;
+            }
+
+            monster = _party.Monsters[partyIndex];
+            return monster;
+        }
+        else
+        {
+            int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
+
+            monster = _storage.GetMonster(SelectedDepot, depotSlotIndex);
+            return monster;
+        }
+    }
+
     public Monster TakeMonsterFromSlot(int slotIndex)
     {
         Monster monster;
@@ -187,5 +212,19 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
 
         _transferImage.gameObject.SetActive(false);
+    }
+
+    public List<Monster> GetAllMonsters()
+    {
+        List<Monster> monsters = new();
+        for (int i = 0; i < _storageSlots.Count; i++)
+        {
+            Monster monster = PeekMonsterInSlot(i);
+            if (monster != null)
+            {
+                monsters.Add(monster);
+            }
+        }
+        return monsters;
     }
 }
