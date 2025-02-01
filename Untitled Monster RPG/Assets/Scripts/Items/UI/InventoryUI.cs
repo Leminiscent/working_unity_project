@@ -129,6 +129,11 @@ public class InventoryUI : SelectionUI<TextSlot>
         _moneyText.gameObject.SetActive(false);
     }
 
+    public void ShowMoneyText()
+    {
+        _moneyText.gameObject.SetActive(true);
+    }
+
     public override void HandleUpdate()
     {
         int prevCategory = _selectedCategory;

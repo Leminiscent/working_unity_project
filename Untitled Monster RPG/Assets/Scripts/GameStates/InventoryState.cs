@@ -33,6 +33,10 @@ public class InventoryState : State<GameController>
         {
             _inventoryUI.HideMoneyText();
         }
+        else
+        {
+            _inventoryUI.ShowMoneyText();
+        }
         SelectedItem = null;
         _inventoryUI.OnSelected += OnItemSelected;
         _inventoryUI.OnBack += OnBack;
