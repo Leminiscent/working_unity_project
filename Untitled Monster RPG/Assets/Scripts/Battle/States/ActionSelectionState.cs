@@ -86,6 +86,7 @@ public class ActionSelectionState : State<BattleSystem>
         int recruitTarget = 0;
         if (_battleSystem.EnemyUnits.Count > 1)
         {
+            TargetSelectionState.Instance.IsTargetingAllies = false;
             yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
             if (!TargetSelectionState.Instance.SelectionMade)
             {
