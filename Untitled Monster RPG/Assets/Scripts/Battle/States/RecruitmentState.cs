@@ -195,7 +195,7 @@ public class RecruitmentState : State<BattleSystem>
                     defeatedUnitAction.IsValid = false;
                 }
 
-                List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions.Where(a => a.TargetUnits.Contains(RecruitTarget)).ToList();
+                List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(RecruitTarget)).ToList();
                 foreach (BattleAction a in actionsToAdjust)
                 {
                     a.TargetUnits.Remove(RecruitTarget);

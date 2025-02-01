@@ -583,7 +583,7 @@ public class RunTurnState : State<BattleSystem>
                 _battleSystem.PlayerUnits.Remove(defeatedUnit);
                 defeatedUnit.Hud.gameObject.SetActive(false);
 
-                List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits.Contains(defeatedUnit)).ToList();
+                List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
                 foreach (BattleAction a in actionsToAdjust)
                 {
                     a.TargetUnits.Remove(defeatedUnit);
@@ -614,7 +614,7 @@ public class RunTurnState : State<BattleSystem>
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.Hud.gameObject.SetActive(false);
 
-                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits.Contains(defeatedUnit)).ToList();
+                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
                     foreach (BattleAction a in actionsToAdjust)
                     {
                         a.TargetUnits.Remove(defeatedUnit);
@@ -638,7 +638,7 @@ public class RunTurnState : State<BattleSystem>
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.Hud.gameObject.SetActive(false);
 
-                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits.Contains(defeatedUnit)).ToList();
+                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
                     foreach (BattleAction a in actionsToAdjust)
                     {
                         a.TargetUnits.Remove(defeatedUnit);
