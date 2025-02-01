@@ -60,56 +60,6 @@ public class InventoryUI : SelectionUI<TextSlot>
         UpdateSelectionInUI();
     }
 
-    private void UpdateMoneyText()
-    {
-        _moneyText.text = $"{Wallet.Instance.Money} GP";
-    }
-
-    public override void HandleUpdate()
-    {
-        int prevCategory = _selectedCategory;
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            _selectedCategory = GetNextNonEmptyCategory(_selectedCategory, 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            _selectedCategory = GetNextNonEmptyCategory(_selectedCategory, -1);
-        }
-
-        if (prevCategory != _selectedCategory || Input.GetButtonDown("Back"))
-        {
-            if (Input.GetButtonDown("Back"))
-            {
-                _selectedCategory = GetFirstNonEmptyCategory();
-            }
-
-            ResetSelction();
-            _categoryText.text = Inventory.ItemCategories[_selectedCategory];
-            UpdateItemList();
-        }
-
-        base.HandleUpdate();
-    }
-
-    public override void UpdateSelectionInUI()
-    {
-        List<ItemSlot> slots = _inventory.GetSlotsByCategory(_selectedCategory);
-
-        if (slots.Count > 0)
-        {
-            ItemBase item = slots[_selectedItem].Item;
-
-            _itemIcon.sprite = item.Icon;
-            _itemDescription.text = item.Description;
-        }
-
-        HandleScrolling();
-
-        base.UpdateSelectionInUI();
-    }
-
     private void HandleScrolling()
     {
         if (_slotUIList.Count <= ITEMS_IN_VIEWPORT)
@@ -167,5 +117,60 @@ public class InventoryUI : SelectionUI<TextSlot>
         }
 
         return 0; // Fallback
+    }
+
+    private void UpdateMoneyText()
+    {
+        _moneyText.text = $"{Wallet.Instance.Money} GP";
+    }
+
+    public void HideMoneyText()
+    {
+        _moneyText.gameObject.SetActive(false);
+    }
+
+    public override void HandleUpdate()
+    {
+        int prevCategory = _selectedCategory;
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            _selectedCategory = GetNextNonEmptyCategory(_selectedCategory, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            _selectedCategory = GetNextNonEmptyCategory(_selectedCategory, -1);
+        }
+
+        if (prevCategory != _selectedCategory || Input.GetButtonDown("Back"))
+        {
+            if (Input.GetButtonDown("Back"))
+            {
+                _selectedCategory = GetFirstNonEmptyCategory();
+            }
+
+            ResetSelction();
+            _categoryText.text = Inventory.ItemCategories[_selectedCategory];
+            UpdateItemList();
+        }
+
+        base.HandleUpdate();
+    }
+
+    public override void UpdateSelectionInUI()
+    {
+        List<ItemSlot> slots = _inventory.GetSlotsByCategory(_selectedCategory);
+
+        if (slots.Count > 0)
+        {
+            ItemBase item = slots[_selectedItem].Item;
+
+            _itemIcon.sprite = item.Icon;
+            _itemDescription.text = item.Description;
+        }
+
+        HandleScrolling();
+
+        base.UpdateSelectionInUI();
     }
 }

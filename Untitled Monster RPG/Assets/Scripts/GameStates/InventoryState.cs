@@ -7,6 +7,7 @@ public class InventoryState : State<GameController>
     [SerializeField] private InventoryUI _inventoryUI;
 
     private GameController _gameController;
+    private State<GameController> _prevState;
 
     public ItemBase SelectedItem { get; private set; }
     public static InventoryState Instance { get; private set; }
@@ -26,7 +27,12 @@ public class InventoryState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
+        _prevState = _gameController.StateMachine.GetPrevState();
         _inventoryUI.gameObject.SetActive(true);
+        if (_prevState == BattleState.Instance)
+        {
+            _inventoryUI.HideMoneyText();
+        }
         SelectedItem = null;
         _inventoryUI.OnSelected += OnItemSelected;
         _inventoryUI.OnBack += OnBack;
@@ -65,15 +71,13 @@ public class InventoryState : State<GameController>
 
     private IEnumerator SelectMonsterAndUseItem()
     {
-        State<GameController> prevState = _gameController.StateMachine.GetPrevState();
-
         if (!SelectedItem.DirectlyUsable)
         {
             yield return DialogueManager.Instance.ShowDialogueText("This item can't be used directly!");
             SelectedItem = null;
             yield break;
         }
-        else if (prevState == BattleState.Instance)
+        else if (_prevState == BattleState.Instance)
         {
             if (!SelectedItem.UsableInBattle)
             {
@@ -92,7 +96,7 @@ public class InventoryState : State<GameController>
             }
         }
 
-        if (prevState != BattleState.Instance)
+        if (_prevState != BattleState.Instance)
         {
             yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);
         }
