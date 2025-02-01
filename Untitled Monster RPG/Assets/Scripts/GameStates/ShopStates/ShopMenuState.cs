@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Utils.StateMachine;
 
 public class ShopMenuState : State<GameController>
@@ -41,11 +42,13 @@ public class ShopMenuState : State<GameController>
             // Buy
             ShopBuyingState.Instance.AvailableItems = AvailableItems;
             yield return _gameController.StateMachine.PushAndWait(ShopBuyingState.Instance);
+            StartCoroutine(StartMenu());
         }
         else if (selectedChoice == 1)
         {
             // Sell
             yield return _gameController.StateMachine.PushAndWait(ShopSellingState.Instance);
+            StartCoroutine(StartMenu());
         }
         else
         {
