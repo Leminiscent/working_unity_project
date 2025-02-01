@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -39,21 +40,12 @@ public class MainMenuController : SelectionUI<TextSlot>
         if (selection == 0)
         {
             // Continue
-            transform.SetParent(null);
-            DontDestroyOnLoad(gameObject);
-
-            GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
-            SceneManager.LoadScene(1);
-            SavingSystem.Instance.Load("saveSlot1");
-
-            Destroy(gameObject);
+            StartCoroutine(ContinueSelected());
         }
         else if (selection == 1)
         {
             // New Game
-            GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
-            SavingSystem.Instance.Delete("saveSlot1");
-            SceneManager.LoadScene(1);
+            StartCoroutine(NewGameSelected());
         }
         else if (selection == 2)
         {
@@ -64,5 +56,32 @@ public class MainMenuController : SelectionUI<TextSlot>
             Application.Quit();
 #endif
         }
+    }
+
+    private IEnumerator ContinueSelected()
+    {
+        yield return Fader.Instance.FadeIn(1f);
+
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
+
+        GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
+        SceneManager.LoadSceneAsync(1);
+        SavingSystem.Instance.Load("saveSlot1");
+
+        Destroy(gameObject);
+
+        yield return Fader.Instance.FadeOut(1f);
+    }
+
+    private IEnumerator NewGameSelected()
+    {
+        yield return Fader.Instance.FadeIn(1f);
+
+        GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
+        SavingSystem.Instance.Delete("saveSlot1");
+        SceneManager.LoadSceneAsync(1);
+        
+        yield return Fader.Instance.FadeOut(1f);
     }
 }
