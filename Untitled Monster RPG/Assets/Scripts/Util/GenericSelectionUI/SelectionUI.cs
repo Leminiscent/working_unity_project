@@ -65,7 +65,6 @@ namespace Utils.GenericSelectionUI
             }
             if (Input.GetButtonDown("Back"))
             {
-                ResetSelection();
                 OnBack?.Invoke();
             }
         }
