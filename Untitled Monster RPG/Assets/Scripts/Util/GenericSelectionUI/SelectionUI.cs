@@ -13,6 +13,7 @@ namespace Utils.GenericSelectionUI
         private const float SELCTION_SPEED = 5f;
 
         protected int _selectedItem = 0;
+        protected int? _savedSelection;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
@@ -104,6 +105,21 @@ namespace Utils.GenericSelectionUI
             for (int i = 0; i < _items.Count; i++)
             {
                 _items[i].OnSelectionChanged(i == _selectedItem);
+            }
+        }
+
+        public void SaveSelection()
+        {
+            _savedSelection = _selectedItem;
+        }
+
+        public void RestoreSelection()
+        {
+            if (_savedSelection.HasValue)
+            {
+                _selectedItem = _savedSelection.Value;
+                _savedSelection = null;
+                UpdateSelectionInUI();
             }
         }
 

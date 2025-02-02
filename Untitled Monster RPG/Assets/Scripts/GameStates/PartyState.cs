@@ -141,6 +141,7 @@ public class PartyState : State<GameController>
                 case 1:
                     _isSwitchingPosition = true;
                     _selectedSwitchToIndex = selectedMonsterIndex;
+                    _partyScreen.SaveSelection();
                     _partyScreen.SetMessageText($"Choose a monster to switch with {_playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
                     break;
                 default:
@@ -160,6 +161,7 @@ public class PartyState : State<GameController>
         if (_isSwitchingPosition)
         {
             _isSwitchingPosition = false;
+            _partyScreen.RestoreSelection();
             _partyScreen.SetMessageText("Choose a monster!");
             return;
         }
