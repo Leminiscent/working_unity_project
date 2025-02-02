@@ -117,6 +117,13 @@ public class StorageState : State<GameController>
                 int index = monsters.IndexOf(monster);
                 SummaryState.Instance.SelectedMonsterIndex = index < 0 ? 0 : index;
                 yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
+
+                Monster selectedMonster = monsters[SummaryState.Instance.SelectedMonsterIndex];
+                int targetSlotIndex = _storageUI.GetSlotIndexForMonster(selectedMonster);
+                if (targetSlotIndex != -1)
+                {
+                    _storageUI.SetSelectedIndex(targetSlotIndex);
+                }
                 SummaryState.Instance.MonstersList = null;
                 break;
             default:

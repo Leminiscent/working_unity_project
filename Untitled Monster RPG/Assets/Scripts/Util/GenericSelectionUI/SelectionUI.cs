@@ -129,6 +129,20 @@ namespace Utils.GenericSelectionUI
             UpdateSelectionInUI();
         }
 
+        public void SetSelectedIndex(int index)
+        {
+            if (_items != null)
+            {
+                _selectedItem = Mathf.Clamp(index, 0, _items.Count - 1);
+                UpdateSelectionInUI();
+            }
+        }
+
+        public int GetItemsCount()
+        {
+            return _items != null ? _items.Count : 0;
+        }
+
         private void UpdateSelectionTimer()
         {
             if (_selectionTimer > 0)

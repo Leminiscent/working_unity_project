@@ -147,6 +147,17 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         }
     }
 
+    public int GetSlotIndexForMonster(Monster monster)
+    {
+        int totalSlots = GetItemsCount();
+        for (int i = 0; i < totalSlots; i++)
+        {
+            if (PeekMonsterInSlot(i) == monster)
+                return i;
+        }
+        return -1;
+    }
+
     public Monster TakeMonsterFromSlot(int slotIndex)
     {
         Monster monster;

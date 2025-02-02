@@ -103,6 +103,7 @@ public class PartyState : State<GameController>
                 case 1:
                     SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
                     yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
+                    _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedMonsterIndex);
                     break;
                 default:
                     yield break;
@@ -137,6 +138,7 @@ public class PartyState : State<GameController>
                 case 0:
                     SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
                     yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
+                    _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedMonsterIndex);
                     break;
                 case 1:
                     _isSwitchingPosition = true;
