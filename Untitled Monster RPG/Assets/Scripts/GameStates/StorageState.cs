@@ -108,6 +108,7 @@ public class StorageState : State<GameController>
                     _isMovingMonster = true;
                     _selectedSlotToMove = slotIndex;
                     _selectedMonsterToMove = removedMonster;
+                    _storageUI.SaveSelection();
                 }
                 break;
             case 1:
@@ -128,12 +129,14 @@ public class StorageState : State<GameController>
         if (_isMovingMonster)
         {
             _isMovingMonster = false;
+            _storageUI.RestoreSelection();
             _storageUI.PlaceMonsterIntoSlot(_selectedSlotToMove, _selectedMonsterToMove);
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();
         }
         else
         {
+            _storageUI.ResetSelection();
             _gameController.StateMachine.Pop();
         }
     }
