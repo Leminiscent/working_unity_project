@@ -100,6 +100,7 @@ public class SummaryState : State<GameController>
         {
             if (_summaryScreenUI.InMoveSelection)
             {
+                _summaryScreenUI.ResetSelection();
                 _summaryScreenUI.InMoveSelection = false;
             }
             else
@@ -115,6 +116,7 @@ public class SummaryState : State<GameController>
     public override void Exit()
     {
         _summaryScreenUI.gameObject.SetActive(false);
+        _selectedPage = 0;
         MonstersList = null;
     }
 }
