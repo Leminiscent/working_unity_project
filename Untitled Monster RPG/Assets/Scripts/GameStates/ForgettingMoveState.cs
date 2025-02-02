@@ -49,12 +49,14 @@ public class ForgettingMoveState : State<GameController>
 
     private void OnMoveSelected(int selection)
     {
+        _moveForgettingUI.ResetSelection();
         Selection = selection;
         _gameController.StateMachine.Pop();
     }
 
     private void OnBack()
     {
+        _moveForgettingUI.ResetSelection();
         Selection = -1;
         _gameController.StateMachine.Pop();
     }
