@@ -65,12 +65,14 @@ public class DynamicMenuState : State<GameController>
 
     private void OnItemSelected(int selection)
     {
+        _dynamicMenuUI.ResetSelection();
         SelectedItem = selection;
         _gameController.StateMachine.Pop();
     }
 
     private void OnBack()
     {
+        _dynamicMenuUI.ResetSelection();
         SelectedItem = null;
         _gameController.StateMachine.Pop();
     }
