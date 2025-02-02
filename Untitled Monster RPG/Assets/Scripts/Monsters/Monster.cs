@@ -45,8 +45,9 @@ public class Monster
     public void Init()
     {
         Moves = new List<Move>();
-        foreach (LearnableMove move in Base.LearnableMoves)
+        for (int i = Base.LearnableMoves.Count - 1; i >= 0; i--)
         {
+            LearnableMove move = Base.LearnableMoves[i];
             if (move.Level <= Level)
             {
                 Moves.Add(new Move(move.Base));
