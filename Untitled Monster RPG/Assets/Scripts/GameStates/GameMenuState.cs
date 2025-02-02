@@ -96,6 +96,7 @@ public class GameMenuState : State<GameController>
 
     private void OnBack()
     {
+        _menuController.ResetSelection();
         _gameController.StateMachine.Pop();
     }
 }
