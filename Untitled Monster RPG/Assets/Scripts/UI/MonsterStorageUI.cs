@@ -19,6 +19,7 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     private int _totalColumns = 9;
 
     public int SelectedDepot { get; private set; } = 0;
+    public int TotalColumns => _totalColumns;
 
     private void Awake()
     {
@@ -153,7 +154,9 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         for (int i = 0; i < totalSlots; i++)
         {
             if (PeekMonsterInSlot(i) == monster)
+            {
                 return i;
+            }
         }
         return -1;
     }

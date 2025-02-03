@@ -6,6 +6,7 @@ using Utils.StateMachine;
 public class StorageState : State<GameController>
 {
     [SerializeField] private MonsterStorageUI _storageUI;
+
     private bool _isMovingMonster = false;
     private int _selectedSlotToMove = 0;
     private Monster _selectedMonsterToMove;
@@ -66,7 +67,10 @@ public class StorageState : State<GameController>
 
             if (secondMonster == null && _storageUI.IsPartySlot(firstSlotIndex) && _storageUI.IsPartySlot(secondSlotIndex))
             {
-                _storageUI.PlaceMonsterIntoSlot(_selectedSlotToMove, _selectedMonsterToMove);
+                int partyIndex = firstSlotIndex / _storageUI.TotalColumns;
+                _party.Monsters.RemoveAt(partyIndex);
+                _storageUI.PlaceMonsterIntoSlot(secondSlotIndex, _selectedMonsterToMove);
+                _party.PartyUpdated();
                 _storageUI.SetStorageData();
                 _storageUI.SetPartyData();
                 return;
