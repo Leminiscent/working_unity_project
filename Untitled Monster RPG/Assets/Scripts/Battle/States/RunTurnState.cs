@@ -207,6 +207,9 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
+        sourceUnit.PlayAttackAnimation();
+        AudioManager.Instance.PlaySFX(move.Base.Sound);
+        yield return new WaitForSeconds(0.75f);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -221,9 +224,6 @@ public class RunTurnState : State<BattleSystem>
                 {
                     DamageDetails damageDetails = new();
 
-                    sourceUnit.PlayAttackAnimation();
-                    AudioManager.Instance.PlaySFX(move.Base.Sound);
-                    yield return new WaitForSeconds(0.75f);
                     targetUnit.PlayHitAnimation();
                     AudioManager.Instance.PlaySFX(AudioID.Hit);
 

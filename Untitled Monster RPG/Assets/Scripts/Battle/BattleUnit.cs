@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -110,10 +108,5 @@ public class BattleUnit : MonoBehaviour
 
         sequence.Append(_image.transform.DOLocalMoveY(_originalPos.y - 0.5f, 0.5f));
         sequence.Join(_image.DOFade(0f, 0.5f));
-    }
-
-    public static implicit operator List<object>(BattleUnit v)
-    {
-        throw new NotImplementedException();
     }
 }
