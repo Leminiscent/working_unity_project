@@ -217,7 +217,7 @@ public class RunTurnState : State<BattleSystem>
             if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
             {
                 int hitCount = move.Base.GetHitCount();
-                float typeEffectiveness = 1f;
+                float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Monster.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Monster.Base.Type2);
                 int hit = 1;
 
                 for (int i = 1; i <= hitCount; i++)
@@ -229,7 +229,9 @@ public class RunTurnState : State<BattleSystem>
 
                     if (move.Base.Category == MoveCategory.Status)
                     {
-                        yield return RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target);
+                        yield return typeEffectiveness > 0f
+                            ? RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target)
+                            : _dialogueBox.TypeDialogue("It has no effect!");
                     }
                     else
                     {
@@ -259,14 +261,14 @@ public class RunTurnState : State<BattleSystem>
                     }
                 }
 
-                if (move.Base.Category != MoveCategory.Status)
-                {
-                    yield return ShowEffectiveness(typeEffectiveness);
-                }
-
                 if (hit > 1)
                 {
                     yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
+                }
+
+                if (move.Base.Category != MoveCategory.Status)
+                {
+                    yield return ShowEffectiveness(typeEffectiveness);
                 }
 
                 if (targetUnit.Monster.Hp <= 0)
