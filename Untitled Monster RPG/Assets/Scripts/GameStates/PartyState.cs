@@ -183,6 +183,7 @@ public class PartyState : State<GameController>
             }
             _partyScreen.gameObject.SetActive(false);
         }
+        _partyScreen.ResetSelection();
         _gameController.StateMachine.Pop();
     }
 }
