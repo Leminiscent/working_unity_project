@@ -323,7 +323,7 @@ public class Monster
         float modifiers = UnityEngine.Random.Range(0.85f, 1f) * type * critical * weatherMod;
         float a = ((2 * attacker.Level) + 10) / 250f;
         float d = a * move.Base.Power * (((float)attack / defense) + 2);
-        int damage = Mathf.FloorToInt(d * modifiers);
+        int damage = !IsGuarding ? Mathf.FloorToInt(d * modifiers) : Mathf.FloorToInt(d * modifiers / 2f);
 
         damageDetails.TotalDamageDealt = damage;
         damageDetails.ActualDamageDealt = Mathf.Min(damage, Hp);
