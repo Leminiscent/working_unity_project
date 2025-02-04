@@ -69,7 +69,10 @@ public class ActionSelectionState : State<BattleSystem>
                 break;
             case 3:
                 // Guard
-                // TODO: Implement guard action
+                _battleSystem.AddBattleAction(new BattleAction()
+                {
+                    ActionType = BattleActionType.Guard
+                });
                 break;
             case 4:
                 // Switch
