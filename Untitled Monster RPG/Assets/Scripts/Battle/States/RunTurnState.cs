@@ -119,6 +119,14 @@ public class RunTurnState : State<BattleSystem>
 
         _battleSystem.ClearBattleActions();
 
+        foreach (BattleUnit unit in _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits))
+        {
+            if (unit.Monster.IsGuarding)
+            {
+                unit.StopGuarding();
+            }
+        }
+
         if (!_battleSystem.BattleIsOver)
         {
             _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
