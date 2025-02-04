@@ -109,4 +109,24 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.transform.DOLocalMoveY(_originalPos.y - 0.5f, 0.5f));
         sequence.Join(_image.DOFade(0f, 0.5f));
     }
+
+    public void StartGuarding()
+    {
+        Monster.IsGuarding = true;
+
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(_image.DOColor(Color.gray, 0.2f));
+        sequence.Join(_image.transform.DOLocalMoveY(_originalPos.y - 10f, 0.2f));
+    }
+
+    public void StopGuarding()
+    {
+        Monster.IsGuarding = false;
+
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(_image.DOColor(_originalColor, 0.2f));
+        sequence.Join(_image.transform.DOLocalMoveY(_originalPos.y, 0.2f));
+    }
 }
