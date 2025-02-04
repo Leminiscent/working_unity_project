@@ -117,7 +117,16 @@ public class BattleUnit : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(_image.DOColor(Color.gray, 0.2f));
-        sequence.Join(_image.transform.DOLocalMoveY(_originalPos.y - 10f, 0.2f));
+        sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 0.1f, _originalPos.y - 0.1f), 0.2f));
+
+        if (_isPlayerUnit)
+        {
+            sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 0.1f, _originalPos.y - 0.1f), 0.2f));
+        }
+        else
+        {
+            sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x + 0.1f, _originalPos.y - 0.1f), 0.2f));
+        }
     }
 
     public void StopGuarding()
@@ -127,6 +136,6 @@ public class BattleUnit : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(_image.DOColor(_originalColor, 0.2f));
-        sequence.Join(_image.transform.DOLocalMoveY(_originalPos.y, 0.2f));
+        sequence.Join(_image.transform.DOLocalMove(_originalPos, 0.2f));
     }
 }
