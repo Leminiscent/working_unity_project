@@ -281,19 +281,30 @@ public class BattleSystem : MonoBehaviour
         {
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
-                Move selectedMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
-                _battleActions.Add(new BattleAction()
+                if (UnityEngine.Random.value < 0.25f)
                 {
-                    ActionType = BattleActionType.Fight,
-                    SelectedMove = selectedMove,
-                    SourceUnit = enemyUnit,
-                    TargetUnits = selectedMove.Base.Target == MoveTarget.Self ? new List<BattleUnit> { enemyUnit }
-                        : selectedMove.Base.Target == MoveTarget.AllAllies ? _enemyUnits
-                        : selectedMove.Base.Target == MoveTarget.AllEnemies ? _playerUnits
-                        : selectedMove.Base.Target == MoveTarget.Ally ? new List<BattleUnit> { _enemyUnits[UnityEngine.Random.Range(0, _enemyUnits.Count)] }
-                        : selectedMove.Base.Target == MoveTarget.Enemy ? new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] }
-                        : _enemyUnits.Where(u => u != enemyUnit).Concat(_playerUnits).ToList()
-                });
+                    _battleActions.Add(new BattleAction()
+                    {
+                        ActionType = BattleActionType.Guard,
+                        SourceUnit = enemyUnit
+                    });
+                }
+                else
+                {
+                    Move selectedMove = enemyUnit.Monster.GetRandomMove() ?? new Move(GlobalSettings.Instance.BackupMove);
+                    _battleActions.Add(new BattleAction()
+                    {
+                        ActionType = BattleActionType.Fight,
+                        SelectedMove = selectedMove,
+                        SourceUnit = enemyUnit,
+                        TargetUnits = selectedMove.Base.Target == MoveTarget.Self ? new List<BattleUnit> { enemyUnit }
+                            : selectedMove.Base.Target == MoveTarget.AllAllies ? _enemyUnits
+                            : selectedMove.Base.Target == MoveTarget.AllEnemies ? _playerUnits
+                            : selectedMove.Base.Target == MoveTarget.Ally ? new List<BattleUnit> { _enemyUnits[UnityEngine.Random.Range(0, _enemyUnits.Count)] }
+                            : selectedMove.Base.Target == MoveTarget.Enemy ? new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] }
+                            : _enemyUnits.Where(u => u != enemyUnit).Concat(_playerUnits).ToList()
+                    });
+                }
             }
             _battleActions = _battleActions.OrderByDescending(static a => a.Priority).ThenByDescending(static a => a.SourceUnit.Monster.Agility).ToList();
             RunTurnState.Instance.BattleActions = _battleActions;
