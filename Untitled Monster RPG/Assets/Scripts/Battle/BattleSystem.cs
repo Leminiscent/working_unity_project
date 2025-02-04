@@ -263,6 +263,7 @@ public class BattleSystem : MonoBehaviour
         PlayerUnits.ForEach(static u => u.Hud.ClearData());
         EnemyUnits.ForEach(static u => u.Hud.ClearData());
 
+        ActionSelectionState.Instance.SelectionUI.ResetSelection();
         OnBattleOver(won);
     }
 
