@@ -312,7 +312,6 @@ public class BattleSystem : MonoBehaviour
         else
         {
             _selectingUnitIndex++;
-            ActionSelectionState.Instance.SelectionUI.ResetSelection();
             StateMachine.ChangeState(ActionSelectionState.Instance);
         }
     }
