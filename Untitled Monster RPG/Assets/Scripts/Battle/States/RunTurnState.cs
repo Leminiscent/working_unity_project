@@ -63,6 +63,11 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return UseItem(action.SourceUnit, action.TargetUnits, action.SelectedItem);
             }
+            else if (action.ActionType == BattleActionType.Guard)
+            {
+                action.SourceUnit.StartGuarding();
+                yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Monster.Base.Name} has begun guarding!");
+            }
             else if (action.ActionType == BattleActionType.SwitchMonster)
             {
                 yield return _battleSystem.SwitchMonster(action.SelectedMonster, action.SourceUnit);
