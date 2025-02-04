@@ -28,6 +28,12 @@ public class ActionSelectionState : State<BattleSystem>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
+
+        if (_battleSystem.SelectingUnit.Monster.IsGuarding)
+        {
+            _battleSystem.SelectingUnit.StopGuarding();
+        }
+
         _selectionUI.gameObject.SetActive(true);
         _selectionUI.OnSelected += OnActionSelected;
         _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Monster.Base.Name}!");
