@@ -115,17 +115,18 @@ public class BattleUnit : MonoBehaviour
         Monster.IsGuarding = true;
 
         Sequence sequence = DOTween.Sequence();
+        float guardOffset = 0.1f;
 
         sequence.Append(_image.DOColor(Color.gray, 0.2f));
-        sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 0.1f, _originalPos.y - 0.1f), 0.2f));
+        sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x - guardOffset, _originalPos.y - guardOffset), 0.2f));
 
         if (_isPlayerUnit)
         {
-            sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x - 0.1f, _originalPos.y - 0.1f), 0.2f));
+            sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x - guardOffset, _originalPos.y - guardOffset), 0.2f));
         }
         else
         {
-            sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x + 0.1f, _originalPos.y - 0.1f), 0.2f));
+            sequence.Join(_image.transform.DOLocalMove(new Vector3(_originalPos.x + guardOffset, _originalPos.y - guardOffset), 0.2f));
         }
     }
 
