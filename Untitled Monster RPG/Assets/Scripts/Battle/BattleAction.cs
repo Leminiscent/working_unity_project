@@ -17,6 +17,7 @@ public enum BattleActionType
     Fight,
     Talk,
     UseItem,
+    Guard,
     SwitchMonster,
     Run
 }
