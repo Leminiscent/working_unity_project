@@ -71,7 +71,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     public void BattleLost()
     {
         _battleLost = true;
-        _los.gameObject.SetActive(false);
+        _los.SetActive(false);
     }
 
     public void SetLosRotation(FacingDirection dir)
