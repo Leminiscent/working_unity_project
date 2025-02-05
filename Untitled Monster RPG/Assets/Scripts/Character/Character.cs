@@ -88,7 +88,9 @@ public class Character : MonoBehaviour
     {
         Vector3 diff = targetPos - transform.position;
         Vector3 dir = diff.normalized;
-        int collisionLayer = GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractablesLayer | GameLayers.Instance.PlayerLayer;
+        int collisionLayer = GameLayers.Instance.SolidObjectsLayer |
+                             GameLayers.Instance.InteractablesLayer |
+                             GameLayers.Instance.PlayerLayer;
 
         return !Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer);
     }
