@@ -28,17 +28,7 @@ public class MoveBase : ScriptableObject
     // Properties
     public int GetHitCount()
     {
-        int hitCount;
-
-        if (_hitRange == Vector2Int.zero)
-        {
-            hitCount = 1;
-        }
-        else
-        {
-            hitCount = _hitRange.y == 0 ? _hitRange.x : Random.Range(_hitRange.x, _hitRange.y + 1);
-        }
-
+        int hitCount = _hitRange == Vector2Int.zero ? 1 : _hitRange.y == 0 ? _hitRange.x : Random.Range(_hitRange.x, _hitRange.y + 1);
         return hitCount;
     }
 
