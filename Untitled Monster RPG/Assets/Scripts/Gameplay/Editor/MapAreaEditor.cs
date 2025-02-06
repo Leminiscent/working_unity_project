@@ -8,7 +8,7 @@ public class MapAreaEditor : Editor
         base.OnInspectorGUI();
         int totalChance = serializedObject.FindProperty("_totalChance").intValue;
 
-        if (totalChance != 100 && totalChance != -1)
+        if (totalChance is not 100 and not (-1))
         {
             EditorGUILayout.HelpBox($"The total spawn chance is {totalChance}%. It should be 100%", MessageType.Error);
         }
