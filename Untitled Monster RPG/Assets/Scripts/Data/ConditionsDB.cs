@@ -23,8 +23,7 @@ public class ConditionsDB
             {
                 Name = "Poison",
                 StartMessage = " has been poisoned!",
-                OnEndOfTurn = static (Monster monster) =>
-                {
+                OnEndOfTurn = static monster => {
                     monster.DecreaseHP(monster.MaxHp / 8);
                     monster.StatusChanges.Enqueue(" is hurt by poison!");
                 }
@@ -36,8 +35,7 @@ public class ConditionsDB
             {
                 Name = "Burn",
                 StartMessage = " has been burned!",
-                OnEndOfTurn = static (Monster monster) =>
-                {
+                OnEndOfTurn = static monster => {
                     monster.DecreaseHP(monster.MaxHp / 16);
                     monster.StatusChanges.Enqueue(" is hurt by its burn!");
                 }
@@ -49,12 +47,10 @@ public class ConditionsDB
             {
                 Name = "Sleep",
                 StartMessage = " has been put to sleep!",
-                OnStart = static (Monster monster) =>
-                {
+                OnStart = static monster => {
                     monster.StatusTime = Random.Range(1, 4);
                 },
-                OnBeginningofTurn = static (Monster monster) =>
-                {
+                OnBeginningofTurn = static monster => {
                     if (monster.StatusTime == 0)
                     {
                         monster.CureStatus();
@@ -73,8 +69,7 @@ public class ConditionsDB
             {
                 Name = "Paralyzed",
                 StartMessage = " has been paralyzed!",
-                OnBeginningofTurn = static (Monster monster) =>
-                {
+                OnBeginningofTurn = static monster => {
                     if (Random.Range(1, 5) == 1)
                     {
                         monster.StatusChanges.Enqueue(" is fully paralyzed and cannot move!");
@@ -90,8 +85,7 @@ public class ConditionsDB
             {
                 Name = "Frozen",
                 StartMessage = " has been frozen solid!",
-                OnBeginningofTurn = static (Monster monster) =>
-                {
+                OnBeginningofTurn = static monster => {
                     if (Random.Range(1, 5) == 1)
                     {
                         monster.CureStatus();
@@ -114,12 +108,10 @@ public class ConditionsDB
             {
                 Name = "Confusion",
                 StartMessage = " has been confused!",
-                OnStart = static (Monster monster) =>
-                {
+                OnStart = static monster => {
                     monster.VolatileStatusTime = Random.Range(2, 5);
                 },
-                OnBeginningofTurn = static (Monster monster) =>
-                {
+                OnBeginningofTurn = static monster => {
                     if (monster.VolatileStatusTime == 0)
                     {
                         monster.CureVolatileStatus();
@@ -148,7 +140,7 @@ public class ConditionsDB
                 Name = "Harsh Sunlight",
                 StartMessage = "The sunlight turned harsh!",
                 EffectMessage = "The sunlight is harsh!",
-                OnDamageModify = static (Monster source, Monster target, Move move) =>
+                OnDamageModify = static (source, target, move) =>
                 {
                     if (move.Base.Type == MonsterType.Fire)
                     {
@@ -170,7 +162,7 @@ public class ConditionsDB
                 Name = "Heavy Rain",
                 StartMessage = "It started to rain!",
                 EffectMessage = "The rain is falling!",
-                OnDamageModify = static (Monster source, Monster target, Move move) =>
+                OnDamageModify = static (source, target, move) =>
                 {
                     if (move.Base.Type == MonsterType.Water)
                     {
@@ -192,8 +184,7 @@ public class ConditionsDB
                 Name = "Sandstorm",
                 StartMessage = "A sandstorm kicked up!",
                 EffectMessage = "The sandstorm rages!",
-                OnWeather = static (Monster monster) =>
-                {
+                OnWeather = static monster => {
                     monster.DecreaseHP(Mathf.RoundToInt(monster.MaxHp / 16f));
                     monster.StatusChanges.Enqueue(" is buffeted by the sandstorm!");
                 }
@@ -205,9 +196,9 @@ public class ConditionsDB
     {
         return condition == null
             ? 1f
-            : condition.ID == ConditionID.Slp || condition.ID == ConditionID.Frz
+            : condition.ID is ConditionID.Slp or ConditionID.Frz
                 ? 2f
-                : condition.ID == ConditionID.Psn || condition.ID == ConditionID.Brn || condition.ID == ConditionID.Par ? 1.5f : 1f;
+                : condition.ID is ConditionID.Psn or ConditionID.Brn or ConditionID.Par ? 1.5f : 1f;
     }
 }
 
