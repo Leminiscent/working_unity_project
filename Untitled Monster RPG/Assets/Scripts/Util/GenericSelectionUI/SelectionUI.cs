@@ -27,7 +27,6 @@ namespace Utils.GenericSelectionUI
         public void SetItems(List<T> items)
         {
             _items = items;
-
             _items.ForEach(static i => i.Init());
             UpdateSelectionInUI();
         }
@@ -35,7 +34,6 @@ namespace Utils.GenericSelectionUI
         public void ClearItems()
         {
             _items?.ForEach(static i => i.Clear());
-
             _items = null;
         }
 
@@ -53,8 +51,6 @@ namespace Utils.GenericSelectionUI
             {
                 HandleGridSelection();
             }
-
-            _selectedItem = Mathf.Clamp(_selectedItem, 0, _items.Count - 1);
 
             if (_selectedItem != prevSelection)
             {
@@ -77,6 +73,16 @@ namespace Utils.GenericSelectionUI
             if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
             {
                 _selectedItem += -(int)Mathf.Sign(v);
+
+                if (_selectedItem < 0)
+                {
+                    _selectedItem = _items.Count - 1;
+                }
+                else if (_selectedItem >= _items.Count)
+                {
+                    _selectedItem = 0;
+                }
+
                 _selectionTimer = 1 / SELCTION_SPEED;
             }
         }
@@ -86,16 +92,56 @@ namespace Utils.GenericSelectionUI
             float v = Input.GetAxisRaw("Vertical");
             float h = Input.GetAxisRaw("Horizontal");
 
-            if ((_selectionTimer == 0 && (Mathf.Abs(v) > 0.2f)) || (_selectionTimer == 0 && (Mathf.Abs(h) > 0.2f)))
+            if (_selectionTimer == 0 && (Mathf.Abs(v) > 0.2f || Mathf.Abs(h) > 0.2f))
             {
+                int oldIndex = _selectedItem;
+                int row = oldIndex / _gridWidth;
+                int col = oldIndex % _gridWidth;
+                int totalRows = Mathf.CeilToInt((float)_items.Count / _gridWidth);
+                int lastRow = totalRows - 1;
+
                 if (Mathf.Abs(h) > Mathf.Abs(v))
                 {
-                    _selectedItem += (int)Mathf.Sign(h);
+                    // Horizontal movement
+                    int rowItemCount = (row == lastRow && _items.Count % _gridWidth != 0) ? _items.Count % _gridWidth : _gridWidth;
+                    int newCol = col + (int)Mathf.Sign(h);
+
+                    if (newCol < 0)
+                    {
+                        newCol = rowItemCount - 1;
+                    }
+                    else if (newCol >= rowItemCount)
+                    {
+                        newCol = 0;
+                    }
+
+                    _selectedItem = (row * _gridWidth) + newCol;
                 }
                 else
                 {
-                    _selectedItem += -(int)Mathf.Sign(v) * _gridWidth;
+                    // Vertical movement
+                    int newRow = row - (int)Mathf.Sign(v);
+
+                    if (newRow < 0)
+                    {
+                        newRow = lastRow;
+                    }
+                    else if (newRow >= totalRows)
+                    {
+                        newRow = 0;
+                    }
+
+                    int newRowItemCount = (newRow == lastRow && _items.Count % _gridWidth != 0) ? _items.Count % _gridWidth : _gridWidth;
+                    int newCol = col;
+
+                    if (newCol >= newRowItemCount)
+                    {
+                        newCol = newRowItemCount - 1;
+                    }
+                    
+                    _selectedItem = (newRow * _gridWidth) + newCol;
                 }
+
                 _selectionTimer = 1 / SELCTION_SPEED;
             }
         }
