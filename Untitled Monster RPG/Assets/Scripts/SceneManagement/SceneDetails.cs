@@ -60,7 +60,7 @@ public class SceneDetails : MonoBehaviour
             AsyncOperation operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
 
             IsLoaded = true;
-            operation.completed += (AsyncOperation op) =>
+            operation.completed += op =>
             {
                 _savableEntities = GetSavableEntitiesInScene();
                 SavingSystem.Instance.RestoreEntityStates(_savableEntities);
