@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils.GenericSelectionUI;
 
@@ -30,7 +29,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         HandleUpdate();
     }
 
-    void OnItemSelected(int selection)
+    private void OnItemSelected(int selection)
     {
         if (!SavingSystem.Instance.CheckForExistingSave("saveSlot1"))
         {
@@ -81,7 +80,7 @@ public class MainMenuController : SelectionUI<TextSlot>
         GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
         SavingSystem.Instance.Delete("saveSlot1");
         SceneManager.LoadScene(1);
-        
+
         yield return Fader.Instance.FadeOut(0.75f);
     }
 }
