@@ -83,6 +83,26 @@ public class CountSelectorUI : SelectionUI<TextSlot>
                 _selectionTimer = 1f / SELECTION_SPEED;
             }
         }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            if (_selectionTimer <= 0f)
+            {
+                _currentCount = ((_currentCount - 1 + 10) % _maxCount) + 1;
+                UpdateDisplay();
+                _selectionTimer = 1f / SELECTION_SPEED;
+            }
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            if (_selectionTimer <= 0f)
+            {
+                _currentCount = (_currentCount - 1 - 10) % _maxCount;
+                _currentCount = (_currentCount + _maxCount) % _maxCount;
+                _currentCount++;
+                UpdateDisplay();
+                _selectionTimer = 1f / SELECTION_SPEED;
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
