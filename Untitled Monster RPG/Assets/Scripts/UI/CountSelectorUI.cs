@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Utils.GenericSelectionUI;
@@ -15,25 +14,15 @@ public class CountSelectorUI : SelectionUI<TextSlot>
     private int _maxCount;
     private float _pricePerUnit;
 
-    private void Update()
-    {
-        HandleUpdate();
-    }
-
-    private void UpdateDisplay()
-    {
-        _countText.text = $"x {_currentCount}";
-        _priceText.text = $"{_currentCount * _pricePerUnit} GP";
-    }
-
     public IEnumerator ShowSelector(int maxCount, float pricePerUnit, Action<int> onCountSelected)
     {
         _maxCount = maxCount;
         _pricePerUnit = pricePerUnit;
         _selected = false;
         _currentCount = 1;
+        _selectionTimer = 0f;
 
-        List<TextSlot> items = new();
+        System.Collections.Generic.List<TextSlot> items = new();
         if (!TryGetComponent(out TextSlot ts))
         {
             ts = gameObject.AddComponent<TextSlot>();
@@ -47,28 +36,52 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         UpdateDisplay();
 
         yield return new WaitUntil(() => _selected);
-
         onCountSelected?.Invoke(_currentCount);
         gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        HandleUpdate();
+
+        if (_selectionTimer > 0f)
+        {
+            _selectionTimer = Mathf.Max(_selectionTimer - Time.deltaTime, 0f);
+        }
+    }
+
     public override void UpdateSelectionInUI()
     {
+        // Do nothing – This class manages its own display via _countText and _priceText.
     }
 
     public override void HandleUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            _currentCount++;
-            _currentCount = Mathf.Clamp(_currentCount, 1, _maxCount);
-            UpdateDisplay();
+            if (_selectionTimer <= 0f)
+            {
+                _currentCount++;
+                if (_currentCount > _maxCount)
+                {
+                    _currentCount = 1;
+                }
+                UpdateDisplay();
+                _selectionTimer = 1f / SELECTION_SPEED;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
-            _currentCount--;
-            _currentCount = Mathf.Clamp(_currentCount, 1, _maxCount);
-            UpdateDisplay();
+            if (_selectionTimer <= 0f)
+            {
+                _currentCount--;
+                if (_currentCount < 1)
+                {
+                    _currentCount = _maxCount;
+                }
+                UpdateDisplay();
+                _selectionTimer = 1f / SELECTION_SPEED;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -80,5 +93,11 @@ public class CountSelectorUI : SelectionUI<TextSlot>
             _currentCount = 0;
             _selected = true;
         }
+    }
+
+    private void UpdateDisplay()
+    {
+        _countText.text = $"x {_currentCount}";
+        _priceText.text = $"{_currentCount * _pricePerUnit} GP";
     }
 }

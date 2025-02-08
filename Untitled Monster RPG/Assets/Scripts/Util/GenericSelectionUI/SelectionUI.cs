@@ -9,9 +9,9 @@ namespace Utils.GenericSelectionUI
         private List<T> _items;
         private SelectionType _selectionType;
         private int _gridWidth = 2;
-        private float _selectionTimer = 0;
-        private const float SELCTION_SPEED = 5f;
 
+        protected float _selectionTimer = 0;
+        protected const float SELECTION_SPEED = 5f;
         protected int _selectedItem = 0;
         protected int? _savedSelection;
 
@@ -83,7 +83,7 @@ namespace Utils.GenericSelectionUI
                     _selectedItem = 0;
                 }
 
-                _selectionTimer = 1 / SELCTION_SPEED;
+                _selectionTimer = 1 / SELECTION_SPEED;
             }
         }
 
@@ -142,7 +142,7 @@ namespace Utils.GenericSelectionUI
                     _selectedItem = (newRow * _gridWidth) + newCol;
                 }
 
-                _selectionTimer = 1 / SELCTION_SPEED;
+                _selectionTimer = 1 / SELECTION_SPEED;
             }
         }
 
@@ -189,7 +189,7 @@ namespace Utils.GenericSelectionUI
             return _items != null ? _items.Count : 0;
         }
 
-        private void UpdateSelectionTimer()
+        protected void UpdateSelectionTimer()
         {
             if (_selectionTimer > 0)
             {
