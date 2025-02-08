@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.GenericSelectionUI;
 
-public class ShopUI : MonoBehaviour
+public class ShopUI : SelectionUI<TextSlot>
 {
     [SerializeField] private GameObject _itemList;
     [SerializeField] private ItemSlotUI _itemSlotUI;
@@ -13,7 +15,6 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private Image _upArrow;
     [SerializeField] private Image _downArrow;
 
-    private int _selectedItem;
     private List<ItemBase> _availableItems;
     private Action<ItemBase> _onItemSelected;
     private Action _onBack;
@@ -34,39 +35,18 @@ public class ShopUI : MonoBehaviour
 
         gameObject.SetActive(true);
         UpdateItemList();
+
+        SetSelectionSettings(SelectionType.List, 1);
+
+        OnSelected += HandleItemSelected;
+        OnBack += HandleBack;
     }
 
     public void Close()
     {
         gameObject.SetActive(false);
-    }
-
-    public void HandleUpdate()
-    {
-        int prevSelection = _selectedItem;
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            ++_selectedItem;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            --_selectedItem;
-        }
-        _selectedItem = Mathf.Clamp(_selectedItem, 0, _availableItems.Count - 1);
-        if (prevSelection != _selectedItem)
-        {
-            UpdateItemSelection();
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            _onItemSelected?.Invoke(_availableItems[_selectedItem]);
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            _selectedItem = 0;
-            _onBack?.Invoke();
-        }
+        OnSelected -= HandleItemSelected;
+        OnBack -= HandleBack;
     }
 
     private void UpdateItemList()
@@ -80,31 +60,37 @@ public class ShopUI : MonoBehaviour
         foreach (ItemBase item in _availableItems)
         {
             ItemSlotUI slotUIObj = Instantiate(_itemSlotUI, _itemList.transform);
-
             slotUIObj.SetNameAndPrice(item);
             _slotUIList.Add(slotUIObj);
         }
 
-        UpdateItemSelection();
+        SetItems(_slotUIList.Select(static s => s.GetComponent<TextSlot>()).ToList());
+        UpdateSelectionInUI();
     }
 
-    private void UpdateItemSelection()
+    private void HandleItemSelected(int selection)
     {
-        _selectedItem = Mathf.Clamp(_selectedItem, 0, _availableItems.Count - 1);
-        for (int i = 0; i < _slotUIList.Count; i++)
-        {
-            _slotUIList[i].NameText.color = i == _selectedItem ? GlobalSettings.Instance.ActiveColor : GlobalSettings.Instance.InactiveColor;
-        }
+        _onItemSelected?.Invoke(_availableItems[selection]);
+    }
+
+    private void HandleBack()
+    {
+        _onBack?.Invoke();
+    }
+
+    public override void UpdateSelectionInUI()
+    {
+        int sel = Mathf.Clamp(_selectedItem, 0, _availableItems.Count - 1);
 
         if (_availableItems.Count > 0)
         {
-            ItemBase item = _availableItems[_selectedItem];
-
+            ItemBase item = _availableItems[sel];
             _itemIcon.sprite = item.Icon;
             _itemDescription.text = item.Description;
         }
-
+        
         HandleScrolling();
+        base.UpdateSelectionInUI();
     }
 
     private void HandleScrolling()

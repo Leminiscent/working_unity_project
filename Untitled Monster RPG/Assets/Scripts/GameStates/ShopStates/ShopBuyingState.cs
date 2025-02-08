@@ -70,6 +70,12 @@ public class ShopBuyingState : State<GameController>
 
         DialogueManager.Instance.CloseDialogue();
 
+        if (countToBuy == 0)
+        {
+            _browseItems = true;
+            yield break;
+        }
+
         float totalPrice = item.Price * countToBuy;
 
         if (Wallet.Instance.HasEnoughMoney(totalPrice))

@@ -78,10 +78,17 @@ public class ShopSellingState : State<GameController>
 
             DialogueManager.Instance.CloseDialogue();
         }
+
+        if (countToSell == 0)
+        {
+            _walletUI.Close();
+            yield break;
+        }
+
         sellingPrice *= countToSell;
 
         int selectedChoice = 0;
-
+        
         yield return DialogueManager.Instance.ShowDialogueText($"I can buy {countToSell} {(countToSell > 1 ? $"{item.Name}s" : item.Name)} from you for {sellingPrice} gold. Do we have a deal?",
             waitForInput: false,
             choices: new List<string> { "Yes", "No" },

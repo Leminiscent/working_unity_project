@@ -169,13 +169,11 @@ public class InventoryUI : SelectionUI<TextSlot>
         if (slots.Count > 0)
         {
             ItemBase item = slots[_selectedItem].Item;
-
             _itemIcon.sprite = item.Icon;
             _itemDescription.text = item.Description;
         }
 
         HandleScrolling();
-
         base.UpdateSelectionInUI();
     }
 }

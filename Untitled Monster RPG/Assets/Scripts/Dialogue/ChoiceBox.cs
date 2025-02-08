@@ -2,62 +2,61 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils.GenericSelectionUI;
 
-public class ChoiceBox : MonoBehaviour
+public class ChoiceBox : SelectionUI<TextSlot>
 {
-    [SerializeField] private ChoiceText _choiceTextPrefab;
-
-    private bool _choiceSelected = false;
-    private List<ChoiceText> _choiceTexts;
-    private int _currentChoice;
+    [SerializeField] private TextSlot _choiceTextPrefab;
 
     public IEnumerator ShowChoices(List<string> choices, Action<int> onChoiceSelected)
     {
-        _choiceSelected = false;
-        _currentChoice = 0;
-        gameObject.SetActive(true);
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
-        _choiceTexts = new List<ChoiceText>();
+
+        List<TextSlot> items = new();
         foreach (string choice in choices)
         {
-            ChoiceText choiceTextObj = Instantiate(_choiceTextPrefab, transform);
-
-            choiceTextObj.TextField.text = choice;
-            _choiceTexts.Add(choiceTextObj);
+            TextSlot textSlot = Instantiate(_choiceTextPrefab, transform);
+            textSlot.SetText(choice);
+            items.Add(textSlot);
         }
-        yield return new WaitUntil(() => _choiceSelected);
-        onChoiceSelected?.Invoke(_currentChoice);
+
+        SetSelectionSettings(SelectionType.List, 1);
+        SetItems(items);
+
+        gameObject.SetActive(true);
+
+        bool choiceMade = false;
+        int selectedIndex = -1;
+
+        void onSelectedHandler(int index)
+        {
+            selectedIndex = index;
+            choiceMade = true;
+        }
+        void onBackHandler()
+        {
+            selectedIndex = items.Count - 1;
+            choiceMade = true;
+        }
+
+        OnSelected += onSelectedHandler;
+        OnBack += onBackHandler;
+
+        yield return new WaitUntil(() => choiceMade);
+
+        OnSelected -= onSelectedHandler;
+        OnBack -= onBackHandler;
+
+        onChoiceSelected?.Invoke(selectedIndex);
         gameObject.SetActive(false);
+        ResetSelection();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            ++_currentChoice;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            --_currentChoice;
-        }
-        _currentChoice = Mathf.Clamp(_currentChoice, 0, _choiceTexts.Count - 1);
-
-        for (int i = 0; i < _choiceTexts.Count; i++)
-        {
-            _choiceTexts[i].SetSelected(i == _currentChoice);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            _choiceSelected = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            _currentChoice = _choiceTexts.Count - 1;
-            _choiceSelected = true;
-        }
+        HandleUpdate();
     }
 }
