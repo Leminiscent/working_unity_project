@@ -502,7 +502,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     yield return loot != lootDescriptions.First()
                         ? _dialogueBox.SetAndTypeDialogue(initialMessage, loot)
-                        : (object)_dialogueBox.TypeDialogue($"{initialMessage} {loot}");
+                        : _dialogueBox.TypeDialogue($"{initialMessage} {loot}");
                 }
             }
 
