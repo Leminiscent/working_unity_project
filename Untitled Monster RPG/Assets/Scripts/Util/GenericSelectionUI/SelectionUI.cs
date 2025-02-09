@@ -1,3 +1,4 @@
+// SelectionUI.cs
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,14 @@ namespace Utils.GenericSelectionUI
 
         public event Action<int> OnSelected;
         public event Action OnBack;
+        public event Action<int> OnIndexChanged;
+
+        // Properties for input filtering.
+        public bool IgnoreVerticalInput { get; set; }
+        public bool IgnoreHorizontalInput { get; set; }
+
+        // Exposes the current selection index.
+        public int SelectedIndex { get { return _selectedItem; } }
 
         public void SetSelectionSettings(SelectionType selectionType, int gridWidth)
         {
@@ -27,13 +36,13 @@ namespace Utils.GenericSelectionUI
         public void SetItems(List<T> items)
         {
             _items = items;
-            _items.ForEach(static i => i.Init());
+            _items.ForEach(i => i.Init());
             UpdateSelectionInUI();
         }
 
         public void ClearItems()
         {
-            _items?.ForEach(static i => i.Clear());
+            _items?.ForEach(i => i.Clear());
             _items = null;
         }
 
@@ -55,6 +64,7 @@ namespace Utils.GenericSelectionUI
             if (_selectedItem != prevSelection)
             {
                 UpdateSelectionInUI();
+                OnIndexChanged?.Invoke(_selectedItem);
             }
             if (Input.GetButtonDown("Action"))
             {
@@ -68,7 +78,7 @@ namespace Utils.GenericSelectionUI
 
         private void HandleListSelection()
         {
-            float v = Input.GetAxisRaw("Vertical");
+            float v = IgnoreVerticalInput ? 0f : Input.GetAxisRaw("Vertical");
 
             if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
             {
@@ -89,8 +99,8 @@ namespace Utils.GenericSelectionUI
 
         private void HandleGridSelection()
         {
-            float v = Input.GetAxisRaw("Vertical");
-            float h = Input.GetAxisRaw("Horizontal");
+            float v = IgnoreVerticalInput ? 0f : Input.GetAxisRaw("Vertical");
+            float h = IgnoreHorizontalInput ? 0f : Input.GetAxisRaw("Horizontal");
 
             if (_selectionTimer == 0 && (Mathf.Abs(v) > 0.2f || Mathf.Abs(h) > 0.2f))
             {
@@ -102,7 +112,7 @@ namespace Utils.GenericSelectionUI
 
                 if (Mathf.Abs(h) > Mathf.Abs(v))
                 {
-                    // Horizontal movement
+                    // Horizontal movement.
                     int rowItemCount = (row == lastRow && _items.Count % _gridWidth != 0) ? _items.Count % _gridWidth : _gridWidth;
                     int newCol = col + (int)Mathf.Sign(h);
 
@@ -119,7 +129,7 @@ namespace Utils.GenericSelectionUI
                 }
                 else
                 {
-                    // Vertical movement
+                    // Vertical movement.
                     int newRow = row - (int)Mathf.Sign(v);
 
                     if (newRow < 0)
@@ -138,7 +148,7 @@ namespace Utils.GenericSelectionUI
                     {
                         newCol = newRowItemCount - 1;
                     }
-                    
+
                     _selectedItem = (newRow * _gridWidth) + newCol;
                 }
 
@@ -197,6 +207,17 @@ namespace Utils.GenericSelectionUI
             }
         }
     }
+
+    // Dummy selectable item implementation.
+    public class DummySelectable : ISelectableItem
+    {
+        public void Init() { }
+        public void Clear() { }
+        public void OnSelectionChanged(bool selected) { }
+    }
+
+    // Non-generic concrete subclass for dummy selection.
+    public class DummySelectionUI : SelectionUI<DummySelectable> { }
 
     public enum SelectionType
     {

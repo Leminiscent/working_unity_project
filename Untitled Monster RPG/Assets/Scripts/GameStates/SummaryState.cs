@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.StateMachine;
+using Utils.GenericSelectionUI;
 
 public class SummaryState : State<GameController>
 {
@@ -9,6 +10,8 @@ public class SummaryState : State<GameController>
     private int _selectedPage = 0;
     private List<Monster> _currentMonsterList;
     private GameController _gameController;
+    private DummySelectionUI _monsterSelectionUI;
+    private DummySelectionUI _pageSelectionUI;
 
     public int SelectedMonsterIndex { get; set; }
     public List<Monster> MonstersList { get; set; }
@@ -39,53 +42,57 @@ public class SummaryState : State<GameController>
             SelectedMonsterIndex = 0;
         }
         _summaryScreenUI.gameObject.SetActive(true);
-        _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
+        if (_currentMonsterList.Count > 0)
+        {
+            _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
+        }
         _summaryScreenUI.ShowPage(_selectedPage);
+
+        // Initialize monster selection UI.
+        _monsterSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _monsterSelectionUI.SetSelectionSettings(SelectionType.List, 1);
+        _monsterSelectionUI.IgnoreHorizontalInput = true;
+        List<DummySelectable> monsterItems = new();
+        for (int i = 0; i < _currentMonsterList.Count; i++)
+        {
+            monsterItems.Add(new DummySelectable());
+        }
+        _monsterSelectionUI.SetItems(monsterItems);
+        _monsterSelectionUI.SetSelectedIndex(SelectedMonsterIndex);
+        _monsterSelectionUI.OnIndexChanged += (index) =>
+        {
+            SelectedMonsterIndex = index;
+            if (_currentMonsterList.Count > 0)
+            {
+                _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
+            }
+        };
+
+        // Initialize page selection UI.
+        _pageSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _pageSelectionUI.SetSelectionSettings(SelectionType.Grid, 2);
+        _pageSelectionUI.IgnoreVerticalInput = true;
+        List<DummySelectable> pageItems = new() { new(), new() };
+        _pageSelectionUI.SetItems(pageItems);
+        _pageSelectionUI.SetSelectedIndex(_selectedPage);
+        _pageSelectionUI.OnIndexChanged += (index) =>
+        {
+            _selectedPage = index;
+            _summaryScreenUI.ShowPage(_selectedPage);
+        };
     }
 
     public override void Execute()
     {
         if (!_summaryScreenUI.InMoveSelection)
         {
-            int prevPage = _selectedPage;
-
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (_monsterSelectionUI != null)
             {
-                _selectedPage = (_selectedPage + 1) % 2;
+                _monsterSelectionUI.HandleUpdate();
             }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (_pageSelectionUI != null)
             {
-                _selectedPage = Mathf.Abs(_selectedPage - 1) % 2;
-            }
-
-            if (prevPage != _selectedPage)
-            {
-                _summaryScreenUI.ShowPage(_selectedPage);
-            }
-
-            int prevIndex = SelectedMonsterIndex;
-
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                SelectedMonsterIndex++;
-                if (SelectedMonsterIndex >= _currentMonsterList.Count)
-                {
-                    SelectedMonsterIndex = 0;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                SelectedMonsterIndex--;
-                if (SelectedMonsterIndex < 0)
-                {
-                    SelectedMonsterIndex = _currentMonsterList.Count - 1;
-                }
-            }
-
-            if (prevIndex != SelectedMonsterIndex)
-            {
-                _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
-                _summaryScreenUI.ShowPage(_selectedPage);
+                _pageSelectionUI.HandleUpdate();
             }
         }
 
@@ -118,5 +125,16 @@ public class SummaryState : State<GameController>
         _summaryScreenUI.gameObject.SetActive(false);
         _selectedPage = 0;
         MonstersList = null;
+
+        if (_monsterSelectionUI != null)
+        {
+            Destroy(_monsterSelectionUI);
+            _monsterSelectionUI = null;
+        }
+        if (_pageSelectionUI != null)
+        {
+            Destroy(_pageSelectionUI);
+            _pageSelectionUI = null;
+        }
     }
 }
