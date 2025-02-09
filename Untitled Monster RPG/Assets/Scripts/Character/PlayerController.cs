@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
         _character.HandleUpdate();
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetButtonDown("Action"))
         {
             StartCoroutine(Interact());
         }

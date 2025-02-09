@@ -35,7 +35,7 @@ public class BattleDialogueBox : MonoBehaviour
         }
 
         yield return waitForInput
-            ? new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
+            ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
             : new WaitForSeconds(0.75f);
     }
 
@@ -49,7 +49,7 @@ public class BattleDialogueBox : MonoBehaviour
         }
 
         yield return waitForInput
-            ? new WaitUntil(static () => Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
+            ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
             : new WaitForSeconds(0.75f);
     }
 

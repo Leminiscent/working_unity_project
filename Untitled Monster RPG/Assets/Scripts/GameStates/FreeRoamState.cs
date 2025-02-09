@@ -28,7 +28,7 @@ public class FreeRoamState : State<GameController>
     {
         PlayerController.Instance.HandleUpdate();
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetButtonDown("Submit"))
         {
             _gameController.StateMachine.Push(GameMenuState.Instance);
         }
