@@ -22,7 +22,7 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         _currentCount = 1;
         _selectionTimer = 0f;
 
-        System.Collections.Generic.List<TextSlot> items = new();
+        var items = new System.Collections.Generic.List<TextSlot>();
         if (!TryGetComponent(out TextSlot ts))
         {
             ts = gameObject.AddComponent<TextSlot>();
@@ -56,21 +56,27 @@ public class CountSelectorUI : SelectionUI<TextSlot>
 
     public override void HandleUpdate()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+
+        if (_selectionTimer <= 0f)
         {
-            ChangeCount(1);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            ChangeCount(-1);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            ChangeCount(10);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            ChangeCount(-10);
+            if (v > 0.2f)
+            {
+                ChangeCount(1);
+            }
+            else if (v < -0.2f)
+            {
+                ChangeCount(-1);
+            }
+            else if (h > 0.2f)
+            {
+                ChangeCount(10);
+            }
+            else if (h < -0.2f)
+            {
+                ChangeCount(-10);
+            }
         }
 
         if (Input.GetButtonDown("Action"))
@@ -86,20 +92,24 @@ public class CountSelectorUI : SelectionUI<TextSlot>
 
     private void ChangeCount(int delta)
     {
-        if (_selectionTimer > 0f)
-        {
-            return;
-        }
-
         if (Mathf.Abs(delta) == 1)
         {
-            _currentCount = Mod(_currentCount - 1 + delta, _maxCount) + 1;
+            // Vertical input: wrap using modulo arithmetic.
+            _currentCount = (Mod(_currentCount - 1 + delta, _maxCount)) + 1;
         }
         else if (Mathf.Abs(delta) == 10)
         {
-            _currentCount = _maxCount < 10 ? delta > 0 ? _maxCount : 1 : Mathf.Clamp(_currentCount + delta, 1, _maxCount);
+            // Horizontal input: if _maxCount is less than 10, jump between 1 and _maxCount;
+            // if _maxCount is 10 or greater, increment/decrement by 10 and clamp.
+            if (_maxCount < 10)
+            {
+                _currentCount = delta > 0 ? _maxCount : 1;
+            }
+            else
+            {
+                _currentCount = Mathf.Clamp(_currentCount + delta, 1, _maxCount);
+            }
         }
-
         UpdateDisplay();
         _selectionTimer = 1f / SELECTION_SPEED;
     }
