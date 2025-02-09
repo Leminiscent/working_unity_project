@@ -104,11 +104,11 @@ public class CountSelectorUI : SelectionUI<TextSlot>
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetButtonDown("Action"))
         {
             _selected = true;
         }
-        else if (Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetButtonDown("Back"))
         {
             _currentCount = 0;
             _selected = true;
