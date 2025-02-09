@@ -43,7 +43,6 @@ public class CountSelectorUI : SelectionUI<TextSlot>
     private void Update()
     {
         HandleUpdate();
-
         if (_selectionTimer > 0f)
         {
             _selectionTimer = Mathf.Max(_selectionTimer - Time.deltaTime, 0f);
@@ -52,56 +51,26 @@ public class CountSelectorUI : SelectionUI<TextSlot>
 
     public override void UpdateSelectionInUI()
     {
-        // Do nothing – This class manages its own display via _countText and _priceText.
+        // No UI update required; display is managed via _countText and _priceText.
     }
 
     public override void HandleUpdate()
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            if (_selectionTimer <= 0f)
-            {
-                _currentCount++;
-                if (_currentCount > _maxCount)
-                {
-                    _currentCount = 1;
-                }
-                UpdateDisplay();
-                _selectionTimer = 1f / SELECTION_SPEED;
-            }
+            ChangeCount(1);
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
-            if (_selectionTimer <= 0f)
-            {
-                _currentCount--;
-                if (_currentCount < 1)
-                {
-                    _currentCount = _maxCount;
-                }
-                UpdateDisplay();
-                _selectionTimer = 1f / SELECTION_SPEED;
-            }
+            ChangeCount(-1);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            if (_selectionTimer <= 0f)
-            {
-                _currentCount = ((_currentCount - 1 + 10) % _maxCount) + 1;
-                UpdateDisplay();
-                _selectionTimer = 1f / SELECTION_SPEED;
-            }
+            ChangeCount(10);
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
-            if (_selectionTimer <= 0f)
-            {
-                _currentCount = (_currentCount - 1 - 10) % _maxCount;
-                _currentCount = (_currentCount + _maxCount) % _maxCount;
-                _currentCount++;
-                UpdateDisplay();
-                _selectionTimer = 1f / SELECTION_SPEED;
-            }
+            ChangeCount(-10);
         }
 
         if (Input.GetButtonDown("Action"))
@@ -113,6 +82,31 @@ public class CountSelectorUI : SelectionUI<TextSlot>
             _currentCount = 0;
             _selected = true;
         }
+    }
+
+    private void ChangeCount(int delta)
+    {
+        if (_selectionTimer > 0f)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(delta) == 1)
+        {
+            _currentCount = Mod(_currentCount - 1 + delta, _maxCount) + 1;
+        }
+        else if (Mathf.Abs(delta) == 10)
+        {
+            _currentCount = _maxCount < 10 ? delta > 0 ? _maxCount : 1 : Mathf.Clamp(_currentCount + delta, 1, _maxCount);
+        }
+
+        UpdateDisplay();
+        _selectionTimer = 1f / SELECTION_SPEED;
+    }
+
+    private int Mod(int a, int m)
+    {
+        return ((a % m) + m) % m;
     }
 
     private void UpdateDisplay()
