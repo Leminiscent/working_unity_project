@@ -3,8 +3,10 @@ using Utils.StateMachine;
 
 public class TargetSelectionState : State<BattleSystem>
 {
-    private int _selectedTarget = 0;
     private BattleSystem _battleSystem;
+    private int _selectedTarget = 0;
+    private float _selectionTimer = 0;
+    private const float SELECTION_SPEED = 5f;
 
     public static TargetSelectionState Instance { get; private set; }
     public bool SelectionMade { get; private set; }
@@ -41,6 +43,14 @@ public class TargetSelectionState : State<BattleSystem>
         }
     }
 
+    private void UpdateSelectionTimer()
+    {
+        if (_selectionTimer > 0)
+        {
+            _selectionTimer = Mathf.Clamp(_selectionTimer - Time.deltaTime, 0, _selectionTimer);
+        }
+    }
+
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
@@ -51,18 +61,27 @@ public class TargetSelectionState : State<BattleSystem>
 
     public override void Execute()
     {
+        UpdateSelectionTimer();
+
         int prevSelection = _selectedTarget;
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        float v = Input.GetAxisRaw("Vertical");
+        
+        if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
         {
-            _selectedTarget++;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            _selectedTarget--;
-        }
+            _selectedTarget += -(int)Mathf.Sign(v);
 
-        _selectedTarget = Mathf.Clamp(_selectedTarget, 0, IsTargetingAllies ? _battleSystem.PlayerUnits.Count - 1 : _battleSystem.EnemyUnits.Count - 1);
+            if (_selectedTarget < 0)
+            {
+                _selectedTarget = IsTargetingAllies ? _battleSystem.PlayerUnits.Count - 1 : _battleSystem.EnemyUnits.Count - 1;
+            }
+            else if (_selectedTarget >= (IsTargetingAllies ? _battleSystem.PlayerUnits.Count : _battleSystem.EnemyUnits.Count))
+            {
+                _selectedTarget = 0;
+            }
+
+            _selectionTimer = 1 / SELECTION_SPEED;
+        }
 
         if (_selectedTarget != prevSelection)
         {
