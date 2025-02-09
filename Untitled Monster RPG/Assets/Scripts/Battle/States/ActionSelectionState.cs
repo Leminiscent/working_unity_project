@@ -30,6 +30,7 @@ public class ActionSelectionState : State<BattleSystem>
         _battleSystem = owner;
         _selectionUI.gameObject.SetActive(true);
         _selectionUI.OnSelected += OnActionSelected;
+        _selectionUI.OnBack += OnBack;
         _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Monster.Base.Name}!");
     }
 
@@ -42,6 +43,7 @@ public class ActionSelectionState : State<BattleSystem>
     {
         _selectionUI.gameObject.SetActive(false);
         _selectionUI.OnSelected -= OnActionSelected;
+        _selectionUI.OnBack -= OnBack;
     }
 
     private void OnActionSelected(int selection)
@@ -161,5 +163,10 @@ public class ActionSelectionState : State<BattleSystem>
                 SelectedMonster = selectedMonster
             });
         }
+    }
+
+    private void OnBack()
+    {
+        _battleSystem.UndoBattleAction();
     }
 }

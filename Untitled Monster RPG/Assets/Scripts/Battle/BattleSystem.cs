@@ -323,6 +323,16 @@ public class BattleSystem : MonoBehaviour
         _selectingUnitIndex = 0;
     }
 
+    public void UndoBattleAction()
+    {
+        if (_battleActions.Count > 0)
+        {
+            _battleActions.RemoveAt(_battleActions.Count - 1);
+            _selectingUnitIndex--;
+            StateMachine.ChangeState(ActionSelectionState.Instance);
+        }
+    }
+
     public IEnumerator SwitchMonster(Monster newMonster, BattleUnit unitToSwitch)
     {
         if (unitToSwitch.Monster.Hp > 0)
