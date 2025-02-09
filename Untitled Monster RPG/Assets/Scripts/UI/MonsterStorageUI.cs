@@ -83,11 +83,11 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     {
         int prevSelectedDepot = SelectedDepot;
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetButtonDown("Page Left"))
         {
             SelectedDepot = SelectedDepot > 0 ? SelectedDepot - 1 : _storage.NumberOfDepots - 1;
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetButtonDown("Page Right"))
         {
             SelectedDepot = (SelectedDepot + 1) % _storage.NumberOfDepots;
         }
