@@ -1,4 +1,3 @@
-// InventoryUI.cs
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -22,10 +21,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     private List<ItemSlotUI> _slotUIList;
     private Inventory _inventory;
     private RectTransform _itemListRect;
-
-    // Field for category selection.
     private DummySelectionUI _categorySelectionUI;
-    // List of category indices that contain at least one item.
     private List<int> _availableCategoryIndices;
 
     public ItemBase SelectedItem => _inventory.GetItem(_selectedItem, _selectedCategory);
@@ -48,8 +44,7 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     private void UpdateCategoriesAndItemList()
     {
-        // Recalculate available categories.
-        List<int> updatedCategories = new List<int>();
+        List<int> updatedCategories = new();
         for (int i = 0; i < Inventory.ItemCategories.Count; i++)
         {
             if (_inventory.GetSlotsByCategory(i).Count > 0)
@@ -59,14 +54,12 @@ public class InventoryUI : SelectionUI<TextSlot>
         }
         _availableCategoryIndices = updatedCategories;
 
-        // Adjust current category if it is no longer available.
         if (!_availableCategoryIndices.Contains(_selectedCategory))
         {
             _selectedCategory = _availableCategoryIndices.Count > 0 ? _availableCategoryIndices[0] : 0;
         }
         _categoryText.text = Inventory.ItemCategories[_selectedCategory];
 
-        // Initialize or update category selection component.
         if (_categorySelectionUI == null)
         {
             _categorySelectionUI = gameObject.AddComponent<DummySelectionUI>();
@@ -80,7 +73,7 @@ public class InventoryUI : SelectionUI<TextSlot>
             };
         }
         _categorySelectionUI.SetSelectionSettings(SelectionType.Grid, _availableCategoryIndices.Count);
-        List<DummySelectable> categoryItems = new List<DummySelectable>();
+        List<DummySelectable> categoryItems = new();
         for (int i = 0; i < _availableCategoryIndices.Count; i++)
         {
             categoryItems.Add(new DummySelectable());
@@ -89,7 +82,6 @@ public class InventoryUI : SelectionUI<TextSlot>
         int selIndex = _availableCategoryIndices.IndexOf(_selectedCategory);
         _categorySelectionUI.SetSelectedIndex(selIndex);
 
-        // Update item list.
         foreach (Transform child in _itemList.transform)
         {
             Destroy(child.gameObject);
@@ -178,11 +170,10 @@ public class InventoryUI : SelectionUI<TextSlot>
         base.UpdateSelectionInUI();
     }
 
-    // New method to reset the selected item and category.
     public void ResetInventoryScreen()
     {
         _selectedCategory = GetFirstNonEmptyCategory();
-        ResetSelction(); // Resets _selectedItem to 0 and resets arrow and icon states.
+        ResetSelction();
         UpdateCategoriesAndItemList();
     }
 }

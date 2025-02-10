@@ -1,4 +1,3 @@
-// InventoryState.cs
 using System.Collections;
 using UnityEngine;
 using Utils.StateMachine;
@@ -50,7 +49,6 @@ public class InventoryState : State<GameController>
 
     public override void Exit()
     {
-        // Reset selection state when leaving the inventory screen.
         _inventoryUI.ResetInventoryScreen();
         _inventoryUI.gameObject.SetActive(false);
         _inventoryUI.OnSelected -= OnItemSelected;
