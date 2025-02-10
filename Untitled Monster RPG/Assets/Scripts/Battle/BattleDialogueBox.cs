@@ -29,7 +29,7 @@ public class BattleDialogueBox : MonoBehaviour
     {
         _dialogueText.text = (setDialogue != null) ? $"{setDialogue} " : "";
         bool isAccelerated = false;
-        float accelerationFactor = 0.1f;
+        float accelerationFactor = 10f;
         foreach (char letter in typeDialogue.ToCharArray())
         {
             _dialogueText.text += letter;
@@ -40,13 +40,13 @@ public class BattleDialogueBox : MonoBehaviour
             float delay = 1f / _lettersPerSecond;
             if (isAccelerated)
             {
-                delay *= accelerationFactor;
+                delay /= accelerationFactor;
             }
             yield return new WaitForSeconds(delay);
         }
         yield return waitForInput
             ? new WaitUntil(() => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
-            : new WaitForSeconds(0.75f);
+            : new WaitForSeconds(0.5f);
     }
 
     public void EnableDialogueText(bool enabled)

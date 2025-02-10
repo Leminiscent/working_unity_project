@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +37,7 @@ public class BattleUnit : MonoBehaviour
         _image.color = _originalColor;
         _currentColor = _originalColor;
         _currentPos = _originalPos;
-        PlayEnterAnimation();
+        StartCoroutine(PlayEnterAnimation());
     }
 
     public void Clear()
@@ -49,16 +50,16 @@ public class BattleUnit : MonoBehaviour
         _image.color = selected ? GlobalSettings.Instance.BgHighlightColor : _originalColor;
     }
 
-    public void PlayEnterAnimation()
+    public IEnumerator PlayEnterAnimation()
     {
         int offsetX = 15;
 
         _image.transform.localPosition = _isPlayerUnit ? new Vector3(-offsetX, _originalPos.y) : new Vector3(offsetX, _originalPos.y);
 
-        _image.transform.DOLocalMoveX(_originalPos.x, 1.2f);
+        yield return _image.transform.DOLocalMoveX(_originalPos.x, 1.2f).WaitForCompletion();
     }
 
-    public void PlayExitAnimation()
+    public IEnumerator PlayExitAnimation()
     {
         int offsetX = 15;
 
@@ -66,15 +67,15 @@ public class BattleUnit : MonoBehaviour
 
         if (_isPlayerUnit)
         {
-            _image.transform.DOLocalMoveX(-offsetX, 1.2f);
+            yield return _image.transform.DOLocalMoveX(-offsetX, 1.2f).WaitForCompletion();
         }
         else
         {
-            _image.transform.DOLocalMoveX(offsetX, 1.2f);
+            yield return _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
         }
     }
 
-    public void PlayAttackAnimation()
+    public IEnumerator PlayAttackAnimation()
     {
         Sequence sequence = DOTween.Sequence();
 
@@ -84,9 +85,11 @@ public class BattleUnit : MonoBehaviour
 
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.25f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.25f));
+
+        yield return sequence.WaitForCompletion();
     }
 
-    public void PlayHitAnimation()
+    public IEnumerator PlayHitAnimation()
     {
         Sequence sequence = DOTween.Sequence();
 
@@ -98,39 +101,50 @@ public class BattleUnit : MonoBehaviour
         sequence.Join(_image.DOColor(Color.gray, 0.1f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.25f));
         sequence.Join(_image.DOColor(_currentColor, 0.1f));
+
+        yield return sequence.WaitForCompletion();
     }
 
-    public void PlayDefeatAnimation()
+    public IEnumerator PlayDefeatAnimation()
     {
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(_image.transform.DOLocalMoveY(_currentPos.y - 0.5f, 0.5f));
         sequence.Join(_image.DOFade(0f, 0.5f));
+
+        yield return sequence.WaitForCompletion();
     }
 
-    public void StartGuarding()
+    public IEnumerator StartGuarding()
     {
         Monster.IsGuarding = true;
-
         float guardOffset = 0.1f;
+
+        Sequence sequence = DOTween.Sequence();
 
         _currentColor = Color.gray;
         _currentPos = _isPlayerUnit
             ? new Vector3(_currentPos.x - guardOffset, _originalPos.y - guardOffset, _currentPos.z)
             : new Vector3(_currentPos.x + guardOffset, _originalPos.y - guardOffset, _currentPos.z);
 
-        _image.DOColor(_currentColor, 0.2f);
-        _image.transform.DOLocalMove(_currentPos, 0.2f);
+        sequence.Append(_image.DOColor(_currentColor, 0.2f));
+        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.2f));
+
+        yield return sequence.WaitForCompletion();
     }
 
-    public void StopGuarding()
+    public IEnumerator StopGuarding()
     {
         Monster.IsGuarding = false;
+
+        Sequence sequence = DOTween.Sequence();
 
         _currentColor = _originalColor;
         _currentPos = _originalPos;
 
-        _image.DOColor(_currentColor, 0.2f);
-        _image.transform.DOLocalMoveY(_currentPos.y, 0.2f);
+        sequence.Append(_image.DOColor(_currentColor, 0.2f));
+        sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.2f));
+
+        yield return sequence.WaitForCompletion();
     }
 }

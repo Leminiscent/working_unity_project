@@ -65,7 +65,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.Guard)
             {
-                action.SourceUnit.StartGuarding();
+                StartCoroutine(action.SourceUnit.StartGuarding());
                 yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Monster.Base.Name} has begun guarding!");
             }
             else if (action.ActionType == BattleActionType.SwitchMonster)
@@ -123,7 +123,7 @@ public class RunTurnState : State<BattleSystem>
         {
             if (unit.Monster.IsGuarding)
             {
-                unit.StopGuarding();
+                StartCoroutine(unit.StopGuarding());
             }
         }
 
@@ -220,9 +220,9 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
-        sourceUnit.PlayAttackAnimation();
+        StartCoroutine(sourceUnit.PlayAttackAnimation());
         AudioManager.Instance.PlaySFX(move.Base.Sound);
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -236,8 +236,7 @@ public class RunTurnState : State<BattleSystem>
                 for (int i = 1; i <= hitCount; i++)
                 {
                     DamageDetails damageDetails = new();
-
-                    targetUnit.PlayHitAnimation();
+                    StartCoroutine(targetUnit.PlayHitAnimation());
                     AudioManager.Instance.PlaySFX(AudioID.Hit);
 
                     if (move.Base.Category == MoveCategory.Status)
@@ -409,9 +408,8 @@ public class RunTurnState : State<BattleSystem>
             yield break;
         }
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {item.Name}!");
-
-        sourceUnit.PlayAttackAnimation();
-        yield return new WaitForSeconds(0.75f);
+        StartCoroutine(sourceUnit.PlayAttackAnimation());
+        yield return new WaitForSeconds(0.5f);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -419,7 +417,7 @@ public class RunTurnState : State<BattleSystem>
             bool itemUsed = item.Use(targetUnit.Monster);
             if (itemUsed)
             {
-                targetUnit.PlayHitAnimation();
+                StartCoroutine(targetUnit.PlayHitAnimation());
                 AudioManager.Instance.PlaySFX(AudioID.Hit);
                 if (item is RecoveryItem)
                 {
@@ -444,8 +442,8 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
     {
         yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Monster.Base.Name} has been defeated!");
-        defeatedUnit.PlayDefeatAnimation();
-        yield return new WaitForSeconds(1f);
+        StartCoroutine(defeatedUnit.PlayDefeatAnimation());
+        yield return new WaitForSeconds(0.5f);
 
         if (!defeatedUnit.IsPlayerUnit)
         {
@@ -567,7 +565,7 @@ public class RunTurnState : State<BattleSystem>
                         }
                         yield return playerUnit.Hud.SetExpSmooth(true);
                     }
-                    yield return new WaitForSeconds(0.75f);
+                    yield return new WaitForSeconds(0.5f);
                 }
             }
         }

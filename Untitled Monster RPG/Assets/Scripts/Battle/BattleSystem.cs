@@ -211,8 +211,8 @@ public class BattleSystem : MonoBehaviour
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
 
             _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[8];
-            _enemyImage.transform.DOLocalMoveX(1500, 1.2f);
-            yield return new WaitForSeconds(0.75f);
+            _enemyImage.transform.DOLocalMoveX(1500, 1f);
+            yield return new WaitForSeconds(0.5f);
             _enemyImage.gameObject.SetActive(false);
 
             List<Monster> enemyMonsters = EnemyParty.GetHealthyMonsters(_enemyUnitCount);
@@ -230,8 +230,8 @@ public class BattleSystem : MonoBehaviour
             yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {monsterNames}!");
 
             _playerImage.sprite = Player.Character.Animator.GetAllSprites()[12];
-            _playerImage.transform.DOLocalMoveX(-1500, 1.2f);
-            yield return new WaitForSeconds(0.75f);
+            _playerImage.transform.DOLocalMoveX(-1500, 1f);
+            yield return new WaitForSeconds(0.5f);
             _playerImage.gameObject.SetActive(false);
 
             for (int i = 0; i < _playerUnitCount; i++)
@@ -338,8 +338,8 @@ public class BattleSystem : MonoBehaviour
         if (unitToSwitch.Monster.Hp > 0)
         {
             yield return _dialogueBox.TypeDialogue($"Come back {unitToSwitch.Monster.Base.Name}!");
-            unitToSwitch.PlayExitAnimation();
-            yield return new WaitForSeconds(0.75f);
+            StartCoroutine(unitToSwitch.PlayExitAnimation());
+            yield return new WaitForSeconds(0.5f);
         }
 
         unitToSwitch.Setup(newMonster);

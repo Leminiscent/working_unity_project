@@ -86,7 +86,7 @@ public class DialogueManager : MonoBehaviour
     {
         _dialogueText.text = "";
         bool isAccelerated = false;
-        float accelerationFactor = 0.1f;
+        float accelerationFactor = 10f;
         foreach (char letter in line.ToCharArray())
         {
             _dialogueText.text += letter;
@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour
             float delay = 1f / _lettersPerSecond;
             if (isAccelerated)
             {
-                delay *= accelerationFactor;
+                delay /= accelerationFactor;
             }
 
             yield return new WaitForSeconds(delay);
