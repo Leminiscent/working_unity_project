@@ -254,7 +254,7 @@ public class RunTurnState : State<BattleSystem>
                         typeEffectiveness = damageDetails.TypeEffectiveness;
                     }
 
-                    if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Monster.Hp > 0)
+                    if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && typeEffectiveness > 0 && targetUnit.Monster.Hp > 0)
                     {
                         foreach (SecondaryEffects effect in move.Base.SecondaryEffects)
                         {
