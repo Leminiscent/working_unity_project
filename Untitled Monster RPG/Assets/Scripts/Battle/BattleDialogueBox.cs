@@ -28,30 +28,57 @@ public class BattleDialogueBox : MonoBehaviour
     public IEnumerator TypeDialogue(string dialogue, bool waitForInput = false)
     {
         _dialogueText.text = "";
+        bool isAccelerated = false;
+        float accelerationFactor = 0.1f;
         foreach (char letter in dialogue.ToCharArray())
         {
             _dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / _lettersPerSecond);
+            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+            {
+                isAccelerated = true;
+            }
+
+            float delay = 1f / _lettersPerSecond;
+            if (isAccelerated)
+            {
+                delay *= accelerationFactor;
+            }
+
+            yield return new WaitForSeconds(delay);
         }
 
         yield return waitForInput
-            ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+            ? new WaitUntil(() => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
             : new WaitForSeconds(0.75f);
     }
 
     public IEnumerator SetAndTypeDialogue(string setDialogue, string typeDialogue, bool waitForInput = false)
     {
         _dialogueText.text = $"{setDialogue} ";
+        bool isAccelerated = false;
+        float accelerationFactor = 0.1f;
         foreach (char letter in typeDialogue.ToCharArray())
         {
             _dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / _lettersPerSecond);
+            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+            {
+                isAccelerated = true;
+            }
+
+            float delay = 1f / _lettersPerSecond;
+            if (isAccelerated)
+            {
+                delay *= accelerationFactor;
+            }
+
+            yield return new WaitForSeconds(delay);
         }
 
         yield return waitForInput
-            ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+            ? new WaitUntil(() => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
             : new WaitForSeconds(0.75f);
     }
+
 
     public void EnableDialogueText(bool enabled)
     {
