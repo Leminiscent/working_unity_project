@@ -85,10 +85,24 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator TypeDialogue(string line)
     {
         _dialogueText.text = "";
+        bool isAccelerated = false;
+        float accelerationFactor = 0.1f;
         foreach (char letter in line.ToCharArray())
         {
             _dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / _lettersPerSecond);
+            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+            {
+                isAccelerated = true;
+            }
+
+            float delay = 1f / _lettersPerSecond;
+            if (isAccelerated)
+            {
+                delay *= accelerationFactor;
+            }
+
+            yield return new WaitForSeconds(delay);
         }
     }
+
 }
