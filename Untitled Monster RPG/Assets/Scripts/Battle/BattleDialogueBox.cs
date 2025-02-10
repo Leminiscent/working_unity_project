@@ -25,36 +25,9 @@ public class BattleDialogueBox : MonoBehaviour
         _dialogueText.text = dialogue;
     }
 
-    public IEnumerator TypeDialogue(string dialogue, bool waitForInput = false)
+    public IEnumerator TypeDialogue(string typeDialogue, bool waitForInput = false, string setDialogue = null)
     {
-        _dialogueText.text = "";
-        bool isAccelerated = false;
-        float accelerationFactor = 0.1f;
-        foreach (char letter in dialogue.ToCharArray())
-        {
-            _dialogueText.text += letter;
-            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
-            {
-                isAccelerated = true;
-            }
-
-            float delay = 1f / _lettersPerSecond;
-            if (isAccelerated)
-            {
-                delay *= accelerationFactor;
-            }
-
-            yield return new WaitForSeconds(delay);
-        }
-
-        yield return waitForInput
-            ? new WaitUntil(() => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
-            : new WaitForSeconds(0.75f);
-    }
-
-    public IEnumerator SetAndTypeDialogue(string setDialogue, string typeDialogue, bool waitForInput = false)
-    {
-        _dialogueText.text = $"{setDialogue} ";
+        _dialogueText.text = (setDialogue != null) ? $"{setDialogue} " : "";
         bool isAccelerated = false;
         float accelerationFactor = 0.1f;
         foreach (char letter in typeDialogue.ToCharArray())
@@ -64,21 +37,17 @@ public class BattleDialogueBox : MonoBehaviour
             {
                 isAccelerated = true;
             }
-
             float delay = 1f / _lettersPerSecond;
             if (isAccelerated)
             {
                 delay *= accelerationFactor;
             }
-
             yield return new WaitForSeconds(delay);
         }
-
         yield return waitForInput
             ? new WaitUntil(() => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
             : new WaitForSeconds(0.75f);
     }
-
 
     public void EnableDialogueText(bool enabled)
     {

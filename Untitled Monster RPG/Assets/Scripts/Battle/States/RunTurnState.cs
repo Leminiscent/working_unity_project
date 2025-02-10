@@ -501,7 +501,7 @@ public class RunTurnState : State<BattleSystem>
                 foreach (string loot in lootDescriptions)
                 {
                     yield return loot != lootDescriptions.First()
-                        ? _dialogueBox.SetAndTypeDialogue(initialMessage, loot)
+                        ? _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage)
                         : _dialogueBox.TypeDialogue($"{initialMessage} {loot}");
                 }
             }
