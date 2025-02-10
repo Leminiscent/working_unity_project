@@ -30,6 +30,8 @@ public class DialogueManager : MonoBehaviour
 
     public IEnumerator ShowDialogueText(string text, bool waitForInput = true, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
+        yield return new WaitForEndOfFrame();
+        
         OnShowDialogue?.Invoke();
         IsShowing = true;
         _dialogueBox.SetActive(true);
@@ -85,23 +87,29 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator TypeDialogue(string line)
     {
         _dialogueText.text = "";
-        bool isAccelerated = false;
-        float accelerationFactor = 10f;
+        bool isTypingAccelerated = false;
+        float accelerationFactor = 100f;
+        float baseDelay = 1f / _lettersPerSecond;
+
         foreach (char letter in line.ToCharArray())
         {
             _dialogueText.text += letter;
-            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+            float delay = isTypingAccelerated ? baseDelay / accelerationFactor : baseDelay;
+            float elapsed = 0f;
+            while (elapsed < delay)
             {
-                isAccelerated = true;
+                if (!isTypingAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+                {
+                    isTypingAccelerated = true;
+                    delay = baseDelay / accelerationFactor;
+                    if (elapsed >= delay)
+                    {
+                        break;
+                    }
+                }
+                elapsed += Time.deltaTime;
+                yield return null;
             }
-
-            float delay = 1f / _lettersPerSecond;
-            if (isAccelerated)
-            {
-                delay /= accelerationFactor;
-            }
-
-            yield return new WaitForSeconds(delay);
         }
     }
 

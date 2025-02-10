@@ -27,26 +27,49 @@ public class BattleDialogueBox : MonoBehaviour
 
     public IEnumerator TypeDialogue(string typeDialogue, bool waitForInput = false, string setDialogue = null)
     {
+        yield return new WaitForEndOfFrame();
+        
         _dialogueText.text = (setDialogue != null) ? $"{setDialogue} " : "";
         bool isAccelerated = false;
-        float accelerationFactor = 10f;
+        float accelerationFactor = 100f;
+        float baseDelay = 1f / _lettersPerSecond;
+
         foreach (char letter in typeDialogue.ToCharArray())
         {
             _dialogueText.text += letter;
-            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+            float delay = isAccelerated ? baseDelay / accelerationFactor : baseDelay;
+            float elapsed = 0f;
+            while (elapsed < delay)
             {
-                isAccelerated = true;
+                if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+                {
+                    isAccelerated = true;
+                    delay = baseDelay / accelerationFactor;
+                    if (elapsed >= delay)
+                    {
+                        break;
+                    }
+                }
+                elapsed += Time.deltaTime;
+                yield return null;
             }
-            float delay = 1f / _lettersPerSecond;
-            if (isAccelerated)
-            {
-                delay /= accelerationFactor;
-            }
-            yield return new WaitForSeconds(delay);
         }
-        yield return waitForInput
-            ? new WaitUntil(() => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
-            : new WaitForSeconds(0.5f);
+
+        if (waitForInput)
+        {
+            yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
+            yield return new WaitUntil(static () => !Input.GetButton("Action") && !Input.GetButton("Back"));
+        }
+        else
+        {
+            float timer = 0f;
+            float duration = 0.5f;
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+        }
     }
 
     public void EnableDialogueText(bool enabled)
