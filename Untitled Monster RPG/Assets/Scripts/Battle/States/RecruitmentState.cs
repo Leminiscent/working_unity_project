@@ -217,7 +217,7 @@ public class RecruitmentState : State<BattleSystem>
 
     private void HandleChoiceBoxInput()
     {
-        const float SELECTION_SPEED = 5f;
+        const float SELECTION_SPEED = 6f;
         float v = Input.GetAxisRaw("Vertical");
 
         if (_selectionTimer > 0)
