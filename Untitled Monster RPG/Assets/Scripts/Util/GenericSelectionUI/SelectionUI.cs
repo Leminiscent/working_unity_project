@@ -1,4 +1,3 @@
-// SelectionUI.cs
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +19,9 @@ namespace Utils.GenericSelectionUI
         public event Action OnBack;
         public event Action<int> OnIndexChanged;
 
-        // Properties for input filtering.
         public bool IgnoreVerticalInput { get; set; }
         public bool IgnoreHorizontalInput { get; set; }
-
-        // Exposes the current selection index.
-        public int SelectedIndex { get { return _selectedItem; } }
+        public int SelectedIndex => _selectedItem;
 
         public void SetSelectionSettings(SelectionType selectionType, int gridWidth)
         {
@@ -36,13 +32,13 @@ namespace Utils.GenericSelectionUI
         public void SetItems(List<T> items)
         {
             _items = items;
-            _items.ForEach(i => i.Init());
+            _items.ForEach(static i => i.Init());
             UpdateSelectionInUI();
         }
 
         public void ClearItems()
         {
-            _items?.ForEach(i => i.Clear());
+            _items?.ForEach(static i => i.Clear());
             _items = null;
         }
 
@@ -112,7 +108,6 @@ namespace Utils.GenericSelectionUI
 
                 if (Mathf.Abs(h) > Mathf.Abs(v))
                 {
-                    // Horizontal movement.
                     int rowItemCount = (row == lastRow && _items.Count % _gridWidth != 0) ? _items.Count % _gridWidth : _gridWidth;
                     int newCol = col + (int)Mathf.Sign(h);
 
@@ -129,7 +124,6 @@ namespace Utils.GenericSelectionUI
                 }
                 else
                 {
-                    // Vertical movement.
                     int newRow = row - (int)Mathf.Sign(v);
 
                     if (newRow < 0)
