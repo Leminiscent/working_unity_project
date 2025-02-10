@@ -98,6 +98,7 @@ public class PartyState : State<GameController>
                         _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already preparing for battle!");
                         yield break;
                     }
+                    _partyScreen.ResetSelection();
                     _gameController.StateMachine.Pop();
                     break;
                 case 1:
