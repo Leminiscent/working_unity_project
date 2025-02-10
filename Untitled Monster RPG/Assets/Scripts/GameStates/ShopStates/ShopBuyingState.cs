@@ -13,6 +13,7 @@ public class ShopBuyingState : State<GameController>
     private GameController _gameController;
     private Inventory _playerInventory;
     private bool _browseItems;
+    private bool _backInProgress;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopBuyingState Instance { get; private set; }
@@ -38,6 +39,7 @@ public class ShopBuyingState : State<GameController>
     {
         _gameController = owner;
         _browseItems = false;
+        _backInProgress = false;
         StartCoroutine(StartBuying());
     }
 
@@ -53,7 +55,16 @@ public class ShopBuyingState : State<GameController>
     {
         yield return GameController.Instance.MoveCamera(_shopCameraOffest);
         _walletUI.Show();
-        _shopUI.Show(AvailableItems, (item) => StartCoroutine(BuyItem(item)), () => StartCoroutine(OnBackFromBuying()));
+        _shopUI.Show(AvailableItems,
+            (item) => StartCoroutine(BuyItem(item)),
+            () =>
+            {
+                if (!_backInProgress)
+                {
+                    _backInProgress = true;
+                    StartCoroutine(OnBackFromBuying());
+                }
+            });
         _browseItems = true;
     }
 
