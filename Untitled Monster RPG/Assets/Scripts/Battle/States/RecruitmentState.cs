@@ -165,7 +165,7 @@ public class RecruitmentState : State<BattleSystem>
         else
         {
             yield return _dialogueBox.TypeDialogue(RecruitTarget.Monster.Base.Name + " refused to join you.");
-            if (RecruitTarget.Monster.AffinityLevel <= 0)
+            if (RecruitTarget.Monster.AffinityLevel == 0)
             {
                 RecruitTarget.Hud.ToggleAffinityBar(false);
             }
@@ -215,7 +215,7 @@ public class RecruitmentState : State<BattleSystem>
         {
             // No
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Monster.Base.Name} was rejected.");
-            if (RecruitTarget.Monster.AffinityLevel <= 0)
+            if (RecruitTarget.Monster.AffinityLevel == 0)
             {
                 RecruitTarget.Hud.ToggleAffinityBar(false);
             }

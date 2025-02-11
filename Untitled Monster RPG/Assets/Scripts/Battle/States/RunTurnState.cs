@@ -526,6 +526,10 @@ public class RunTurnState : State<BattleSystem>
                     {
                         playerUnit.Monster.HasJustLeveledUp = true;
                         playerUnit.Hud.SetLevel();
+                        if (playerUnit.Monster.Level == GlobalSettings.Instance.MaxLevel)
+                        {
+                            playerUnit.Hud.ToggleExpBar(false);
+                        }
                         yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} grew to level {playerUnit.Monster.Level}!");
 
                         LearnableMove newMove = playerUnit.Monster.GetLearnableMoveAtCurrentLevel();

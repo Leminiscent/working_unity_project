@@ -75,12 +75,16 @@ public class BattleHUD : MonoBehaviour
             return;
         }
 
-        float normalizedExp = _monster.GetNormalizedExp();
-        if (_monster.Level == GlobalSettings.Instance.MaxLevel || normalizedExp == 0)
+        if (_monster.Level < GlobalSettings.Instance.MaxLevel)
+        {
+            ToggleExpBar(true);
+        }
+        else
         {
             ToggleExpBar(false);
         }
 
+        float normalizedExp = _monster.GetNormalizedExp();
         _expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
     }
 
@@ -129,11 +133,6 @@ public class BattleHUD : MonoBehaviour
         }
 
         float normalizedAffinity = GetNormalizedAffinity();
-        if (normalizedAffinity == 0)
-        {
-            ToggleAffinityBar(false);
-        }
-
         _affinityBar.transform.localScale = new Vector3(normalizedAffinity, 1, 1);
     }
 
