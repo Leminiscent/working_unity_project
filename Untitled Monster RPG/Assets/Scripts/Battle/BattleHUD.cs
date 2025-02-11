@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleHUD : MonoBehaviour
@@ -97,11 +98,26 @@ public class BattleHUD : MonoBehaviour
         yield return _expBar.transform.DOScaleX(normalizedExp, 1.15f).WaitForCompletion();
     }
 
+    public void ToggleAffinityBar(bool toggle)
+    {
+        if (_affinityBar == null)
+        {
+            return;
+        }
+
+        _affinityBar.transform.parent.gameObject.SetActive(toggle);
+    }
+
     public void SetAffinity()
     {
         if (_affinityBar == null)
         {
             return;
+        }
+
+        if (_monster.AffinityLevel <= 0)
+        {
+            ToggleAffinityBar(false);
         }
 
         float normalizedAffinity = GetNormalizedAffinity();

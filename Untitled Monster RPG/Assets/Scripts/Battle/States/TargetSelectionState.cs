@@ -6,7 +6,7 @@ public class TargetSelectionState : State<BattleSystem>
     private BattleSystem _battleSystem;
     private int _selectedTarget = 0;
     private float _selectionTimer = 0;
-    private const float SELECTION_SPEED = 6f;
+    private const float SELECTION_SPEED = 5.25f;
 
     public static TargetSelectionState Instance { get; private set; }
     public bool SelectionMade { get; private set; }

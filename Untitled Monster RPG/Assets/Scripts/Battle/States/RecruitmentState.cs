@@ -72,6 +72,7 @@ public class RecruitmentState : State<BattleSystem>
         _questions = RecruitTarget.Monster.Base.RecruitmentQuestions.OrderBy(static q => Random.value).ToList();
         _selectedQuestions = _questions.Take(3).ToList();
         _currentQuestionIndex = 0;
+        RecruitTarget.Hud.ToggleAffinityBar(true);
         yield return PresentQuestion();
     }
 
@@ -164,6 +165,10 @@ public class RecruitmentState : State<BattleSystem>
         else
         {
             yield return _dialogueBox.TypeDialogue(RecruitTarget.Monster.Base.Name + " refused to join you.");
+            if (RecruitTarget.Monster.AffinityLevel <= 0)
+            {
+                RecruitTarget.Hud.ToggleAffinityBar(false);
+            }
             _battleSystem.StateMachine.Pop();
         }
     }
@@ -210,6 +215,10 @@ public class RecruitmentState : State<BattleSystem>
         {
             // No
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Monster.Base.Name} was rejected.");
+            if (RecruitTarget.Monster.AffinityLevel <= 0)
+            {
+                RecruitTarget.Hud.ToggleAffinityBar(false);
+            }
         }
 
         _battleSystem.StateMachine.Pop();
@@ -217,7 +226,7 @@ public class RecruitmentState : State<BattleSystem>
 
     private void HandleChoiceBoxInput()
     {
-        const float SELECTION_SPEED = 6f;
+        const float SELECTION_SPEED = 5.25f;
         float v = Input.GetAxisRaw("Vertical");
 
         if (_selectionTimer > 0)
