@@ -235,9 +235,7 @@ public class RecruitmentState : State<BattleSystem>
         if (Input.GetButtonDown("Action"))
         {
             _dialogueBox.EnableChoiceBox(false);
-
             int selection = _yesSelected ? 0 : 1;
-
             StartCoroutine(ProcessAcceptReject(selection));
         }
 
