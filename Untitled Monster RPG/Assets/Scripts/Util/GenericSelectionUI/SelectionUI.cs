@@ -11,7 +11,7 @@ namespace Utils.GenericSelectionUI
         private int _gridWidth = 2;
 
         protected float _selectionTimer = 0;
-        protected const float SELECTION_SPEED = 5.25f;
+        protected const float SELECTION_SPEED = 5f;
         protected int _selectedItem = 0;
         protected int? _savedSelection;
 
