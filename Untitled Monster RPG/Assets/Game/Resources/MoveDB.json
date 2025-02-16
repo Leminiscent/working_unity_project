@@ -1,8 +1,8 @@
 {
     "Normal": [
         {
-            "name": "Swift Strike",
-            "description": "A quick blow that finds its mark with unyielding determination.",
+            "name": "Quick Jab",
+            "description": "A swift strike that catches the opponent off-guard.",
             "type": "Normal",
             "category": "Physical",
             "effects": {
@@ -29,15 +29,64 @@
                 "max": 1
             },
             "power": 40,
-            "accuracy": 100,
+            "accuracy": 95,
             "alwaysHits": false,
             "sp": 10,
-            "priority": 0,
-            "sound": "swift_strike_sound"
+            "priority": 1,
+            "sound": "jab_sound"
         },
         {
-            "name": "Iron Fist",
-            "description": "A robust strike delivered with a force that overwhelms the opponent.",
+            "name": "Heavy Blow",
+            "description": "A powerful strike that can leave the opponent reeling.",
+            "type": "Normal",
+            "category": "Physical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [
+                        {
+                            "stat": "Endurance",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 20,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "HighCritRatio",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 60,
+            "accuracy": 90,
+            "alwaysHits": false,
+            "sp": 15,
+            "priority": 0,
+            "sound": "heavy_blow_sound"
+        },
+        {
+            "name": "Battering Ram",
+            "description": "A reckless charge that deals damage to the target and the user.",
             "type": "Normal",
             "category": "Physical",
             "effects": {
@@ -47,6 +96,55 @@
                 "weather": "None"
             },
             "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "RecoilByCurrentHP",
+                "recoilDamage": 10
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 70,
+            "accuracy": 85,
+            "alwaysHits": false,
+            "sp": 20,
+            "priority": 0,
+            "sound": "ram_sound"
+        },
+        {
+            "name": "Guardian Strike",
+            "description": "A determined attack that bolsters resolve upon landing a hit.",
+            "type": "Normal",
+            "category": "Physical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [
+                        {
+                            "stat": "Endurance",
+                            "boost": 1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 30,
+                    "target": "Self"
+                }
+            ],
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -66,345 +164,15 @@
             "power": 50,
             "accuracy": 100,
             "alwaysHits": false,
-            "sp": 12,
-            "priority": 0,
-            "sound": "iron_fist_sound"
-        },
-        {
-            "name": "Raging Blow",
-            "description": "An aggressive attack that channels raw determination into each strike.",
-            "type": "Normal",
-            "category": "Physical",
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 60,
-            "accuracy": 100,
-            "alwaysHits": false,
-            "sp": 15,
-            "priority": 0,
-            "sound": "raging_blow_sound"
-        },
-        {
-            "name": "Berserker Bash",
-            "description": "A relentless assault that strikes with unbridled vigor, leaving little room for counter.",
-            "type": "Normal",
-            "category": "Physical",
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 70,
-            "accuracy": 100,
-            "alwaysHits": false,
-            "sp": 18,
-            "priority": 0,
-            "sound": "berserker_bash_sound"
-        },
-        {
-            "name": "Mystic Pulse",
-            "description": "A surge of energy that cascades toward the foe with ethereal intensity.",
-            "type": "Normal",
-            "category": "Magical",
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 45,
-            "accuracy": 100,
-            "alwaysHits": false,
-            "sp": 12,
-            "priority": 0,
-            "sound": "mystic_pulse_sound"
-        },
-        {
-            "name": "Arcane Burst",
-            "description": "A concentrated beam of energy that disrupts the opponent's defenses.",
-            "type": "Normal",
-            "category": "Magical",
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 55,
-            "accuracy": 100,
-            "alwaysHits": false,
-            "sp": 15,
-            "priority": 0,
-            "sound": "arcane_burst_sound"
-        },
-        {
-            "name": "Ethereal Wave",
-            "description": "A flowing stream of unseen force that ripples across the battlefield.",
-            "type": "Normal",
-            "category": "Magical",
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 65,
-            "accuracy": 100,
-            "alwaysHits": false,
-            "sp": 18,
-            "priority": 0,
-            "sound": "ethereal_wave_sound"
-        },
-        {
-            "name": "Celestial Ray",
-            "description": "A focused emission that carries the weight of hidden resolve into the target.",
-            "type": "Normal",
-            "category": "Magical",
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 75,
-            "accuracy": 100,
-            "alwaysHits": false,
-            "sp": 20,
-            "priority": 0,
-            "sound": "celestial_ray_sound"
-        },
-        {
-            "name": "Steadfast Guard",
-            "description": "A protective stance that bolsters the user's defenses, inviting a renewed spirit.",
-            "type": "Normal",
-            "category": "Status",
-            "effects": {
-                "boosts": [
-                    {
-                        "stat": "Endurance",
-                        "boost": 1
-                    }
-                ],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Self",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 0,
-            "accuracy": 100,
-            "alwaysHits": true,
             "sp": 10,
-            "priority": 0,
-            "sound": "steadfast_guard_sound"
+            "priority": 1,
+            "sound": "guardian_strike_sound"
         },
         {
-            "name": "Shifting Tactics",
-            "description": "A tactical maneuver that refocuses the user's approach for unexpected advantages.",
+            "name": "Mystic Bolt",
+            "description": "A concentrated surge of energy is unleashed towards the target, with a chance to confuse them.",
             "type": "Normal",
-            "category": "Status",
-            "effects": {
-                "boosts": [
-                    {
-                        "stat": "Intelligence",
-                        "boost": 1
-                    }
-                ],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Self",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 0,
-            "accuracy": 100,
-            "alwaysHits": true,
-            "sp": 10,
-            "priority": 0,
-            "sound": "shifting_tactics_sound"
-        },
-        {
-            "name": "Resolute Cry",
-            "description": "A rallying call that invigorates allies and disrupts the foe's concentration.",
-            "type": "Normal",
-            "category": "Status",
-            "effects": {
-                "boosts": [
-                    {
-                        "stat": "Strength",
-                        "boost": 1
-                    }
-                ],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "AllAllies",
-            "hitRange": {
-                "min": 1,
-                "max": 1
-            },
-            "power": 0,
-            "accuracy": 100,
-            "alwaysHits": true,
-            "sp": 12,
-            "priority": 0,
-            "sound": "resolute_cry_sound"
-        },
-        {
-            "name": "Trickster's Gambit",
-            "description": "A cunning stratagem that confounds the opponent, leaving them vulnerable to follow-up strikes.",
-            "type": "Normal",
-            "category": "Status",
+            "category": "Magical",
             "effects": {
                 "boosts": [],
                 "status": "None",
@@ -437,12 +205,312 @@
                 "min": 1,
                 "max": 1
             },
+            "power": 55,
+            "accuracy": 95,
+            "alwaysHits": false,
+            "sp": 20,
+            "priority": 0,
+            "sound": "mystic_bolt_sound"
+        },
+        {
+            "name": "Ethereal Pulse",
+            "description": "A wave of ethereal energy washes over all enemies, dealing damage to each target.",
+            "type": "Normal",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "HighCritRatio",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "AllEnemies",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 45,
+            "accuracy": 90,
+            "alwaysHits": false,
+            "sp": 25,
+            "priority": 0,
+            "sound": "ethereal_pulse_sound"
+        },
+        {
+            "name": "Arcane Burst",
+            "description": "A sudden explosion of energy detonates upon a single target, dealing damage and potentially lowering their Fortitude.",
+            "type": "Normal",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [
+                        {
+                            "stat": "Fortitude",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 25,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 70,
+            "accuracy": 85,
+            "alwaysHits": false,
+            "sp": 30,
+            "priority": 0,
+            "sound": "arcane_burst_sound"
+        },
+        {
+            "name": "Celestial Ray",
+            "description": "A radiant beam of light shines down upon the target, with a chance to put them to sleep.",
+            "type": "Normal",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [],
+                    "status": "Slp",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 20,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "NeverCrits",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 50,
+            "accuracy": 90,
+            "alwaysHits": false,
+            "sp": 25,
+            "priority": 0,
+            "sound": "celestial_ray_sound"
+        },
+        {
+            "name": "Steadfast Rally",
+            "description": "A rallying cry that boosts the Strength and Endurance of an ally.",
+            "type": "Normal",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Strength",
+                        "boost": 1
+                    },
+                    {
+                        "stat": "Endurance",
+                        "boost": 1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Ally",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 20,
+            "priority": 1,
+            "sound": "rally_sound"
+        },
+        {
+            "name": "Calming Aura",
+            "description": "An ambient aura spreads around all allies, soothing troubled minds and boosting Intelligence and Agility.",
+            "type": "Normal",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Intelligence",
+                        "boost": 1
+                    },
+                    {
+                        "stat": "Agility",
+                        "boost": 1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "AllAllies",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 20,
+            "priority": 0,
+            "sound": "aura_sound"
+        },
+        {
+            "name": "Intimidating Glare",
+            "description": "A menacing glare that unnerves the opponent, lowering their Accuracy.",
+            "type": "Normal",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Accuracy",
+                        "boost": -1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
             "power": 0,
             "accuracy": 100,
             "alwaysHits": true,
             "sp": 15,
             "priority": 0,
-            "sound": "tricksters_gambit_sound"
+            "sound": "glare_sound"
+        },
+        {
+            "name": "Distracting Feint",
+            "description": "A deceptive maneuver that distracts the opponent, lowering their Endurance and Fortitude.",
+            "type": "Normal",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Endurance",
+                        "boost": -1
+                    },
+                    {
+                        "stat": "Fortitude",
+                        "boost": -1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 15,
+            "priority": 0,
+            "sound": "feint_sound"
         }
     ]
 }
