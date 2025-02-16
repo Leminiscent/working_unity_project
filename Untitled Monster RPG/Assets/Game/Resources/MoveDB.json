@@ -512,5 +512,506 @@
             "priority": 0,
             "sound": "feint_sound"
         }
+    ],
+    "Fire": [
+        {
+            "name": "Blazing Kick",
+            "description": "A fiery kick that scorches the target with intense heat.",
+            "type": "Fire",
+            "category": "Physical",
+            "effects": {
+                "boosts": [],
+                "status": "Brn",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "HighCritRatio",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 65,
+            "accuracy": 90,
+            "alwaysHits": false,
+            "sp": 15,
+            "priority": 0,
+            "sound": "blazing_kick_sound"
+        },
+        {
+            "name": "Fiery Slash",
+            "description": "A searing slash that has a chance to lower the target's Endurance.",
+            "type": "Fire",
+            "category": "Physical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [
+                        {
+                            "stat": "Endurance",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 25,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 70,
+            "accuracy": 95,
+            "alwaysHits": false,
+            "sp": 15,
+            "priority": 0,
+            "sound": "fiery_slash_sound"
+        },
+        {
+            "name": "Scorching Charge",
+            "description": "A reckless charge that deals damage to the target and the user.",
+            "type": "Fire",
+            "category": "Physical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "RecoilByCurrentHP",
+                "recoilDamage": 15
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 80,
+            "accuracy": 85,
+            "alwaysHits": false,
+            "sp": 20,
+            "priority": 0,
+            "sound": "scorching_charge_sound"
+        },
+        {
+            "name": "Inferno Strike",
+            "description": "A fierce strike shrouded in flames that may burn the target.",
+            "type": "Fire",
+            "category": "Physical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [],
+                    "status": "Brn",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 30,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "AlwaysCrits",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 75,
+            "accuracy": 80,
+            "alwaysHits": false,
+            "sp": 20,
+            "priority": 0,
+            "sound": "inferno_strike_sound"
+        },
+        {
+            "name": "Flame Burst",
+            "description": "A sudden eruption of flames engulfs the target with relentless heat, potentially lowering their Fortitude.",
+            "type": "Fire",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [
+                        {
+                            "stat": "Fortitude",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 20,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 70,
+            "accuracy": 90,
+            "alwaysHits": false,
+            "sp": 25,
+            "priority": 0,
+            "sound": "flame_burst_sound"
+        },
+        {
+            "name": "Searing Wave",
+            "description": "A rolling surge of searing energy sweeps over all foes with relentless force.",
+            "type": "Fire",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "HighCritRatio",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "AllEnemies",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 55,
+            "accuracy": 95,
+            "alwaysHits": false,
+            "sp": 30,
+            "priority": 0,
+            "sound": "searing_wave_sound"
+        },
+        {
+            "name": "Ember Storm",
+            "description": "A barrage of burning embers pelts the foe in a chaotic flurry.",
+            "type": "Fire",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 2,
+                "max": 5
+            },
+            "power": 35,
+            "accuracy": 90,
+            "alwaysHits": false,
+            "sp": 30,
+            "priority": 0,
+            "sound": "ember_storm_sound"
+        },
+        {
+            "name": "Solar Flare",
+            "description": "A dazzling burst of blinding light disrupts the foe's focus.",
+            "type": "Fire",
+            "category": "Magical",
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "boosts": [
+                        {
+                            "stat": "Accuracy",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None",
+                    "chance": 25,
+                    "target": "Enemy"
+                }
+            ],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 60,
+            "accuracy": 85,
+            "alwaysHits": false,
+            "sp": 35,
+            "priority": 0,
+            "sound": "solar_flare_sound"
+        },
+        {
+            "name": "Burning Will",
+            "description": "A surge of fiery determination that boosts the user's Strength and Endurance.",
+            "type": "Fire",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Strength",
+                        "boost": 1
+                    },
+                    {
+                        "stat": "Endurance",
+                        "boost": 1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Self",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 20,
+            "priority": 1,
+            "sound": "burning_will_sound"
+        },
+        {
+            "name": "Cinder Veil",
+            "description": "A smoky veil shrouds the foe, confusing them and reducing Agility.",
+            "type": "Fire",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Agility",
+                        "boost": -1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "Con",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 20,
+            "priority": 0,
+            "sound": "cinder_veil_sound"
+        },
+        {
+            "name": "Heat Rally",
+            "description": "A rallying cry that boosts the Strength and Endurance of an ally.",
+            "type": "Fire",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Strength",
+                        "boost": 1
+                    },
+                    {
+                        "stat": "Endurance",
+                        "boost": 1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Ally",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 20,
+            "priority": 1,
+            "sound": "heat_rally_sound"
+        },
+        {
+            "name": "Smoldering Gaze",
+            "description": "A searing glare that unnerves the opponent, lowering their Accuracy.",
+            "type": "Fire",
+            "category": "Status",
+            "effects": {
+                "boosts": [
+                    {
+                        "stat": "Accuracy",
+                        "boost": -1
+                    }
+                ],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "hitRange": {
+                "min": 1,
+                "max": 1
+            },
+            "power": 0,
+            "accuracy": 100,
+            "alwaysHits": true,
+            "sp": 15,
+            "priority": 0,
+            "sound": "smoldering_gaze_sound"
+        }
     ]
 }
