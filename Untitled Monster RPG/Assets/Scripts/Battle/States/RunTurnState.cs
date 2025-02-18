@@ -236,7 +236,7 @@ public class RunTurnState : State<BattleSystem>
                 for (int i = 1; i <= hitCount; i++)
                 {
                     DamageDetails damageDetails = new();
-                    StartCoroutine(targetUnit.PlayHitAnimation());
+                    StartCoroutine(targetUnit.PlayHitAnimation(move.Base.AnimationSprites));
                     AudioManager.Instance.PlaySFX(AudioID.Hit);
 
                     if (move.Base.Category == MoveCategory.Status)
@@ -417,7 +417,7 @@ public class RunTurnState : State<BattleSystem>
             bool itemUsed = item.Use(targetUnit.Monster);
             if (itemUsed)
             {
-                StartCoroutine(targetUnit.PlayHitAnimation());
+                // StartCoroutine(targetUnit.PlayHitAnimation());
                 AudioManager.Instance.PlaySFX(AudioID.Hit);
                 if (item is RecoveryItem)
                 {

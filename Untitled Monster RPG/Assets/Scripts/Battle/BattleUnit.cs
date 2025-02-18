@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class BattleUnit : MonoBehaviour
 {
     [SerializeField] private bool _isPlayerUnit;
     [SerializeField] private BattleHUD _hud;
+    [SerializeField] private GameObject _hitAnimationPrefab;
 
     private Image _image;
     private Vector3 _originalPos;
@@ -65,14 +67,9 @@ public class BattleUnit : MonoBehaviour
 
         _image.transform.localPosition = _originalPos;
 
-        if (_isPlayerUnit)
-        {
-            yield return _image.transform.DOLocalMoveX(-offsetX, 1.2f).WaitForCompletion();
-        }
-        else
-        {
-            yield return _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
-        }
+        yield return _isPlayerUnit
+            ? _image.transform.DOLocalMoveX(-offsetX, 1.2f).WaitForCompletion()
+            : _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
     }
 
     public IEnumerator PlayAttackAnimation()
@@ -89,8 +86,23 @@ public class BattleUnit : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
 
-    public IEnumerator PlayHitAnimation()
+    public IEnumerator PlayHitAnimation(List<Sprite> animSprites, float frameRate = 0.0167f)
     {
+        if (animSprites == null || animSprites.Count == 0)
+        {
+            yield break;
+        }
+
+        GameObject instance = Instantiate(_hitAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(animSprites, frameRate);
+        }
+
+        yield return new WaitForSeconds(animSprites.Count * frameRate / 2);
+
         Sequence sequence = DOTween.Sequence();
 
         Vector3 hitOffset = _isPlayerUnit

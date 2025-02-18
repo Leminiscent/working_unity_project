@@ -24,6 +24,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] private int _sP;
     [SerializeField] private int _priority;
     [SerializeField] private AudioClip _sound;
+    [SerializeField] private List<Sprite> _animationSprites;
 
     // Properties
     public int GetHitCount()
@@ -49,6 +50,7 @@ public class MoveBase : ScriptableObject
     public List<SecondaryEffects> SecondaryEffects => _secondaryEffects;
     public MoveTarget Target => _target;
     public AudioClip Sound => _sound;
+    public List<Sprite> AnimationSprites => _animationSprites;
 }
 
 [System.Serializable]
