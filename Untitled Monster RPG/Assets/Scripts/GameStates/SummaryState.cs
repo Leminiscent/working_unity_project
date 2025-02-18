@@ -65,6 +65,7 @@ public class SummaryState : State<GameController>
             if (_currentMonsterList.Count > 0)
             {
                 _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
+                _summaryScreenUI.ShowPage(_selectedPage);
             }
         };
 
