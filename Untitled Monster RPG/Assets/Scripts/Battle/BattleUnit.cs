@@ -80,8 +80,8 @@ public class BattleUnit : MonoBehaviour
             ? new Vector3(0.75f, 0)
             : new Vector3(-0.75f, 0);
 
-        sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.25f));
-        sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.25f));
+        sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
+        sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
 
         yield return sequence.WaitForCompletion();
     }
@@ -109,9 +109,9 @@ public class BattleUnit : MonoBehaviour
             ? new Vector3(-0.15f, 0)
             : new Vector3(0.15f, 0);
 
-        sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, 0.25f));
+        sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, 0.3f));
         sequence.Join(_image.DOColor(Color.gray, 0.1f));
-        sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.25f));
+        sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
         sequence.Join(_image.DOColor(_currentColor, 0.1f));
 
         yield return sequence.WaitForCompletion();
@@ -139,8 +139,8 @@ public class BattleUnit : MonoBehaviour
             ? new Vector3(_currentPos.x - guardOffset, _originalPos.y - guardOffset, _currentPos.z)
             : new Vector3(_currentPos.x + guardOffset, _originalPos.y - guardOffset, _currentPos.z);
 
-        sequence.Append(_image.DOColor(_currentColor, 0.2f));
-        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.2f));
+        sequence.Append(_image.DOColor(_currentColor, 0.1f));
+        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.3f));
 
         yield return sequence.WaitForCompletion();
     }
@@ -154,8 +154,8 @@ public class BattleUnit : MonoBehaviour
         _currentColor = _originalColor;
         _currentPos = _originalPos;
 
-        sequence.Append(_image.DOColor(_currentColor, 0.2f));
-        sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.2f));
+        sequence.Append(_image.DOColor(_currentColor, 0.1f));
+        sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.3f));
 
         yield return sequence.WaitForCompletion();
     }
