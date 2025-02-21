@@ -189,6 +189,19 @@ public class ConditionsDB
                     monster.StatusChanges.Enqueue(" is buffeted by the sandstorm!");
                 }
             }
+        },
+        {
+            ConditionID.Hail,
+            new Condition()
+            {
+                Name = "Hail",
+                StartMessage = "It started to hail!",
+                EffectMessage = "The hail is falling!",
+                OnWeather = static monster => {
+                    monster.DecreaseHP(Mathf.RoundToInt(monster.MaxHp / 16f));
+                    monster.StatusChanges.Enqueue(" is buffeted by the hail!");
+                }
+            }
         }
     };
 
@@ -214,4 +227,5 @@ public enum ConditionID
     Sun,
     Rain,
     Sandstorm,
+    Hail
 }
