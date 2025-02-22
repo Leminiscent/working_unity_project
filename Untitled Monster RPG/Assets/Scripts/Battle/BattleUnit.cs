@@ -188,4 +188,19 @@ public class BattleUnit : MonoBehaviour
         AudioManager.Instance.PlaySFX(AudioID.Damage);
         yield return sequence.WaitForCompletion();
     }
+
+    public IEnumerator PlayHealAnimation(float frameRate = 0.0167f)
+    {
+        List<Sprite> healAnimSprites = GlobalSettings.Instance.HealAnimationSprites;
+
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(healAnimSprites, frameRate);
+        }
+
+        yield return new WaitForSeconds((healAnimSprites.Count * frameRate) + 0.5f);
+    }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GlobalSettings : MonoBehaviour
@@ -14,6 +15,9 @@ public class GlobalSettings : MonoBehaviour
     [SerializeField] private int _maxLevel;
     [SerializeField] private MoveBase _backupMove;
 
+    [Header("Animations")]
+    [SerializeField] private List<Sprite> _healAnimationSprites;
+
     public Color ActiveColor => _activeColor;
     public Color InactiveColor => _inactiveColor;
     public Color EmptyColor => _emptyColor;
@@ -22,6 +26,7 @@ public class GlobalSettings : MonoBehaviour
     public int MaxPvPerStat => _maxPvPerStat;
     public int MaxLevel => _maxLevel;
     public MoveBase BackupMove => _backupMove;
+    public List<Sprite> HealAnimationSprites => _healAnimationSprites;
     public static GlobalSettings Instance { get; private set; }
 
     private void Awake()

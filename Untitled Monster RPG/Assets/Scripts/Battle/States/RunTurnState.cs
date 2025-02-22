@@ -336,6 +336,7 @@ public class RunTurnState : State<BattleSystem>
         {
             int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
             sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster.Base.Name);
+            yield return sourceUnit.PlayHealAnimation();
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
