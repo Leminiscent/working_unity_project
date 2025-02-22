@@ -8,7 +8,7 @@ public class BattleUnit : MonoBehaviour
 {
     [SerializeField] private bool _isPlayerUnit;
     [SerializeField] private BattleHUD _hud;
-    [SerializeField] private GameObject _hitAnimationPrefab;
+    [SerializeField] private GameObject _moveAnimationPrefab;
 
     private Image _image;
     private Vector3 _originalPos;
@@ -72,8 +72,25 @@ public class BattleUnit : MonoBehaviour
             : _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
     }
 
-    public IEnumerator PlayAttackAnimation()
+    public IEnumerator PlayMoveCastAnimation(MoveBase move, float frameRate = 0.0167f)
     {
+        List<Sprite> castAnimSprites = move.CastAnimationSprites;
+
+        if (castAnimSprites == null || castAnimSprites.Count == 0)
+        {
+            yield break;
+        }
+
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(castAnimSprites, frameRate);
+        }
+
+        yield return new WaitForSeconds((castAnimSprites.Count * frameRate) + 0.5f);
+
         Sequence sequence = DOTween.Sequence();
 
         Vector3 attackOffset = _isPlayerUnit
@@ -83,25 +100,28 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
 
+        AudioManager.Instance.PlaySFX(AudioID.Hit);
         yield return sequence.WaitForCompletion();
     }
 
-    public IEnumerator PlayHitAnimation(List<Sprite> animSprites, float frameRate = 0.0167f)
+    public IEnumerator PlayMoveEffectAnimation(MoveBase move, float frameRate = 0.0167f)
     {
-        if (animSprites == null || animSprites.Count == 0)
+        List<Sprite> effectAnimSprites = move.EffectAnimationSprites;
+
+        if (effectAnimSprites == null || effectAnimSprites.Count == 0)
         {
             yield break;
         }
 
-        GameObject instance = Instantiate(_hitAnimationPrefab, transform);
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
         instance.transform.localPosition = Vector3.zero;
 
         if (instance.TryGetComponent(out MoveAnimationController controller))
         {
-            controller.Initialize(animSprites, frameRate);
+            controller.Initialize(effectAnimSprites, frameRate);
         }
 
-        yield return new WaitForSeconds(animSprites.Count * frameRate);
+        yield return new WaitForSeconds((effectAnimSprites.Count * frameRate) + 0.5f);
 
         Sequence sequence = DOTween.Sequence();
 
@@ -114,6 +134,7 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
         sequence.Join(_image.DOColor(_currentColor, 0.1f));
 
+        AudioManager.Instance.PlaySFX(AudioID.Hit);
         yield return sequence.WaitForCompletion();
     }
 
@@ -139,8 +160,8 @@ public class BattleUnit : MonoBehaviour
             ? new Vector3(_currentPos.x - guardOffset, _originalPos.y - guardOffset, _currentPos.z)
             : new Vector3(_currentPos.x + guardOffset, _originalPos.y - guardOffset, _currentPos.z);
 
-        sequence.Append(_image.DOColor(_currentColor, 0.1f));
-        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.3f));
+        sequence.Append(_image.DOColor(_currentColor, 0.2f));
+        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.4f));
 
         yield return sequence.WaitForCompletion();
     }
@@ -154,8 +175,8 @@ public class BattleUnit : MonoBehaviour
         _currentColor = _originalColor;
         _currentPos = _originalPos;
 
-        sequence.Append(_image.DOColor(_currentColor, 0.1f));
-        sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.3f));
+        sequence.Append(_image.DOColor(_currentColor, 0.2f));
+        sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.4f));
 
         yield return sequence.WaitForCompletion();
     }

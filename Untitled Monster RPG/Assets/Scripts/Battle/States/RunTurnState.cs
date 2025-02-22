@@ -220,9 +220,7 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
-        StartCoroutine(sourceUnit.PlayAttackAnimation());
-        AudioManager.Instance.PlaySFX(move.Base.Sound);
-        yield return new WaitForSeconds(0.5f);
+        yield return sourceUnit.PlayMoveCastAnimation(move.Base);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -236,8 +234,7 @@ public class RunTurnState : State<BattleSystem>
                 for (int i = 1; i <= hitCount; i++)
                 {
                     DamageDetails damageDetails = new();
-                    StartCoroutine(targetUnit.PlayHitAnimation(move.Base.AnimationSprites));
-                    AudioManager.Instance.PlaySFX(AudioID.Hit);
+                    yield return targetUnit.PlayMoveEffectAnimation(move.Base);
 
                     if (move.Base.Category == MoveCategory.Status)
                     {
@@ -408,8 +405,7 @@ public class RunTurnState : State<BattleSystem>
             yield break;
         }
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {item.Name}!");
-        StartCoroutine(sourceUnit.PlayAttackAnimation());
-        yield return new WaitForSeconds(0.5f);
+        // yield return sourceUnit.PlayAttackAnimation(item);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -417,8 +413,7 @@ public class RunTurnState : State<BattleSystem>
             bool itemUsed = item.Use(targetUnit.Monster);
             if (itemUsed)
             {
-                // StartCoroutine(targetUnit.PlayHitAnimation());
-                AudioManager.Instance.PlaySFX(AudioID.Hit);
+                // yield return targetUnit.PlayHitAnimation(item);
                 if (item is RecoveryItem)
                 {
                     yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {item.Message}!");
