@@ -444,19 +444,13 @@ public enum MonsterType
     Fire,
     Water,
     Thunder,
-    Plant,
+    Nature,
     Ice,
     Force,
-    Poison,
     Earth,
     Wind,
-    Mind,
-    Insect,
-    Stone,
-    Spirit,
-    Dragon,
+    Occult,
     Dark,
-    Metal,
     Light
 }
 

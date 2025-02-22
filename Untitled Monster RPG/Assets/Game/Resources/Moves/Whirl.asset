@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Whirl
+  m_EditorClassIdentifier: 
+  _name: Whirl
+  _description: Creates a swirling vortex of water that strikes multiple times and
+    may confuse the foe.
+  _type: 3
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts: []
+    _status: 0
+    _volatileStatus: 6
+    _weather: 0
+    _chance: 30
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 2, y: 3}
+  _power: 15
+  _accuracy: 90
+  _alwaysHits: 0
+  _sP: 20
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -287106815, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -2129791849, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1898098102, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -2147054459, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1100758444, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1619973022, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1532329250, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 390679269, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 854167273, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1152420751, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1062146852, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1088688360, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1067862841, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1863310139, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -583181339, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1020309657, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1309837973, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1502595258, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 143364076, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 362779628, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1407226388, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1092231761, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1745947928, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -573954485, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 148582127, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 662265098, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1309634430, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 101117490, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 2073613267, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 176360844, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1281535913, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1206300639, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -2065811704, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1859345051, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1542245998, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1017959241, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 635612023, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -465245328, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -827695944, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 710821263, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 360859940, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1811646280, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 10190154, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 2123514577, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1351350852, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -965507627, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -2067885439, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1213064033, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1872342996, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1358429975, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1858288793, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -416100903, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -292309956, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -168157672, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1843235887, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1810963832, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 1372232646, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1753759448, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: 728591785, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}
+  - {fileID: -1243948407, guid: 40480a404fda8ec468ea064e6d1ad9ef, type: 3}

@@ -1,50 +1,11 @@
 {
-    "Normal": [
+    "moves": [
         {
-            "name": "Blind",
-            "description": "Blinds the target, sharply reducing its accuracy.",
-            "type": "Normal",
-            "category": "Status",
-            "power": 0,
-            "accuracy": 100,
-            "sp": 15,
-            "priority": 0,
-            "hitRange": [
-                1,
-                1
-            ],
-            "effects": {
-                "boosts": [
-                    {
-                        "stat": "Accuracy",
-                        "boost": -2
-                    }
-                ],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "alwaysHits": false
-        },
-        {
-            "name": "Confuse",
-            "description": "A bewildering move that scrambles the target's senses.",
-            "type": "Normal",
-            "category": "Status",
-            "power": 0,
+            "name": "Taint",
+            "description": "Infects the target with a toxic substance that corrodes its vitality, with a chance to poison and sap its endurance.",
+            "type": "Plant",
+            "category": "Magical",
+            "power": 65,
             "accuracy": 100,
             "sp": 15,
             "priority": 0,
@@ -55,10 +16,24 @@
             "effects": {
                 "boosts": [],
                 "status": "None",
-                "volatileStatus": "Con",
+                "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
+            "secondaryEffects": [
+                {
+                    "chance": 30,
+                    "target": "Enemy",
+                    "boosts": [
+                        {
+                            "stat": "Endurance",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "Psn",
+                    "volatileStatus": "None",
+                    "weather": "None"
+                }
+            ],
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -74,13 +49,13 @@
             "alwaysHits": false
         },
         {
-            "name": "Seal",
-            "description": "A cunning move that reduces the target's Intelligence.",
-            "type": "Normal",
+            "name": "Defile",
+            "description": "Saps the target's mental resolve, lowering its intelligence and possibly leaving it confused.",
+            "type": "Plant",
             "category": "Status",
             "power": 0,
             "accuracy": 100,
-            "sp": 15,
+            "sp": 10,
             "priority": 0,
             "hitRange": [
                 1,
@@ -97,42 +72,17 @@
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "alwaysHits": false
-        },
-        {
-            "name": "Slash",
-            "description": "A slashing attack that delivers a critical cut.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 70,
-            "accuracy": 100,
-            "sp": 20,
-            "priority": 0,
-            "hitRange": [
-                1,
-                1
+            "secondaryEffects": [
+                {
+                    "chance": 50,
+                    "target": "Enemy",
+                    "boosts": [],
+                    "status": "None",
+                    "volatileStatus": "Con",
+                    "weather": "None"
+                }
             ],
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "HighCritRatio",
+            "critBehavior": "NeverCrits",
             "recoil": {
                 "recoilType": "None",
                 "recoilDamage": 0
@@ -144,14 +94,14 @@
                 "immunityType": "None"
             },
             "target": "Enemy",
-            "alwaysHits": false
+            "alwaysHits": true
         },
         {
-            "name": "Blow",
-            "description": "A quick strike delivered with force.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 40,
+            "name": "Surge",
+            "description": "Unleashes a burst of corrupt energy that damages the foe while empowering the user.",
+            "type": "Plant",
+            "category": "Magical",
+            "power": 80,
             "accuracy": 100,
             "sp": 15,
             "priority": 0,
@@ -165,7 +115,21 @@
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
+            "secondaryEffects": [
+                {
+                    "chance": 100,
+                    "target": "Self",
+                    "boosts": [
+                        {
+                            "stat": "Intelligence",
+                            "boost": 1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None"
+                }
+            ],
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -181,11 +145,54 @@
             "alwaysHits": false
         },
         {
-            "name": "Shot",
-            "description": "A ranged attack fired with precision.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 60,
+            "name": "Belch",
+            "description": "Unleashes a putrid burst of noxious gas that damages the foe and may leave it poisoned.",
+            "type": "Plant",
+            "category": "Magical",
+            "power": 70,
+            "accuracy": 90,
+            "sp": 15,
+            "priority": 0,
+            "hitRange": [
+                1,
+                1
+            ],
+            "effects": {
+                "boosts": [],
+                "status": "None",
+                "volatileStatus": "None",
+                "weather": "None"
+            },
+            "secondaryEffects": [
+                {
+                    "chance": 40,
+                    "target": "Enemy",
+                    "boosts": [],
+                    "status": "Psn",
+                    "volatileStatus": "None",
+                    "weather": "None"
+                }
+            ],
+            "critBehavior": "None",
+            "recoil": {
+                "recoilType": "None",
+                "recoilDamage": 0
+            },
+            "drainPercentage": 0,
+            "oneHitKO": {
+                "isOneHitKO": false,
+                "lowerOddsException": false,
+                "immunityType": "None"
+            },
+            "target": "Enemy",
+            "alwaysHits": false
+        },
+        {
+            "name": "Corrupt",
+            "description": "Inflicts a vile corruption that damages the foe and weakens its defenses.",
+            "type": "Plant",
+            "category": "Magical",
+            "power": 80,
             "accuracy": 95,
             "sp": 15,
             "priority": 0,
@@ -199,41 +206,21 @@
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "alwaysHits": false
-        },
-        {
-            "name": "Cleave",
-            "description": "A sweeping attack that strikes multiple times.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 25,
-            "accuracy": 85,
-            "sp": 15,
-            "priority": 0,
-            "hitRange": [
-                2,
-                3
+            "secondaryEffects": [
+                {
+                    "chance": 40,
+                    "target": "Enemy",
+                    "boosts": [
+                        {
+                            "stat": "Fortitude",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "Psn",
+                    "volatileStatus": "None",
+                    "weather": "None"
+                }
             ],
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -249,11 +236,11 @@
             "alwaysHits": false
         },
         {
-            "name": "Swipe",
-            "description": "A wide-reaching attack that hits multiple foes.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 40,
+            "name": "Decay",
+            "description": "Accelerates the deterioration of the target, sapping its strength and resilience.",
+            "type": "Plant",
+            "category": "Magical",
+            "power": 70,
             "accuracy": 90,
             "sp": 15,
             "priority": 0,
@@ -267,7 +254,25 @@
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
+            "secondaryEffects": [
+                {
+                    "chance": 50,
+                    "target": "Enemy",
+                    "boosts": [
+                        {
+                            "stat": "Strength",
+                            "boost": -1
+                        },
+                        {
+                            "stat": "Endurance",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "None",
+                    "volatileStatus": "None",
+                    "weather": "None"
+                }
+            ],
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -279,64 +284,44 @@
                 "lowerOddsException": false,
                 "immunityType": "None"
             },
-            "target": "AllEnemies",
+            "target": "Enemy",
             "alwaysHits": false
         },
         {
-            "name": "Hit",
-            "description": "A straightforward strike that deals moderate damage.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 50,
+            "name": "Delirium",
+            "description": "Overwhelms the target with a maddening assault that saps its focus and leaves it confused.",
+            "type": "Plant",
+            "category": "Status",
+            "power": 0,
             "accuracy": 100,
-            "sp": 20,
+            "sp": 10,
             "priority": 0,
             "hitRange": [
                 1,
                 1
             ],
             "effects": {
-                "boosts": [],
+                "boosts": [
+                    {
+                        "stat": "Intelligence",
+                        "boost": -1
+                    }
+                ],
                 "status": "None",
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
-            "critBehavior": "None",
-            "recoil": {
-                "recoilType": "None",
-                "recoilDamage": 0
-            },
-            "drainPercentage": 0,
-            "oneHitKO": {
-                "isOneHitKO": false,
-                "lowerOddsException": false,
-                "immunityType": "None"
-            },
-            "target": "Enemy",
-            "alwaysHits": false
-        },
-        {
-            "name": "Rapid Fire",
-            "description": "A barrage of quick shots that pummel the foe.",
-            "type": "Normal",
-            "category": "Physical",
-            "power": 15,
-            "accuracy": 90,
-            "sp": 20,
-            "priority": 0,
-            "hitRange": [
-                3,
-                5
+            "secondaryEffects": [
+                {
+                    "chance": 70,
+                    "target": "Enemy",
+                    "boosts": [],
+                    "status": "None",
+                    "volatileStatus": "Con",
+                    "weather": "None"
+                }
             ],
-            "effects": {
-                "boosts": [],
-                "status": "None",
-                "volatileStatus": "None",
-                "weather": "None"
-            },
-            "secondaryEffects": [],
-            "critBehavior": "None",
+            "critBehavior": "NeverCrits",
             "recoil": {
                 "recoilType": "None",
                 "recoilDamage": 0
@@ -348,15 +333,15 @@
                 "immunityType": "None"
             },
             "target": "Enemy",
-            "alwaysHits": false
+            "alwaysHits": true
         },
         {
-            "name": "Explosion",
-            "description": "A high-risk attack that inflicts severe damage at the cost of the user's own health.",
-            "type": "Normal",
+            "name": "Ruin",
+            "description": "Deals devastating damage that leaves the target battered, though the user suffers recoil damage.",
+            "type": "Plant",
             "category": "Physical",
             "power": 120,
-            "accuracy": 80,
+            "accuracy": 85,
             "sp": 10,
             "priority": 0,
             "hitRange": [
@@ -372,8 +357,8 @@
             "secondaryEffects": [],
             "critBehavior": "None",
             "recoil": {
-                "recoilType": "RecoilByMaxHP",
-                "recoilDamage": 50
+                "recoilType": "RecoilByDamage",
+                "recoilDamage": 30
             },
             "drainPercentage": 0,
             "oneHitKO": {
@@ -385,37 +370,43 @@
             "alwaysHits": false
         },
         {
-            "name": "Scan",
-            "description": "An analytical move that gathers information about the opponent.",
-            "type": "Normal",
-            "category": "Status",
-            "power": 0,
-            "accuracy": 100,
-            "sp": 20,
+            "name": "Blight",
+            "description": "Inflicts a withering curse that drains the target's vitality, with a chance to poison and lower its strength and endurance.",
+            "type": "Plant",
+            "category": "Magical",
+            "power": 100,
+            "accuracy": 90,
+            "sp": 15,
             "priority": 0,
             "hitRange": [
                 1,
                 1
             ],
             "effects": {
-                "boosts": [
-                    {
-                        "stat": "Evasion",
-                        "boost": -1
-                    }
-                ],
+                "boosts": [],
                 "status": "None",
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": {
-                "boosts": {
-                    "stat": "Accuracy",
-                    "boost": 1
-                },
-                "chance": 100,
-                "target": "Self"
-            },
+            "secondaryEffects": [
+                {
+                    "chance": 50,
+                    "target": "Enemy",
+                    "boosts": [
+                        {
+                            "stat": "Strength",
+                            "boost": -1
+                        },
+                        {
+                            "stat": "Endurance",
+                            "boost": -1
+                        }
+                    ],
+                    "status": "Psn",
+                    "volatileStatus": "None",
+                    "weather": "None"
+                }
+            ],
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -428,7 +419,7 @@
                 "immunityType": "None"
             },
             "target": "Enemy",
-            "alwaysHits": true
+            "alwaysHits": false
         }
     ]
 }

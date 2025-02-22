@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Shock
+  m_EditorClassIdentifier: 
+  _name: Shock
+  _description: A sudden jolt of electricity that may lower the foe's agility.
+  _type: 4
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 5
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 0
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 60
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 20
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 790320970, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1793069143, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1766210046, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 71179477, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1012697776, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 151402310, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1952936899, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1290459331, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1383997847, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 142281125, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1987922727, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -860617861, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -871516340, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1796113944, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -538120256, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 736683849, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -2041308649, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1031503651, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1041700663, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1807258416, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -896470595, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -139212538, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 467665759, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1265613801, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1987272368, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -270739321, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1035587878, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 438715636, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1618001756, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1848827328, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1255343143, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1541114471, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -681395403, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 287223718, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1809942145, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -204831640, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 509345998, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1470757339, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1460181007, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -185123087, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -245713067, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -740001593, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1283459943, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -962169157, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -355983463, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1195216959, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 913405669, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1269361120, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -183941608, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 2055049170, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 985387063, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -129745121, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -510910742, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 2085152964, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -344513525, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -833907928, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: 1843539434, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -563020690, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1944270274, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}
+  - {fileID: -1973957738, guid: 149ffdfb298de264a8fa03b46829ea5c, type: 3}

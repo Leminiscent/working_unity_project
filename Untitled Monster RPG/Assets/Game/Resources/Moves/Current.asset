@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Current
+  m_EditorClassIdentifier: 
+  _name: Current
+  _description: Envelops the foe in a surge of electricity that may lower its endurance.
+  _type: 4
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 2
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 20
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 70
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 495408561, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -2006294836, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 917754466, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -993894591, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1044592394, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 342693708, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 188496422, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 550654907, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1548338279, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 13718473, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -2057847200, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1848522669, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1655261150, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1872501280, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1555866344, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -933303796, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1855279913, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 837537305, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 191643934, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -577171181, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 148096922, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1768102683, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 817440765, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 173014639, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1982822773, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1083314773, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1904487274, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1809085624, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 980212306, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 522282410, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1489104539, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 513353976, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1852733725, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1232057488, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 436922309, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1670133232, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1588492781, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 2137617014, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 655539077, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 50785007, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1430840629, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 392852572, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1067052044, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -716365342, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -423047917, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1828645840, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 148265912, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 2140692566, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -642871732, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1212014628, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -319449755, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -341386696, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 2002484476, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 655094174, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -868860461, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1487060722, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1311809078, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: -1908392936, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 912315024, guid: 21bd272575ee23b40951d7027803988d, type: 3}
+  - {fileID: 1005654045, guid: 21bd272575ee23b40951d7027803988d, type: 3}
