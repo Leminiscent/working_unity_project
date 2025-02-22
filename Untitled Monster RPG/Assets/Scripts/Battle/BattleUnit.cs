@@ -101,7 +101,7 @@ public class BattleUnit : MonoBehaviour
             controller.Initialize(animSprites, frameRate);
         }
 
-        yield return new WaitForSeconds(animSprites.Count * frameRate / 2);
+        yield return new WaitForSeconds(animSprites.Count * frameRate);
 
         Sequence sequence = DOTween.Sequence();
 
