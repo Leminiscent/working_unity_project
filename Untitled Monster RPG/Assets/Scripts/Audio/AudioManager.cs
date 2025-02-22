@@ -104,7 +104,7 @@ public enum AudioID
     UISelect,
     UIReturn,
     MoveCast,
-    MoveEffect,
+    Guard,
     Damage,
     Heal,
     StatusUp,

@@ -65,7 +65,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.Guard)
             {
-                StartCoroutine(action.SourceUnit.StartGuarding());
+                yield return action.SourceUnit.StartGuarding();
                 yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Monster.Base.Name} has begun guarding!");
             }
             else if (action.ActionType == BattleActionType.SwitchMonster)
@@ -245,6 +245,7 @@ public class RunTurnState : State<BattleSystem>
                     else
                     {
                         damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, _field.Weather);
+                        yield return targetUnit.PlayDamageAnimation();
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
