@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Shot
+  m_EditorClassIdentifier: 
+  _name: Shot
+  _description: A ranged attack fired with precision.
+  _type: 0
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects: []
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 60
+  _accuracy: 95
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -791322422, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -605516266, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 847163644, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1375744417, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -573182572, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1546129129, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 243607331, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1705907039, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1364672585, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1441374836, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 157161898, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 902317524, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1858809588, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1000615273, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 2006195707, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 255923618, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1346806968, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1445538343, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -2031146035, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1676708862, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 2147063634, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 242623048, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -292567770, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1166285318, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 636091058, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 142003522, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1209209971, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1523745501, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -2011751046, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -51304904, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -1208341832, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1799028351, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -816560498, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 923890076, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 152516493, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1725348394, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -88911079, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1065231506, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: -585274787, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}
+  - {fileID: 1402949889, guid: 893e649dcd8708b4cbb4c172198a63f6, type: 3}

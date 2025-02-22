@@ -75,7 +75,7 @@
         },
         {
             "name": "Seal",
-            "description": "A cunning move that disrupts the target's ability to use techniques.",
+            "description": "A cunning move that reduces the target's Intelligence.",
             "type": "Normal",
             "category": "Status",
             "power": 0,
@@ -250,16 +250,16 @@
         },
         {
             "name": "Swipe",
-            "description": "A rapid multi-strike that slashes the target repeatedly.",
+            "description": "A wide-reaching attack that hits multiple foes.",
             "type": "Normal",
             "category": "Physical",
-            "power": 20,
+            "power": 40,
             "accuracy": 90,
             "sp": 15,
             "priority": 0,
             "hitRange": [
-                2,
-                2
+                1,
+                1
             ],
             "effects": {
                 "boosts": [],
@@ -279,7 +279,7 @@
                 "lowerOddsException": false,
                 "immunityType": "None"
             },
-            "target": "Enemy",
+            "target": "AllEnemies",
             "alwaysHits": false
         },
         {
@@ -318,7 +318,7 @@
         },
         {
             "name": "Rapid Fire",
-            "description": "A barrage of quick strikes that pummel the foe.",
+            "description": "A barrage of quick shots that pummel the foe.",
             "type": "Normal",
             "category": "Physical",
             "power": 15,
@@ -372,7 +372,7 @@
             "secondaryEffects": [],
             "critBehavior": "None",
             "recoil": {
-                "recoilType": "RecoilByDamage",
+                "recoilType": "RecoilByMaxHP",
                 "recoilDamage": 50
             },
             "drainPercentage": 0,
@@ -400,15 +400,22 @@
             "effects": {
                 "boosts": [
                     {
-                        "stat": "Accuracy",
-                        "boost": 1
+                        "stat": "Evasion",
+                        "boost": -1
                     }
                 ],
                 "status": "None",
                 "volatileStatus": "None",
                 "weather": "None"
             },
-            "secondaryEffects": [],
+            "secondaryEffects": {
+                "boosts": {
+                    "stat": "Accuracy",
+                    "boost": 1
+                },
+                "chance": 100,
+                "target": "Self"
+            },
             "critBehavior": "None",
             "recoil": {
                 "recoilType": "None",
@@ -420,7 +427,7 @@
                 "lowerOddsException": false,
                 "immunityType": "None"
             },
-            "target": "Self",
+            "target": "Enemy",
             "alwaysHits": true
         }
     ]
