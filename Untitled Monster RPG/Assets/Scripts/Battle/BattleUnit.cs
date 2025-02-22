@@ -100,7 +100,7 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
 
-        AudioManager.Instance.PlaySFX(AudioID.Hit);
+        AudioManager.Instance.PlaySFX(AudioID.MoveCast);
         yield return sequence.WaitForCompletion();
     }
 
@@ -134,7 +134,7 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
         sequence.Join(_image.DOColor(_currentColor, 0.1f));
 
-        AudioManager.Instance.PlaySFX(AudioID.Hit);
+        AudioManager.Instance.PlaySFX(AudioID.MoveEffect);
         yield return sequence.WaitForCompletion();
     }
 

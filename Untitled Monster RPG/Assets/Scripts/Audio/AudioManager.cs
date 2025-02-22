@@ -98,12 +98,28 @@ public class AudioManager : MonoBehaviour
 
 public enum AudioID
 {
+    UIShift,
+    UIPageUp,
+    UIPageDown,
     UISelect,
-    Hit,
-    Defeat,
+    UIReturn,
+    MoveCast,
+    MoveEffect,
+    Damage,
+    Heal,
+    StatusUp,
+    StatusDown,
+    MonsterDefeat,
+    AffinityGain,
+    AffinityLoss,
     ExpGain,
     ItemObtained,
-    MonsterObtained
+    MonsterObtained,
+    Encounter,
+    Spotted,
+    BattleWon,
+    BattleLost,
+    BattleFled
 }
 
 [System.Serializable]
