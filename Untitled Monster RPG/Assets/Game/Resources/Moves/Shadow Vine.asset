@@ -12,16 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Shadow Vine
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Shaow Vine
+  _description: Entangles the foe in shadowy tendrils that reduce its evasion.
+  _type: 11
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 7
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 40
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,10 +41,70 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 70
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -1196083638, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1592882084, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1587854664, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1053006457, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1187028165, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1310298456, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1068299074, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1396978393, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 584227381, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 337538333, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1962433685, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1953774654, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1731465485, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -856368512, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -213505252, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1958794837, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -758165551, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1267909052, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 445870314, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 422431888, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -244049278, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 369241714, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 750704441, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1773624654, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -179676743, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1840813223, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 2108233074, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1417287620, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1585951120, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 312636823, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1958240894, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 627384742, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -495859979, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1370188040, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 407960824, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 964825530, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 848502862, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -500336461, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1580940117, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1558234810, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -605623838, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 11315407, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -662537755, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1063643117, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 388426051, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1438929620, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1645397150, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1608325004, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 581574014, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1036480190, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 2007802878, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -2097335363, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1260595030, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1016027609, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 1317888998, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -1637596197, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 298203247, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 37578857, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: 538609520, guid: a152fe8657cea584ababd4695f0b4900, type: 3}
+  - {fileID: -184621409, guid: a152fe8657cea584ababd4695f0b4900, type: 3}

@@ -12,16 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Hammer
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Hammer
+  _description: Delivers a crushing blow that may diminish the foe's fortitude.
+  _type: 10
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 4
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,10 +41,40 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 110
+  _accuracy: 85
   _alwaysHits: 0
-  _sP: 0
+  _sP: 10
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: 525672063, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1512972129, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 1122715808, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -990304255, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -696653913, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 1563432871, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1375839536, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 515513679, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 504458519, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -790291305, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 457261016, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 361959935, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 1270028089, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 1688997672, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 1054010709, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1521794633, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 444257284, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1200195178, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -449433560, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1944197372, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 1815817524, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 848541852, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 122695635, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 2082646697, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 320063628, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1444381144, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: 571603883, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1946151535, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -708844851, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}
+  - {fileID: -1607026320, guid: 9dcad0b4f92ed874da926df32536af2c, type: 3}

@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Sting
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Sting
+  _description: Delivers a piercing strike that stings the foe, potentially reducing
+    its agility.
+  _type: 11
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 5
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,10 +42,40 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 60
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 20
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -782034960, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1425241522, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -700040300, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -332931478, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 2073653275, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1132410129, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 1384274586, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 879081989, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 1744134466, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1264706295, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -93366648, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 684953026, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1474636393, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 1099467205, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -555324174, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 1619052390, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 632059611, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1571128042, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 1197731723, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -473259872, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 690046649, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1680159755, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 200832256, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 817186210, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1485647189, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -932493599, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1850249470, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -1079940931, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: 1348701730, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}
+  - {fileID: -713994420, guid: 011e03a0dce0e3244b1708f241bcd240, type: 3}

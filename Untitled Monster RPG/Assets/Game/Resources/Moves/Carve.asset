@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Carve
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Carve
+  _description: Repeatedly carves into the foe with brutal force, sometimes reducing
+    its accuracy.
+  _type: 10
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 6
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 0
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -32,11 +41,56 @@ MonoBehaviour:
     LowerOddsException: 0
     ImmunityType: 0
   _target: 0
-  _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _hitRange: {x: 2, y: 3}
+  _power: 35
+  _accuracy: 90
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -149259342, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1853334624, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -43581640, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1948679520, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1645409958, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 982087231, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1491800247, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1010510341, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -745937989, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1836628673, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 790657870, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -191940206, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1255482425, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1427208011, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -362513402, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -441645801, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -54280346, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1557642213, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 361148649, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -784075341, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1417019828, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -149327769, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 245243215, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 315215927, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 348417137, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1801240765, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -116704506, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1125391286, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1386970810, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1365431948, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -2005163960, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1956315094, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1152849321, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -516294974, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1538100759, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -18680804, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -543961400, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -64621044, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -510108929, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1161707561, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1269822443, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1491134248, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 1902393425, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: 179054474, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}
+  - {fileID: -1970511496, guid: 2887a9d347af1354db2e0bd749da9c8a, type: 3}

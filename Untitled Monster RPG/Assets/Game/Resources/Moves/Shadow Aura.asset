@@ -12,12 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Shadow Aura
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Shadow Aura
+  _description: Envelops all allies in a sinister aura that boosts their strength
+    and evasion.
+  _type: 11
+  _category: 2
   _effects:
-    _boosts: []
+    _boosts:
+    - Stat: 1
+      Boost: 1
+    - Stat: 7
+      Boost: 1
     _status: 0
     _volatileStatus: 0
     _weather: 0
@@ -31,12 +36,72 @@ MonoBehaviour:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
+  _target: 3
   _hitRange: {x: 0, y: 0}
   _power: 0
-  _accuracy: 0
+  _accuracy: 100
   _alwaysHits: 0
-  _sP: 0
+  _sP: 20
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -152222642, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1282831400, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 531504602, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 599535756, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1780349765, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 634293581, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -619935204, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 827626792, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -948969866, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1497852667, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 2000138852, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -444578657, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1352289699, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -269683586, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1084477906, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -509301560, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1361307559, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1955784246, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1280673282, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 779720647, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -891386007, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1310128713, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -413044915, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1690362442, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1240331590, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1454669315, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1726689455, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 465899871, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1600371996, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1640123167, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1725886832, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 867308742, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1731040316, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1839510480, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 373255472, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -2121627086, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 2023929928, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1177686399, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -642317054, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1867015622, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -2124277585, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1082059513, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1611879302, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 326162549, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1827279639, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1065986422, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 660489604, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 444323037, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1278457216, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 279661677, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 487038039, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 939047447, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 681045719, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1072026119, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -608213923, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1611338925, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1277150049, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1366011990, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: -1839740182, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}
+  - {fileID: 1055194276, guid: e8b9dca9ac31b8a4d9fc1c67fd7f17fd, type: 3}

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Chomp
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Chomp
+  _description: Bites into the target with ferocious jaws, draining a portion of
+    its health.
+  _type: 10
   _category: 0
   _effects:
     _boosts: []
@@ -26,17 +27,47 @@ MonoBehaviour:
   _recoil:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
+  _drainPercentage: 30
   _oneHitKO:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 90
+  _accuracy: 95
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: 58063951, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1318704221, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 494186750, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 904947107, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -939209906, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 519448711, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -1620650328, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1884004522, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -2100382452, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1090011320, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 846395973, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 325492600, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1424121156, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -116149829, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 750948899, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -112229011, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -351034076, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 256242623, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 401441468, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 426877582, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 311051876, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1819122847, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1782815500, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -855712763, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -153761045, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 345173306, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 851488588, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -1259871170, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: -617964941, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}
+  - {fileID: 1826979314, guid: 77df78038c9cb9c43870f8a264cd4474, type: 3}

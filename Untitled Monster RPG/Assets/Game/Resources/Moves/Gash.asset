@@ -12,16 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Gash
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Gash
+  _description: Cuts the target with a savage attack, potentially lowering its endurance.
+  _type: 10
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 2
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,10 +41,25 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 75
+  _accuracy: 95
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -291370356, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -1175458447, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -1212400720, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -826209020, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -2092151339, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -338820533, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -219813687, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -865928352, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: 868322777, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: 511328623, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -985011509, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: 1347270290, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: 389615589, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: 1096568354, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}
+  - {fileID: -1328542542, guid: 25bc0362982dca04ab9add465ba03a92, type: 3}

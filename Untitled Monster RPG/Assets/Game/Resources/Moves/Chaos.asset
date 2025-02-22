@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Chaos
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Chaos
+  _description: Unleashes an unpredictable surge of dark energy that ravages all
+    foes, with a chance to confuse them.
+  _type: 11
+  _category: 1
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts: []
+    _status: 0
+    _volatileStatus: 6
+    _weather: 0
+    _chance: 30
+    _target: 2
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -31,12 +38,42 @@ MonoBehaviour:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
+  _target: 2
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 120
+  _accuracy: 85
   _alwaysHits: 0
-  _sP: 0
+  _sP: 10
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -1367631911, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1901295847, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 867785668, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 321902988, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1753270958, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 2061654110, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -393414603, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 518112100, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -904167154, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 48086766, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 1883232874, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 240059120, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 933965621, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 1229967257, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -807687830, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 1568002319, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -991794585, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -2020613761, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -806150684, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -725422710, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1937932261, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 1513703070, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1491532412, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -788550784, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -650769487, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1957317802, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1483613567, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: 1682471189, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1171324848, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}
+  - {fileID: -1581318077, guid: 7c7f5bbc9a8f6af449a1516307ae46ca, type: 3}

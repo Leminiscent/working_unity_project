@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Upheave
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Upheave
+  _description: Lifts the target off its feet with a forceful strike, reducing its
+    agility.
+  _type: 10
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 5
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,10 +42,40 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 100
+  _accuracy: 90
   _alwaysHits: 0
-  _sP: 0
+  _sP: 10
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -333812121, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 962187530, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 494205886, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1330908137, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -2053477991, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1987689362, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -480734238, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 807632511, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1731858731, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 395963785, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 454093579, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 959260472, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1084187853, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -802494889, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1752330641, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1333875700, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1940424755, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -220451096, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1088875841, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1494673936, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 311689801, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1181028908, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1047324570, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 324567649, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1640151602, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: -1973847354, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 1795278038, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 165996126, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 2066225966, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}
+  - {fileID: 699811456, guid: 6704f437dbb7a8f4fbafd40a57466561, type: 3}

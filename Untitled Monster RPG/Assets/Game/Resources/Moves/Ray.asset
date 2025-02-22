@@ -12,16 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Ray
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Ray
+  _description: Fires a concentrated beam of light that pierces the foe, with a chance
+    to lower its fortitude.
+  _type: 12
+  _category: 1
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 4
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 20
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -33,10 +42,40 @@ MonoBehaviour:
     ImmunityType: 0
   _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _power: 80
+  _accuracy: 95
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: -1628883705, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1729863445, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -2079608480, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 732041866, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -755216455, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 484567826, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -335428764, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1323913628, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 757821735, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -1219836845, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -1620655797, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -62157839, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -1826817013, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -1958016928, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 855314118, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1908005990, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -986285077, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1279910559, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1099790670, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -431230448, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -55687121, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 217575610, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -1839772220, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 159200692, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -996030385, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1067533738, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1146336183, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1449724669, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: -2147023991, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
+  - {fileID: 1529842689, guid: f978706feb2162846be2e854d04b7f3b, type: 3}

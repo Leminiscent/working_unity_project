@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Lacerate
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
+  _name: Lacerate
+  _description: Rends the target with vicious slashes from a corroded blade, potentially
+    inflicting poison.
+  _type: 10
   _category: 0
   _effects:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
+  _secondaryEffects:
+  - _boosts: []
+    _status: 1
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 0
   _critBehavior: 0
   _recoil:
     RecoilType: 0
@@ -32,11 +39,61 @@ MonoBehaviour:
     LowerOddsException: 0
     ImmunityType: 0
   _target: 0
-  _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 0
+  _hitRange: {x: 2, y: 3}
+  _power: 35
+  _accuracy: 90
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: 383566874, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1064839938, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1763821028, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1488979863, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 424109885, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1159023231, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -929269044, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -573182148, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 654767612, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 674678289, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1357912674, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 908630840, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1403867896, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -503829229, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1640455055, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1505409371, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 193641655, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1816866436, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1797481233, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 290139543, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1602203215, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1494228426, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 404505270, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -2065327179, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1684113245, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 880066739, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1399499280, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -125344888, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 142064666, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 110942902, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1442448986, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 115377517, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 17373781, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1200868529, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -142566914, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1120958256, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 868175815, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 1572467591, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -257020231, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1897665834, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 425421165, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -2099092711, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 2020800599, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1312255535, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 825957030, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: -1205172537, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 784586198, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 925073954, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 2079322427, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}
+  - {fileID: 177110597, guid: b050837f9e5af534cb2a0a5f7502c5bc, type: 3}

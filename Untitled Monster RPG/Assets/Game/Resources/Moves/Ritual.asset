@@ -12,12 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Ritual
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Ritual
+  _description: Performs a forbidden rite that bolsters all allies' strength and
+    intelligence.
+  _type: 10
+  _category: 2
   _effects:
-    _boosts: []
+    _boosts:
+    - Stat: 1
+      Boost: 1
+    - Stat: 3
+      Boost: 1
     _status: 0
     _volatileStatus: 0
     _weather: 0
@@ -31,12 +36,57 @@ MonoBehaviour:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
+  _target: 3
   _hitRange: {x: 0, y: 0}
   _power: 0
-  _accuracy: 0
+  _accuracy: 90
   _alwaysHits: 0
-  _sP: 0
+  _sP: 15
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: 926329958, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1921351883, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -241378352, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -249999950, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -2073116824, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -188486406, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 139419011, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1143378559, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1540720295, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -603873193, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1200738866, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -917131337, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1769093431, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 965763155, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -348185981, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 391309086, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1713610662, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -995632163, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -769965290, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -866750707, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1828692598, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 2052983124, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -679434875, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -125355828, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -78904297, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 591298063, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 2119571137, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1396420365, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1458692104, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1786366390, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -370961728, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1708824992, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1397328138, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1642128004, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1666958880, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1273350573, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1267096745, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -484313638, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 132072758, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1801890618, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1870893521, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 1704634890, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: 722474847, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -1691174171, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}
+  - {fileID: -312191761, guid: cd5fe52b9777b344890e01edfdf03656, type: 3}

@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Imprint
   m_EditorClassIdentifier: 
-  _name: 
-  _description: 
-  _type: 0
-  _category: 0
+  _name: Imprint
+  _description: Marks the foe with a dark sigil that diminishes its intelligence.
+  _type: 10
+  _category: 2
   _effects:
-    _boosts: []
+    _boosts:
+    - Stat: 3
+      Boost: -2
     _status: 0
     _volatileStatus: 0
     _weather: 0
@@ -34,9 +36,39 @@ MonoBehaviour:
   _target: 0
   _hitRange: {x: 0, y: 0}
   _power: 0
-  _accuracy: 0
+  _accuracy: 90
   _alwaysHits: 0
-  _sP: 0
+  _sP: 20
   _priority: 0
   _sound: {fileID: 0}
-  _animationSprites: []
+  _animationSprites:
+  - {fileID: 84288190, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -487443172, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1409007663, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -432701389, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -218558928, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 467466515, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 1622261090, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -63613832, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 598215386, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1545201293, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -532711996, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -824741691, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -606342952, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -243587263, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 10591674, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 192900157, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1699539387, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 1403523464, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1008103802, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1042730639, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1984726117, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 336778210, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 1431479526, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -807462357, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 1387684097, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -507321092, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 906459316, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1795686709, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: -1561970719, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
+  - {fileID: 480145025, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
