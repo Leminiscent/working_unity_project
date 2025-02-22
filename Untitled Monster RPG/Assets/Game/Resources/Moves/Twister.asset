@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Twister
+  m_EditorClassIdentifier: 
+  _name: Twister
+  _description: Whips up a swirling vortex that strikes all foes, with a chance to
+    leave them confused.
+  _type: 9
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts: []
+    _status: 6
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 2
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 2
+  _hitRange: {x: 0, y: 0}
+  _power: 80
+  _accuracy: 90
+  _alwaysHits: 0
+  _sP: 20
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 937573013, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 2004201518, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -628596623, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1675370533, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 837128934, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1497664143, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1409196249, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -2118497769, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 262720291, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1612270296, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -255548302, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1533121033, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -974680349, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1855583989, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1792854257, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 809812467, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -2129296479, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 144813906, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -182470479, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 668359850, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -573445992, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -279955951, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -901562543, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -131769764, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1701848028, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1381191818, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1347685174, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1073353, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1028242272, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1574167494, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1486366648, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 809348397, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 2012286686, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1565979391, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -2106374581, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 827196565, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -208539800, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1502204789, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1456494138, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1373694694, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1982198353, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 103105480, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 513511084, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1015813812, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 574137021, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -131459899, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -908129515, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -817085572, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1161716049, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1104291057, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1951114244, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -1276496198, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 190521305, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1527960778, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -979571111, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1828637277, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 1252447532, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: 893563974, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -851274826, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}
+  - {fileID: -90598147, guid: b00d793def55b4e46a4fc19d49cdde08, type: 3}

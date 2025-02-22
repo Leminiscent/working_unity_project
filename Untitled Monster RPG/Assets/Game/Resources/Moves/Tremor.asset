@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Tremor
+  m_EditorClassIdentifier: 
+  _name: Tremor
+  _description: Shakes the ground violently, damaging all foes and rattling their
+    endurance.
+  _type: 8
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 2
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 20
+    _target: 2
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 2
+  _hitRange: {x: 0, y: 0}
+  _power: 70
+  _accuracy: 95
+  _alwaysHits: 0
+  _sP: 20
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 608622447, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 2144702754, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1758676804, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -751480886, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -340925919, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1897696498, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -2016135014, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -807010651, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 849759943, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1298548950, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 2012764784, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 825566606, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -432719700, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 2050918679, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -1944321616, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -1786591240, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -1370270396, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 2095962841, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1111343865, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1075666796, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1704321331, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -537604368, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1575378831, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -1460902009, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1835557502, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -925345694, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 2117224067, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 1488066993, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: -842599678, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}
+  - {fileID: 43811509, guid: 8ef725527546edb49a8cd8bd7f2cab4c, type: 3}

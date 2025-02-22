@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Blight
+  m_EditorClassIdentifier: 
+  _name: Blight
+  _description: Inflicts a withering curse that drains the target's vitality, with
+    a chance to poison and lower its strength and endurance.
+  _type: 5
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 1
+      Boost: -1
+    - Stat: 2
+      Boost: -1
+    _status: 1
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 50
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 100
+  _accuracy: 90
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 1828496562, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1544003278, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 855489484, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1076909979, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -299811801, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1499793298, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -321311225, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 963398281, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1181856819, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1024132769, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1184712246, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 637880944, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 704973409, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1026960701, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 825419959, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1074286352, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 349414595, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 605534774, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -208603594, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1287172141, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1152039709, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 2064323645, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1171981932, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1374120170, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1897227520, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1504439348, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1839589753, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1104788258, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -355284869, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 998814565, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1099192185, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 673467230, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -62791298, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1245705328, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -433795454, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -199572524, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -530349932, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -487574435, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 934124525, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 328993085, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 930739401, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1693490077, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 899941110, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1645456040, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 2047708171, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -2144354436, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1602113474, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1562529590, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1717794060, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 2020414628, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -2014816480, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 595520948, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1912591630, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1895593159, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1467689088, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -1099798361, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 254899026, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: 1224204034, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -304195100, guid: 8fde439cc08d88046b0838e30e531906, type: 3}
+  - {fileID: -41746329, guid: 8fde439cc08d88046b0838e30e531906, type: 3}

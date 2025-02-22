@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Surge
+  m_EditorClassIdentifier: 
+  _name: Surge
+  _description: Unleashes a burst of corrupt energy that damages the foe while empowering
+    the user.
+  _type: 5
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 3
+      Boost: 1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 100
+    _target: 4
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 80
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -2068779667, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1679021062, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1170497913, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 555270170, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 116857007, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1174650201, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1323554244, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1198840635, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1083093351, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1919703016, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 557031122, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 2091936463, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1196570245, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 603862452, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1668282809, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1698767352, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1576899471, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 892891928, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 2123112004, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -361027018, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1447873214, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1560337301, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1484096665, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1535216996, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1134083292, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 526037034, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1141392736, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1538239488, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1676562782, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1362719472, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -851466280, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 154964475, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 768923050, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 324023018, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1230824031, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 2022546807, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -189532178, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1496181575, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -276331379, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1815232243, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 754958845, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1543751379, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1400092326, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 523567612, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1485896729, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 636412608, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 727839436, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1723468983, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1705627801, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1870862013, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1787337639, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 671645303, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1076211647, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1319827829, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 1137215430, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -288184182, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -676232589, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: 298794316, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -1236902834, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}
+  - {fileID: -718019125, guid: fdb2f88b5a169d544b1140bc35400e02, type: 3}

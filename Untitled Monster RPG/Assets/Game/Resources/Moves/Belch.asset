@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Belch
+  m_EditorClassIdentifier: 
+  _name: Belch
+  _description: Unleashes a putrid burst of noxious gas that damages the foe and
+    may leave it poisoned.
+  _type: 5
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts: []
+    _status: 1
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 40
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 70
+  _accuracy: 90
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -948202218, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 654943950, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 879398199, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 775184186, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1248398400, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1302204906, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -165746596, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 567223325, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 2030582615, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 800860796, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 854243101, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1457487120, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -476718398, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1377202448, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 114445766, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1998597264, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1015800084, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1148333274, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 290273282, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -815097291, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1753553081, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1986135686, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -2078516813, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1598051050, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 999323947, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 859112339, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1530396573, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1356180600, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1056533626, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1164548551, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -972822232, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1383098735, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 731186765, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 181247823, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -653560391, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1154597034, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1276839204, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -2038179936, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 758250590, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -2034557819, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -303484839, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1036310547, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1287215473, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 373195244, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -612859982, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -1577776107, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 2050204816, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -2133398149, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 424021367, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -697959407, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -604000690, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -270756371, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -522937856, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -496097310, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -24443540, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 1613434823, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 915741263, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -850586271, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: 864502535, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
+  - {fileID: -363886472, guid: e25aa675e2a3732488cf2baea3624763, type: 3}

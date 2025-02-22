@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Quicksand
+  m_EditorClassIdentifier: 
+  _name: Quicksand
+  _description: Engulfs foes in shifting sands that reduce Agility and Evasion.
+  _type: 8
+  _category: 2
+  _effects:
+    _boosts:
+    - Stat: 5
+      Boost: -1
+    - Stat: 7
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects: []
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 0
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 313190238, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1104119515, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -734066296, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 643828726, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 983735760, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1232124636, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1857057549, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -2109148815, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1251618376, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1637548465, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 748281200, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1827384124, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -329387853, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 713529254, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 449553179, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1650606082, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1631581234, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1013719486, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1111984603, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 2086632743, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -447657921, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 625502796, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -6124412, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1721615404, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -723730674, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 394278479, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 137385836, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 890336501, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 12349070, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1622931008, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1925208786, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 368336427, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1468951818, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -246280477, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1064516094, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 2068558048, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -555378421, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1173242336, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -974825900, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1608920392, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -760600886, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1976579815, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1785131513, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1793319174, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 427069806, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1665044223, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 432587981, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 705820945, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 197877659, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1531681621, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1498977135, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1882297562, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1116728187, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1845291593, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 1662701089, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -1246939930, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -468369315, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: 477975439, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -452935861, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}
+  - {fileID: -852816370, guid: e546bc7874ddb944bb0c9b2ee5041d5b, type: 3}

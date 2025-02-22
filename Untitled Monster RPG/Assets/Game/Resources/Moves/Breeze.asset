@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Breeze
+  m_EditorClassIdentifier: 
+  _name: Breeze
+  _description: A gentle gust that strikes a single foe, with a chance to reduce
+    its agility.
+  _type: 9
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 5
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 0
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 60
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 15
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 2020491050, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 518457896, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -2069868098, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1501232164, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1329725432, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 2034121971, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -136669141, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 1381030666, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 1921978892, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 2003579594, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -993806138, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -855318323, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 2082847339, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -2108634815, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1325675889, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -2051590756, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 323461811, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1322249794, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 391918967, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 1741054373, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -2069200289, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -267723436, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -2090863955, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1639442082, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1500789728, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -157960002, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -103494334, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1048645000, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: -1621095834, guid: 38f97cdf84234514ab526278e2356a04, type: 3}
+  - {fileID: 1119166464, guid: 38f97cdf84234514ab526278e2356a04, type: 3}

@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Ruin
+  m_EditorClassIdentifier: 
+  _name: Ruin
+  _description: Deals devastating damage that leaves the target battered, though
+    the user suffers recoil damage.
+  _type: 5
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects: []
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 3
+    RecoilDamage: 30
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 120
+  _accuracy: 85
+  _alwaysHits: 0
+  _sP: 10
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: 2030059724, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -756766913, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -2082822719, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -2118511987, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 529772158, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1720913044, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -450186689, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1396467546, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 275701277, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1758557893, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -476503715, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1848067799, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 396400572, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1858858957, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1914069541, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1875393197, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1307759292, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1869210606, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -638615648, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1679347469, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 864357236, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 2034303260, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1646879859, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1673584409, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1744490183, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 704534367, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 117513514, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -231010526, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 850386215, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 699088457, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1021000432, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1663891822, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 431464088, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -485286141, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 697913277, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1023880606, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1665968485, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -238894931, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -566768097, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: 1153094502, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -2041561436, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -446263324, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -124723422, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -808390322, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}
+  - {fileID: -1938612696, guid: a3322346bb0cac0468dc65dbad0a0486, type: 3}

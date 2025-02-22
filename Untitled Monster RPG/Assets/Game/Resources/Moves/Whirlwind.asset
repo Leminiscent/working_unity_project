@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Whirlwind
+  m_EditorClassIdentifier: 
+  _name: Whirlwind
+  _description: Whips up a violent gust that batter all foes, with a chance to lower
+    their accuracy.
+  _type: 9
+  _category: 0
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts:
+    - Stat: 6
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 2
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 2
+  _hitRange: {x: 0, y: 0}
+  _power: 70
+  _accuracy: 95
+  _alwaysHits: 0
+  _sP: 20
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -1475998881, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1755094658, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1553029959, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1162137232, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -1369471660, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 470482989, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 493692008, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -1384960775, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -811473364, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1693047756, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1786592887, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1245750049, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -1967087798, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1326166206, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1943464966, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -56405486, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 95432687, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1039198077, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -2073284673, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1271379884, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -175054720, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -575583503, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -403261831, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 452411302, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -973419129, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: -1285295872, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1108900103, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 1043654314, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 198871110, guid: b1f8aaf545979774d98520198176703b, type: 3}
+  - {fileID: 431227017, guid: b1f8aaf545979774d98520198176703b, type: 3}

@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Delirium
+  m_EditorClassIdentifier: 
+  _name: Delirium
+  _description: Overwhelms the target with a maddening assault that saps its focus
+    and leaves it confused.
+  _type: 5
+  _category: 2
+  _effects:
+    _boosts:
+    - Stat: 3
+      Boost: -1
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts: []
+    _status: 0
+    _volatileStatus: 6
+    _weather: 0
+    _chance: 70
+    _target: 0
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 0
+  _hitRange: {x: 0, y: 0}
+  _power: 0
+  _accuracy: 100
+  _alwaysHits: 0
+  _sP: 10
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -1075797143, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1942007971, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -2046275610, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 326120000, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -737209035, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 462181801, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 2007263710, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -906574201, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1897941632, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1761547853, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -763899270, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 420867892, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1791047790, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 984344518, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 786032155, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -555337801, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1454641524, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 2006548529, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1703907608, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1627559388, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -595903665, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -544819667, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1200303267, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -596156420, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1628495521, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1239648114, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -773691597, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1781536543, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -2002205525, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1390212529, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -2051268883, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1859924803, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -955759824, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 890138997, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -541761329, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1147783119, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1356095420, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1785374783, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1975791368, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1174676061, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1219612138, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 84609646, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 844726246, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1241012411, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -829115069, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1532058992, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 951751576, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 666222257, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 259134259, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 289113000, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1150180818, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 218785368, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 1959727974, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 245002531, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -1098619619, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -703600082, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: -104303116, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 2109512709, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 619070257, guid: e9148442207249242b892c34eb03ff69, type: 3}
+  - {fileID: 755708906, guid: e9148442207249242b892c34eb03ff69, type: 3}

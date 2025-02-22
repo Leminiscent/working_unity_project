@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
+  m_Name: Chill
+  m_EditorClassIdentifier: 
+  _name: Chill
+  _description: Releases a cold blast that engulfs all foes, with a chance to freeze
+    them.
+  _type: 6
+  _category: 1
+  _effects:
+    _boosts: []
+    _status: 0
+    _volatileStatus: 0
+    _weather: 0
+  _secondaryEffects:
+  - _boosts: []
+    _status: 5
+    _volatileStatus: 0
+    _weather: 0
+    _chance: 30
+    _target: 2
+  _critBehavior: 0
+  _recoil:
+    RecoilType: 0
+    RecoilDamage: 0
+  _drainPercentage: 0
+  _oneHitKO:
+    IsOneHitKO: 0
+    LowerOddsException: 0
+    ImmunityType: 0
+  _target: 2
+  _hitRange: {x: 0, y: 0}
+  _power: 60
+  _accuracy: 90
+  _alwaysHits: 0
+  _sP: 25
+  _priority: 0
+  _sound: {fileID: 0}
+  _animationSprites:
+  - {fileID: -1924942333, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1746777547, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1944860311, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 349754562, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1119652808, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1088316328, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1087331209, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -443383023, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 670958395, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1570719323, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1544759154, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1806683538, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1112705813, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -672152625, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1544452622, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1937345621, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1853908422, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 488838115, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1873652108, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1241403701, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1483450155, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 2021511376, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1575920761, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -467981359, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1793759031, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 812121189, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1025889994, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: 1079106490, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1476839228, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
+  - {fileID: -1993880145, guid: d7027116b0ed33c47a04685589bafba4, type: 3}
