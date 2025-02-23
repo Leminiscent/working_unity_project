@@ -88,7 +88,7 @@ public class MonsterParty : MonoBehaviour
         {
             monster.CureStatus();
             monster.CureVolatileStatus();
-            monster.Heal();
+            monster.FullRestore();
             monster.ResetStatBoosts();
 
             foreach (Move mov in monster.Moves)

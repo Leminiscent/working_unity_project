@@ -262,7 +262,7 @@ public class Monster
         CalculateStats();
     }
 
-    public void Heal()
+    public void FullRestore()
     {
         Hp = MaxHp;
         OnHPChanged?.Invoke();
