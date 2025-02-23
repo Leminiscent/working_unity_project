@@ -104,15 +104,24 @@ public class RecruitmentState : State<BattleSystem>
         RecruitmentQuestion currentQuestion = _selectedQuestions[_currentQuestionIndex];
         RecruitmentAnswer selectedAnswer = currentQuestion.Answers[selectedAnswerIndex];
 
-        // Update affinity level
+        int oldAffinity = RecruitTarget.Monster.AffinityLevel;
         RecruitTarget.Monster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
+        int newAffinity = RecruitTarget.Monster.AffinityLevel;
+
+        if (newAffinity > oldAffinity)
+        {
+            StartCoroutine(RecruitTarget.PlayAffinityGainAnimation());
+        }
+        else if (newAffinity < oldAffinity)
+        {
+            StartCoroutine(RecruitTarget.PlayAffinityLossAnimation());
+        }
+
         yield return RecruitTarget.Hud.SetAffinitySmooth();
 
-        // Show reaction
         _dialogueBox.EnableDialogueText(true);
         yield return _dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
 
-        // Proceed to next question or attempt recruitment
         if (_currentQuestionIndex < _selectedQuestions.Count - 1)
         {
             _currentQuestionIndex++;
@@ -120,10 +129,10 @@ public class RecruitmentState : State<BattleSystem>
         }
         else
         {
-            // Attempt recruitment
             yield return AttemptRecruitment();
         }
     }
+
 
     private string GenerateReaction(int affinityScore)
     {

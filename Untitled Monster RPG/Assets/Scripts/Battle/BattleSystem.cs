@@ -31,7 +31,9 @@ public class BattleSystem : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip _wildBattleMusic;
     [SerializeField] private AudioClip _masterBattleMusic;
-    [SerializeField] private AudioClip _battleVictoryMusic;
+    [SerializeField] private AudioClip _battleWonMusic;
+    [SerializeField] private AudioClip _battleLostMusic;
+    [SerializeField] private AudioClip _battleFledMusic;
 
     [Header("Background")]
     [SerializeField] private Image _backgroundImage;
@@ -69,7 +71,9 @@ public class BattleSystem : MonoBehaviour
     public List<BattleUnit> PlayerUnits => _playerUnits;
     public List<BattleUnit> EnemyUnits => _enemyUnits;
     public BattleUnit SelectingUnit => PlayerUnits[_selectingUnitIndex];
-    public AudioClip BattleVictoryMusic => _battleVictoryMusic;
+    public AudioClip BattleWonMusic => _battleWonMusic;
+    public AudioClip BattleLostMusic => _battleLostMusic;
+    public AudioClip BattleFledMusic => _battleFledMusic;
 
     private void Awake()
     {

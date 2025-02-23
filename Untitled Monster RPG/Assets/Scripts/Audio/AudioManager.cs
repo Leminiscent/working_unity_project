@@ -15,6 +15,8 @@ public class AudioManager : MonoBehaviour
     private float _originalMusicVolume;
     private Dictionary<AudioID, AudioData> _sfxDictionary;
 
+    public AudioSource MusicPlayer => _musicPlayer;
+    public AudioSource SfxPlayer => _sfxPlayer;
     public static AudioManager Instance { get; private set; }
 
     private void Awake()
@@ -116,9 +118,7 @@ public enum AudioID
     MonsterObtained,
     Encounter,
     Spotted,
-    BattleWon,
-    BattleLost,
-    BattleFled
+    LevelUp
 }
 
 [System.Serializable]

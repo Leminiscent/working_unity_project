@@ -447,18 +447,6 @@ public class RunTurnState : State<BattleSystem>
 
         if (!defeatedUnit.IsPlayerUnit)
         {
-            bool battleWon = _battleSystem.EnemyUnits.All(static u => u.Monster.Hp == 0);
-
-            if (_isMasterBattle)
-            {
-                battleWon = _enemyParty.GetHealthyMonster() == null;
-            }
-
-            if (battleWon)
-            {
-                AudioManager.Instance.PlayMusic(_battleSystem.BattleVictoryMusic);
-            }
-
             int enemyLevel = defeatedUnit.Monster.Level;
             float masterBonus = _isMasterBattle ? 1.5f : 1f;
 
@@ -520,12 +508,14 @@ public class RunTurnState : State<BattleSystem>
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Monster.Exp += expGain;
                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
+                    StartCoroutine(playerUnit.PlayExpGainAnimation());
                     yield return playerUnit.Hud.SetExpSmooth();
 
                     while (playerUnit.Monster.CheckForLevelUp())
                     {
                         playerUnit.Monster.HasJustLeveledUp = true;
                         playerUnit.Hud.SetLevel();
+                        StartCoroutine(playerUnit.PlayLevelUpAnimation());
                         if (playerUnit.Monster.Level == GlobalSettings.Instance.MaxLevel)
                         {
                             playerUnit.Hud.ToggleExpBar(false);
@@ -533,7 +523,6 @@ public class RunTurnState : State<BattleSystem>
                         yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} grew to level {playerUnit.Monster.Level}!");
 
                         LearnableMove newMove = playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
-
                         if (newMove != null)
                         {
                             if (playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
@@ -593,6 +582,13 @@ public class RunTurnState : State<BattleSystem>
 
             if (nextMonster == null && activeMonsters.Count == 0)
             {
+                AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
+                yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
+                yield return _dialogueBox.TypeDialogue("You lost the battle...");
+                while (AudioManager.Instance.MusicPlayer.isPlaying)
+                {
+                    yield return null;
+                }
                 _battleSystem.BattleOver(false);
             }
             else if (nextMonster == null && activeMonsters.Count > 0)
@@ -624,6 +620,13 @@ public class RunTurnState : State<BattleSystem>
             {
                 if (activeMonsters.Count == 0)
                 {
+                    AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
+                    yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
+                    yield return _dialogueBox.TypeDialogue("You are victorious!");
+                    while (AudioManager.Instance.MusicPlayer.isPlaying)
+                    {
+                        yield return null;
+                    }
                     _battleSystem.BattleOver(true);
                 }
                 else
@@ -648,6 +651,13 @@ public class RunTurnState : State<BattleSystem>
 
                 if (nextMonster == null && activeMonsters.Count == 0)
                 {
+                    AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
+                    yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
+                    yield return _dialogueBox.TypeDialogue("You are victorious!");
+                    while (AudioManager.Instance.MusicPlayer.isPlaying)
+                    {
+                        yield return null;
+                    }
                     _battleSystem.BattleOver(true);
                 }
                 else if (nextMonster == null && activeMonsters.Count > 0)
@@ -712,7 +722,12 @@ public class RunTurnState : State<BattleSystem>
 
         if (minPlayerAgility >= maxEnemyAgility)
         {
+            AudioManager.Instance.PlayMusic(_battleSystem.BattleFledMusic, loop: false);
             yield return _dialogueBox.TypeDialogue("You got away safely!");
+            while (AudioManager.Instance.MusicPlayer.isPlaying)
+            {
+                yield return null;
+            }
             _battleSystem.BattleOver(true);
         }
         else
@@ -721,7 +736,12 @@ public class RunTurnState : State<BattleSystem>
 
             if (Random.Range(0, 256) < f)
             {
+                AudioManager.Instance.PlayMusic(_battleSystem.BattleFledMusic, loop: false);
                 yield return _dialogueBox.TypeDialogue("You got away safely!");
+                while (AudioManager.Instance.MusicPlayer.isPlaying)
+                {
+                    yield return null;
+                }
                 _battleSystem.BattleOver(true);
             }
             else

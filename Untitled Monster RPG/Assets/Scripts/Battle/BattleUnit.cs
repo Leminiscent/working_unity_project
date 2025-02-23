@@ -35,7 +35,7 @@ public class BattleUnit : MonoBehaviour
         {
             ClearData();
         }
-        
+
         Monster = monster;
         _image.sprite = Monster.Base.Sprite;
         _image.SetNativeSize();
@@ -68,18 +68,14 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator PlayEnterAnimation()
     {
         int offsetX = 15;
-
         _image.transform.localPosition = _isPlayerUnit ? new Vector3(-offsetX, _originalPos.y) : new Vector3(offsetX, _originalPos.y);
-
         yield return _image.transform.DOLocalMoveX(_originalPos.x, 1.2f).WaitForCompletion();
     }
 
     public IEnumerator PlayExitAnimation()
     {
         int offsetX = 15;
-
         _image.transform.localPosition = _originalPos;
-
         yield return _isPlayerUnit
             ? _image.transform.DOLocalMoveX(-offsetX, 1.2f).WaitForCompletion()
             : _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
@@ -88,7 +84,6 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator PlayMoveCastAnimation(MoveBase move, float frameRate = 0.0167f)
     {
         List<Sprite> castAnimSprites = move.CastAnimationSprites;
-
         if (castAnimSprites == null || castAnimSprites.Count == 0)
         {
             yield break;
@@ -96,26 +91,21 @@ public class BattleUnit : MonoBehaviour
 
         GameObject instance = Instantiate(_moveAnimationPrefab, transform);
         instance.transform.localPosition = Vector3.zero;
-
         if (instance.TryGetComponent(out MoveAnimationController controller))
         {
             controller.Initialize(castAnimSprites, frameRate);
         }
-
         yield return new WaitForSeconds((castAnimSprites.Count * frameRate) + 0.5f);
 
         Sequence sequence = DOTween.Sequence();
-
         Vector3 attackOffset = _isPlayerUnit
             ? new Vector3(0.75f, 0)
             : new Vector3(-0.75f, 0);
 
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
-
         sequence.Play();
         AudioManager.Instance.PlaySFX(AudioID.MoveCast);
-
         yield return sequence.WaitForCompletion();
     }
 
@@ -130,7 +120,6 @@ public class BattleUnit : MonoBehaviour
 
         GameObject instance = Instantiate(_moveAnimationPrefab, transform);
         instance.transform.localPosition = Vector3.zero;
-
         if (instance.TryGetComponent(out MoveAnimationController controller))
         {
             controller.Initialize(effectAnimSprites, frameRate);
@@ -142,10 +131,8 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator PlayDefeatAnimation()
     {
         Sequence sequence = DOTween.Sequence();
-
         sequence.Append(_image.transform.DOLocalMoveY(_currentPos.y - 0.5f, 0.5f));
         sequence.Join(_image.DOFade(0f, 0.5f));
-
         yield return sequence.WaitForCompletion();
     }
 
@@ -153,9 +140,7 @@ public class BattleUnit : MonoBehaviour
     {
         Monster.IsGuarding = true;
         float guardOffset = 0.1f;
-
         Sequence sequence = DOTween.Sequence();
-
         _currentColor = Color.gray;
         _currentPos = _isPlayerUnit
             ? new Vector3(_currentPos.x - guardOffset, _originalPos.y - guardOffset, _currentPos.z)
@@ -163,7 +148,6 @@ public class BattleUnit : MonoBehaviour
 
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
         sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.3f));
-
         sequence.Play();
         AudioManager.Instance.PlaySFX(AudioID.Guard);
         yield return sequence.WaitForCompletion();
@@ -172,22 +156,69 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator StopGuarding()
     {
         Monster.IsGuarding = false;
-
         Sequence sequence = DOTween.Sequence();
-
         _currentColor = _originalColor;
         _currentPos = _originalPos;
-
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
         sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.3f));
-
         yield return sequence.WaitForCompletion();
+    }
+
+    public IEnumerator PlayExpGainAnimation(float frameRate = 0.0167f)
+    {
+        List<Sprite> expGainAnimSprites = GlobalSettings.Instance.ExpGainAnimationSprites;
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(expGainAnimSprites, frameRate);
+        }
+        AudioManager.Instance.PlaySFX(AudioID.ExpGain);
+        yield return new WaitForSeconds((expGainAnimSprites.Count * frameRate) + 0.5f);
+    }
+
+    public IEnumerator PlayLevelUpAnimation(float frameRate = 0.0167f)
+    {
+        List<Sprite> levelUpAnimSprites = GlobalSettings.Instance.LevelUpAnimationSprites;
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(levelUpAnimSprites, frameRate);
+        }
+        AudioManager.Instance.PlaySFX(AudioID.LevelUp);
+        yield return new WaitForSeconds((levelUpAnimSprites.Count * frameRate) + 0.5f);
+    }
+
+    public IEnumerator PlayAffinityGainAnimation(float frameRate = 0.0167f)
+    {
+        List<Sprite> affinityGainAnimSprites = GlobalSettings.Instance.AffinityGainAnimationSprites;
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(affinityGainAnimSprites, frameRate);
+        }
+        AudioManager.Instance.PlaySFX(AudioID.AffinityGain);
+        yield return new WaitForSeconds((affinityGainAnimSprites.Count * frameRate) + 0.5f);
+    }
+
+    public IEnumerator PlayAffinityLossAnimation(float frameRate = 0.0167f)
+    {
+        List<Sprite> affinityLossAnimSprites = GlobalSettings.Instance.AffinityLossAnimationSprites;
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(affinityLossAnimSprites, frameRate);
+        }
+        AudioManager.Instance.PlaySFX(AudioID.AffinityLoss);
+        yield return new WaitForSeconds((affinityLossAnimSprites.Count * frameRate) + 0.5f);
     }
 
     public IEnumerator PlayDamageAnimation()
     {
         Sequence sequence = DOTween.Sequence();
-
         Vector3 hitOffset = _isPlayerUnit
             ? new Vector3(-0.15f, 0)
             : new Vector3(0.15f, 0);
@@ -196,7 +227,6 @@ public class BattleUnit : MonoBehaviour
         sequence.Join(_image.DOColor(Color.gray, 0.1f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
         sequence.Join(_image.DOColor(_currentColor, 0.1f));
-
         sequence.Play();
         AudioManager.Instance.PlaySFX(AudioID.Damage);
         yield return sequence.WaitForCompletion();
@@ -205,15 +235,12 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator PlayHealAnimation(float frameRate = 0.0167f)
     {
         List<Sprite> healAnimSprites = GlobalSettings.Instance.HealAnimationSprites;
-
         GameObject instance = Instantiate(_moveAnimationPrefab, transform);
         instance.transform.localPosition = Vector3.zero;
-
         if (instance.TryGetComponent(out MoveAnimationController controller))
         {
             controller.Initialize(healAnimSprites, frameRate);
         }
-
         yield return new WaitForSeconds((healAnimSprites.Count * frameRate) + 0.5f);
     }
 

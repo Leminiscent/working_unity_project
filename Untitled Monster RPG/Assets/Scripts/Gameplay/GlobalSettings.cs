@@ -17,6 +17,10 @@ public class GlobalSettings : MonoBehaviour
 
     [Header("Animations")]
     [SerializeField] private List<Sprite> _healAnimationSprites;
+    [SerializeField] private List<Sprite> _expGainAnimationSprites;
+    [SerializeField] private List<Sprite> _levelUpAnimationSprites;
+    [SerializeField] private List<Sprite> _affinityGainAnimationSprites;
+    [SerializeField] private List<Sprite> _affinityLossAnimationSprites;
 
     public Color ActiveColor => _activeColor;
     public Color InactiveColor => _inactiveColor;
@@ -27,6 +31,10 @@ public class GlobalSettings : MonoBehaviour
     public int MaxLevel => _maxLevel;
     public MoveBase BackupMove => _backupMove;
     public List<Sprite> HealAnimationSprites => _healAnimationSprites;
+    public List<Sprite> ExpGainAnimationSprites => _expGainAnimationSprites;
+    public List<Sprite> LevelUpAnimationSprites => _levelUpAnimationSprites;
+    public List<Sprite> AffinityGainAnimationSprites => _affinityGainAnimationSprites;
+    public List<Sprite> AffinityLossAnimationSprites => _affinityLossAnimationSprites;
     public static GlobalSettings Instance { get; private set; }
 
     private void Awake()
