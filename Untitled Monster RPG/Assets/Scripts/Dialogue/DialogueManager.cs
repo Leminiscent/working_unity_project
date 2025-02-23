@@ -31,11 +31,10 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator ShowDialogueText(string text, bool waitForInput = true, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
         yield return new WaitForEndOfFrame();
-        
+
         OnShowDialogue?.Invoke();
         IsShowing = true;
         _dialogueBox.SetActive(true);
-        AudioManager.Instance.PlaySFX(AudioID.UISelect);
         yield return TypeDialogue(text);
         if (waitForInput)
         {
@@ -69,7 +68,6 @@ public class DialogueManager : MonoBehaviour
         _dialogueBox.SetActive(true);
         foreach (string line in dialogue.Lines)
         {
-            AudioManager.Instance.PlaySFX(AudioID.UISelect);
             yield return TypeDialogue(line);
             yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
         }
@@ -94,6 +92,7 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in line.ToCharArray())
         {
             _dialogueText.text += letter;
+            AudioManager.Instance.PlaySFX(AudioID.TypingText);
             float delay = isTypingAccelerated ? baseDelay / accelerationFactor : baseDelay;
             float elapsed = 0f;
             while (elapsed < delay)

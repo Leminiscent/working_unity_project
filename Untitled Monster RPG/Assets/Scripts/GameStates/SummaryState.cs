@@ -50,6 +50,7 @@ public class SummaryState : State<GameController>
 
         // Initialize monster selection UI.
         _monsterSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _monsterSelectionUI.SuppressAudio = true;
         _monsterSelectionUI.SetSelectionSettings(SelectionType.List, 1);
         _monsterSelectionUI.IgnoreHorizontalInput = true;
         List<DummySelectable> monsterItems = new();
@@ -71,6 +72,7 @@ public class SummaryState : State<GameController>
 
         // Initialize page selection UI.
         _pageSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _pageSelectionUI.SuppressAudio = true;
         _pageSelectionUI.SetSelectionSettings(SelectionType.Grid, 2);
         _pageSelectionUI.IgnoreVerticalInput = true;
         List<DummySelectable> pageItems = new() { new(), new() };
@@ -110,6 +112,7 @@ public class SummaryState : State<GameController>
             {
                 _summaryScreenUI.ResetSelection();
                 _summaryScreenUI.InMoveSelection = false;
+                AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             }
             else
             {

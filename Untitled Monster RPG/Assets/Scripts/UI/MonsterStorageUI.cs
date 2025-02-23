@@ -86,10 +86,12 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         if (Input.GetButtonDown("Page Left"))
         {
             SelectedDepot = SelectedDepot > 0 ? SelectedDepot - 1 : _storage.NumberOfDepots - 1;
+            AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
         else if (Input.GetButtonDown("Page Right"))
         {
             SelectedDepot = (SelectedDepot + 1) % _storage.NumberOfDepots;
+            AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
 
         if (prevSelectedDepot != SelectedDepot || Input.GetButtonDown("Back"))

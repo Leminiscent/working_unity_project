@@ -63,6 +63,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         if (_categorySelectionUI == null)
         {
             _categorySelectionUI = gameObject.AddComponent<DummySelectionUI>();
+            _categorySelectionUI.SuppressAudio = true;
             _categorySelectionUI.IgnoreVerticalInput = true;
             _categorySelectionUI.OnIndexChanged += (index) =>
             {
