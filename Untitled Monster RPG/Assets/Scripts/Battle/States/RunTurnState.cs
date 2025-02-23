@@ -484,6 +484,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 string initialMessage = $"{defeatedUnit.Monster.Base.Name} dropped";
 
+                AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                 foreach (string loot in lootDescriptions)
                 {
                     yield return loot != lootDescriptions.First()

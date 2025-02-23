@@ -195,10 +195,21 @@ public class RecruitmentState : State<BattleSystem>
             RecruitTarget.ClearData();
             _battleSystem.EnemyUnits.Remove(RecruitTarget);
             _battleSystem.PlayerParty.AddMonster(RecruitTarget.Monster);
-            yield return new WaitForSeconds(0.5f);
+            AudioManager.Instance.PlaySFX(AudioID.MonsterObtained);
+            while (AudioManager.Instance.SfxPlayer.isPlaying)
+            {
+                yield return null;
+            }
 
             if (_battleSystem.EnemyUnits.Count == 0)
             {
+                AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
+                yield return _dialogueBox.TypeDialogue("There are no more enemies remaining!");
+                yield return _dialogueBox.TypeDialogue("You are victorious!");
+                while (AudioManager.Instance.MusicPlayer.isPlaying)
+                {
+                    yield return null;
+                }
                 _battleSystem.BattleOver(true);
             }
             else

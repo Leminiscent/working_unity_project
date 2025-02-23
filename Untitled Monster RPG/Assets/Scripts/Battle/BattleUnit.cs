@@ -104,7 +104,6 @@ public class BattleUnit : MonoBehaviour
 
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
-        sequence.Play();
         AudioManager.Instance.PlaySFX(AudioID.MoveCast);
         yield return sequence.WaitForCompletion();
     }
@@ -141,16 +140,16 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator StartGuarding()
     {
         Monster.IsGuarding = true;
-        float guardOffset = 0.1f;
+        float guardOffsetX = 0.25f;
+        float guardOffsetY = 0.025f;
         Sequence sequence = DOTween.Sequence();
         _currentColor = Color.gray;
         _currentPos = _isPlayerUnit
-            ? new Vector3(_currentPos.x - guardOffset, _originalPos.y - guardOffset, _currentPos.z)
-            : new Vector3(_currentPos.x + guardOffset, _originalPos.y - guardOffset, _currentPos.z);
+            ? new Vector3(_currentPos.x - guardOffsetX, _originalPos.y - guardOffsetY, _currentPos.z)
+            : new Vector3(_currentPos.x + guardOffsetX, _originalPos.y - guardOffsetY, _currentPos.z);
 
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
-        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.3f));
-        sequence.Play();
+        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.325f));
         AudioManager.Instance.PlaySFX(AudioID.Guard);
         yield return sequence.WaitForCompletion();
     }
@@ -162,7 +161,7 @@ public class BattleUnit : MonoBehaviour
         _currentColor = _originalColor;
         _currentPos = _originalPos;
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
-        sequence.Join(_image.transform.DOLocalMoveY(_currentPos.y, 0.3f));
+        sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.325f));
         yield return sequence.WaitForCompletion();
     }
 
@@ -229,7 +228,6 @@ public class BattleUnit : MonoBehaviour
         sequence.Join(_image.DOColor(Color.gray, 0.1f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
         sequence.Join(_image.DOColor(_currentColor, 0.1f));
-        sequence.Play();
         AudioManager.Instance.PlaySFX(AudioID.Damage);
         yield return sequence.WaitForCompletion();
     }
