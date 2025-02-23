@@ -86,16 +86,19 @@ public class TargetSelectionState : State<BattleSystem>
         if (_selectedTarget != prevSelection)
         {
             UpdateSelectionInUI();
+            AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
 
         if (Input.GetButtonDown("Action"))
         {
             SelectionMade = true;
+            AudioManager.Instance.PlaySFX(AudioID.UISelect);
             _battleSystem.StateMachine.Pop();
         }
         else if (Input.GetButtonDown("Back"))
         {
             SelectionMade = false;
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             _battleSystem.StateMachine.Pop();
         }
     }

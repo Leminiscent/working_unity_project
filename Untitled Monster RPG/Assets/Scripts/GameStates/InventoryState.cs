@@ -58,6 +58,7 @@ public class InventoryState : State<GameController>
     private void OnItemSelected(int selection)
     {
         SelectedItem = _inventoryUI.SelectedItem;
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
         if (_gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
         {
             StartCoroutine(SelectMonsterAndUseItem());
@@ -71,6 +72,7 @@ public class InventoryState : State<GameController>
     private void OnBack()
     {
         SelectedItem = null;
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         _gameController.StateMachine.Pop();
     }
 

@@ -92,7 +92,6 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in line.ToCharArray())
         {
             _dialogueText.text += letter;
-            AudioManager.Instance.PlaySFX(AudioID.TypingText);
             float delay = isTypingAccelerated ? baseDelay / accelerationFactor : baseDelay;
             float elapsed = 0f;
             while (elapsed < delay)
@@ -111,5 +110,4 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
-
 }

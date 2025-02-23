@@ -35,11 +35,13 @@ public class ChoiceBox : SelectionUI<TextSlot>
         {
             selectedIndex = index;
             choiceMade = true;
+            AudioManager.Instance.PlaySFX(AudioID.UISelect);
         }
         void onBackHandler()
         {
             selectedIndex = items.Count - 1;
             choiceMade = true;
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         }
 
         OnSelected += onSelectedHandler;

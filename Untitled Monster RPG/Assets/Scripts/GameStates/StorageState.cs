@@ -59,8 +59,17 @@ public class StorageState : State<GameController>
         }
         else
         {
-            _isMovingMonster = false;
+            if (slotIndex == _selectedSlotToMove)
+            {
+                _isMovingMonster = false;
+                _storageUI.PlaceMonsterIntoSlot(slotIndex, _selectedMonsterToMove);
+                _storageUI.SetStorageData();
+                _storageUI.SetPartyData();
+                AudioManager.Instance.PlaySFX(AudioID.UISelect);
+                return;
+            }
 
+            _isMovingMonster = false;
             int firstSlotIndex = _selectedSlotToMove;
             int secondSlotIndex = slotIndex;
             Monster secondMonster = _storageUI.TakeMonsterFromSlot(secondSlotIndex);
@@ -73,6 +82,7 @@ public class StorageState : State<GameController>
                 _party.PartyUpdated();
                 _storageUI.SetStorageData();
                 _storageUI.SetPartyData();
+                AudioManager.Instance.PlaySFX(AudioID.UISelect);
                 return;
             }
 
@@ -85,6 +95,7 @@ public class StorageState : State<GameController>
             _party.PartyUpdated();
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();
+            AudioManager.Instance.PlaySFX(AudioID.UISelect);
         }
     }
 
@@ -95,6 +106,7 @@ public class StorageState : State<GameController>
         {
             yield break;
         }
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
 
         DynamicMenuState.Instance.MenuItems = new List<string>
         {
@@ -144,10 +156,12 @@ public class StorageState : State<GameController>
             _storageUI.PlaceMonsterIntoSlot(_selectedSlotToMove, _selectedMonsterToMove);
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         }
         else
         {
             _storageUI.ResetSelection();
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             _gameController.StateMachine.Pop();
         }
     }

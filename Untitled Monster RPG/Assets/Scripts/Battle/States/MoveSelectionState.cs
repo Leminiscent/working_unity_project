@@ -75,6 +75,7 @@ public class MoveSelectionState : State<BattleSystem>
     private IEnumerator OnMoveSelectedAsync(int selection)
     {
         Move selectedMove = Moves[selection];
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
 
         if (selectedMove.Base.Target is MoveTarget.Self or MoveTarget.AllAllies or MoveTarget.AllEnemies or MoveTarget.Others)
         {
@@ -114,5 +115,6 @@ public class MoveSelectionState : State<BattleSystem>
     private void OnBack()
     {
         _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
     }
 }

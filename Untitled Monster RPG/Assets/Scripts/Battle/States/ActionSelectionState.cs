@@ -84,6 +84,7 @@ public class ActionSelectionState : State<BattleSystem>
             default:
                 break;
         }
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator SelectRecruitTarget()
@@ -168,5 +169,6 @@ public class ActionSelectionState : State<BattleSystem>
     private void OnBack()
     {
         _battleSystem.UndoBattleAction();
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
     }
 }

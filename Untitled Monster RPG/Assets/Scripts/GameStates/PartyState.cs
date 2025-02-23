@@ -58,6 +58,7 @@ public class PartyState : State<GameController>
     {
         SelectedMonster = _partyScreen.SelectedMember;
         StartCoroutine(MonsterSelectedAction(selection));
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator MonsterSelectedAction(int selectedMonsterIndex)
@@ -165,6 +166,7 @@ public class PartyState : State<GameController>
         {
             _isSwitchingPosition = false;
             _partyScreen.RestoreSelection();
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             _partyScreen.SetMessageText("Choose a monster!");
             return;
         }
@@ -185,6 +187,7 @@ public class PartyState : State<GameController>
             _partyScreen.gameObject.SetActive(false);
         }
         _partyScreen.ResetSelection();
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         _gameController.StateMachine.Pop();
     }
 }

@@ -71,6 +71,7 @@ public class ShopUI : SelectionUI<TextSlot>
     private void HandleItemSelected(int selection)
     {
         _onItemSelected?.Invoke(_availableItems[selection]);
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private void HandleBack()

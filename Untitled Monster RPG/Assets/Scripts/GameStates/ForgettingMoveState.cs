@@ -51,6 +51,7 @@ public class ForgettingMoveState : State<GameController>
     {
         _moveForgettingUI.ResetSelection();
         Selection = selection;
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
         _gameController.StateMachine.Pop();
     }
 
@@ -58,6 +59,7 @@ public class ForgettingMoveState : State<GameController>
     {
         _moveForgettingUI.ResetSelection();
         Selection = -1;
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         _gameController.StateMachine.Pop();
     }
 }

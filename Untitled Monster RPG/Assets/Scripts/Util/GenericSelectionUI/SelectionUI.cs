@@ -21,7 +21,6 @@ namespace Utils.GenericSelectionUI
 
         public bool IgnoreVerticalInput { get; set; }
         public bool IgnoreHorizontalInput { get; set; }
-        public bool SuppressAudio { get; set; }
         public int SelectedIndex => _selectedItem;
 
         public void SetSelectionSettings(SelectionType selectionType, int gridWidth)
@@ -67,18 +66,10 @@ namespace Utils.GenericSelectionUI
             if (Input.GetButtonDown("Action"))
             {
                 OnSelected?.Invoke(_selectedItem);
-                if (!SuppressAudio)
-                {
-                    AudioManager.Instance.PlaySFX(AudioID.UISelect);
-                }
             }
             if (Input.GetButtonDown("Back"))
             {
                 OnBack?.Invoke();
-                if (!SuppressAudio)
-                {
-                    AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-                }
             }
         }
 

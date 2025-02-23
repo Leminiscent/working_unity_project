@@ -67,6 +67,7 @@ public class DynamicMenuState : State<GameController>
     {
         _dynamicMenuUI.ResetSelection();
         SelectedItem = selection;
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
         _gameController.StateMachine.Pop();
     }
 
@@ -74,6 +75,7 @@ public class DynamicMenuState : State<GameController>
     {
         _dynamicMenuUI.ResetSelection();
         SelectedItem = null;
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         _gameController.StateMachine.Pop();
     }
 }

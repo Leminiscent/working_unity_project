@@ -55,6 +55,7 @@ public class MainMenuController : SelectionUI<TextSlot>
             Application.Quit();
 #endif
         }
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator ContinueSelected()

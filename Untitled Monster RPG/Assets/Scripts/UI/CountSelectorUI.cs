@@ -22,7 +22,7 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         _currentCount = 1;
         _selectionTimer = 0f;
 
-        var items = new System.Collections.Generic.List<TextSlot>();
+        System.Collections.Generic.List<TextSlot> items = new();
         if (!TryGetComponent(out TextSlot ts))
         {
             ts = gameObject.AddComponent<TextSlot>();
@@ -82,11 +82,13 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         if (Input.GetButtonDown("Action"))
         {
             _selected = true;
+            AudioManager.Instance.PlaySFX(AudioID.UISelect);
         }
         else if (Input.GetButtonDown("Back"))
         {
             _currentCount = 0;
             _selected = true;
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         }
     }
 
@@ -95,22 +97,16 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         if (Mathf.Abs(delta) == 1)
         {
             // Vertical input: wrap using modulo arithmetic.
-            _currentCount = (Mod(_currentCount - 1 + delta, _maxCount)) + 1;
+            _currentCount = Mod(_currentCount - 1 + delta, _maxCount) + 1;
         }
         else if (Mathf.Abs(delta) == 10)
         {
             // Horizontal input: if _maxCount is less than 10, jump between 1 and _maxCount;
             // if _maxCount is 10 or greater, increment/decrement by 10 and clamp.
-            if (_maxCount < 10)
-            {
-                _currentCount = delta > 0 ? _maxCount : 1;
-            }
-            else
-            {
-                _currentCount = Mathf.Clamp(_currentCount + delta, 1, _maxCount);
-            }
+            _currentCount = _maxCount < 10 ? delta > 0 ? _maxCount : 1 : Mathf.Clamp(_currentCount + delta, 1, _maxCount);
         }
         UpdateDisplay();
+        AudioManager.Instance.PlaySFX(AudioID.UIShift);
         _selectionTimer = 1f / SELECTION_SPEED;
     }
 

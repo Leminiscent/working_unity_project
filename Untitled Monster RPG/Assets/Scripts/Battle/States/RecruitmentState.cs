@@ -93,6 +93,7 @@ public class RecruitmentState : State<BattleSystem>
     private void OnAnswerSelected(int selection)
     {
         StartCoroutine(ProcessAnswer(selection));
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator ProcessAnswer(int selectedAnswerIndex)
@@ -239,11 +240,13 @@ public class RecruitmentState : State<BattleSystem>
             _yesSelected = !_yesSelected;
             _selectionTimer = 1 / SELECTION_SPEED;
             _dialogueBox.UpdateChoiceBox(_yesSelected);
+            AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
 
         if (Input.GetButtonDown("Action"))
         {
             _dialogueBox.EnableChoiceBox(false);
+            AudioManager.Instance.PlaySFX(AudioID.UISelect);
             int selection = _yesSelected ? 0 : 1;
             StartCoroutine(ProcessAcceptReject(selection));
         }
@@ -251,6 +254,7 @@ public class RecruitmentState : State<BattleSystem>
         if (Input.GetButtonDown("Back"))
         {
             _dialogueBox.EnableChoiceBox(false);
+            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             StartCoroutine(ProcessAcceptReject(1));
         }
     }

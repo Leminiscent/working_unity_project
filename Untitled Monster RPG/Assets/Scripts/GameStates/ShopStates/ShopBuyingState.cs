@@ -114,6 +114,7 @@ public class ShopBuyingState : State<GameController>
 
     private IEnumerator OnBackFromBuying()
     {
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         yield return GameController.Instance.MoveCamera(-_shopCameraOffest);
         _shopUI.Close();
         _walletUI.Close();

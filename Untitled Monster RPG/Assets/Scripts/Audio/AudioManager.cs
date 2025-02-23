@@ -99,7 +99,7 @@ public class AudioManager : MonoBehaviour
 public enum AudioID
 {
     UIShift,
-    TypingText,
+    Interact,
     UISelect,
     UIReturn,
     MoveCast,

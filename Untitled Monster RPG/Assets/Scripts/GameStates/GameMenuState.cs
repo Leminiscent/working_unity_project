@@ -78,6 +78,7 @@ public class GameMenuState : State<GameController>
             Application.Quit();
 #endif
         }
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator SaveSelected()
@@ -97,6 +98,7 @@ public class GameMenuState : State<GameController>
     private void OnBack()
     {
         _menuController.ResetSelection();
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         _gameController.StateMachine.Pop();
     }
 }
