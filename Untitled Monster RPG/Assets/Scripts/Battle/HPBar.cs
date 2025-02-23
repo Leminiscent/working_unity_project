@@ -22,11 +22,6 @@ public class HPBar : MonoBehaviour
 
         if (changeAmt != 0)
         {
-            if (!isDamaging)
-            {
-                AudioManager.Instance.PlaySFX(AudioID.Heal);
-            }
-
             while (isDamaging ? (curHp - newHp > Mathf.Epsilon) : (curHp - newHp < Mathf.Epsilon))
             {
                 curHp -= changeAmt * Time.deltaTime;

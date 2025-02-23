@@ -157,11 +157,11 @@ public class BattleSystem : MonoBehaviour
 
         for (int i = 0; i < Mathf.Min(_playerUnitCount, 3); i++)
         {
-            _playerUnits[i].Clear();
+            _playerUnits[i].ClearData();
         }
         for (int i = 0; i < _enemyUnitCount; i++)
         {
-            _enemyUnits[i].Clear();
+            _enemyUnits[i].ClearData();
         }
 
         if (_backgroundMapping.ContainsKey(_battleTrigger))
@@ -260,8 +260,8 @@ public class BattleSystem : MonoBehaviour
         BattleIsOver = true;
         PlayerParty.Monsters.ForEach(static m => m.OnBattleOver());
 
-        PlayerUnits.ForEach(static u => u.Hud.ClearData());
-        EnemyUnits.ForEach(static u => u.Hud.ClearData());
+        PlayerUnits.ForEach(static u => u.ClearData());
+        EnemyUnits.ForEach(static u => u.ClearData());
 
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
         OnBattleOver(won);

@@ -27,6 +27,8 @@ public class Monster
     public int AffinityLevel { get; set; }
     public event Action OnStatusChanged;
     public event Action OnHPChanged;
+    public event Action OnDamageTaken;
+    public event Action OnHealed;
     public int MaxHp { get; private set; }
     public int Strength => GetStat(Stat.Strength);
     public int Endurance => GetStat(Stat.Endurance);
@@ -355,12 +357,15 @@ public class Monster
     {
         Hp = Mathf.Clamp(Hp - damage, 0, MaxHp);
         OnHPChanged?.Invoke();
+        OnDamageTaken?.Invoke();
     }
 
     public void IncreaseHP(int heal)
     {
         Hp = Mathf.Clamp(Hp + heal, 0, MaxHp);
         OnHPChanged?.Invoke();
+        OnHealed?.Invoke();
+        AudioManager.Instance.PlaySFX(AudioID.Heal);
     }
 
     public void UpdateAffinityLevel(int affinity)

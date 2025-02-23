@@ -225,6 +225,11 @@ public class RunTurnState : State<BattleSystem>
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
         {
+            if (sourceUnit.Monster.Hp <= 0)
+            {
+                yield break;
+            }
+
             if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
             {
                 int hitCount = move.Base.GetHitCount();
@@ -245,7 +250,6 @@ public class RunTurnState : State<BattleSystem>
                     else
                     {
                         damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, _field.Weather);
-                        yield return targetUnit.PlayDamageAnimation();
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -336,7 +340,6 @@ public class RunTurnState : State<BattleSystem>
         {
             int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
             sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster.Base.Name);
-            yield return sourceUnit.PlayHealAnimation();
         }
 
         yield return ShowStatusChanges(sourceUnit.Monster);
@@ -595,8 +598,7 @@ public class RunTurnState : State<BattleSystem>
             else if (nextMonster == null && activeMonsters.Count > 0)
             {
                 _battleSystem.PlayerUnits.Remove(defeatedUnit);
-                defeatedUnit.Hud.ClearData();
-                defeatedUnit.Hud.gameObject.SetActive(false);
+                defeatedUnit.ClearData();
 
                 List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
                 foreach (BattleAction a in actionsToAdjust)
@@ -627,8 +629,7 @@ public class RunTurnState : State<BattleSystem>
                 else
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
-                    defeatedUnit.Hud.ClearData();
-                    defeatedUnit.Hud.gameObject.SetActive(false);
+                    defeatedUnit.ClearData();
 
                     List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
                     foreach (BattleAction a in actionsToAdjust)
@@ -652,8 +653,7 @@ public class RunTurnState : State<BattleSystem>
                 else if (nextMonster == null && activeMonsters.Count > 0)
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
-                    defeatedUnit.Hud.ClearData();
-                    defeatedUnit.Hud.gameObject.SetActive(false);
+                    defeatedUnit.ClearData();
 
                     List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
                     foreach (BattleAction a in actionsToAdjust)

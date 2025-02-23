@@ -34,6 +34,7 @@ public class BattleHUD : MonoBehaviour
         SetLevel();
         _hpBar.SetHP((float)monster.Hp / monster.MaxHp);
         SetExp();
+        ToggleAffinityBar(false);
         SetAffinity();
 
         _statusColors = new Dictionary<ConditionID, Color>()
