@@ -133,6 +133,8 @@ public class BattleUnit : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.Append(_image.transform.DOLocalMoveY(_currentPos.y - 0.5f, 0.5f));
         sequence.Join(_image.DOFade(0f, 0.5f));
+        sequence.Play();
+        AudioManager.Instance.PlaySFX(AudioID.MonsterDefeat);
         yield return sequence.WaitForCompletion();
     }
 
