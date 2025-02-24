@@ -37,7 +37,6 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
     {
         if (_state == NPCState.Idle)
         {
-            AudioManager.Instance.PlaySFX(AudioID.Interact);
             _state = NPCState.Talking;
             _character.LookTowards(initiator.position);
 

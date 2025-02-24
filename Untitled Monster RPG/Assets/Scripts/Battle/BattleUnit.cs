@@ -187,7 +187,7 @@ public class BattleUnit : MonoBehaviour
         {
             controller.Initialize(levelUpAnimSprites, frameRate);
         }
-        AudioManager.Instance.PlaySFX(AudioID.LevelUp);
+        AudioManager.Instance.PlaySFX(AudioID.LevelUp, pauseMusic: true);
         yield return new WaitForSeconds((levelUpAnimSprites.Count * frameRate) + 0.5f);
     }
 

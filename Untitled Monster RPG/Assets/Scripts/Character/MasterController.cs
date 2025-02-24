@@ -37,7 +37,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
         _character.LookTowards(initiator.position);
         if (!_battleLost)
         {
-            AudioManager.Instance.PlaySFX(AudioID.Spotted);
+            AudioManager.Instance.PlaySFX(AudioID.Spotted, pauseMusic: true);
             _character.Exclamation.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             _character.Exclamation.SetActive(false);
@@ -53,7 +53,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     public IEnumerator TriggerBattle(PlayerController player)
     {
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
-        AudioManager.Instance.PlaySFX(AudioID.Spotted);
+        AudioManager.Instance.PlaySFX(AudioID.Spotted, pauseMusic: true);
         _character.Exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         _character.Exclamation.SetActive(false);

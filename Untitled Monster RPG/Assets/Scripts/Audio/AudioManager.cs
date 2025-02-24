@@ -9,7 +9,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private List<AudioData> _sfxList;
     [SerializeField] private AudioSource _musicPlayer;
     [SerializeField] private AudioSource _sfxPlayer;
-    [SerializeField] private float _fadeDuration = 0.75f;
+    [SerializeField] private float _fadeDuration = 0.5f;
 
     private AudioClip _currentMusic;
     private float _originalMusicVolume;
@@ -37,6 +37,14 @@ public class AudioManager : MonoBehaviour
         _sfxDictionary = _sfxList.ToDictionary(static x => x.Id, static x => x);
     }
 
+    public void PlaySFX(AudioID id, bool pauseMusic = false)
+    {
+        if (_sfxDictionary.TryGetValue(id, out AudioData audioData))
+        {
+            PlaySFX(audioData.Clip, pauseMusic);
+        }
+    }
+
     public void PlaySFX(AudioClip clip, bool pauseMusic = false)
     {
         if (clip == null)
@@ -51,14 +59,6 @@ public class AudioManager : MonoBehaviour
         }
 
         _sfxPlayer.PlayOneShot(clip);
-    }
-
-    public void PlaySFX(AudioID id, bool pauseMusic = false)
-    {
-        if (_sfxDictionary.TryGetValue(id, out AudioData audioData))
-        {
-            PlaySFX(audioData.Clip, pauseMusic);
-        }
     }
 
     public void PlayMusic(AudioClip clip, bool loop = true, bool fade = false)
@@ -92,9 +92,12 @@ public class AudioManager : MonoBehaviour
     private IEnumerator UnpauseMusic(float delay)
     {
         yield return new WaitForSeconds(delay);
-        _musicPlayer.volume = 0;
-        _musicPlayer.UnPause();
-        _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+        if (!_musicPlayer.isPlaying)
+        {
+            _musicPlayer.volume = 0;
+            _musicPlayer.UnPause();
+            _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+        }
     }
 }
 

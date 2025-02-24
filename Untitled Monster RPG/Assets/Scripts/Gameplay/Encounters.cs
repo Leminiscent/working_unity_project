@@ -17,7 +17,7 @@ public class Encounters : MonoBehaviour, IPlayerTriggerable
     {
         player.Character.Animator.IsMoving = false;
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
-        AudioManager.Instance.PlaySFX(AudioID.Spotted);
+        AudioManager.Instance.PlaySFX(AudioID.Spotted, pauseMusic: true);
         player.Character.Exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         player.Character.Exclamation.SetActive(false);
