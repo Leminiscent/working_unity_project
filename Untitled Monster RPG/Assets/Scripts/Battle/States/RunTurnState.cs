@@ -459,8 +459,7 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
     {
         yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Monster.Base.Name} has been defeated!");
-        StartCoroutine(defeatedUnit.PlayDefeatAnimation());
-        yield return new WaitForSeconds(0.5f);
+        yield return defeatedUnit.PlayDefeatAnimation();
 
         if (!defeatedUnit.IsPlayerUnit)
         {
@@ -576,7 +575,7 @@ public class RunTurnState : State<BattleSystem>
                         }
                         yield return playerUnit.Hud.SetExpSmooth(true);
                     }
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(0.75f);
                 }
             }
         }
