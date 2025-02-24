@@ -397,11 +397,11 @@ public class RunTurnState : State<BattleSystem>
                 {
                     if (message.Contains("rose"))
                     {
-                        yield return unit.PlayStatusUpAnimation(stat);
+                        StartCoroutine(unit.PlayStatusUpAnimation(stat));
                     }
                     else if (message.Contains("fell"))
                     {
-                        yield return unit.PlayStatusDownAnimation(stat);
+                        StartCoroutine(unit.PlayStatusDownAnimation(stat));
                     }
                 }
             }
