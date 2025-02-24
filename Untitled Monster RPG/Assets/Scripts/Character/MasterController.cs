@@ -10,7 +10,6 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     [SerializeField] private Dialogue _postBattleDialogue;
     [SerializeField] private GameObject _exclamation;
     [SerializeField] private GameObject _los;
-    [SerializeField] private AudioClip _playerDetectedClip;
 
     private bool _battleLost = false;
     private Character _character;
@@ -39,7 +38,8 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
         _character.LookTowards(initiator.position);
         if (!_battleLost)
         {
-            AudioManager.Instance.PlayMusic(_playerDetectedClip);
+            AudioManager.Instance.PlaySFX(AudioID.Spotted);
+            yield return new WaitForSeconds(0.25f);
             yield return DialogueManager.Instance.ShowDialogue(_dialogue);
             GameController.Instance.StartMasterBattle(this);
         }
@@ -52,7 +52,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     public IEnumerator TriggerBattle(PlayerController player)
     {
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
-        AudioManager.Instance.PlayMusic(_playerDetectedClip);
+        AudioManager.Instance.PlaySFX(AudioID.Spotted);
         _exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         _exclamation.SetActive(false);
