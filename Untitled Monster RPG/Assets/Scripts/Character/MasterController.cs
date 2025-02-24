@@ -8,7 +8,6 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     [SerializeField] private Sprite _sprite;
     [SerializeField] private Dialogue _dialogue;
     [SerializeField] private Dialogue _postBattleDialogue;
-    [SerializeField] private GameObject _exclamation;
     [SerializeField] private GameObject _los;
 
     private bool _battleLost = false;
@@ -39,7 +38,9 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
         if (!_battleLost)
         {
             AudioManager.Instance.PlaySFX(AudioID.Spotted);
-            yield return new WaitForSeconds(0.25f);
+            _character.Exclamation.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            _character.Exclamation.SetActive(false);
             yield return DialogueManager.Instance.ShowDialogue(_dialogue);
             GameController.Instance.StartMasterBattle(this);
         }
@@ -53,9 +54,9 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     {
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
         AudioManager.Instance.PlaySFX(AudioID.Spotted);
-        _exclamation.SetActive(true);
+        _character.Exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
-        _exclamation.SetActive(false);
+        _character.Exclamation.SetActive(false);
 
         Vector3 diff = player.transform.position - transform.position;
         Vector3 moveVector = diff - diff.normalized;

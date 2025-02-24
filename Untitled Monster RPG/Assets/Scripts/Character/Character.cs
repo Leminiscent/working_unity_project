@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField] private GameObject _exclamation;
+
     private CharacterAnimator _animator;
 
     public float MoveSpeed;
     public bool IsMoving { get; private set; }
     public float OffestY { get; private set; } = 0.3f;
+    public GameObject Exclamation => _exclamation;
     public CharacterAnimator Animator => _animator;
     public event Action<Vector3> OnMoveStart;
 
