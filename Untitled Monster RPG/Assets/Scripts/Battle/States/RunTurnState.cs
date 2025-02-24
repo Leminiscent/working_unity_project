@@ -599,6 +599,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (nextMonster == null && activeMonsters.Count == 0)
             {
+                yield return new WaitForSeconds(0.5f);
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
                 yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
                 yield return _dialogueBox.TypeDialogue("You lost the battle...");
@@ -637,6 +638,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 if (activeMonsters.Count == 0)
                 {
+                    yield return new WaitForSeconds(0.5f);
                     AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
                     yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
                     yield return _dialogueBox.TypeDialogue("You are victorious!");
@@ -668,6 +670,7 @@ public class RunTurnState : State<BattleSystem>
 
                 if (nextMonster == null && activeMonsters.Count == 0)
                 {
+                    yield return new WaitForSeconds(0.5f);
                     AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
                     yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
                     yield return _dialogueBox.TypeDialogue("You are victorious!");
