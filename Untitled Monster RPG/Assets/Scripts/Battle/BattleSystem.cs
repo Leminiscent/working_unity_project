@@ -285,7 +285,7 @@ public class BattleSystem : MonoBehaviour
         {
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
-                if (UnityEngine.Random.value < 0.25f)
+                if (UnityEngine.Random.value < 0.2f)
                 {
                     _battleActions.Add(new BattleAction()
                     {
