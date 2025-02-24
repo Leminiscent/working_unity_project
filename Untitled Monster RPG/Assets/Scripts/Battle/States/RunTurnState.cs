@@ -92,7 +92,7 @@ public class RunTurnState : State<BattleSystem>
             foreach (BattleUnit unit in agilitySortedUnits)
             {
                 _field.Weather.OnWeather?.Invoke(unit.Monster);
-                yield return ShowStatusChanges(unit.Monster);
+                yield return ShowStatusChanges(unit);
                 yield return unit.Hud.WaitForHPUpdate();
                 if (unit.Monster.Hp <= 0)
                 {
@@ -141,7 +141,7 @@ public class RunTurnState : State<BattleSystem>
         }
 
         sourceUnit.Monster.OnEndOfTurn();
-        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit);
         yield return sourceUnit.Hud.WaitForHPUpdate();
         if (sourceUnit.Monster.Hp <= 0)
         {
@@ -205,12 +205,12 @@ public class RunTurnState : State<BattleSystem>
         bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
         if (!canRunMove)
         {
-            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield return ShowStatusChanges(sourceUnit);
             yield return sourceUnit.Hud.WaitForHPUpdate();
             yield break;
         }
 
-        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit);
 
         move.Sp--;
 
@@ -244,7 +244,7 @@ public class RunTurnState : State<BattleSystem>
                     if (move.Base.Category == MoveCategory.Status)
                     {
                         yield return typeEffectiveness > 0f
-                            ? RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target)
+                            ? RunMoveEffects(move.Base.Effects, sourceUnit, targetUnit, move.Base.Target)
                             : _dialogueBox.TypeDialogue("It has no effect!");
                     }
                     else
@@ -262,7 +262,7 @@ public class RunTurnState : State<BattleSystem>
                             int rnd = Random.Range(1, 101);
                             if (rnd <= effect.Chance)
                             {
-                                yield return RunMoveEffects(effect, sourceUnit.Monster, targetUnit.Monster, effect.Target);
+                                yield return RunMoveEffects(effect, sourceUnit, targetUnit, effect.Target);
                             }
                         }
                     }
@@ -342,33 +342,33 @@ public class RunTurnState : State<BattleSystem>
             sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster.Base.Name);
         }
 
-        yield return ShowStatusChanges(sourceUnit.Monster);
-        yield return ShowStatusChanges(targetUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit);
+        yield return ShowStatusChanges(targetUnit);
     }
 
-    private IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)
+    private IEnumerator RunMoveEffects(MoveEffects effects, BattleUnit sourceUnit, BattleUnit targetUnit, MoveTarget moveTarget)
     {
         // Stat Boosts
         if (effects.Boosts != null)
         {
             if (moveTarget == MoveTarget.Self)
             {
-                source.ApplyBoosts(effects.Boosts);
+                sourceUnit.Monster.ApplyBoosts(effects.Boosts);
             }
             else
             {
-                target.ApplyBoosts(effects.Boosts);
+                targetUnit.Monster.ApplyBoosts(effects.Boosts);
             }
         }
 
         // Status Conditions
         if (effects.Status != ConditionID.None)
         {
-            target.SetStatus(effects.Status);
+            targetUnit.Monster.SetStatus(effects.Status);
         }
         if (effects.VolatileStatus != ConditionID.None)
         {
-            target.SetVolatileStatus(effects.VolatileStatus);
+            targetUnit.Monster.SetVolatileStatus(effects.VolatileStatus);
         }
 
         // Weather
@@ -379,16 +379,33 @@ public class RunTurnState : State<BattleSystem>
             yield return _dialogueBox.TypeDialogue(_field.Weather.StartMessage);
         }
 
-        yield return ShowStatusChanges(source);
-        yield return ShowStatusChanges(target);
+        yield return ShowStatusChanges(sourceUnit);
+        yield return ShowStatusChanges(targetUnit);
     }
 
-    private IEnumerator ShowStatusChanges(Monster monster)
+    private IEnumerator ShowStatusChanges(BattleUnit unit)
     {
-        while (monster.StatusChanges.Count > 0)
+        while (unit.Monster.StatusChanges.Count > 0)
         {
-            string message = monster.StatusChanges.Dequeue();
-            yield return _dialogueBox.TypeDialogue($"{monster.Base.Name}{message}");
+            string message = unit.Monster.StatusChanges.Dequeue();
+            string trimmed = message.StartsWith("'s ") ? message[3..] : message;
+            string[] parts = trimmed.Split(' ');
+            if (parts.Length > 0)
+            {
+                string statName = parts[0];
+                if (System.Enum.TryParse(statName, out Stat stat))
+                {
+                    if (message.Contains("rose"))
+                    {
+                        yield return unit.PlayStatusUpAnimation(stat);
+                    }
+                    else if (message.Contains("fell"))
+                    {
+                        yield return unit.PlayStatusDownAnimation(stat);
+                    }
+                }
+            }
+            yield return _dialogueBox.TypeDialogue($"{unit.Monster.Base.Name}{message}");
         }
     }
 
@@ -397,11 +414,11 @@ public class RunTurnState : State<BattleSystem>
         bool canUseItem = sourceUnit.Monster.OnStartOfTurn();
         if (!canUseItem)
         {
-            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield return ShowStatusChanges(sourceUnit);
             yield return sourceUnit.Hud.WaitForHPUpdate();
             yield break;
         }
-        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return ShowStatusChanges(sourceUnit);
 
         Inventory inventory = Inventory.GetInventory();
         if (inventory.GetItemCount(item) == 0)

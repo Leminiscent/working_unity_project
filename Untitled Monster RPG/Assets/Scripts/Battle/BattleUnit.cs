@@ -191,6 +191,91 @@ public class BattleUnit : MonoBehaviour
         yield return new WaitForSeconds((levelUpAnimSprites.Count * frameRate) + 0.5f);
     }
 
+    public IEnumerator PlayStatusUpAnimation(Stat stat, float frameRate = 0.0167f)
+    {
+        List<Sprite> sprites;
+        switch (stat)
+        {
+            case Stat.Strength:
+                sprites = GlobalSettings.Instance.StrengthGainAnimationSprites;
+                break;
+            case Stat.Endurance:
+                sprites = GlobalSettings.Instance.EnduranceGainAnimationSprites;
+                break;
+            case Stat.Intelligence:
+                sprites = GlobalSettings.Instance.IntelligenceGainAnimationSprites;
+                break;
+            case Stat.Fortitude:
+                sprites = GlobalSettings.Instance.FortitudeGainAnimationSprites;
+                break;
+            case Stat.Agility:
+                sprites = GlobalSettings.Instance.AgilityGainAnimationSprites;
+                break;
+            case Stat.Accuracy:
+                sprites = GlobalSettings.Instance.AffinityGainAnimationSprites; // TODO: Add accuracy gain animation sprites
+                break;
+            case Stat.Evasion:
+                sprites = GlobalSettings.Instance.AffinityGainAnimationSprites; // TODO: Add evasion gain animation sprites
+                break;
+            case Stat.HP:
+                yield break;
+            default:
+                yield break;
+        }
+
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(sprites, frameRate);
+        }
+        AudioManager.Instance.PlaySFX(AudioID.StatusUp);
+        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
+    }
+
+    public IEnumerator PlayStatusDownAnimation(Stat stat, float frameRate = 0.0167f)
+    {
+        List<Sprite> sprites;
+        switch (stat)
+        {
+            case Stat.Strength:
+                sprites = GlobalSettings.Instance.StrengthLossAnimationSprites;
+                break;
+            case Stat.Endurance:
+                sprites = GlobalSettings.Instance.EnduranceLossAnimationSprites;
+                break;
+            case Stat.Intelligence:
+                sprites = GlobalSettings.Instance.IntelligenceLossAnimationSprites;
+                break;
+            case Stat.Fortitude:
+                sprites = GlobalSettings.Instance.FortitudeLossAnimationSprites;
+                break;
+            case Stat.Agility:
+                sprites = GlobalSettings.Instance.AgilityLossAnimationSprites;
+                break;
+            case Stat.Accuracy:
+                sprites = GlobalSettings.Instance.AffinityLossAnimationSprites; // TODO: Add accuracy loss animation sprites
+                break;
+            case Stat.Evasion:
+                sprites = GlobalSettings.Instance.AffinityLossAnimationSprites; // TODO: Add evasion loss animation sprites
+                break;
+            case Stat.HP:
+                yield break;
+            default:
+                yield break;
+        }
+
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(sprites, frameRate);
+        }
+        AudioManager.Instance.PlaySFX(AudioID.StatusDown);
+        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
+    }
+
+
     public IEnumerator PlayAffinityGainAnimation(float frameRate = 0.0167f)
     {
         List<Sprite> affinityGainAnimSprites = GlobalSettings.Instance.AffinityGainAnimationSprites;
