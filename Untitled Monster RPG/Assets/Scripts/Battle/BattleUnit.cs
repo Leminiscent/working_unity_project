@@ -68,7 +68,9 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator PlayEnterAnimation()
     {
         int offsetX = 15;
-        _image.transform.localPosition = _isPlayerUnit ? new Vector3(-offsetX, _originalPos.y) : new Vector3(offsetX, _originalPos.y);
+        _image.transform.localPosition = _isPlayerUnit
+            ? new Vector3(-offsetX, _originalPos.y)
+            : new Vector3(offsetX, _originalPos.y);
         yield return _image.transform.DOLocalMoveX(_originalPos.x, 1.2f).WaitForCompletion();
     }
 
@@ -81,50 +83,146 @@ public class BattleUnit : MonoBehaviour
             : _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
     }
 
-    public IEnumerator PlayMoveCastAnimation(MoveBase move, float frameRate = 0.0167f)
+    private IEnumerator PlayAnimationCoroutine(List<Sprite> sprites, AudioID? sfx = null, bool pauseMusic = false)
     {
-        List<Sprite> castAnimSprites = move.CastAnimationSprites;
-        if (castAnimSprites == null || castAnimSprites.Count == 0)
+        if (sprites == null || sprites.Count == 0)
         {
             yield break;
         }
-
         GameObject instance = Instantiate(_moveAnimationPrefab, transform);
         instance.transform.localPosition = Vector3.zero;
+        float frameRate = 0.0167f;
         if (instance.TryGetComponent(out MoveAnimationController controller))
         {
-            controller.Initialize(castAnimSprites, frameRate);
+            controller.Initialize(sprites, frameRate);
         }
-        yield return new WaitForSeconds((castAnimSprites.Count * frameRate) + 0.5f);
+        if (sfx.HasValue)
+        {
+            AudioManager.Instance.PlaySFX(sfx.Value, pauseMusic);
+        }
+        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
+    }
 
+    public IEnumerator PlayMoveCastAnimation(MoveBase move)
+    {
+        List<Sprite> castAnimSprites = move.CastAnimationSprites;
+        yield return PlayAnimationCoroutine(castAnimSprites);
         Sequence sequence = DOTween.Sequence();
-        Vector3 attackOffset = _isPlayerUnit
-            ? new Vector3(0.75f, 0)
-            : new Vector3(-0.75f, 0);
-
+        Vector3 attackOffset = _isPlayerUnit ? new Vector3(0.75f, 0) : new Vector3(-0.75f, 0);
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
         sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
         AudioManager.Instance.PlaySFX(AudioID.MoveCast);
         yield return sequence.WaitForCompletion();
     }
 
-    public IEnumerator PlayMoveEffectAnimation(MoveBase move, float frameRate = 0.0167f)
+    public IEnumerator PlayMoveEffectAnimation(MoveBase move)
     {
-        List<Sprite> effectAnimSprites = move.EffectAnimationSprites;
+        yield return PlayAnimationCoroutine(move.EffectAnimationSprites);
+    }
 
-        if (effectAnimSprites == null || effectAnimSprites.Count == 0)
+    public IEnumerator PlayExpGainAnimation()
+    {
+        yield return PlayAnimationCoroutine(GlobalSettings.Instance.ExpGainAnimationSprites, AudioID.ExpGain);
+    }
+
+    public IEnumerator PlayLevelUpAnimation()
+    {
+        yield return PlayAnimationCoroutine(GlobalSettings.Instance.LevelUpAnimationSprites, AudioID.LevelUp, true);
+    }
+
+    public IEnumerator PlayStatusUpAnimation(Stat stat)
+    {
+        List<Sprite> sprites;
+        switch (stat)
         {
-            yield break;
+            case Stat.Strength:
+                sprites = GlobalSettings.Instance.StrengthGainAnimationSprites;
+                break;
+            case Stat.Endurance:
+                sprites = GlobalSettings.Instance.EnduranceGainAnimationSprites;
+                break;
+            case Stat.Intelligence:
+                sprites = GlobalSettings.Instance.IntelligenceGainAnimationSprites;
+                break;
+            case Stat.Fortitude:
+                sprites = GlobalSettings.Instance.FortitudeGainAnimationSprites;
+                break;
+            case Stat.Agility:
+                sprites = GlobalSettings.Instance.AgilityGainAnimationSprites;
+                break;
+            case Stat.Accuracy:
+                sprites = GlobalSettings.Instance.AffinityGainAnimationSprites;
+                break;
+            case Stat.Evasion:
+                sprites = GlobalSettings.Instance.AffinityGainAnimationSprites;
+                break;
+            case Stat.HP:
+                yield break;
+            default:
+                yield break;
         }
+        yield return PlayAnimationCoroutine(sprites, AudioID.StatusUp);
+    }
 
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
+    public IEnumerator PlayStatusDownAnimation(Stat stat)
+    {
+        List<Sprite> sprites;
+        switch (stat)
         {
-            controller.Initialize(effectAnimSprites, frameRate);
+            case Stat.Strength:
+                sprites = GlobalSettings.Instance.StrengthLossAnimationSprites;
+                break;
+            case Stat.Endurance:
+                sprites = GlobalSettings.Instance.EnduranceLossAnimationSprites;
+                break;
+            case Stat.Intelligence:
+                sprites = GlobalSettings.Instance.IntelligenceLossAnimationSprites;
+                break;
+            case Stat.Fortitude:
+                sprites = GlobalSettings.Instance.FortitudeLossAnimationSprites;
+                break;
+            case Stat.Agility:
+                sprites = GlobalSettings.Instance.AgilityLossAnimationSprites;
+                break;
+            case Stat.Accuracy:
+                sprites = GlobalSettings.Instance.AffinityLossAnimationSprites;
+                break;
+            case Stat.Evasion:
+                sprites = GlobalSettings.Instance.AffinityLossAnimationSprites;
+                break;
+            case Stat.HP:
+                yield break;
+            default:
+                yield break;
         }
+        yield return PlayAnimationCoroutine(sprites, AudioID.StatusDown);
+    }
 
-        yield return new WaitForSeconds((effectAnimSprites.Count * frameRate) + 0.5f);
+    public IEnumerator PlayAffinityGainAnimation()
+    {
+        yield return PlayAnimationCoroutine(GlobalSettings.Instance.AffinityGainAnimationSprites, AudioID.AffinityGain);
+    }
+
+    public IEnumerator PlayAffinityLossAnimation()
+    {
+        yield return PlayAnimationCoroutine(GlobalSettings.Instance.AffinityLossAnimationSprites, AudioID.AffinityLoss);
+    }
+
+    public IEnumerator PlayDamageAnimation()
+    {
+        Sequence sequence = DOTween.Sequence();
+        Vector3 hitOffset = _isPlayerUnit ? new Vector3(-0.15f, 0) : new Vector3(0.15f, 0);
+        sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, 0.3f));
+        sequence.Join(_image.DOColor(Color.gray, 0.1f));
+        sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
+        sequence.Join(_image.DOColor(_currentColor, 0.1f));
+        AudioManager.Instance.PlaySFX(AudioID.Damage);
+        yield return sequence.WaitForCompletion();
+    }
+
+    public IEnumerator PlayHealAnimation()
+    {
+        yield return PlayAnimationCoroutine(GlobalSettings.Instance.HealAnimationSprites);
     }
 
     public IEnumerator PlayDefeatAnimation()
@@ -146,7 +244,6 @@ public class BattleUnit : MonoBehaviour
         _currentPos = _isPlayerUnit
             ? new Vector3(_currentPos.x - guardOffsetX, _originalPos.y - guardOffsetY, _currentPos.z)
             : new Vector3(_currentPos.x + guardOffsetX, _originalPos.y - guardOffsetY, _currentPos.z);
-
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
         sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.325f));
         AudioManager.Instance.PlaySFX(AudioID.Guard);
@@ -162,170 +259,6 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
         sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.325f));
         yield return sequence.WaitForCompletion();
-    }
-
-    public IEnumerator PlayExpGainAnimation(float frameRate = 0.0167f)
-    {
-        List<Sprite> expGainAnimSprites = GlobalSettings.Instance.ExpGainAnimationSprites;
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(expGainAnimSprites, frameRate);
-        }
-        AudioManager.Instance.PlaySFX(AudioID.ExpGain);
-        yield return new WaitForSeconds((expGainAnimSprites.Count * frameRate) + 0.5f);
-    }
-
-    public IEnumerator PlayLevelUpAnimation(float frameRate = 0.0167f)
-    {
-        List<Sprite> levelUpAnimSprites = GlobalSettings.Instance.LevelUpAnimationSprites;
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(levelUpAnimSprites, frameRate);
-        }
-        AudioManager.Instance.PlaySFX(AudioID.LevelUp, pauseMusic: true);
-        yield return new WaitForSeconds((levelUpAnimSprites.Count * frameRate) + 0.5f);
-    }
-
-    public IEnumerator PlayStatusUpAnimation(Stat stat, float frameRate = 0.0167f)
-    {
-        List<Sprite> sprites;
-        switch (stat)
-        {
-            case Stat.Strength:
-                sprites = GlobalSettings.Instance.StrengthGainAnimationSprites;
-                break;
-            case Stat.Endurance:
-                sprites = GlobalSettings.Instance.EnduranceGainAnimationSprites;
-                break;
-            case Stat.Intelligence:
-                sprites = GlobalSettings.Instance.IntelligenceGainAnimationSprites;
-                break;
-            case Stat.Fortitude:
-                sprites = GlobalSettings.Instance.FortitudeGainAnimationSprites;
-                break;
-            case Stat.Agility:
-                sprites = GlobalSettings.Instance.AgilityGainAnimationSprites;
-                break;
-            case Stat.Accuracy:
-                sprites = GlobalSettings.Instance.AffinityGainAnimationSprites; // TODO: Add accuracy gain animation sprites
-                break;
-            case Stat.Evasion:
-                sprites = GlobalSettings.Instance.AffinityGainAnimationSprites; // TODO: Add evasion gain animation sprites
-                break;
-            case Stat.HP:
-                yield break;
-            default:
-                yield break;
-        }
-
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(sprites, frameRate);
-        }
-        AudioManager.Instance.PlaySFX(AudioID.StatusUp);
-        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
-    }
-
-    public IEnumerator PlayStatusDownAnimation(Stat stat, float frameRate = 0.0167f)
-    {
-        List<Sprite> sprites;
-        switch (stat)
-        {
-            case Stat.Strength:
-                sprites = GlobalSettings.Instance.StrengthLossAnimationSprites;
-                break;
-            case Stat.Endurance:
-                sprites = GlobalSettings.Instance.EnduranceLossAnimationSprites;
-                break;
-            case Stat.Intelligence:
-                sprites = GlobalSettings.Instance.IntelligenceLossAnimationSprites;
-                break;
-            case Stat.Fortitude:
-                sprites = GlobalSettings.Instance.FortitudeLossAnimationSprites;
-                break;
-            case Stat.Agility:
-                sprites = GlobalSettings.Instance.AgilityLossAnimationSprites;
-                break;
-            case Stat.Accuracy:
-                sprites = GlobalSettings.Instance.AffinityLossAnimationSprites; // TODO: Add accuracy loss animation sprites
-                break;
-            case Stat.Evasion:
-                sprites = GlobalSettings.Instance.AffinityLossAnimationSprites; // TODO: Add evasion loss animation sprites
-                break;
-            case Stat.HP:
-                yield break;
-            default:
-                yield break;
-        }
-
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(sprites, frameRate);
-        }
-        AudioManager.Instance.PlaySFX(AudioID.StatusDown);
-        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
-    }
-
-
-    public IEnumerator PlayAffinityGainAnimation(float frameRate = 0.0167f)
-    {
-        List<Sprite> affinityGainAnimSprites = GlobalSettings.Instance.AffinityGainAnimationSprites;
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(affinityGainAnimSprites, frameRate);
-        }
-        AudioManager.Instance.PlaySFX(AudioID.AffinityGain);
-        yield return new WaitForSeconds((affinityGainAnimSprites.Count * frameRate) + 0.5f);
-    }
-
-    public IEnumerator PlayAffinityLossAnimation(float frameRate = 0.0167f)
-    {
-        List<Sprite> affinityLossAnimSprites = GlobalSettings.Instance.AffinityLossAnimationSprites;
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(affinityLossAnimSprites, frameRate);
-        }
-        AudioManager.Instance.PlaySFX(AudioID.AffinityLoss);
-        yield return new WaitForSeconds((affinityLossAnimSprites.Count * frameRate) + 0.5f);
-    }
-
-    public IEnumerator PlayDamageAnimation()
-    {
-        Sequence sequence = DOTween.Sequence();
-        Vector3 hitOffset = _isPlayerUnit
-            ? new Vector3(-0.15f, 0)
-            : new Vector3(0.15f, 0);
-
-        sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, 0.3f));
-        sequence.Join(_image.DOColor(Color.gray, 0.1f));
-        sequence.Append(_image.transform.DOLocalMove(_currentPos, 0.3f));
-        sequence.Join(_image.DOColor(_currentColor, 0.1f));
-        AudioManager.Instance.PlaySFX(AudioID.Damage);
-        yield return sequence.WaitForCompletion();
-    }
-
-    public IEnumerator PlayHealAnimation(float frameRate = 0.0167f)
-    {
-        List<Sprite> healAnimSprites = GlobalSettings.Instance.HealAnimationSprites;
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(healAnimSprites, frameRate);
-        }
-        yield return new WaitForSeconds((healAnimSprites.Count * frameRate) + 0.5f);
     }
 
     private void HandleDamageTaken()
