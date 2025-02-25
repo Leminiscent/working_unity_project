@@ -65,7 +65,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (action.ActionType == BattleActionType.Guard)
             {
-                yield return action.SourceUnit.StartGuarding();
+                StartCoroutine(action.SourceUnit.StartGuarding());
                 yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Monster.Base.Name} has begun guarding!");
             }
             else if (action.ActionType == BattleActionType.SwitchMonster)
@@ -458,8 +458,8 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
     {
+        StartCoroutine(defeatedUnit.PlayDefeatAnimation());
         yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Monster.Base.Name} has been defeated!");
-        yield return defeatedUnit.PlayDefeatAnimation();
 
         if (!defeatedUnit.IsPlayerUnit)
         {
