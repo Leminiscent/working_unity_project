@@ -31,6 +31,8 @@ public class GlobalSettings : MonoBehaviour
     [SerializeField] private List<Sprite> _fortitudeLossAnimationSprites;
     [SerializeField] private List<Sprite> _agilityGainAnimationSprites;
     [SerializeField] private List<Sprite> _agilityLossAnimationSprites;
+    [SerializeField] private List<Sprite> _setStatusConditionAnimationSprites;
+    [SerializeField] private List<Sprite> _cureStatusConditionAnimationSprites;
 
     public Color ActiveColor => _activeColor;
     public Color InactiveColor => _inactiveColor;
@@ -57,6 +59,8 @@ public class GlobalSettings : MonoBehaviour
     public List<Sprite> FortitudeLossAnimationSprites => _fortitudeLossAnimationSprites;
     public List<Sprite> AgilityGainAnimationSprites => _agilityGainAnimationSprites;
     public List<Sprite> AgilityLossAnimationSprites => _agilityLossAnimationSprites;
+    public List<Sprite> SetStatusConditionAnimationSprites => _setStatusConditionAnimationSprites;
+    public List<Sprite> CureStatusConditionAnimationSprites => _cureStatusConditionAnimationSprites;
 
     public static GlobalSettings Instance { get; private set; }
 

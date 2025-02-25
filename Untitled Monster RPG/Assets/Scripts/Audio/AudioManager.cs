@@ -104,7 +104,7 @@ public class AudioManager : MonoBehaviour
 public enum AudioID
 {
     UIShift,
-    Interact,
+    CureStatus,
     UISelect,
     UIReturn,
     MoveCast,
@@ -119,7 +119,7 @@ public enum AudioID
     ExpGain,
     ItemObtained,
     MonsterObtained,
-    Encounter,
+    SetStatus,
     Spotted,
     LevelUp
 }
