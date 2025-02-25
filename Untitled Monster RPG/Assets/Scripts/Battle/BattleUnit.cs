@@ -29,6 +29,36 @@ public class BattleUnit : MonoBehaviour
         _currentColor = _originalColor;
     }
 
+    private IEnumerator PlayAnimation(List<Sprite> sprites, AudioID? sfx = null, bool pauseMusic = false)
+    {
+        if (sprites == null || sprites.Count == 0)
+        {
+            yield break;
+        }
+        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        float frameRate = 0.0167f;
+        if (instance.TryGetComponent(out MoveAnimationController controller))
+        {
+            controller.Initialize(sprites, frameRate);
+        }
+        if (sfx.HasValue)
+        {
+            AudioManager.Instance.PlaySFX(sfx.Value, pauseMusic);
+        }
+        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
+    }
+
+    private void HandleDamageTaken()
+    {
+        StartCoroutine(PlayDamageAnimation());
+    }
+
+    private void HandleHealed()
+    {
+        StartCoroutine(PlayHealAnimation());
+    }
+
     public void Setup(Monster monster)
     {
         if (Monster != null)
@@ -83,30 +113,10 @@ public class BattleUnit : MonoBehaviour
             : _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
     }
 
-    private IEnumerator PlayAnimationCoroutine(List<Sprite> sprites, AudioID? sfx = null, bool pauseMusic = false)
-    {
-        if (sprites == null || sprites.Count == 0)
-        {
-            yield break;
-        }
-        GameObject instance = Instantiate(_moveAnimationPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
-        float frameRate = 0.0167f;
-        if (instance.TryGetComponent(out MoveAnimationController controller))
-        {
-            controller.Initialize(sprites, frameRate);
-        }
-        if (sfx.HasValue)
-        {
-            AudioManager.Instance.PlaySFX(sfx.Value, pauseMusic);
-        }
-        yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
-    }
-
     public IEnumerator PlayMoveCastAnimation(MoveBase move)
     {
         List<Sprite> castAnimSprites = move.CastAnimationSprites;
-        yield return PlayAnimationCoroutine(castAnimSprites);
+        yield return PlayAnimation(castAnimSprites);
         Sequence sequence = DOTween.Sequence();
         Vector3 attackOffset = _isPlayerUnit ? new Vector3(0.75f, 0) : new Vector3(-0.75f, 0);
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));
@@ -117,17 +127,17 @@ public class BattleUnit : MonoBehaviour
 
     public IEnumerator PlayMoveEffectAnimation(MoveBase move)
     {
-        yield return PlayAnimationCoroutine(move.EffectAnimationSprites);
+        yield return PlayAnimation(move.EffectAnimationSprites);
     }
 
     public IEnumerator PlayExpGainAnimation()
     {
-        yield return PlayAnimationCoroutine(GlobalSettings.Instance.ExpGainAnimationSprites, AudioID.ExpGain);
+        yield return PlayAnimation(GlobalSettings.Instance.ExpGainAnimationSprites, AudioID.ExpGain);
     }
 
     public IEnumerator PlayLevelUpAnimation()
     {
-        yield return PlayAnimationCoroutine(GlobalSettings.Instance.LevelUpAnimationSprites, AudioID.LevelUp, true);
+        yield return PlayAnimation(GlobalSettings.Instance.LevelUpAnimationSprites, AudioID.LevelUp, true);
     }
 
     public IEnumerator PlayStatusUpAnimation(Stat stat)
@@ -161,7 +171,7 @@ public class BattleUnit : MonoBehaviour
             default:
                 yield break;
         }
-        yield return PlayAnimationCoroutine(sprites, AudioID.StatusUp);
+        yield return PlayAnimation(sprites, AudioID.StatusUp);
     }
 
     public IEnumerator PlayStatusDownAnimation(Stat stat)
@@ -195,17 +205,17 @@ public class BattleUnit : MonoBehaviour
             default:
                 yield break;
         }
-        yield return PlayAnimationCoroutine(sprites, AudioID.StatusDown);
+        yield return PlayAnimation(sprites, AudioID.StatusDown);
     }
 
     public IEnumerator PlayAffinityGainAnimation()
     {
-        yield return PlayAnimationCoroutine(GlobalSettings.Instance.AffinityGainAnimationSprites, AudioID.AffinityGain);
+        yield return PlayAnimation(GlobalSettings.Instance.AffinityGainAnimationSprites, AudioID.AffinityGain);
     }
 
     public IEnumerator PlayAffinityLossAnimation()
     {
-        yield return PlayAnimationCoroutine(GlobalSettings.Instance.AffinityLossAnimationSprites, AudioID.AffinityLoss);
+        yield return PlayAnimation(GlobalSettings.Instance.AffinityLossAnimationSprites, AudioID.AffinityLoss);
     }
 
     public IEnumerator PlayDamageAnimation()
@@ -222,7 +232,7 @@ public class BattleUnit : MonoBehaviour
 
     public IEnumerator PlayHealAnimation()
     {
-        yield return PlayAnimationCoroutine(GlobalSettings.Instance.HealAnimationSprites);
+        yield return PlayAnimation(GlobalSettings.Instance.HealAnimationSprites);
     }
 
     public IEnumerator PlayDefeatAnimation()
@@ -259,15 +269,5 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(_image.DOColor(_currentColor, 0.1f));
         sequence.Join(_image.transform.DOLocalMove(_currentPos, 0.325f));
         yield return sequence.WaitForCompletion();
-    }
-
-    private void HandleDamageTaken()
-    {
-        StartCoroutine(PlayDamageAnimation());
-    }
-
-    private void HandleHealed()
-    {
-        StartCoroutine(PlayHealAnimation());
     }
 }
