@@ -266,9 +266,14 @@ public class RunTurnState : State<BattleSystem>
                             }
                         }
                     }
-                    yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
+                    if (move.Base.Category != MoveCategory.Status)
+                    {
+                        yield return ShowEffectiveness(typeEffectiveness);
+                    }
 
+                    yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
                     hit = i;
+
                     if (targetUnit.Monster.Hp <= 0 || sourceUnit.Monster.Hp <= 0)
                     {
                         break;
@@ -278,11 +283,6 @@ public class RunTurnState : State<BattleSystem>
                 if (hit > 1)
                 {
                     yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
-                }
-
-                if (move.Base.Category != MoveCategory.Status)
-                {
-                    yield return ShowEffectiveness(typeEffectiveness);
                 }
 
                 if (targetUnit.Monster.Hp <= 0)
