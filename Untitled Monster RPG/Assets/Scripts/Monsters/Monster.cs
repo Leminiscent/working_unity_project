@@ -26,6 +26,7 @@ public class Monster
     public Queue<string> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
     public event Action OnStatusChanged;
+    public event Action OnStatusCured;
     public event Action OnHPChanged;
     public event Action OnDamageTaken;
     public event Action OnHealed;
@@ -384,38 +385,41 @@ public class Monster
 
     public void SetStatus(ConditionID conditionId)
     {
-        if (Status != null)
-        {
-            return;
-        }
-
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Status.StartMessage}");
         OnStatusChanged?.Invoke();
     }
 
-    public void CureStatus()
-    {
-        Status = null;
-        OnStatusChanged?.Invoke();
-    }
-
     public void SetVolatileStatus(ConditionID conditionId)
     {
-        if (VolatileStatus != null)
-        {
-            return;
-        }
-
         VolatileStatus = ConditionsDB.Conditions[conditionId];
         VolatileStatus?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{VolatileStatus.StartMessage}");
     }
 
+    public void CureStatus()
+    {
+        Status = null;
+        OnStatusChanged?.Invoke();
+        OnStatusCured?.Invoke();
+        AudioManager.Instance.PlaySFX(AudioID.CureStatus);
+    }
+
     public void CureVolatileStatus()
     {
         VolatileStatus = null;
+        OnStatusCured?.Invoke();
+        AudioManager.Instance.PlaySFX(AudioID.CureStatus);
+    }
+
+    public void CureAllStatus()
+    {
+        Status = null;
+        VolatileStatus = null;
+        OnStatusChanged?.Invoke();
+        OnStatusCured?.Invoke();
+        AudioManager.Instance.PlaySFX(AudioID.CureStatus);
     }
 
     public Move GetRandomMove()

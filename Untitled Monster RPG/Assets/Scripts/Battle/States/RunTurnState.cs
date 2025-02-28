@@ -364,11 +364,25 @@ public class RunTurnState : State<BattleSystem>
         // Status Conditions
         if (effects.Status != ConditionID.None)
         {
-            targetUnit.Monster.SetStatus(effects.Status);
+            if (targetUnit.Monster.Status != null)
+            {
+                yield return _dialogueBox.TypeDialogue("It has no effect!");
+            }
+            else
+            {
+                targetUnit.Monster.SetStatus(effects.Status);
+            }
         }
         if (effects.VolatileStatus != ConditionID.None)
         {
-            targetUnit.Monster.SetVolatileStatus(effects.VolatileStatus);
+            if (targetUnit.Monster.VolatileStatus != null)
+            {
+                yield return _dialogueBox.TypeDialogue("It has no effect!");
+            }
+            else
+            {
+                targetUnit.Monster.SetVolatileStatus(effects.VolatileStatus);
+            }
         }
 
         // Weather
@@ -388,20 +402,27 @@ public class RunTurnState : State<BattleSystem>
         while (unit.Monster.StatusChanges.Count > 0)
         {
             string message = unit.Monster.StatusChanges.Dequeue();
-            string trimmed = message.StartsWith("'s ") ? message[3..] : message;
+            string trimmed = message.StartsWith("'s ") ? message[3..] : message.Trim();
             string[] parts = trimmed.Split(' ');
             if (parts.Length > 0)
             {
-                string statName = parts[0];
-                if (System.Enum.TryParse(statName, out Stat stat))
+                if (parts[0] == "has")
                 {
-                    if (message.Contains("rose"))
+                    StartCoroutine(unit.PlayStatusSetAnimation());
+                }
+                else
+                {
+                    string statName = parts[0];
+                    if (System.Enum.TryParse(statName, out Stat stat))
                     {
-                        StartCoroutine(unit.PlayStatusUpAnimation(stat));
-                    }
-                    else if (message.Contains("fell"))
-                    {
-                        StartCoroutine(unit.PlayStatusDownAnimation(stat));
+                        if (message.Contains("rose"))
+                        {
+                            StartCoroutine(unit.PlayStatGainAnimation(stat));
+                        }
+                        else if (message.Contains("fell"))
+                        {
+                            StartCoroutine(unit.PlayStatLossAnimation(stat));
+                        }
                     }
                 }
             }

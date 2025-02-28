@@ -49,6 +49,11 @@ public class BattleUnit : MonoBehaviour
         yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
     }
 
+    private void HandleStatusCured()
+    {
+        StartCoroutine(PlayStatusCureAnimation());
+    }
+
     private void HandleDamageTaken()
     {
         StartCoroutine(PlayDamageAnimation());
@@ -74,6 +79,7 @@ public class BattleUnit : MonoBehaviour
         _image.color = _originalColor;
         _currentColor = _originalColor;
         _currentPos = _originalPos;
+        Monster.OnStatusCured += HandleStatusCured;
         Monster.OnDamageTaken += HandleDamageTaken;
         Monster.OnHealed += HandleHealed;
         StartCoroutine(PlayEnterAnimation());
@@ -83,6 +89,7 @@ public class BattleUnit : MonoBehaviour
     {
         if (Monster != null)
         {
+            Monster.OnStatusCured -= HandleStatusCured;
             Monster.OnDamageTaken -= HandleDamageTaken;
             Monster.OnHealed -= HandleHealed;
             _hud.ClearData();
@@ -140,7 +147,7 @@ public class BattleUnit : MonoBehaviour
         yield return PlayAnimation(GlobalSettings.Instance.LevelUpAnimationSprites, AudioID.LevelUp, true);
     }
 
-    public IEnumerator PlayStatusUpAnimation(Stat stat)
+    public IEnumerator PlayStatGainAnimation(Stat stat)
     {
         List<Sprite> sprites;
         switch (stat)
@@ -174,7 +181,7 @@ public class BattleUnit : MonoBehaviour
         yield return PlayAnimation(sprites, AudioID.StatusUp);
     }
 
-    public IEnumerator PlayStatusDownAnimation(Stat stat)
+    public IEnumerator PlayStatLossAnimation(Stat stat)
     {
         List<Sprite> sprites;
         switch (stat)
@@ -216,6 +223,16 @@ public class BattleUnit : MonoBehaviour
     public IEnumerator PlayAffinityLossAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.AffinityLossAnimationSprites, AudioID.AffinityLoss);
+    }
+
+    public IEnumerator PlayStatusSetAnimation()
+    {
+        yield return PlayAnimation(GlobalSettings.Instance.SetStatusConditionAnimationSprites, AudioID.SetStatus);
+    }
+
+    public IEnumerator PlayStatusCureAnimation()
+    {
+        yield return PlayAnimation(GlobalSettings.Instance.CureStatusConditionAnimationSprites);
     }
 
     public IEnumerator PlayDamageAnimation()

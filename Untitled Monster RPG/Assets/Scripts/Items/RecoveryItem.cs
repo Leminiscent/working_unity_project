@@ -72,8 +72,7 @@ public class RecoveryItem : ItemBase
 
             if (_recoverAllStatus)
             {
-                monster.CureStatus();
-                monster.CureVolatileStatus();
+                monster.CureAllStatus();
             }
             else
             {
