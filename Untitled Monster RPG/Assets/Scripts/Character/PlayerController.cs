@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour, ISavable
         if (collider != null)
         {
             // AudioManager.Instance.PlaySFX(AudioID.Interact);
+            _character.Animator.IsMoving = false;
             yield return collider.GetComponent<IInteractable>()?.Interact(transform);
         }
         _isInteracting = false;

@@ -40,6 +40,10 @@ public class DialogueManager : MonoBehaviour
         {
             yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
         }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
 
         if (choices != null && choices.Count > 1)
         {
@@ -59,7 +63,7 @@ public class DialogueManager : MonoBehaviour
         IsShowing = false;
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue, List<string> choices = null, Action<int> onChoiceSelected = null)
+    public IEnumerator ShowDialogue(Dialogue dialogue, bool waitForInput = true, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
         yield return new WaitForEndOfFrame();
 
@@ -69,7 +73,15 @@ public class DialogueManager : MonoBehaviour
         foreach (string line in dialogue.Lines)
         {
             yield return TypeDialogue(line);
-            yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
+
+            if (waitForInput)
+            {
+                yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
         }
 
         if (choices != null && choices.Count > 1)

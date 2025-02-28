@@ -18,11 +18,11 @@ public class Healer : MonoBehaviour
             playerParty.RestoreParty();
             playerParty.PartyUpdated();
             yield return Fader.Instance.FadeOut(0.5f);
-            yield return DialogueManager.Instance.ShowDialogueText("All healed up! Come back if you need more healing!", true);
+            yield return DialogueManager.Instance.ShowDialogueText("All healed up! Come back if you need more healing!");
         }
         else if (selectedChoice == 1)
         {
-            yield return DialogueManager.Instance.ShowDialogueText("Come back if you need healing!", true);
+            yield return DialogueManager.Instance.ShowDialogueText("Come back if you need healing!");
         }
     }
 }

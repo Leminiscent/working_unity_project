@@ -118,7 +118,7 @@ public class UseItemState : State<GameController>
         {
             yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is trying to learn {skillBook.Move.Name}!");
             yield return DialogueManager.Instance.ShowDialogueText($"But {monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
-            yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", true, false);
+            yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", autoClose: false);
             ForgettingMoveState.Instance.NewMove = skillBook.Move;
             ForgettingMoveState.Instance.CurrentMoves = monster.Moves.Select(static m => m.Base).ToList();
             yield return _gameController.StateMachine.PushAndWait(ForgettingMoveState.Instance);

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -30,7 +31,13 @@ public class FreeRoamState : State<GameController>
 
         if (Input.GetButtonDown("Submit"))
         {
-            _gameController.StateMachine.Push(GameMenuState.Instance);
+            StartCoroutine(OpenMenu());
         }
+    }
+
+    public IEnumerator OpenMenu()
+    {
+        PlayerController.Instance.Character.Animator.IsMoving = false;
+        yield return _gameController.StateMachine.PushAndWait(GameMenuState.Instance);
     }
 }

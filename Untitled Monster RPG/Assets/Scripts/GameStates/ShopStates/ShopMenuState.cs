@@ -52,7 +52,7 @@ public class ShopMenuState : State<GameController>
         else
         {
             // Leave
-            yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!", true);
+            yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!");
             _gameController.StateMachine.Pop();
         }
     }
