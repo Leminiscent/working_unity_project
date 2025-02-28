@@ -264,10 +264,20 @@ public class Monster
         CalculateStats();
     }
 
-    public void SetHPFull()
+    public void RestoreMonster()
     {
         Hp = MaxHp;
         OnHPChanged?.Invoke();
+
+        Status = null;
+        VolatileStatus = null;
+        OnStatusChanged?.Invoke();
+
+        ResetStatBoosts();
+        foreach (Move mov in Moves)
+        {
+            mov.Sp = mov.Base.SP;
+        }
     }
 
     public float GetNormalizedExp()

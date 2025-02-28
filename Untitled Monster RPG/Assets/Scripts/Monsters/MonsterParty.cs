@@ -86,15 +86,7 @@ public class MonsterParty : MonoBehaviour
     {
         foreach (Monster monster in _monsters)
         {
-            monster.CureStatus();
-            monster.CureVolatileStatus();
-            monster.SetHPFull();
-            monster.ResetStatBoosts();
-
-            foreach (Move mov in monster.Moves)
-            {
-                mov.Sp = mov.Base.SP;
-            }
+            monster.RestoreMonster();
         }
     }
 
