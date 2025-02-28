@@ -130,6 +130,20 @@ public class CharacterAnimator : MonoBehaviour
     {
         return new List<Sprite>(_walkDownSprites.Concat(_walkUpSprites).Concat(_walkRightSprites).Concat(_walkLeftSprites).ToList());
     }
+
+    public void SetSprites(List<Sprite> walkDown, List<Sprite> walkUp, List<Sprite> walkRight, List<Sprite> walkLeft)
+    {
+        _walkDownSprites = walkDown;
+        _walkUpSprites = walkUp;
+        _walkRightSprites = walkRight;
+        _walkLeftSprites = walkLeft;
+        _walkDownAnim = new SpriteAnimator(_walkDownSprites, _spriteRenderer);
+        _walkUpAnim = new SpriteAnimator(_walkUpSprites, _spriteRenderer);
+        _walkRightAnim = new SpriteAnimator(_walkRightSprites, _spriteRenderer);
+        _walkLeftAnim = new SpriteAnimator(_walkLeftSprites, _spriteRenderer);
+        _currentAnim = GetAnimForFacingDirection(FacingDirection);
+    }
+
 }
 
 public enum FacingDirection

@@ -9,19 +9,24 @@ public class DeputyController : MonoBehaviour, ISavable
     private CharacterAnimator _animator;
     private bool _isMoving;
     private PlayerController _player;
+    private MonsterParty _party;
     private float _moveSpeed;
     private Queue<Vector3> _positionQueue = new();
 
     private void Awake()
     {
-        _player = FindObjectOfType<PlayerController>();
         _animator = GetComponent<CharacterAnimator>();
+        _player = FindObjectOfType<PlayerController>();
+        _party = _player.GetComponent<MonsterParty>();
     }
 
     private void Start()
     {
         _moveSpeed = _player.Character.MoveSpeed;
         _player.Character.OnMoveStart += OnPlayerMoveStart;
+        _party.OnUpdated += UpdateDeputyMonster;
+
+        UpdateDeputyMonster();
         SetPosition();
     }
 
@@ -34,16 +39,20 @@ public class DeputyController : MonoBehaviour, ISavable
         }
     }
 
+    private void UpdateDeputyMonster()
+    {
+        Monster leader = _party.Monsters[0];
+
+        _animator.SetSprites(
+            leader.Base.WalkDownSprites,
+            leader.Base.WalkUpSprites,
+            leader.Base.WalkRightSprites,
+            leader.Base.WalkLeftSprites);
+    }
+
     private void OnPlayerMoveStart(Vector3 playerPosition)
     {
         _positionQueue.Enqueue(playerPosition);
-    }
-
-    public void SetPosition()
-    {
-        transform.position = _player.transform.position;
-        _animator.IsMoving = false;
-        _isMoving = false;
     }
 
     private IEnumerator MoveToPosition(Vector3 targetPos)
@@ -108,6 +117,13 @@ public class DeputyController : MonoBehaviour, ISavable
         yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
 
         _animator.IsJumping = false;
+        _isMoving = false;
+    }
+
+    public void SetPosition()
+    {
+        transform.position = _player.transform.position;
+        _animator.IsMoving = false;
         _isMoving = false;
     }
 

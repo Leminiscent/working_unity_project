@@ -36,6 +36,12 @@ public class MonsterBase : ScriptableObject
     [Header("Drops")]
     [SerializeField] private DropTable _dropTable;
 
+    [Header("Overworld Sprites")]
+    [SerializeField] private List<Sprite> _walkDownSprites;
+    [SerializeField] private List<Sprite> _walkUpSprites;
+    [SerializeField] private List<Sprite> _walkRightSprites;
+    [SerializeField] private List<Sprite> _walkLeftSprites;
+
     [HideInInspector]
     [SerializeField]
     private float _sumOfWeights;
@@ -116,6 +122,12 @@ public class MonsterBase : ScriptableObject
     public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
 
     public DropTable DropTable => _dropTable;
+
+    public List<Sprite> WalkDownSprites => _walkDownSprites;
+    public List<Sprite> WalkUpSprites => _walkUpSprites;
+    public List<Sprite> WalkRightSprites => _walkRightSprites;
+    public List<Sprite> WalkLeftSprites => _walkLeftSprites;
+
 
     private void OnValidate()
     {
