@@ -264,11 +264,10 @@ public class Monster
         CalculateStats();
     }
 
-    public void FullRestore()
+    public void SetHPFull()
     {
         Hp = MaxHp;
         OnHPChanged?.Invoke();
-        CureStatus();
     }
 
     public float GetNormalizedExp()
