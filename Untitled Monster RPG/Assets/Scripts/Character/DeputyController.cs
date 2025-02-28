@@ -97,8 +97,7 @@ public class DeputyController : MonoBehaviour, ISavable
     private Ledge CheckForLedge(Vector3 targetPos)
     {
         Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
-
-        return collider?.GetComponent<Ledge>();
+        return collider != null ? collider.GetComponent<Ledge>() : null;
     }
 
     private IEnumerator Jump(Vector3 jumpDest)
