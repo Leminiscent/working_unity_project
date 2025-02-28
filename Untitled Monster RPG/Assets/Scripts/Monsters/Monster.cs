@@ -274,9 +274,9 @@ public class Monster
         OnStatusChanged?.Invoke();
 
         ResetStatBoosts();
-        foreach (Move mov in Moves)
+        foreach (Move move in Moves)
         {
-            mov.Sp = mov.Base.SP;
+            move.Sp = move.Base.SP;
         }
     }
 
