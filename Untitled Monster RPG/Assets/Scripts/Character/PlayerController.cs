@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour, ISavable
     private Character _character;
     private DeputyController _deputy;
     private IPlayerTriggerable _currentlyInTrigger;
+    private bool _isInteracting;
 
     public static PlayerController Instance { get; private set; }
     public string Name => _name;
@@ -55,8 +56,9 @@ public class PlayerController : MonoBehaviour, ISavable
 
         _character.HandleUpdate();
 
-        if (Input.GetButtonDown("Action"))
+        if (Input.GetButtonDown("Action") && !_isInteracting)
         {
+            _isInteracting = true;
             StartCoroutine(Interact());
         }
     }
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour, ISavable
             // AudioManager.Instance.PlaySFX(AudioID.Interact);
             yield return collider.GetComponent<IInteractable>()?.Interact(transform);
         }
+        _isInteracting = false;
     }
 
     private void OnMoveOver()
