@@ -28,7 +28,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public IEnumerator ShowDialogueText(string text, bool waitForInput = true, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
+    public IEnumerator ShowDialogueText(string text, bool waitForInput = true, float waitTime = 0.5f, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
         yield return new WaitForEndOfFrame();
 
@@ -42,7 +42,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(waitTime);
         }
 
         if (choices != null && choices.Count > 1)
@@ -63,7 +63,7 @@ public class DialogueManager : MonoBehaviour
         IsShowing = false;
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue, bool waitForInput = true, List<string> choices = null, Action<int> onChoiceSelected = null)
+    public IEnumerator ShowDialogue(Dialogue dialogue, bool waitForInput = true, float waitTime = 0.5f, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
         yield return new WaitForEndOfFrame();
 
@@ -80,7 +80,7 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(waitTime);
             }
         }
 

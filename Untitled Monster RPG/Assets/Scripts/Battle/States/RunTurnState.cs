@@ -266,10 +266,6 @@ public class RunTurnState : State<BattleSystem>
                             }
                         }
                     }
-                    if (move.Base.Category != MoveCategory.Status)
-                    {
-                        yield return ShowEffectiveness(typeEffectiveness);
-                    }
 
                     yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
                     hit = i;
@@ -278,6 +274,10 @@ public class RunTurnState : State<BattleSystem>
                     {
                         break;
                     }
+                }
+                if (move.Base.Category != MoveCategory.Status)
+                {
+                    yield return ShowEffectiveness(typeEffectiveness);
                 }
 
                 if (hit > 1)
@@ -447,8 +447,8 @@ public class RunTurnState : State<BattleSystem>
             yield return _dialogueBox.TypeDialogue($"There are no {item.Name}s remaining to use!");
             yield break;
         }
+        StartCoroutine(sourceUnit.PlayMoveCastAnimation()); // TODO: Decouple move and item casting animations
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {item.Name}!");
-        // yield return sourceUnit.PlayAttackAnimation(item);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -456,7 +456,6 @@ public class RunTurnState : State<BattleSystem>
             bool itemUsed = item.Use(targetUnit.Monster);
             if (itemUsed)
             {
-                // yield return targetUnit.PlayHitAnimation(item);
                 if (item is RecoveryItem)
                 {
                     yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {item.Message}!");

@@ -120,10 +120,14 @@ public class BattleUnit : MonoBehaviour
             : _image.transform.DOLocalMoveX(offsetX, 1.2f).WaitForCompletion();
     }
 
-    public IEnumerator PlayMoveCastAnimation(MoveBase move)
+    public IEnumerator PlayMoveCastAnimation(MoveBase move = null)
     {
-        List<Sprite> castAnimSprites = move.CastAnimationSprites;
-        yield return PlayAnimation(castAnimSprites);
+        if (move != null)
+        {
+            List<Sprite> castAnimSprites = move.CastAnimationSprites;
+            yield return PlayAnimation(castAnimSprites);
+        }
+
         Sequence sequence = DOTween.Sequence();
         Vector3 attackOffset = _isPlayerUnit ? new Vector3(0.75f, 0) : new Vector3(-0.75f, 0);
         sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, 0.3f));

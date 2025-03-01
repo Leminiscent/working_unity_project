@@ -41,7 +41,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
             _character.Exclamation.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             _character.Exclamation.SetActive(false);
-            yield return DialogueManager.Instance.ShowDialogue(_dialogue, waitForInput: false);
+            yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 1f);
             GameController.Instance.StartMasterBattle(this);
         }
         else
@@ -64,7 +64,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 
         yield return _character.Move(moveVector);
 
-        yield return DialogueManager.Instance.ShowDialogue(_dialogue, waitForInput: false);
+        yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 1f);
         GameController.Instance.StateMachine.Pop();
         GameController.Instance.StartMasterBattle(this);
     }
