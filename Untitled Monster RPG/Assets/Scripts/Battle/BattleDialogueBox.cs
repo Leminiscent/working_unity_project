@@ -62,13 +62,7 @@ public class BattleDialogueBox : MonoBehaviour
         }
         else
         {
-            float timer = 0f;
-            float duration = 0.5f;
-            while (timer < duration)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-            }
+            yield return new WaitForSeconds(0.5f);
         }
     }
 

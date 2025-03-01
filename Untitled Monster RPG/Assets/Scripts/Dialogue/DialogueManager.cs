@@ -97,20 +97,20 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator TypeDialogue(string line)
     {
         _dialogueText.text = "";
-        bool isTypingAccelerated = false;
+        bool isAccelerated = false;
         float accelerationFactor = 100f;
         float baseDelay = 1f / _lettersPerSecond;
 
         foreach (char letter in line.ToCharArray())
         {
             _dialogueText.text += letter;
-            float delay = isTypingAccelerated ? baseDelay / accelerationFactor : baseDelay;
+            float delay = isAccelerated ? baseDelay / accelerationFactor : baseDelay;
             float elapsed = 0f;
             while (elapsed < delay)
             {
-                if (!isTypingAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+                if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
                 {
-                    isTypingAccelerated = true;
+                    isAccelerated = true;
                     delay = baseDelay / accelerationFactor;
                     if (elapsed >= delay)
                     {
