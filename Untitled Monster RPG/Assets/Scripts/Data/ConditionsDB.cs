@@ -122,7 +122,6 @@ public class ConditionsDB
 
                     if (Random.Range(1, 4) == 1)
                     {
-                        monster.StatusChanges.Enqueue(" is confused!");
                         monster.DecreaseHP(Mathf.FloorToInt(monster.MaxHp / 8));
                         monster.StatusChanges.Enqueue(" hurt itself in its confusion!");
                         return false;
