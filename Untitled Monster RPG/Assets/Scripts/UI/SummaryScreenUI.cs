@@ -113,7 +113,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     public void SetStatsAndExp()
     {
-        _hpText.text = $"{_monster.Hp}/{_monster.MaxHp}";
+        _hpText.text = $"{_monster.Hp} / {_monster.MaxHp}";
         _strengthText.text = "" + _monster.Strength;
         _enduranceText.text = "" + _monster.Endurance;
         _intelligenceText.text = "" + _monster.Intelligence;
@@ -124,7 +124,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
         if (_monster.Level == GlobalSettings.Instance.MaxLevel)
         {
-            _expToNextLevelText.text = "0";
+            _expToNextLevelText.text = "MAX";
         }
         else
         {

@@ -25,6 +25,7 @@ public class Monster
     public int VolatileStatusTime { get; set; }
     public Queue<string> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
+    public event Action OnStatBoostChanged;
     public event Action OnStatusChanged;
     public event Action OnStatusCured;
     public event Action OnHPChanged;
@@ -188,6 +189,7 @@ public class Monster
             string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
 
             StatusChanges.Enqueue($"'s {stat}{bigChange}{riseOrFall}!");
+            OnStatBoostChanged?.Invoke();
         }
     }
 
@@ -275,6 +277,8 @@ public class Monster
         OnStatusChanged?.Invoke();
 
         ResetStatBoosts();
+        OnStatBoostChanged?.Invoke();
+
         foreach (Move move in Moves)
         {
             move.Sp = move.Base.SP;
@@ -396,6 +400,7 @@ public class Monster
         VolatileStatus = ConditionsDB.Conditions[conditionId];
         VolatileStatus?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{VolatileStatus.StartMessage}");
+        OnStatusChanged?.Invoke();
     }
 
     public void CureStatus()
@@ -409,6 +414,7 @@ public class Monster
     public void CureVolatileStatus()
     {
         VolatileStatus = null;
+        OnStatusChanged?.Invoke();
         OnStatusCured?.Invoke();
         AudioManager.Instance.PlaySFX(AudioID.CureStatus);
     }
