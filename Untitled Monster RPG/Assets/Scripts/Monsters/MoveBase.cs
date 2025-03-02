@@ -4,7 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Move", menuName = "Monster/Create new move")]
 public class MoveBase : ScriptableObject
 {
-    // Attributes
     [SerializeField] private string _name;
     [TextArea]
     [SerializeField] private string _description;
@@ -28,7 +27,6 @@ public class MoveBase : ScriptableObject
     [SerializeField] private List<Sprite> _castAnimationSprites;
     [SerializeField] private List<Sprite> _effectAnimationSprites;
 
-    // Properties
     public int GetHitCount()
     {
         int hitCount = _hitRange == Vector2Int.zero ? 1 : _hitRange.y == 0 ? _hitRange.x : Random.Range(_hitRange.x, _hitRange.y + 1);
