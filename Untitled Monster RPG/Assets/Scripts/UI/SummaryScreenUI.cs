@@ -29,7 +29,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] private TextMeshProUGUI _agilityText;
     [SerializeField] private TextMeshProUGUI _expText;
     [SerializeField] private TextMeshProUGUI _expToNextLevelText;
-    [SerializeField] private Transform _expBar;
+    [SerializeField] private GameObject _expBar;
 
     [Header("Moves")]
     [SerializeField] private List<TextMeshProUGUI> _moveTypes;
@@ -133,7 +133,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
             _expToNextLevelText.text = "" + expToNextLevel;
         }
 
-        _expBar.localScale = new Vector2(_monster.GetNormalizedExp(), 1);
+        _expBar.transform.localScale = new Vector3(_monster.GetNormalizedExp(), 1, 1);
     }
 
     public void SetMoves()
