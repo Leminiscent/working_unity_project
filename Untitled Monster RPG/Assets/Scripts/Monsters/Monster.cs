@@ -19,10 +19,8 @@ public class Monster
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public bool IsGuarding { get; set; }
-    public Condition Status { get; private set; }
-    public int StatusTime { get; set; }
-    public Condition VolatileStatus { get; private set; }
-    public int VolatileStatusTime { get; set; }
+    public Dictionary<ConditionID, (Condition, int)> Statuses { get; private set; }
+    public Dictionary<ConditionID, (Condition, int)> VolatileStatuses { get; private set; }
     public Queue<string> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
     public event Action OnStatBoostChanged;
@@ -79,8 +77,8 @@ public class Monster
 
         StatusChanges = new Queue<string>();
         ResetStatBoosts();
-        Status = null;
-        VolatileStatus = null;
+        Statuses = new Dictionary<ConditionID, (Condition, int)>();
+        VolatileStatuses = new Dictionary<ConditionID, (Condition, int)>();
         AffinityLevel = 0;
     }
 
@@ -91,7 +89,16 @@ public class Monster
         _level = saveData.Level;
         Exp = saveData.Exp;
 
-        Status = saveData.StatusId != null ? ConditionsDB.Conditions[saveData.StatusId.Value] : null;
+        Statuses = new Dictionary<ConditionID, (Condition, int)>();
+
+        if (saveData.Statuses != null && saveData.Statuses.Count > 0)
+        {
+            foreach (ConditionSaveData statusSave in saveData.Statuses)
+            {
+                Condition condition = ConditionsDB.Conditions[statusSave.ConditionId];
+                Statuses.Add(statusSave.ConditionId, (condition, statusSave.Timer));
+            }
+        }
 
         Moves = saveData.Moves.Select(static s => new Move(s)).ToList();
         StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.Pv);
@@ -99,7 +106,6 @@ public class Monster
         CalculateStats();
         StatusChanges = new Queue<string>();
         ResetStatBoosts();
-        VolatileStatus = null;
     }
 
     public MonsterSaveData GetSaveData()
@@ -110,7 +116,11 @@ public class Monster
             Hp = Hp,
             Level = Level,
             Exp = Exp,
-            StatusId = Status?.ID,
+            Statuses = Statuses.Select(static s => new ConditionSaveData
+            {
+                ConditionId = s.Key,
+                Timer = s.Value.Item2
+            }).ToList(),
             Moves = Moves.Select(static m => m.GetSaveData()).ToList(),
             StatPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
             {
@@ -271,14 +281,10 @@ public class Monster
     {
         Hp = MaxHp;
         OnHPChanged?.Invoke();
-
-        Status = null;
-        VolatileStatus = null;
+        Statuses.Clear();
         OnStatusChanged?.Invoke();
-
         ResetStatBoosts();
         OnStatBoostChanged?.Invoke();
-
         foreach (Move move in Moves)
         {
             move.Sp = move.Base.SP;
@@ -387,25 +393,60 @@ public class Monster
         AffinityLevel = Mathf.Clamp(AffinityLevel + affinity, 0, 6);
     }
 
+    public void AddCondition(ConditionID conditionId, bool isVolatile = false)
+    {
+        if (conditionId == ConditionID.None)
+        {
+            return;
+        }
+
+        Dictionary<ConditionID, (Condition, int)> statuses = isVolatile ? VolatileStatuses : Statuses;
+
+        if (statuses.ContainsKey(conditionId))
+        {
+            return;
+        }
+
+        Condition condition = ConditionsDB.Conditions[conditionId];
+        int timer = 0;
+        if (condition.OnStartTimed != null)
+        {
+            timer = condition.OnStartTimed(this);
+        }
+
+        statuses.Add(conditionId, (condition, timer));
+        if (!string.IsNullOrEmpty(condition.StartMessage))
+        {
+            StatusChanges.Enqueue(condition.StartMessage);
+        }
+
+        OnStatusChanged?.Invoke();
+    }
+
     public void SetStatus(ConditionID conditionId)
     {
-        Status = ConditionsDB.Conditions[conditionId];
-        Status?.OnStart?.Invoke(this);
-        StatusChanges.Enqueue($"{Status.StartMessage}");
-        OnStatusChanged?.Invoke();
+        AddCondition(conditionId);
     }
 
     public void SetVolatileStatus(ConditionID conditionId)
     {
-        VolatileStatus = ConditionsDB.Conditions[conditionId];
-        VolatileStatus?.OnStart?.Invoke(this);
-        StatusChanges.Enqueue($"{VolatileStatus.StartMessage}");
-        OnStatusChanged?.Invoke();
+        AddCondition(conditionId, true);
+    }
+
+    public void RemoveCondition(ConditionID conditionId)
+    {
+        if (Statuses.ContainsKey(conditionId))
+        {
+            Statuses.Remove(conditionId);
+            OnStatusChanged?.Invoke();
+            OnStatusCured?.Invoke();
+            AudioManager.Instance.PlaySFX(AudioID.CureStatus);
+        }
     }
 
     public void CureStatus()
     {
-        Status = null;
+        Statuses.Clear();
         OnStatusChanged?.Invoke();
         OnStatusCured?.Invoke();
         AudioManager.Instance.PlaySFX(AudioID.CureStatus);
@@ -413,19 +454,12 @@ public class Monster
 
     public void CureVolatileStatus()
     {
-        VolatileStatus = null;
-        OnStatusChanged?.Invoke();
-        OnStatusCured?.Invoke();
-        AudioManager.Instance.PlaySFX(AudioID.CureStatus);
+        CureStatus();
     }
 
     public void CureAllStatus()
     {
-        Status = null;
-        VolatileStatus = null;
-        OnStatusChanged?.Invoke();
-        OnStatusCured?.Invoke();
-        AudioManager.Instance.PlaySFX(AudioID.CureStatus);
+        CureStatus();
     }
 
     public Move GetRandomMove()
@@ -445,34 +479,48 @@ public class Monster
     public bool OnStartOfTurn()
     {
         bool canPerformMove = true;
-
-        if (Status?.OnBeginningofTurn != null)
+        foreach (ConditionID key in Statuses.Keys.ToList())
         {
-            if (!Status.OnBeginningofTurn(this))
+            (Condition condition, int timer) = Statuses[key];
+            if (condition.OnBeginningOfTurnTimed != null)
             {
-                canPerformMove = false;
+                (bool canAct, int newTimer) = condition.OnBeginningOfTurnTimed(this, timer);
+                if (newTimer <= 0)
+                {
+                    RemoveCondition(key);
+                }
+                else
+                {
+                    Statuses[key] = (condition, newTimer);
+                }
+                if (!canAct)
+                {
+                    canPerformMove = false;
+                }
+            }
+            else if (condition.OnBeginningofTurn != null)
+            {
+                if (!condition.OnBeginningofTurn(this))
+                {
+                    canPerformMove = false;
+                }
             }
         }
-        if (VolatileStatus?.OnBeginningofTurn != null)
-        {
-            if (!VolatileStatus.OnBeginningofTurn(this))
-            {
-                canPerformMove = false;
-            }
-        }
-
         return canPerformMove;
     }
 
     public void OnEndOfTurn()
     {
-        Status?.OnEndOfTurn?.Invoke(this);
-        VolatileStatus?.OnEndOfTurn?.Invoke(this);
+        foreach (KeyValuePair<ConditionID, (Condition, int)> kvp in Statuses.ToList())
+        {
+            Condition condition = kvp.Value.Item1;
+            condition.OnEndOfTurn?.Invoke(this);
+        }
     }
 
     public void OnBattleOver()
     {
-        VolatileStatus = null;
+        VolatileStatuses.Clear();
         ResetStatBoosts();
         CalculateStats();
     }
@@ -494,7 +542,7 @@ public class MonsterSaveData
     public int Hp;
     public int Level;
     public int Exp;
-    public ConditionID? StatusId;
+    public List<ConditionSaveData> Statuses;
     public List<MoveSaveData> Moves;
     public List<StatPV> StatPerformanceValues;
 }

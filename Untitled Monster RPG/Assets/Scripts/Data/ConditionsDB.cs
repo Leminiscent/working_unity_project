@@ -23,6 +23,7 @@ public class ConditionsDB
             {
                 Name = "Poison",
                 StartMessage = " has been poisoned!",
+                FailMessage = " is already poisoned!",
                 OnEndOfTurn = static monster => {
                     monster.DecreaseHP(monster.MaxHp / 8);
                     monster.StatusChanges.Enqueue(" is hurt by poison!");
@@ -35,6 +36,7 @@ public class ConditionsDB
             {
                 Name = "Burn",
                 StartMessage = " has been burned!",
+                FailMessage = " is already burned!",
                 OnEndOfTurn = static monster => {
                     monster.DecreaseHP(monster.MaxHp / 16);
                     monster.StatusChanges.Enqueue(" is hurt by its burn!");
@@ -47,19 +49,18 @@ public class ConditionsDB
             {
                 Name = "Sleep",
                 StartMessage = " has been put to sleep!",
-                OnStart = static monster => {
-                    monster.StatusTime = Random.Range(1, 4);
-                },
-                OnBeginningofTurn = static monster => {
-                    if (monster.StatusTime == 0)
+                FailMessage = " is already asleep!",
+                OnStartTimed = static monster => Random.Range(1, 4),
+                OnBeginningOfTurnTimed = static (monster, timer) =>
+                {
+                    if (timer == 0)
                     {
-                        monster.CureStatus();
                         monster.StatusChanges.Enqueue(" woke up!");
-                        return true;
+                        return (true, 0);
                     }
-                    monster.StatusTime--;
+                    timer--;
                     monster.StatusChanges.Enqueue(" is fast asleep!");
-                    return false;
+                    return (false, timer);
                 }
             }
         },
@@ -69,6 +70,7 @@ public class ConditionsDB
             {
                 Name = "Paralyzed",
                 StartMessage = " has been paralyzed!",
+                FailMessage = " is already paralyzed!",
                 OnBeginningofTurn = static monster => {
                     if (Random.Range(1, 5) == 1)
                     {
@@ -85,6 +87,7 @@ public class ConditionsDB
             {
                 Name = "Frozen",
                 StartMessage = " has been frozen solid!",
+                FailMessage = " is already frozen!",
                 OnBeginningofTurn = static monster => {
                     if (Random.Range(1, 5) == 1)
                     {
@@ -108,25 +111,23 @@ public class ConditionsDB
             {
                 Name = "Confusion",
                 StartMessage = " has been confused!",
-                OnStart = static monster => {
-                    monster.VolatileStatusTime = Random.Range(2, 5);
-                },
-                OnBeginningofTurn = static monster => {
-                    if (monster.VolatileStatusTime == 0)
+                FailMessage = " is already confused!",
+                OnStartTimed = static monster => Random.Range(2, 5),
+                OnBeginningOfTurnTimed = static (monster, timer) =>
+                {
+                    if (timer == 0)
                     {
-                        monster.CureVolatileStatus();
                         monster.StatusChanges.Enqueue(" snapped out of confusion!");
-                        return true;
+                        return (true, 0);
                     }
-                    monster.VolatileStatusTime--;
-
+                    timer--;
                     if (Random.Range(1, 4) == 1)
                     {
                         monster.DecreaseHP(Mathf.FloorToInt(monster.MaxHp / 8));
                         monster.StatusChanges.Enqueue(" hurt itself in its confusion!");
-                        return false;
+                        return (false, timer);
                     }
-                    return true;
+                    return (true, timer);
                 }
             }
         },
@@ -204,13 +205,27 @@ public class ConditionsDB
         }
     };
 
-    public static float GetStatusBonus(Condition condition)
+    public static float GetStatusBonus(Dictionary<ConditionID, (Condition, int)> statuses)
     {
-        return condition == null
-            ? 1f
-            : condition.ID is ConditionID.Slp or ConditionID.Frz
-                ? 2f
-                : condition.ID is ConditionID.Psn or ConditionID.Brn or ConditionID.Par ? 1.5f : 1f;
+        if (statuses == null || statuses.Count == 0)
+        {
+            return 1f;
+        }
+
+        float bonus = 1f;
+        foreach (KeyValuePair<ConditionID, (Condition, int)> entry in statuses)
+        {
+            Condition condition = entry.Value.Item1;
+            if (condition.ID is ConditionID.Slp or ConditionID.Frz)
+            {
+                bonus += 1f;
+            }
+            else if (condition.ID is ConditionID.Psn or ConditionID.Brn or ConditionID.Par)
+            {
+                bonus += 0.5f;
+            }
+        }
+        return bonus;
     }
 }
 

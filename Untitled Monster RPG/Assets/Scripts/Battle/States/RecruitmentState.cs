@@ -148,7 +148,7 @@ public class RecruitmentState : State<BattleSystem>
     private IEnumerator AttemptRecruitment()
     {
         // Calculate recruitment chance
-        float a = Mathf.Min(Mathf.Max(RecruitTarget.Monster.AffinityLevel - 3, 0), 3) * ((3 * RecruitTarget.Monster.MaxHp) - (2 * RecruitTarget.Monster.Hp)) * RecruitTarget.Monster.Base.RecruitRate * ConditionsDB.GetStatusBonus(RecruitTarget.Monster.Status) / (3 * RecruitTarget.Monster.MaxHp);
+        float a = Mathf.Min(Mathf.Max(RecruitTarget.Monster.AffinityLevel - 3, 0), 3) * ((3 * RecruitTarget.Monster.MaxHp) - (2 * RecruitTarget.Monster.Hp)) * RecruitTarget.Monster.Base.RecruitRate * ConditionsDB.GetStatusBonus(RecruitTarget.Monster.Statuses) / (3 * RecruitTarget.Monster.MaxHp);
         bool canRecruit;
 
         if (a >= 255)

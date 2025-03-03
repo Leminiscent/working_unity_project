@@ -364,9 +364,9 @@ public class RunTurnState : State<BattleSystem>
         // Status Conditions
         if (effects.Status != ConditionID.None)
         {
-            if (targetUnit.Monster.Status != null)
+            if (targetUnit.Monster.Statuses.ContainsKey(effects.Status))
             {
-                yield return _dialogueBox.TypeDialogue("It has no effect!");
+                yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {ConditionsDB.Conditions[effects.Status].FailMessage}");
             }
             else
             {
@@ -375,9 +375,9 @@ public class RunTurnState : State<BattleSystem>
         }
         if (effects.VolatileStatus != ConditionID.None)
         {
-            if (targetUnit.Monster.VolatileStatus != null)
+            if (targetUnit.Monster.VolatileStatuses.ContainsKey(effects.VolatileStatus))
             {
-                yield return _dialogueBox.TypeDialogue("It has no effect!");
+                yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {ConditionsDB.Conditions[effects.VolatileStatus].FailMessage}");
             }
             else
             {

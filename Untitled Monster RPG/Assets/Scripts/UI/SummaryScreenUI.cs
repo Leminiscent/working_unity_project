@@ -124,7 +124,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
         if (_monster.Level == GlobalSettings.Instance.MaxLevel)
         {
-            _expToNextLevelText.text = "MAX";
+            _expToNextLevelText.text = "0";
         }
         else
         {

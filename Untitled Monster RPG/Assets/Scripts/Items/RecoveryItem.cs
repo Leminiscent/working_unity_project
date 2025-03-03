@@ -65,7 +65,7 @@ public class RecoveryItem : ItemBase
 
         if (_recoverAllStatus || _status != ConditionID.None)
         {
-            if (monster.Status == null && monster.VolatileStatus == null)
+            if ((monster.Statuses == null && monster.VolatileStatuses == null) || (monster.Statuses.Count == 0 && monster.VolatileStatuses.Count == 0))
             {
                 return false;
             }
@@ -76,11 +76,11 @@ public class RecoveryItem : ItemBase
             }
             else
             {
-                if (monster.Status != null && monster.Status.ID == _status)
+                if (monster.Statuses != null && monster.Statuses.ContainsKey(_status))
                 {
                     monster.CureStatus();
                 }
-                else if (monster.VolatileStatus != null && monster.VolatileStatus.ID == _status)
+                else if (monster.VolatileStatuses != null && monster.VolatileStatuses.ContainsKey(_status))
                 {
                     monster.CureVolatileStatus();
                 }

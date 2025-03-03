@@ -71,12 +71,12 @@ public class BattleHUD : MonoBehaviour
 
     private void SetStatusText()
     {
-        _brnText.SetActive(_monster.Status?.ID == ConditionID.Brn);
-        _psnText.SetActive(_monster.Status?.ID == ConditionID.Psn);
-        _frzText.SetActive(_monster.Status?.ID == ConditionID.Frz);
-        _slpText.SetActive(_monster.Status?.ID == ConditionID.Slp);
-        _parText.SetActive(_monster.Status?.ID == ConditionID.Par);
-        _conText.SetActive(_monster.VolatileStatus?.ID == ConditionID.Con);
+        _brnText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Brn));
+        _psnText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Psn));
+        _frzText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Frz));
+        _slpText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Slp));
+        _parText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Par));
+        _conText.SetActive(_monster.VolatileStatuses.ContainsKey(ConditionID.Con));
     }
 
     public void SetLevel()
