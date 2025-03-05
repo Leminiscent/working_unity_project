@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7aac2ed3a6488e449bb20d1bd3ba9d47, type: 3}
-  m_Name: Elixer
+  m_Name: Super Potion
   m_EditorClassIdentifier: 
-  _name: Elixer
-  _description: A medicine for restoring 10 SP to each move a monster knows
-  _message: recovered SP
-  _icon: {fileID: -718701147, guid: 16867761302e8194fa73ad64af8d40dd, type: 3}
-  _price: 3000
+  _name: Super Potion
+  _description: A medicine for restoring 60 HP to a monster
+  _message: recovered a moderate amount of health
+  _icon: {fileID: 386580651, guid: 16867761302e8194fa73ad64af8d40dd, type: 3}
+  _price: 700
   _isSellable: 1
-  _hpAmount: 0
+  _hpAmount: 60
   _restoreMaxHP: 0
-  _spAmount: 10
+  _spAmount: 0
   _restoreMaxSP: 0
   _status: 0
   _recoverAllStatus: 0
