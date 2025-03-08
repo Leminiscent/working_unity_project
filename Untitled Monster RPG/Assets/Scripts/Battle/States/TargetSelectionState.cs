@@ -31,14 +31,14 @@ public class TargetSelectionState : State<BattleSystem>
         {
             for (int i = 0; i < _battleSystem.PlayerUnits.Count; i++)
             {
-                _battleSystem.PlayerUnits[i].SetSelected(i == _selectedTarget);
+                _battleSystem.PlayerUnits[i].SetTargeted(i == _selectedTarget);
             }
         }
         else
         {
             for (int i = 0; i < _battleSystem.EnemyUnits.Count; i++)
             {
-                _battleSystem.EnemyUnits[i].SetSelected(i == _selectedTarget);
+                _battleSystem.EnemyUnits[i].SetTargeted(i == _selectedTarget);
             }
         }
     }
@@ -107,11 +107,11 @@ public class TargetSelectionState : State<BattleSystem>
     {
         if (IsTargetingAllies)
         {
-            _battleSystem.PlayerUnits[_selectedTarget].SetSelected(false);
+            _battleSystem.PlayerUnits[_selectedTarget].SetTargeted(false);
         }
         else
         {
-            _battleSystem.EnemyUnits[_selectedTarget].SetSelected(false);
+            _battleSystem.EnemyUnits[_selectedTarget].SetTargeted(false);
         }
     }
 }

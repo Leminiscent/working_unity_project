@@ -78,6 +78,28 @@ public class BattleUnit : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
+        Outline outline = GetComponent<Outline>();
+        if (selected)
+        {
+            if (outline == null)
+            {
+                outline = gameObject.AddComponent<Outline>();
+            }
+            outline.effectColor = new Color(0f, 0f, 0f, 0.75f);
+            outline.effectDistance = new Vector2(1f, 1f);
+            outline.enabled = true;
+        }
+        else
+        {
+            if (outline != null)
+            {
+                outline.enabled = false;
+            }
+        }
+    }
+
+    public void SetTargeted(bool selected)
+    {
         _image.color = selected ? GlobalSettings.Instance.BgHighlightColor : _originalColor;
     }
 

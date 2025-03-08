@@ -283,6 +283,8 @@ public class BattleSystem : MonoBehaviour
 
         if (_battleActions.Count == _playerUnits.Count)
         {
+            SelectingUnit.SetSelected(false);
+            
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
                 if (UnityEngine.Random.value < 0.2f)
@@ -316,6 +318,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            SelectingUnit.SetSelected(false);
             _selectingUnitIndex++;
             StateMachine.ChangeState(ActionSelectionState.Instance);
         }
@@ -332,6 +335,7 @@ public class BattleSystem : MonoBehaviour
         if (_battleActions.Count > 0)
         {
             _battleActions.RemoveAt(_battleActions.Count - 1);
+            SelectingUnit.SetSelected(false);
             _selectingUnitIndex--;
             StateMachine.ChangeState(ActionSelectionState.Instance);
         }

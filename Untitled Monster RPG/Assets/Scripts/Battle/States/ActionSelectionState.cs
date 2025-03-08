@@ -32,6 +32,7 @@ public class ActionSelectionState : State<BattleSystem>
         _selectionUI.OnSelected += OnActionSelected;
         _selectionUI.OnBack += OnBack;
         _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Monster.Base.Name}!");
+        _battleSystem.SelectingUnit.SetSelected(true);
     }
 
     public override void Execute()
