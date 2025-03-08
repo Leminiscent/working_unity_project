@@ -49,21 +49,6 @@ public class BattleUnit : MonoBehaviour
         yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
     }
 
-    private void HandleStatusCured()
-    {
-        StartCoroutine(PlayStatusCureAnimation());
-    }
-
-    private void HandleDamageTaken()
-    {
-        StartCoroutine(PlayDamageAnimation());
-    }
-
-    private void HandleHealed()
-    {
-        StartCoroutine(PlayHealAnimation());
-    }
-
     public void Setup(Monster monster)
     {
         if (Monster != null)
@@ -79,9 +64,6 @@ public class BattleUnit : MonoBehaviour
         _image.color = _originalColor;
         _currentColor = _originalColor;
         _currentPos = _originalPos;
-        Monster.OnStatusCured += HandleStatusCured;
-        Monster.OnDamageTaken += HandleDamageTaken;
-        Monster.OnHealed += HandleHealed;
         StartCoroutine(PlayEnterAnimation());
     }
 
@@ -89,9 +71,6 @@ public class BattleUnit : MonoBehaviour
     {
         if (Monster != null)
         {
-            Monster.OnStatusCured -= HandleStatusCured;
-            Monster.OnDamageTaken -= HandleDamageTaken;
-            Monster.OnHealed -= HandleHealed;
             _hud.ClearData();
         }
         _hud.gameObject.SetActive(false);

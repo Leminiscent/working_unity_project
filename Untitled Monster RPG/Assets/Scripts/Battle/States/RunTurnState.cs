@@ -142,7 +142,6 @@ public class RunTurnState : State<BattleSystem>
 
         sourceUnit.Monster.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit);
-        yield return sourceUnit.Hud.WaitForHPUpdate();
         if (sourceUnit.Monster.Hp <= 0)
         {
             yield return HandleMonsterDefeat(sourceUnit);
@@ -250,6 +249,7 @@ public class RunTurnState : State<BattleSystem>
                     else
                     {
                         damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, _field.Weather);
+                        StartCoroutine(targetUnit.PlayDamageAnimation());
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -401,32 +401,45 @@ public class RunTurnState : State<BattleSystem>
     {
         while (unit.Monster.StatusChanges.Count > 0)
         {
-            string message = unit.Monster.StatusChanges.Dequeue();
-            string trimmed = message.StartsWith("'s ") ? message[3..] : message.Trim();
-            string[] parts = trimmed.Split(' ');
-            if (parts.Length > 0)
+            StatusEvent statusEvent = unit.Monster.StatusChanges.Dequeue();
+
+            if (statusEvent.Type == StatusEventType.Damage)
             {
-                if (parts[0] == "has")
+                unit.Monster.DecreaseHP((int)statusEvent.Value);
+                StartCoroutine(unit.PlayDamageAnimation());
+            }
+            else if (statusEvent.Type == StatusEventType.Heal)
+            {
+                unit.Monster.IncreaseHP((int)statusEvent.Value);
+                StartCoroutine(unit.PlayHealAnimation());
+            }
+            else if (statusEvent.Type == StatusEventType.SetCondition)
+            {
+                StartCoroutine(unit.PlayStatusSetAnimation());
+            }
+            else if (statusEvent.Type == StatusEventType.CureCondition)
+            {
+                StartCoroutine(unit.PlayStatusCureAnimation());
+            }
+            else if (statusEvent.Type == StatusEventType.StatBoost)
+            {
+                unit.Hud.UpdateStatBoosts();
+
+                string statName = statusEvent.Message[3..].Split(' ')[0];
+                if (System.Enum.TryParse(statName, out Stat stat))
                 {
-                    StartCoroutine(unit.PlayStatusSetAnimation());
-                }
-                else
-                {
-                    string statName = parts[0];
-                    if (System.Enum.TryParse(statName, out Stat stat))
+                    if (statusEvent.Value > 0)
                     {
-                        if (message.Contains("rose"))
-                        {
-                            StartCoroutine(unit.PlayStatGainAnimation(stat));
-                        }
-                        else if (message.Contains("fell"))
-                        {
-                            StartCoroutine(unit.PlayStatLossAnimation(stat));
-                        }
+                        StartCoroutine(unit.PlayStatGainAnimation(stat));
+                    }
+                    else
+                    {
+                        StartCoroutine(unit.PlayStatLossAnimation(stat));
                     }
                 }
             }
-            yield return _dialogueBox.TypeDialogue($"{unit.Monster.Base.Name}{message}");
+
+            yield return _dialogueBox.TypeDialogue($"{unit.Monster.Base.Name}{statusEvent.Message}");
         }
     }
 
@@ -544,10 +557,10 @@ public class RunTurnState : State<BattleSystem>
 
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Monster.Exp += expGain;
-                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
                     StartCoroutine(playerUnit.PlayExpGainAnimation());
                     yield return playerUnit.Hud.SetExpSmooth();
-
+                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
+                    
                     while (playerUnit.Monster.CheckForLevelUp())
                     {
                         playerUnit.Monster.HasJustLeveledUp = true;
@@ -618,7 +631,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return new WaitForSeconds(0.5f);
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
                 yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
-                yield return _dialogueBox.TypeDialogue("You lost the battle...");
+                yield return _dialogueBox.TypeDialogue("The battle is lost...");
                 while (AudioManager.Instance.MusicPlayer.isPlaying)
                 {
                     yield return null;

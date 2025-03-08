@@ -81,7 +81,6 @@ public class MonsterParty : MonoBehaviour
         }
     }
 
-
     public void RestoreParty()
     {
         foreach (Monster monster in _monsters)

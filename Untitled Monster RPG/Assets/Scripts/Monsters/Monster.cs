@@ -21,14 +21,10 @@ public class Monster
     public bool IsGuarding { get; set; }
     public Dictionary<ConditionID, (Condition, int)> Statuses { get; private set; }
     public Dictionary<ConditionID, (Condition, int)> VolatileStatuses { get; private set; }
-    public Queue<string> StatusChanges { get; private set; }
+    public Queue<StatusEvent> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
-    public event Action OnStatBoostChanged;
     public event Action OnStatusChanged;
-    public event Action OnStatusCured;
     public event Action OnHPChanged;
-    public event Action OnDamageTaken;
-    public event Action OnHealed;
     public int MaxHp { get; private set; }
     public int Strength => GetStat(Stat.Strength);
     public int Endurance => GetStat(Stat.Endurance);
@@ -75,7 +71,7 @@ public class Monster
         CalculateStats();
         Hp = MaxHp;
 
-        StatusChanges = new Queue<string>();
+        StatusChanges = new Queue<StatusEvent>();
         ResetStatBoosts();
         Statuses = new Dictionary<ConditionID, (Condition, int)>();
         VolatileStatuses = new Dictionary<ConditionID, (Condition, int)>();
@@ -104,7 +100,7 @@ public class Monster
         StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.Pv);
 
         CalculateStats();
-        StatusChanges = new Queue<string>();
+        StatusChanges = new Queue<StatusEvent>();
         ResetStatBoosts();
     }
 
@@ -189,7 +185,7 @@ public class Monster
             if ((changeIsPositive && StatBoosts[stat] == 6) || (!changeIsPositive && StatBoosts[stat] == -6))
             {
                 riseOrFall = changeIsPositive ? "higher" : "lower";
-                StatusChanges.Enqueue($"'s {stat} won't go any {riseOrFall}!");
+                AddStatusEvent($"'s {stat} won't go any {riseOrFall}!");
                 return;
             }
 
@@ -198,8 +194,7 @@ public class Monster
 
             string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
 
-            StatusChanges.Enqueue($"'s {stat}{bigChange}{riseOrFall}!");
-            OnStatBoostChanged?.Invoke();
+            AddStatusEvent(StatusEventType.StatBoost, $"'s {stat}{bigChange}{riseOrFall}!", boost);
         }
     }
 
@@ -284,7 +279,6 @@ public class Monster
         Statuses.Clear();
         OnStatusChanged?.Invoke();
         ResetStatBoosts();
-        OnStatBoostChanged?.Invoke();
         foreach (Move move in Moves)
         {
             move.Sp = move.Base.SP;
@@ -320,7 +314,7 @@ public class Monster
             }
             else
             {
-                int critChance = 0 + ((move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0); //Todo: Ability, HeldItem
+                int critChance = 0 + ((move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0);
                 float[] chances = new float[] { 4.167f, 12.5f, 50f, 100f };
 
                 if (UnityEngine.Random.value * 100f <= chances[Mathf.Clamp(critChance, 0, 3)])
@@ -359,8 +353,7 @@ public class Monster
         {
             damage = 1;
         }
-        DecreaseHP(damage);
-        StatusChanges.Enqueue($" was damaged by the recoil!");
+        AddStatusEvent(StatusEventType.Damage, $" was damaged by the recoil!", damage);
     }
 
     public void DrainHealth(int heal, string targetName)
@@ -369,22 +362,19 @@ public class Monster
         {
             heal = 1;
         }
-        IncreaseHP(heal);
-        StatusChanges.Enqueue($" drained health from {targetName}!");
+        AddStatusEvent(StatusEventType.Heal, $" drained health from {targetName}!", heal);
     }
 
     public void DecreaseHP(int damage)
     {
         Hp = Mathf.Clamp(Hp - damage, 0, MaxHp);
         OnHPChanged?.Invoke();
-        OnDamageTaken?.Invoke();
     }
 
     public void IncreaseHP(int heal)
     {
         Hp = Mathf.Clamp(Hp + heal, 0, MaxHp);
         OnHPChanged?.Invoke();
-        OnHealed?.Invoke();
         AudioManager.Instance.PlaySFX(AudioID.Heal);
     }
 
@@ -417,7 +407,7 @@ public class Monster
         statuses.Add(conditionId, (condition, timer));
         if (!string.IsNullOrEmpty(condition.StartMessage))
         {
-            StatusChanges.Enqueue(condition.StartMessage);
+            AddStatusEvent(StatusEventType.SetCondition, condition.StartMessage);
         }
 
         OnStatusChanged?.Invoke();
@@ -439,7 +429,6 @@ public class Monster
         {
             Statuses.Remove(conditionId);
             OnStatusChanged?.Invoke();
-            OnStatusCured?.Invoke();
             AudioManager.Instance.PlaySFX(AudioID.CureStatus);
         }
     }
@@ -448,7 +437,6 @@ public class Monster
     {
         Statuses.Clear();
         OnStatusChanged?.Invoke();
-        OnStatusCured?.Invoke();
         AudioManager.Instance.PlaySFX(AudioID.CureStatus);
     }
 
@@ -524,15 +512,16 @@ public class Monster
         ResetStatBoosts();
         CalculateStats();
     }
-}
 
-public class DamageDetails
-{
-    public bool Defeated { get; set; }
-    public float Critical { get; set; }
-    public float TypeEffectiveness { get; set; }
-    public int TotalDamageDealt { get; set; }
-    public int ActualDamageDealt { get; set; }
+    public void AddStatusEvent(StatusEventType type, string message, int? value = null)
+    {
+        StatusChanges.Enqueue(new StatusEvent(type, message, value));
+    }
+
+    public void AddStatusEvent(string message)
+    {
+        AddStatusEvent(StatusEventType.Text, message, null);
+    }
 }
 
 [Serializable]
@@ -552,4 +541,37 @@ public class StatPV
 {
     public Stat Stat;
     public float Pv;
+}
+
+public class DamageDetails
+{
+    public bool Defeated { get; set; }
+    public float Critical { get; set; }
+    public float TypeEffectiveness { get; set; }
+    public int TotalDamageDealt { get; set; }
+    public int ActualDamageDealt { get; set; }
+}
+
+public class StatusEvent
+{
+    public StatusEventType Type { get; private set; }
+    public string Message { get; private set; }
+    public int? Value { get; private set; }
+
+    public StatusEvent(StatusEventType type, string message, int? value)
+    {
+        Type = type;
+        Value = value;
+        Message = message;
+    }
+}
+
+public enum StatusEventType
+{
+    Text,
+    Damage,
+    Heal,
+    SetCondition,
+    CureCondition,
+    StatBoost
 }

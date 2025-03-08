@@ -65,7 +65,6 @@ public class BattleHUD : MonoBehaviour
         UpdateStatBoosts();
 
         _monster.OnStatusChanged += SetStatusText;
-        _monster.OnStatBoostChanged += UpdateStatBoosts;
         _monster.OnHPChanged += UpdateHP;
     }
 
@@ -197,6 +196,7 @@ public class BattleHUD : MonoBehaviour
     public IEnumerator WaitForHPUpdate()
     {
         yield return new WaitUntil(() => !_hpBar.IsUpdating);
+        yield return new WaitForSeconds(0.33f);
     }
 
     public void UpdateStatBoosts()
@@ -244,7 +244,6 @@ public class BattleHUD : MonoBehaviour
     public void ClearData()
     {
         _monster.OnStatusChanged -= SetStatusText;
-        _monster.OnStatBoostChanged -= UpdateStatBoosts;
         _monster.OnHPChanged -= UpdateHP;
     }
 }
