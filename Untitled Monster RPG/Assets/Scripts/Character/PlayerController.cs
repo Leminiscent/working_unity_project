@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, ISavable
 {
     [SerializeField] private string _name;
-    [SerializeField] private Sprite _sprite;
 
     private Vector2 _input;
     private Character _character;
@@ -17,7 +16,6 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public static PlayerController Instance { get; private set; }
     public string Name => _name;
-    public Sprite Sprite => _sprite;
     public Character Character => _character;
     public DeputyController Deputy { get => _deputy; set => _deputy = value; }
 
