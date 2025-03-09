@@ -17,7 +17,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] private Image _downArrow;
 
     private int _selectedCategory;
-    private const int ITEMS_IN_VIEWPORT = 8;
+    private const int ITEMS_IN_VIEWPORT = 10;
     private List<ItemSlotUI> _slotUIList;
     private Inventory _inventory;
     private RectTransform _itemListRect;
