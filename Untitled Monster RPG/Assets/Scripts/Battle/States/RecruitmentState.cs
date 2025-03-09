@@ -108,16 +108,23 @@ public class RecruitmentState : State<BattleSystem>
         RecruitTarget.Monster.UpdateAffinityLevel(selectedAnswer.AffinityScore);
         int newAffinity = RecruitTarget.Monster.AffinityLevel;
 
-        if (newAffinity > oldAffinity)
+        if (newAffinity != oldAffinity)
         {
-            StartCoroutine(RecruitTarget.PlayAffinityGainAnimation());
-        }
-        else if (newAffinity < oldAffinity)
-        {
-            StartCoroutine(RecruitTarget.PlayAffinityLossAnimation());
-        }
+            if (newAffinity > oldAffinity)
+            {
+                StartCoroutine(RecruitTarget.PlayAffinityGainAnimation());
+            }
+            else if (newAffinity < oldAffinity)
+            {
+                StartCoroutine(RecruitTarget.PlayAffinityLossAnimation());
+            }
 
-        yield return RecruitTarget.Hud.SetAffinitySmooth();
+            yield return RecruitTarget.Hud.SetAffinitySmooth();
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
 
         _dialogueBox.EnableDialogueText(true);
         yield return _dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
