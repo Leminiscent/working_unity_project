@@ -41,7 +41,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
             _character.Exclamation.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             _character.Exclamation.SetActive(false);
-            yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 1f);
+            yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 0.75f);
             GameController.Instance.StartMasterBattle(this);
         }
         else

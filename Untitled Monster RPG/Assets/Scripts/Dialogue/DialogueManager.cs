@@ -34,6 +34,7 @@ public class DialogueManager : MonoBehaviour
 
         OnShowDialogue?.Invoke();
         IsShowing = true;
+        _dialogueText.text = "";
         _dialogueBox.SetActive(true);
         yield return TypeDialogue(text);
         if (waitForInput)
@@ -69,6 +70,7 @@ public class DialogueManager : MonoBehaviour
 
         OnShowDialogue?.Invoke();
         IsShowing = true;
+        _dialogueText.text = "";
         _dialogueBox.SetActive(true);
         foreach (string line in dialogue.Lines)
         {
