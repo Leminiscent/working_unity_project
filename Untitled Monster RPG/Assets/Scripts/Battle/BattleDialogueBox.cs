@@ -20,15 +20,17 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _yesText;
     [SerializeField] private TextMeshProUGUI _noText;
 
+    public bool IsChoiceBoxEnabled => _choiceBox.activeSelf;
+
     public void SetDialogue(string dialogue)
     {
         _dialogueText.text = dialogue;
     }
 
-    public IEnumerator TypeDialogue(string typeDialogue, bool waitForInput = false, string setDialogue = null)
+    public IEnumerator TypeDialogue(string typeDialogue, bool waitForInput = false, string setDialogue = null, bool clearDialogue = true)
     {
         yield return new WaitForEndOfFrame();
-        
+
         _dialogueText.text = (setDialogue != null) ? $"{setDialogue} " : "";
         bool isAccelerated = false;
         float accelerationFactor = 100f;
@@ -62,12 +64,18 @@ public class BattleDialogueBox : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.75f);
+        }
+
+        if (clearDialogue)
+        {
+            _dialogueText.text = "";
         }
     }
 
     public void EnableDialogueText(bool enabled)
     {
+        _dialogueText.text = "";
         _dialogueText.enabled = enabled;
     }
 
@@ -91,8 +99,6 @@ public class BattleDialogueBox : MonoBehaviour
     {
         _choiceBox.SetActive(enabled);
     }
-
-    public bool IsChoiceBoxEnabled => _choiceBox.activeSelf;
 
     public void UpdateActionSelection(int selectedAction)
     {

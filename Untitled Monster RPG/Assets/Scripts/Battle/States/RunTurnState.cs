@@ -536,9 +536,9 @@ public class RunTurnState : State<BattleSystem>
                 AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                 foreach (string loot in lootDescriptions)
                 {
-                    yield return loot != lootDescriptions.First()
-                        ? _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage)
-                        : _dialogueBox.TypeDialogue($"{initialMessage} {loot}");
+                    yield return loot != lootDescriptions.First() & loot != lootDescriptions.Last() ? _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage, clearDialogue: false)
+                        : loot == lootDescriptions.First() ? _dialogueBox.TypeDialogue($"{initialMessage} {loot}", clearDialogue: false)
+                        : _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage);
                 }
             }
 
@@ -560,7 +560,7 @@ public class RunTurnState : State<BattleSystem>
                     StartCoroutine(playerUnit.PlayExpGainAnimation());
                     yield return playerUnit.Hud.SetExpSmooth();
                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
-                    
+
                     while (playerUnit.Monster.CheckForLevelUp())
                     {
                         playerUnit.Monster.HasJustLeveledUp = true;
@@ -631,7 +631,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return new WaitForSeconds(0.5f);
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
                 yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
-                yield return _dialogueBox.TypeDialogue("The battle is lost...");
+                yield return _dialogueBox.TypeDialogue("The battle is lost...", clearDialogue: false);
                 while (AudioManager.Instance.MusicPlayer.isPlaying)
                 {
                     yield return null;
@@ -670,7 +670,7 @@ public class RunTurnState : State<BattleSystem>
                     yield return new WaitForSeconds(0.5f);
                     AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
                     yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
-                    yield return _dialogueBox.TypeDialogue("You are victorious!");
+                    yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
                     while (AudioManager.Instance.MusicPlayer.isPlaying)
                     {
                         yield return null;
@@ -702,7 +702,7 @@ public class RunTurnState : State<BattleSystem>
                     yield return new WaitForSeconds(0.5f);
                     AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
                     yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
-                    yield return _dialogueBox.TypeDialogue("You are victorious!");
+                    yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
                     while (AudioManager.Instance.MusicPlayer.isPlaying)
                     {
                         yield return null;
@@ -772,7 +772,7 @@ public class RunTurnState : State<BattleSystem>
         if (minPlayerAgility >= maxEnemyAgility)
         {
             AudioManager.Instance.PlayMusic(_battleSystem.BattleFledMusic, loop: false);
-            yield return _dialogueBox.TypeDialogue("You got away safely!");
+            yield return _dialogueBox.TypeDialogue("You got away safely!", clearDialogue: false);
             while (AudioManager.Instance.MusicPlayer.isPlaying)
             {
                 yield return null;
@@ -786,7 +786,7 @@ public class RunTurnState : State<BattleSystem>
             if (Random.Range(0, 256) < f)
             {
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleFledMusic, loop: false);
-                yield return _dialogueBox.TypeDialogue("You got away safely!");
+                yield return _dialogueBox.TypeDialogue("You got away safely!", clearDialogue: false);
                 while (AudioManager.Instance.MusicPlayer.isPlaying)
                 {
                     yield return null;
