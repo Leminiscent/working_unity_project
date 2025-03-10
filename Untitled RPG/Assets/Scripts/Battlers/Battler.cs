@@ -142,10 +142,10 @@ public class Battler
 
         int prevMaxHp = MaxHp;
         MaxHp = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
-
-        if (prevMaxHp != 0)
+        Hp += MaxHp - prevMaxHp;
+        if (MaxHp > prevMaxHp)
         {
-            Hp += MaxHp - prevMaxHp;
+            OnHPChanged?.Invoke();
         }
     }
 
