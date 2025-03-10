@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
+[CreateAssetMenu(fileName = "Battler", menuName = "Battler/Create new battler")]
 public class BattlerBase : ScriptableObject
 {
     [Header("Basic Details")]

@@ -273,7 +273,7 @@ public class Battler
         CalculateStats();
     }
 
-    public void RestoreMonster()
+    public void RestoreBattler()
     {
         Hp = MaxHp;
         OnHPChanged?.Invoke();

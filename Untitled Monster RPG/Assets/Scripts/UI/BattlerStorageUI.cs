@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.GenericSelectionUI;
 
-public class MonsterStorageUI : SelectionUI<ImageSlot>
+public class BattlerStorageUI : SelectionUI<ImageSlot>
 {
     [SerializeField] private List<ImageSlot> _storageSlots;
     [SerializeField] private TextMeshProUGUI _depotNameText;
@@ -51,11 +51,11 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
     {
         for (int i = 0; i < _depotSlots.Count; i++)
         {
-            Battler monster = _storage.GetBattler(SelectedDepot, i);
+            Battler battler = _storage.GetBattler(SelectedDepot, i);
 
-            if (monster != null)
+            if (battler != null)
             {
-                _depotSlots[i].SetData(monster);
+                _depotSlots[i].SetData(battler);
             }
             else
             {
@@ -125,9 +125,9 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         return slotIndex % _totalColumns == 0;
     }
 
-    public Battler PeekMonsterInSlot(int slotIndex)
+    public Battler PeekBattlerInSlot(int slotIndex)
     {
-        Battler monster;
+        Battler battler;
 
         if (IsPartySlot(slotIndex))
         {
@@ -138,24 +138,24 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
                 return null;
             }
 
-            monster = _party.Battlers[partyIndex];
-            return monster;
+            battler = _party.Battlers[partyIndex];
+            return battler;
         }
         else
         {
             int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
 
-            monster = _storage.GetBattler(SelectedDepot, depotSlotIndex);
-            return monster;
+            battler = _storage.GetBattler(SelectedDepot, depotSlotIndex);
+            return battler;
         }
     }
 
-    public int GetSlotIndexForMonster(Battler monster)
+    public int GetSlotIndexForBattler(Battler battler)
     {
         int totalSlots = GetItemsCount();
         for (int i = 0; i < totalSlots; i++)
         {
-            if (PeekMonsterInSlot(i) == monster)
+            if (PeekBattlerInSlot(i) == battler)
             {
                 return i;
             }
@@ -163,9 +163,9 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         return -1;
     }
 
-    public Battler TakeMonsterFromSlot(int slotIndex)
+    public Battler TakeBattlerFromSlot(int slotIndex)
     {
-        Battler monster;
+        Battler battler;
 
         if (IsPartySlot(slotIndex))
         {
@@ -176,8 +176,8 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
                 return null;
             }
 
-            monster = _party.Battlers[partyIndex];
-            if (monster == null)
+            battler = _party.Battlers[partyIndex];
+            if (battler == null)
             {
                 return null;
             }
@@ -188,8 +188,8 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         {
             int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
 
-            monster = _storage.GetBattler(SelectedDepot, depotSlotIndex);
-            if (monster == null)
+            battler = _storage.GetBattler(SelectedDepot, depotSlotIndex);
+            if (battler == null)
             {
                 return null;
             }
@@ -202,10 +202,10 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
         _storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
         _transferImage.gameObject.SetActive(true);
 
-        return monster;
+        return battler;
     }
 
-    public void PlaceMonsterIntoSlot(int slotIndex, Battler monster)
+    public void PlaceBattlerIntoSlot(int slotIndex, Battler battler)
     {
         if (IsPartySlot(slotIndex))
         {
@@ -213,34 +213,34 @@ public class MonsterStorageUI : SelectionUI<ImageSlot>
 
             if (partyIndex >= _party.Battlers.Count)
             {
-                _party.Battlers.Add(monster);
+                _party.Battlers.Add(battler);
             }
             else
             {
-                _party.Battlers[partyIndex] = monster;
+                _party.Battlers[partyIndex] = battler;
             }
         }
         else
         {
             int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
 
-            _storage.AddBattler(monster, SelectedDepot, depotSlotIndex);
+            _storage.AddBattler(battler, SelectedDepot, depotSlotIndex);
         }
 
         _transferImage.gameObject.SetActive(false);
     }
 
-    public List<Battler> GetAllMonsters()
+    public List<Battler> GetAllBattlers()
     {
-        List<Battler> monsters = new();
+        List<Battler> battlers = new();
         for (int i = 0; i < _storageSlots.Count; i++)
         {
-            Battler monster = PeekMonsterInSlot(i);
-            if (monster != null)
+            Battler battler = PeekBattlerInSlot(i);
+            if (battler != null)
             {
-                monsters.Add(monster);
+                battlers.Add(battler);
             }
         }
-        return monsters;
+        return battlers;
     }
 }

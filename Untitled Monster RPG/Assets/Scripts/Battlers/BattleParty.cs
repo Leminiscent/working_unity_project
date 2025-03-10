@@ -24,22 +24,22 @@ public class BattleParty : MonoBehaviour
     private void Awake()
     {
         _storage = GetComponent<BattlerStorage>();
-        foreach (Battler monster in _battlers)
+        foreach (Battler battler in _battlers)
         {
-            monster.Init();
+            battler.Init();
         }
     }
 
     public Battler GetHealthyBattlers(List<Battler> excludedBattlers = null)
     {
-        List<Battler> healthyMonsters = _battlers.Where(static x => x.Hp > 0).ToList();
+        List<Battler> healthyBattlers = _battlers.Where(static x => x.Hp > 0).ToList();
 
         if (excludedBattlers != null)
         {
-            healthyMonsters = healthyMonsters.Where(x => !excludedBattlers.Contains(x)).ToList();
+            healthyBattlers = healthyBattlers.Where(x => !excludedBattlers.Contains(x)).ToList();
         }
 
-        return healthyMonsters.FirstOrDefault();
+        return healthyBattlers.FirstOrDefault();
     }
 
     public List<Battler> GetHealthyBattlers(int count)
@@ -47,16 +47,16 @@ public class BattleParty : MonoBehaviour
         return _battlers.Where(static x => x.Hp > 0).Take(count).ToList();
     }
 
-    public void AddMember(Battler newMonster)
+    public void AddMember(Battler newBattler)
     {
         if (_battlers.Count < 6)
         {
-            _battlers.Add(newMonster);
+            _battlers.Add(newBattler);
             OnUpdated?.Invoke();
         }
         else
         {
-            _storage.AddBattlerToFirstEmptySlot(newMonster);
+            _storage.AddBattlerToFirstEmptySlot(newBattler);
         }
     }
 
@@ -68,14 +68,14 @@ public class BattleParty : MonoBehaviour
 
     public IEnumerator RunTransformations()
     {
-        foreach (Battler monster in _battlers)
+        foreach (Battler battler in _battlers)
         {
-            if (monster.HasJustLeveledUp)
+            if (battler.HasJustLeveledUp)
             {
-                Transformation transformation = monster.CheckForTransformation();
+                Transformation transformation = battler.CheckForTransformation();
                 if (transformation != null)
                 {
-                    yield return TransformationState.Instance.Transform(monster, transformation);
+                    yield return TransformationState.Instance.Transform(battler, transformation);
                 }
             }
         }
@@ -83,9 +83,9 @@ public class BattleParty : MonoBehaviour
 
     public void RestoreParty()
     {
-        foreach (Battler monster in _battlers)
+        foreach (Battler battler in _battlers)
         {
-            monster.RestoreMonster();
+            battler.RestoreBattler();
         }
     }
 

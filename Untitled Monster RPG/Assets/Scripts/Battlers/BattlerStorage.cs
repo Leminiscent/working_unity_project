@@ -10,9 +10,9 @@ public class BattlerStorage : MonoBehaviour, ISavable
     public int NumberOfDepots => NUMBER_OF_DEPOTS;
     public int NumberOfSlots => NUMBER_OF_SLOTS;
 
-    public void AddBattler(Battler monster, int depotIndex, int slotIndex)
+    public void AddBattler(Battler battler, int depotIndex, int slotIndex)
     {
-        _depots[depotIndex, slotIndex] = monster;
+        _depots[depotIndex, slotIndex] = battler;
     }
 
     public void RemoveBattler(int depotIndex, int slotIndex)
@@ -25,7 +25,7 @@ public class BattlerStorage : MonoBehaviour, ISavable
         return _depots[depotIndex, slotIndex];
     }
 
-    public void AddBattlerToFirstEmptySlot(Battler monster)
+    public void AddBattlerToFirstEmptySlot(Battler battler)
     {
         for (int depotIndex = 0; depotIndex < NUMBER_OF_DEPOTS; depotIndex++)
         {
@@ -33,7 +33,7 @@ public class BattlerStorage : MonoBehaviour, ISavable
             {
                 if (_depots[depotIndex, slotIndex] == null)
                 {
-                    _depots[depotIndex, slotIndex] = monster;
+                    _depots[depotIndex, slotIndex] = battler;
                     return;
                 }
             }
@@ -60,7 +60,7 @@ public class BattlerStorage : MonoBehaviour, ISavable
                 {
                     DepotSlotSaveData depotSlot = new()
                     {
-                        MonsterData = _depots[depotIndex, slotIndex].GetSaveData(),
+                        BattlerData = _depots[depotIndex, slotIndex].GetSaveData(),
                         DepotIndex = depotIndex,
                         SlotIndex = slotIndex
                     };
@@ -87,7 +87,7 @@ public class BattlerStorage : MonoBehaviour, ISavable
 
         foreach (DepotSlotSaveData slot in saveData.DepotSlots)
         {
-            _depots[slot.DepotIndex, slot.SlotIndex] = new Battler(slot.MonsterData);
+            _depots[slot.DepotIndex, slot.SlotIndex] = new Battler(slot.BattlerData);
         }
     }
 }
@@ -101,7 +101,7 @@ public class DepotSaveData
 [System.Serializable]
 public class DepotSlotSaveData
 {
-    public BattlerSaveData MonsterData;
+    public BattlerSaveData BattlerData;
     public int DepotIndex;
     public int SlotIndex;
 }

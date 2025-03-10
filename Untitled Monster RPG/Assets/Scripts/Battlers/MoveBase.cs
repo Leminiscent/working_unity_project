@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Move", menuName = "Monster/Create new move")]
+[CreateAssetMenu(fileName = "Move", menuName = "Battler/Create new move")]
 public class MoveBase : ScriptableObject
 {
     [SerializeField] private string _name;
