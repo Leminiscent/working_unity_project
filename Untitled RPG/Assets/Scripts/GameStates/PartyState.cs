@@ -143,6 +143,11 @@ public class PartyState : State<GameController>
                     _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedBattlerIndex);
                     break;
                 case 1:
+                    if (_playerParty.Battlers.Count == 1)
+                    {
+                        _partyScreen.SetMessageText("There are no other members to switch with!");
+                        yield break;
+                    }
                     _isSwitchingPosition = true;
                     _selectedSwitchToIndex = selectedBattlerIndex;
                     _partyScreen.SaveSelection();
