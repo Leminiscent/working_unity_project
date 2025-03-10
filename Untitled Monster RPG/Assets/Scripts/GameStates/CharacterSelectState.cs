@@ -7,7 +7,7 @@ using Utils.StateMachine;
 public class CharacterSelectState : State<GameController>
 {
     [SerializeField] private CharacterSelectScreen _characterSelectScreen;
-    [SerializeField] private List<Monster> _availableMonsters;
+    [SerializeField] private List<Battler> _availableBattlers;
 
     private GameController _gameController;
 
@@ -24,9 +24,9 @@ public class CharacterSelectState : State<GameController>
             Instance = this;
         }
 
-        foreach (Monster monster in _availableMonsters)
+        foreach (Battler battler in _availableBattlers)
         {
-            monster.Init();
+            battler.Init();
         }
     }
 
@@ -34,7 +34,7 @@ public class CharacterSelectState : State<GameController>
     {
         _gameController = owner;
         _characterSelectScreen.gameObject.SetActive(true);
-        _characterSelectScreen.SetAvailableMonsters(_availableMonsters);
+        _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
         _characterSelectScreen.OnSelected += OnCharacterSelected;
     }
 
@@ -51,8 +51,8 @@ public class CharacterSelectState : State<GameController>
 
     private void OnCharacterSelected(int selectionIndex)
     {
-        Monster selectedMonster = _availableMonsters[selectionIndex];
-        PlayerController.Instance.SetPlayerMonster(selectedMonster);
+        Battler selectedBattler = _availableBattlers[selectionIndex];
+        PlayerController.Instance.SetPlayerBattler(selectedBattler);
 
         StartCoroutine(StartGame());
     }

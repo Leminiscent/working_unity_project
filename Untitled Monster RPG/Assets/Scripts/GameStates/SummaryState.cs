@@ -8,13 +8,13 @@ public class SummaryState : State<GameController>
     [SerializeField] private SummaryScreenUI _summaryScreenUI;
 
     private int _selectedPage = 0;
-    private List<Monster> _currentMonsterList;
+    private List<Battler> _currentBattlerList;
     private GameController _gameController;
-    private DummySelectionUI _monsterSelectionUI;
+    private DummySelectionUI _battlerSelectionUI;
     private DummySelectionUI _pageSelectionUI;
 
-    public int SelectedMonsterIndex { get; set; }
-    public List<Monster> MonstersList { get; set; }
+    public int SelectedBattlerIndex { get; set; }
+    public List<Battler> BattlersList { get; set; }
     public static SummaryState Instance { get; set; }
 
     private void Awake()
@@ -32,39 +32,39 @@ public class SummaryState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        _currentMonsterList = MonstersList ?? PlayerController.Instance.GetComponent<MonsterParty>().Monsters;
-        if (_currentMonsterList == null || _currentMonsterList.Count == 0)
+        _currentBattlerList = BattlersList ?? PlayerController.Instance.GetComponent<BattleParty>().Battlers;
+        if (_currentBattlerList == null || _currentBattlerList.Count == 0)
         {
-            _currentMonsterList = new List<Monster>();
+            _currentBattlerList = new List<Battler>();
         }
-        if (SelectedMonsterIndex < 0 || SelectedMonsterIndex >= _currentMonsterList.Count)
+        if (SelectedBattlerIndex < 0 || SelectedBattlerIndex >= _currentBattlerList.Count)
         {
-            SelectedMonsterIndex = 0;
+            SelectedBattlerIndex = 0;
         }
         _summaryScreenUI.gameObject.SetActive(true);
-        if (_currentMonsterList.Count > 0)
+        if (_currentBattlerList.Count > 0)
         {
-            _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
+            _summaryScreenUI.SetBasicDetails(_currentBattlerList[SelectedBattlerIndex]);
         }
         _summaryScreenUI.ShowPage(_selectedPage);
 
-        // Initialize monster selection UI.
-        _monsterSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
-        _monsterSelectionUI.SetSelectionSettings(SelectionType.List, 1);
-        _monsterSelectionUI.IgnoreHorizontalInput = true;
-        List<DummySelectable> monsterItems = new();
-        for (int i = 0; i < _currentMonsterList.Count; i++)
+        // Initialize battler selection UI.
+        _battlerSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _battlerSelectionUI.SetSelectionSettings(SelectionType.List, 1);
+        _battlerSelectionUI.IgnoreHorizontalInput = true;
+        List<DummySelectable> battlerItems = new();
+        for (int i = 0; i < _currentBattlerList.Count; i++)
         {
-            monsterItems.Add(new DummySelectable());
+            battlerItems.Add(new DummySelectable());
         }
-        _monsterSelectionUI.SetItems(monsterItems);
-        _monsterSelectionUI.SetSelectedIndex(SelectedMonsterIndex);
-        _monsterSelectionUI.OnIndexChanged += (index) =>
+        _battlerSelectionUI.SetItems(battlerItems);
+        _battlerSelectionUI.SetSelectedIndex(SelectedBattlerIndex);
+        _battlerSelectionUI.OnIndexChanged += (index) =>
         {
-            SelectedMonsterIndex = index;
-            if (_currentMonsterList.Count > 0)
+            SelectedBattlerIndex = index;
+            if (_currentBattlerList.Count > 0)
             {
-                _summaryScreenUI.SetBasicDetails(_currentMonsterList[SelectedMonsterIndex]);
+                _summaryScreenUI.SetBasicDetails(_currentBattlerList[SelectedBattlerIndex]);
                 _summaryScreenUI.ShowPage(_selectedPage);
             }
         };
@@ -87,9 +87,9 @@ public class SummaryState : State<GameController>
     {
         if (!_summaryScreenUI.InMoveSelection)
         {
-            if (_monsterSelectionUI != null)
+            if (_battlerSelectionUI != null)
             {
-                _monsterSelectionUI.HandleUpdate();
+                _battlerSelectionUI.HandleUpdate();
             }
             if (_pageSelectionUI != null)
             {
@@ -127,12 +127,12 @@ public class SummaryState : State<GameController>
     {
         _summaryScreenUI.gameObject.SetActive(false);
         _selectedPage = 0;
-        MonstersList = null;
+        BattlersList = null;
 
-        if (_monsterSelectionUI != null)
+        if (_battlerSelectionUI != null)
         {
-            Destroy(_monsterSelectionUI);
-            _monsterSelectionUI = null;
+            Destroy(_battlerSelectionUI);
+            _battlerSelectionUI = null;
         }
         if (_pageSelectionUI != null)
         {

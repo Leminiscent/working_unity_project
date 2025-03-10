@@ -39,7 +39,7 @@ public class UseItemState : State<GameController>
     private IEnumerator UseItem()
     {
         ItemBase item = _inventoryUI.SelectedItem;
-        Monster monster = _partyScreen.SelectedMember;
+        Battler battler = _partyScreen.SelectedMember;
 
         if (item is SkillBook)
         {
@@ -49,36 +49,36 @@ public class UseItemState : State<GameController>
         {
             if (item is TransformationItem)
             {
-                Transformation transformation = monster.CheckForTransformation(item);
+                Transformation transformation = battler.CheckForTransformation(item);
 
                 if (transformation != null)
                 {
-                    yield return TransformationState.Instance.Transform(monster, transformation);
+                    yield return TransformationState.Instance.Transform(battler, transformation);
                 }
                 else
                 {
-                    yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
+                    yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {battler.Base.Name}!");
                     _gameController.StateMachine.Pop();
                     yield break;
                 }
             }
 
-            ItemBase usedItem = _inventory.UseItem(item, monster);
+            ItemBase usedItem = _inventory.UseItem(item, battler);
 
             if (usedItem != null)
             {
                 ItemUsed = true;
                 if (usedItem is RecoveryItem)
                 {
-                    yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {monster.Base.Name}!");
-                    yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} {usedItem.Message}!");
+                    yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} was used on {battler.Base.Name}!");
+                    yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} {usedItem.Message}!");
                 }
             }
             else
             {
                 if (_inventoryUI.SelectedCategory == (int)ItemCategory.RecoveryItems)
                 {
-                    yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {monster.Base.Name}!");
+                    yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {battler.Base.Name}!");
                 }
             }
         }
@@ -95,46 +95,46 @@ public class UseItemState : State<GameController>
             yield break;
         }
 
-        Monster monster = _partyScreen.SelectedMember;
+        Battler battler = _partyScreen.SelectedMember;
 
-        if (monster.HasMove(skillBook.Move))
+        if (battler.HasMove(skillBook.Move))
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} already knows {skillBook.Move.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} already knows {skillBook.Move.Name}!");
             yield break;
         }
 
-        if (!skillBook.CanBeLearned(monster))
+        if (!skillBook.CanBeLearned(battler))
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} cannot learn {skillBook.Move.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} cannot learn {skillBook.Move.Name}!");
             yield break;
         }
 
-        if (monster.Moves.Count < MonsterBase.MaxMoveCount)
+        if (battler.Moves.Count < BattlerBase.MaxMoveCount)
         {
-            monster.LearnMove(skillBook.Move);
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} learned {skillBook.Move.Name}!");
+            battler.LearnMove(skillBook.Move);
+            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} learned {skillBook.Move.Name}!");
         }
         else
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} is trying to learn {skillBook.Move.Name}!");
-            yield return DialogueManager.Instance.ShowDialogueText($"But {monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
-            yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {monster.Base.Name} to forget.", autoClose: false);
+            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} is trying to learn {skillBook.Move.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"But {battler.Base.Name} already knows {BattlerBase.MaxMoveCount} moves!");
+            yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {battler.Base.Name} to forget.", autoClose: false);
             ForgettingMoveState.Instance.NewMove = skillBook.Move;
-            ForgettingMoveState.Instance.CurrentMoves = monster.Moves.Select(static m => m.Base).ToList();
+            ForgettingMoveState.Instance.CurrentMoves = battler.Moves.Select(static m => m.Base).ToList();
             yield return _gameController.StateMachine.PushAndWait(ForgettingMoveState.Instance);
 
             int moveIndex = ForgettingMoveState.Instance.Selection;
 
-            if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
+            if (moveIndex == BattlerBase.MaxMoveCount || moveIndex == -1)
             {
-                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} did not learn {skillBook.Move.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} did not learn {skillBook.Move.Name}!");
             }
             else
             {
-                Move selectedMove = monster.Moves[moveIndex];
+                Move selectedMove = battler.Moves[moveIndex];
 
-                yield return DialogueManager.Instance.ShowDialogueText($"{monster.Base.Name} forgot {selectedMove.Base.Name} and learned {skillBook.Move.Name}!");
-                monster.Moves[moveIndex] = new Move(skillBook.Move);
+                yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} forgot {selectedMove.Base.Name} and learned {skillBook.Move.Name}!");
+                battler.Moves[moveIndex] = new Move(skillBook.Move);
             }
         }
     }

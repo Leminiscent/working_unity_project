@@ -8,21 +8,21 @@ public class PartyMemberUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _messageText;
     [SerializeField] private HPBar _hpBar;
 
-    private Monster _monster;
+    private Battler _battler;
 
-    public void Init(Monster monster)
+    public void Init(Battler battler)
     {
-        _monster = monster;
+        _battler = battler;
         UpdateData();
         SetMessage("");
-        _monster.OnHPChanged += UpdateData;
+        _battler.OnHPChanged += UpdateData;
     }
 
     private void UpdateData()
     {
-        _nameText.text = _monster.Base.Name;
-        _levelText.text = $"Lvl {_monster.Level}";
-        _hpBar.SetHP((float)_monster.Hp / _monster.MaxHp);
+        _nameText.text = _battler.Base.Name;
+        _levelText.text = $"Lvl {_battler.Level}";
+        _hpBar.SetHP((float)_battler.Hp / _battler.MaxHp);
     }
 
     public void SetSelected(bool selected)

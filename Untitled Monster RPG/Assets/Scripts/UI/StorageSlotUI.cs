@@ -5,9 +5,9 @@ public class StorageSlotUI : MonoBehaviour
 {
     [SerializeField] private Image _image;
 
-    public void SetData(Monster monster)
+    public void SetData(Battler battler)
     {
-        _image.sprite = monster.Base.Sprite;
+        _image.sprite = battler.Base.Sprite;
         _image.color = new Color(1, 1, 1, 1);
     }
 

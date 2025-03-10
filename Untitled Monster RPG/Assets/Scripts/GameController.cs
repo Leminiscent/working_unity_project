@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        MonsterDB.Init();
+        BattlerDB.Init();
         MoveDB.Init();
         ItemDB.Init();
         QuestDB.Init();
@@ -87,7 +87,7 @@ public class GameController : MonoBehaviour
             _battleSystem.gameObject.SetActive(false);
             _worldCamera.gameObject.SetActive(true);
 
-            MonsterParty playerParty = _playerController.GetComponent<MonsterParty>();
+            BattleParty playerParty = _playerController.GetComponent<BattleParty>();
             bool hasTransformations = playerParty.CheckForTransformations();
 
             if (hasTransformations)
@@ -99,9 +99,9 @@ public class GameController : MonoBehaviour
                 AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
             }
 
-            foreach (Monster monster in playerParty.Monsters)
+            foreach (Battler battler in playerParty.Battlers)
             {
-                monster.HasJustLeveledUp = false;
+                battler.HasJustLeveledUp = false;
             }
         }
         else

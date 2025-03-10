@@ -9,31 +9,31 @@ public class PartyScreen : SelectionUI<TextSlot>
     [SerializeField] private TextMeshProUGUI _messageText;
 
     private PartyMemberUI[] _memberSlots;
-    private List<Monster> _monsters;
-    private MonsterParty _party;
+    private List<Battler> _battlers;
+    private BattleParty _party;
 
-    public Monster SelectedMember => _monsters[_selectedItem];
+    public Battler SelectedMember => _battlers[_selectedItem];
 
     public void Init()
     {
         _memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
         SetSelectionSettings(SelectionType.Grid, 2);
-        _party = MonsterParty.GetPlayerParty();
+        _party = BattleParty.GetPlayerParty();
         SetPartyData();
         _party.OnUpdated += SetPartyData;
     }
 
     public void SetPartyData()
     {
-        _monsters = _party.Monsters;
+        _battlers = _party.Battlers;
         ClearItems();
 
         for (int i = 0; i < _memberSlots.Length; ++i)
         {
-            if (i < _monsters.Count)
+            if (i < _battlers.Count)
             {
                 _memberSlots[i].gameObject.SetActive(true);
-                _memberSlots[i].Init(_monsters[i]);
+                _memberSlots[i].Init(_battlers[i]);
             }
             else
             {
@@ -43,16 +43,16 @@ public class PartyScreen : SelectionUI<TextSlot>
 
         IEnumerable<TextSlot> textSlots = _memberSlots.Select(static m => m.GetComponent<TextSlot>());
 
-        SetItems(textSlots.Take(_monsters.Count).ToList());
+        SetItems(textSlots.Take(_battlers.Count).ToList());
 
-        _messageText.text = "Choose a Monster!";
+        _messageText.text = "Choose a member!";
     }
 
     public void ShowSkillBookUsability(SkillBook skillBook)
     {
-        for (int i = 0; i < _monsters.Count; ++i)
+        for (int i = 0; i < _battlers.Count; ++i)
         {
-            string message = skillBook.CanBeLearned(_monsters[i]) ? "Learnable" : "Not Learnable";
+            string message = skillBook.CanBeLearned(_battlers[i]) ? "Learnable" : "Not Learnable";
 
             _memberSlots[i].SetMessage(message);
         }
@@ -65,7 +65,7 @@ public class PartyScreen : SelectionUI<TextSlot>
 
     public void ClearMessageText()
     {
-        for (int i = 0; i < _monsters.Count; ++i)
+        for (int i = 0; i < _battlers.Count; ++i)
         {
             _memberSlots[i].SetMessage("");
         }

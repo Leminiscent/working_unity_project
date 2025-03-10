@@ -5,13 +5,13 @@ using Utils.StateMachine;
 
 public class StorageState : State<GameController>
 {
-    [SerializeField] private MonsterStorageUI _storageUI;
+    [SerializeField] private BattlerStorageUI _storageUI;
 
-    private bool _isMovingMonster = false;
+    private bool _isMovingBattler = false;
     private int _selectedSlotToMove = 0;
-    private Monster _selectedMonsterToMove;
+    private Battler _selectedBattlerToMove;
     private GameController _gameController;
-    private MonsterParty _party;
+    private BattleParty _party;
 
     public static StorageState Instance { get; private set; }
 
@@ -26,7 +26,7 @@ public class StorageState : State<GameController>
             Instance = this;
         }
 
-        _party = MonsterParty.GetPlayerParty();
+        _party = BattleParty.GetPlayerParty();
     }
 
     public override void Enter(GameController owner)
@@ -53,39 +53,39 @@ public class StorageState : State<GameController>
 
     private void OnSlotSelected(int slotIndex)
     {
-        if (!_isMovingMonster)
+        if (!_isMovingBattler)
         {
-            StartCoroutine(HandleMonsterSelection(slotIndex));
+            StartCoroutine(HandleBattlerSelection(slotIndex));
         }
         else
         {
-            if (_selectedMonsterToMove.IsPlayer && !_storageUI.IsPartySlot(slotIndex))
+            if (_selectedBattlerToMove.IsPlayer && !_storageUI.IsPartySlot(slotIndex))
             {
-                _storageUI.PlaceMonsterIntoSlot(_selectedSlotToMove, _selectedMonsterToMove);
+                _storageUI.PlaceBattlerIntoSlot(_selectedSlotToMove, _selectedBattlerToMove);
                 StartCoroutine(HandlePlayerMoveAttempt());
                 return;
             }
 
             if (slotIndex == _selectedSlotToMove)
             {
-                _isMovingMonster = false;
-                _storageUI.PlaceMonsterIntoSlot(slotIndex, _selectedMonsterToMove);
+                _isMovingBattler = false;
+                _storageUI.PlaceBattlerIntoSlot(slotIndex, _selectedBattlerToMove);
                 _storageUI.SetStorageData();
                 _storageUI.SetPartyData();
                 AudioManager.Instance.PlaySFX(AudioID.UISelect);
                 return;
             }
 
-            _isMovingMonster = false;
+            _isMovingBattler = false;
             int firstSlotIndex = _selectedSlotToMove;
             int secondSlotIndex = slotIndex;
-            Monster secondMonster = _storageUI.TakeMonsterFromSlot(secondSlotIndex);
+            Battler secondBattler = _storageUI.TakeBattlerFromSlot(secondSlotIndex);
 
-            if (secondMonster == null && _storageUI.IsPartySlot(firstSlotIndex) && _storageUI.IsPartySlot(secondSlotIndex))
+            if (secondBattler == null && _storageUI.IsPartySlot(firstSlotIndex) && _storageUI.IsPartySlot(secondSlotIndex))
             {
                 int partyIndex = firstSlotIndex / _storageUI.TotalColumns;
-                _party.Monsters.RemoveAt(partyIndex);
-                _storageUI.PlaceMonsterIntoSlot(secondSlotIndex, _selectedMonsterToMove);
+                _party.Battlers.RemoveAt(partyIndex);
+                _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, _selectedBattlerToMove);
                 _party.PartyUpdated();
                 _storageUI.SetStorageData();
                 _storageUI.SetPartyData();
@@ -93,20 +93,20 @@ public class StorageState : State<GameController>
                 return;
             }
 
-            if (secondMonster != null && secondMonster.IsPlayer && !_storageUI.IsPartySlot(firstSlotIndex))
+            if (secondBattler != null && secondBattler.IsPlayer && !_storageUI.IsPartySlot(firstSlotIndex))
             {
-                _storageUI.PlaceMonsterIntoSlot(secondSlotIndex, secondMonster);
-                _storageUI.PlaceMonsterIntoSlot(firstSlotIndex, _selectedMonsterToMove);
+                _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, secondBattler);
+                _storageUI.PlaceBattlerIntoSlot(firstSlotIndex, _selectedBattlerToMove);
                 StartCoroutine(HandlePlayerMoveAttempt());
                 return;
             }
 
-            _storageUI.PlaceMonsterIntoSlot(secondSlotIndex, _selectedMonsterToMove);
-            if (secondMonster != null)
+            _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, _selectedBattlerToMove);
+            if (secondBattler != null)
             {
-                _storageUI.PlaceMonsterIntoSlot(firstSlotIndex, secondMonster);
+                _storageUI.PlaceBattlerIntoSlot(firstSlotIndex, secondBattler);
             }
-            _party.Monsters.RemoveAll(static m => m == null);
+            _party.Battlers.RemoveAll(static m => m == null);
             _party.PartyUpdated();
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();
@@ -116,7 +116,7 @@ public class StorageState : State<GameController>
 
     private IEnumerator HandlePlayerMoveAttempt()
     {
-        _isMovingMonster = false;
+        _isMovingBattler = false;
         _storageUI.RestoreSelection();
         _storageUI.SetStorageData();
         _storageUI.SetPartyData();
@@ -124,10 +124,10 @@ public class StorageState : State<GameController>
         yield return DialogueManager.Instance.ShowDialogueText($"{PlayerController.Instance.Name} cannot be moved to storage.");
     }
 
-    private IEnumerator HandleMonsterSelection(int slotIndex)
+    private IEnumerator HandleBattlerSelection(int slotIndex)
     {
-        Monster monster = _storageUI.PeekMonsterInSlot(slotIndex);
-        if (monster == null)
+        Battler battler = _storageUI.PeekBattlerInSlot(slotIndex);
+        if (battler == null)
         {
             yield break;
         }
@@ -143,29 +143,29 @@ public class StorageState : State<GameController>
         switch (DynamicMenuState.Instance.SelectedItem)
         {
             case 0:
-                Monster removedMonster = _storageUI.TakeMonsterFromSlot(slotIndex);
-                if (removedMonster != null)
+                Battler removedBattler = _storageUI.TakeBattlerFromSlot(slotIndex);
+                if (removedBattler != null)
                 {
-                    _isMovingMonster = true;
+                    _isMovingBattler = true;
                     _selectedSlotToMove = slotIndex;
-                    _selectedMonsterToMove = removedMonster;
+                    _selectedBattlerToMove = removedBattler;
                     _storageUI.SaveSelection();
                 }
                 break;
             case 1:
-                List<Monster> monsters = _storageUI.GetAllMonsters();
-                SummaryState.Instance.MonstersList = monsters;
-                int index = monsters.IndexOf(monster);
-                SummaryState.Instance.SelectedMonsterIndex = index < 0 ? 0 : index;
+                List<Battler> battlers = _storageUI.GetAllBattlers();
+                SummaryState.Instance.BattlersList = battlers;
+                int index = battlers.IndexOf(battler);
+                SummaryState.Instance.SelectedBattlerIndex = index < 0 ? 0 : index;
                 yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
 
-                Monster selectedMonster = monsters[SummaryState.Instance.SelectedMonsterIndex];
-                int targetSlotIndex = _storageUI.GetSlotIndexForMonster(selectedMonster);
+                Battler selectedBattler = battlers[SummaryState.Instance.SelectedBattlerIndex];
+                int targetSlotIndex = _storageUI.GetSlotIndexForBattler(selectedBattler);
                 if (targetSlotIndex != -1)
                 {
                     _storageUI.SetSelectedIndex(targetSlotIndex);
                 }
-                SummaryState.Instance.MonstersList = null;
+                SummaryState.Instance.BattlersList = null;
                 break;
             default:
                 break;
@@ -176,11 +176,11 @@ public class StorageState : State<GameController>
 
     private void OnBack()
     {
-        if (_isMovingMonster)
+        if (_isMovingBattler)
         {
-            _isMovingMonster = false;
+            _isMovingBattler = false;
             _storageUI.RestoreSelection();
-            _storageUI.PlaceMonsterIntoSlot(_selectedSlotToMove, _selectedMonsterToMove);
+            _storageUI.PlaceBattlerIntoSlot(_selectedSlotToMove, _selectedBattlerToMove);
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);

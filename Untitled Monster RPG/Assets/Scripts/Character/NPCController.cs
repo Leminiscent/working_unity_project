@@ -20,7 +20,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
     private Quest _activeQuest;
     private Character _character;
     private ItemGiver _itemGiver;
-    private MonsterGiver _monsterGiver;
+    private BattlerGiver _battlerGiver;
     private Healer _healer;
     private Merchant _merchant;
 
@@ -28,7 +28,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
     {
         _character = GetComponent<Character>();
         _itemGiver = GetComponent<ItemGiver>();
-        _monsterGiver = GetComponent<MonsterGiver>();
+        _battlerGiver = GetComponent<BattlerGiver>();
         _healer = GetComponent<Healer>();
         _merchant = GetComponent<Merchant>();
     }
@@ -52,9 +52,9 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
             {
                 yield return _itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
             }
-            else if (_monsterGiver != null && _monsterGiver.CanBeGiven())
+            else if (_battlerGiver != null && _battlerGiver.CanBeGiven())
             {
-                yield return _monsterGiver.GiveMonster(initiator.GetComponent<PlayerController>());
+                yield return _battlerGiver.GiveBattler(initiator.GetComponent<PlayerController>());
             }
             else if (_questToStart != null)
             {

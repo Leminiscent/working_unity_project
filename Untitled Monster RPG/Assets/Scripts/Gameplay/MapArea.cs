@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapArea : MonoBehaviour
 {
-    [SerializeField] private List<MonsterEncounterRecord> _wildMonsters;
+    [SerializeField] private List<BattlerEncounterRecord> _wildBattlers;
     [SerializeField] private BattleTrigger _terrain;
 
     [HideInInspector]
@@ -26,10 +26,10 @@ public class MapArea : MonoBehaviour
     {
         _totalChance = -1;
 
-        if (_wildMonsters.Count > 0)
+        if (_wildBattlers.Count > 0)
         {
             _totalChance = 0;
-            foreach (MonsterEncounterRecord record in _wildMonsters)
+            foreach (BattlerEncounterRecord record in _wildBattlers)
             {
                 record.ChanceLower = _totalChance;
                 record.ChanceUpper = _totalChance + record.SpawnChance;
@@ -38,36 +38,36 @@ public class MapArea : MonoBehaviour
         }
     }
 
-    public Monster GetRandomWildMonster()
+    public Battler GetRandomWildBattler()
     {
-        List<MonsterEncounterRecord> monsterList = _wildMonsters;
+        List<BattlerEncounterRecord> battlerList = _wildBattlers;
         int randVal = Random.Range(1, 101);
-        MonsterEncounterRecord monsterRecord = monsterList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
-        Vector2Int levelRange = monsterRecord.LevelRange;
+        BattlerEncounterRecord battlerRecord = battlerList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
+        Vector2Int levelRange = battlerRecord.LevelRange;
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
-        Monster wildMonster = new(monsterRecord.Monster, level);
+        Battler wildBattler = new(battlerRecord.Battler, level);
 
-        wildMonster.Init();
-        return wildMonster;
+        wildBattler.Init();
+        return wildBattler;
     }
 
-    public List<Monster> GetRandomWildMonsters(int count)
+    public List<Battler> GetRandomWildBattlers(int count)
     {
-        List<Monster> monsters = new();
+        List<Battler> battlers = new();
 
         for (int i = 0; i < count; i++)
         {
-            Monster monster = GetRandomWildMonster();
-            monsters.Add(monster);
+            Battler battler = GetRandomWildBattler();
+            battlers.Add(battler);
         }
-        return monsters;
+        return battlers;
     }
 }
 
 [System.Serializable]
-public class MonsterEncounterRecord
+public class BattlerEncounterRecord
 {
-    public MonsterBase Monster;
+    public BattlerBase Battler;
     public Vector2Int LevelRange;
     public int SpawnChance;
     public int ChanceLower { get; set; }

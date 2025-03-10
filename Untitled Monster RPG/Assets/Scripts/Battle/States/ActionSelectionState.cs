@@ -31,7 +31,7 @@ public class ActionSelectionState : State<BattleSystem>
         _selectionUI.gameObject.SetActive(true);
         _selectionUI.OnSelected += OnActionSelected;
         _selectionUI.OnBack += OnBack;
-        _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Monster.Base.Name}!");
+        _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Battler.Base.Name}!");
         _battleSystem.SelectingUnit.SetSelected(true);
     }
 
@@ -53,7 +53,7 @@ public class ActionSelectionState : State<BattleSystem>
         {
             case 0:
                 // Fight
-                MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Monster.Moves;
+                MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Battler.Moves;
                 _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
                 break;
             case 1:
@@ -156,13 +156,13 @@ public class ActionSelectionState : State<BattleSystem>
     {
         yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
 
-        Monster selectedMonster = PartyState.Instance.SelectedMonster;
-        if (selectedMonster != null)
+        Battler selectedBattler = PartyState.Instance.SelectedMember;
+        if (selectedBattler != null)
         {
             _battleSystem.AddBattleAction(new BattleAction()
             {
-                ActionType = BattleActionType.SwitchMonster,
-                SelectedMonster = selectedMonster
+                ActionType = BattleActionType.SwitchBattler,
+                SelectedBattler = selectedBattler
             });
         }
     }

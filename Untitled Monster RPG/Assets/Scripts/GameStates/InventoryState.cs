@@ -61,7 +61,7 @@ public class InventoryState : State<GameController>
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
         if (_gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
         {
-            StartCoroutine(SelectMonsterAndUseItem());
+            StartCoroutine(SelectBattlerAndUseItem());
         }
         else
         {
@@ -76,7 +76,7 @@ public class InventoryState : State<GameController>
         _gameController.StateMachine.Pop();
     }
 
-    private IEnumerator SelectMonsterAndUseItem()
+    private IEnumerator SelectBattlerAndUseItem()
     {
         if (!SelectedItem.DirectlyUsable)
         {

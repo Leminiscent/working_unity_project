@@ -31,24 +31,24 @@ public class BattleState : State<GameController>
         _battleSystem.gameObject.SetActive(true);
         _gameController.WorldCamera.gameObject.SetActive(false);
 
-        MonsterParty playerParty = _gameController.PlayerController.GetComponent<MonsterParty>();
+        BattleParty playerParty = _gameController.PlayerController.GetComponent<BattleParty>();
 
         if (Master == null)
         {
-            List<Monster> wildMonsters = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildMonsters(Random.Range(1, 4));
-            List<Monster> wildMonsterCopies = new();
+            List<Battler> wildBattlers = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildBattlers(Random.Range(1, 4));
+            List<Battler> wildBattlerCopies = new();
 
-            for (int i = 0; i < wildMonsters.Count; i++)
+            for (int i = 0; i < wildBattlers.Count; i++)
             {
-                wildMonsterCopies.Add(new(wildMonsters[i].Base, wildMonsters[i].Level));
+                wildBattlerCopies.Add(new(wildBattlers[i].Base, wildBattlers[i].Level));
             }
 
-            _battleSystem.StartWildBattle(playerParty, wildMonsterCopies, Trigger, wildMonsters.Count);
+            _battleSystem.StartWildBattle(playerParty, wildBattlerCopies, Trigger, wildBattlers.Count);
         }
         else
         {
-            MonsterParty enemyParty = Master.GetComponent<MonsterParty>();
-            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger, Mathf.Min(enemyParty.Monsters.Count, 3));
+            BattleParty enemyParty = Master.GetComponent<BattleParty>();
+            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger, Mathf.Min(enemyParty.Battlers.Count, 3));
         }
 
         _battleSystem.OnBattleOver += EndBattle;

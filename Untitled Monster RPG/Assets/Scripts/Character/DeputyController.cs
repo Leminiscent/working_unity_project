@@ -10,7 +10,7 @@ public class DeputyController : MonoBehaviour, ISavable
     private CharacterAnimator _animator;
     private bool _isMoving;
     private PlayerController _player;
-    private MonsterParty _party;
+    private BattleParty _party;
     private float _moveSpeed;
     private Queue<Vector3> _positionQueue = new();
 
@@ -18,16 +18,16 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         _animator = GetComponent<CharacterAnimator>();
         _player = FindObjectOfType<PlayerController>();
-        _party = _player.GetComponent<MonsterParty>();
+        _party = _player.GetComponent<BattleParty>();
     }
 
     private void Start()
     {
         _moveSpeed = _player.Character.MoveSpeed;
         _player.Character.OnMoveStart += OnPlayerMoveStart;
-        _party.OnUpdated += UpdateDeputyMonster;
+        _party.OnUpdated += UpdateDeputyBattler;
 
-        UpdateDeputyMonster();
+        UpdateDeputyBattler();
         SetPosition();
     }
 
@@ -40,9 +40,9 @@ public class DeputyController : MonoBehaviour, ISavable
         }
     }
 
-    private void UpdateDeputyMonster()
+    private void UpdateDeputyBattler()
     {
-        Monster deputy = _party.Monsters.First(monster => !monster.IsPlayer);
+        Battler deputy = _party.Battlers.First(battler => !battler.IsPlayer);
 
         _animator.SetSprites(
             deputy.Base.WalkDownSprites,

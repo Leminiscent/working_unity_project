@@ -7,7 +7,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] private string _name;
     [TextArea]
     [SerializeField] private string _description;
-    [SerializeField] private MonsterType _type;
+    [SerializeField] private BattlerType _type;
     [SerializeField] private MoveCategory _category;
     [SerializeField] private MoveEffects _effects;
     [SerializeField] private List<SecondaryEffects> _secondaryEffects;
@@ -35,7 +35,7 @@ public class MoveBase : ScriptableObject
 
     public string Name => _name;
     public string Description => _description;
-    public MonsterType Type => _type;
+    public BattlerType Type => _type;
     public CritBehavior CritBehavior => _critBehavior;
     public RecoilMoveEffect Recoil => _recoil;
     public int DrainPercentage => _drainPercentage;
@@ -98,7 +98,7 @@ public class OneHitKOMoveEffect
 {
     public bool IsOneHitKO;
     public bool LowerOddsException;
-    public MonsterType ImmunityType;
+    public BattlerType ImmunityType;
 }
 
 public enum MoveCategory

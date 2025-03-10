@@ -4,7 +4,7 @@ using UnityEngine;
 public class TransformationItem : ItemBase
 {
     public override bool UsableInBattle => false;
-    public override bool Use(Monster monster)
+    public override bool Use(Battler battler)
     {
         return true;
     }

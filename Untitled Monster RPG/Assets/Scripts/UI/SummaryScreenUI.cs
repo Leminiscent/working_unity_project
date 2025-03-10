@@ -11,9 +11,9 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private Image _image;
-    [SerializeField] private GameObject _monsterTypeUI;
-    [SerializeField] private TextMeshProUGUI _monsterType1;
-    [SerializeField] private TextMeshProUGUI _monsterType2;
+    [SerializeField] private GameObject _battlerTypeUI;
+    [SerializeField] private TextMeshProUGUI _battlerType1;
+    [SerializeField] private TextMeshProUGUI _battlerType2;
 
     [Header("Pages")]
     [SerializeField] private TextMeshProUGUI _pageNameText;
@@ -41,7 +41,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] private GameObject _moveEffectsUI;
 
     private List<TextSlot> _moveSlots;
-    private Monster _monster;
+    private Battler _battler;
     private bool _inMoveSelection;
 
     public bool InMoveSelection
@@ -53,7 +53,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
             if (_inMoveSelection)
             {
                 _moveEffectsUI.SetActive(true);
-                SetItems(_moveSlots.Take(_monster.Moves.Count).ToList());
+                SetItems(_moveSlots.Take(_battler.Moves.Count).ToList());
             }
             else
             {
@@ -71,23 +71,23 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         _moveDescriptionText.text = "";
     }
 
-    public void SetBasicDetails(Monster monster)
+    public void SetBasicDetails(Battler battler)
     {
-        _monster = monster;
+        _battler = battler;
 
-        _nameText.text = monster.Base.Name;
-        _levelText.text = "Lvl " + monster.Level;
-        _image.sprite = monster.Base.Sprite;
+        _nameText.text = battler.Base.Name;
+        _levelText.text = "Lvl " + battler.Level;
+        _image.sprite = battler.Base.Sprite;
 
-        _monsterType1.text = monster.Base.Type1.ToString().ToUpper();
-        if (monster.Base.Type2 != MonsterType.None)
+        _battlerType1.text = battler.Base.Type1.ToString().ToUpper();
+        if (battler.Base.Type2 != BattlerType.None)
         {
-            _monsterType2.transform.parent.gameObject.SetActive(true);
-            _monsterType2.text = monster.Base.Type2.ToString().ToUpper();
+            _battlerType2.transform.parent.gameObject.SetActive(true);
+            _battlerType2.text = battler.Base.Type2.ToString().ToUpper();
         }
         else
         {
-            _monsterType2.transform.parent.gameObject.SetActive(false);
+            _battlerType2.transform.parent.gameObject.SetActive(false);
         }
     }
 
@@ -95,54 +95,54 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         if (index == 0)
         {
-            _pageNameText.text = "Monster Details";
+            _pageNameText.text = "Battler Details";
             _detailsPage.SetActive(true);
-            _monsterTypeUI.SetActive(true);
+            _battlerTypeUI.SetActive(true);
             _movesPage.SetActive(false);
             SetStatsAndExp();
         }
         else if (index == 1)
         {
-            _pageNameText.text = "Monster Moves";
+            _pageNameText.text = "Battler Moves";
             _movesPage.SetActive(true);
             _detailsPage.SetActive(false);
-            _monsterTypeUI.SetActive(false);
+            _battlerTypeUI.SetActive(false);
             SetMoves();
         }
     }
 
     public void SetStatsAndExp()
     {
-        _hpText.text = $"{_monster.Hp} / {_monster.MaxHp}";
-        _strengthText.text = "" + _monster.Strength;
-        _enduranceText.text = "" + _monster.Endurance;
-        _intelligenceText.text = "" + _monster.Intelligence;
-        _fortitudeText.text = "" + _monster.Fortitude;
-        _agilityText.text = "" + _monster.Agility;
+        _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
+        _strengthText.text = "" + _battler.Strength;
+        _enduranceText.text = "" + _battler.Endurance;
+        _intelligenceText.text = "" + _battler.Intelligence;
+        _fortitudeText.text = "" + _battler.Fortitude;
+        _agilityText.text = "" + _battler.Agility;
 
-        _expText.text = "" + _monster.Exp;
+        _expText.text = "" + _battler.Exp;
 
-        if (_monster.Level == GlobalSettings.Instance.MaxLevel)
+        if (_battler.Level == GlobalSettings.Instance.MaxLevel)
         {
             _expToNextLevelText.text = "Max Level";
         }
         else
         {
-            int expToNextLevel = _monster.Base.GetExpForLevel(_monster.Level + 1) - _monster.Exp;
+            int expToNextLevel = _battler.Base.GetExpForLevel(_battler.Level + 1) - _battler.Exp;
 
             _expToNextLevelText.text = "" + expToNextLevel;
         }
 
-        _expBar.transform.localScale = new Vector3(_monster.GetNormalizedExp(), 1, 1);
+        _expBar.transform.localScale = new Vector3(_battler.GetNormalizedExp(), 1, 1);
     }
 
     public void SetMoves()
     {
         for (int i = 0; i < _moveNames.Count; i++)
         {
-            if (i < _monster.Moves.Count)
+            if (i < _battler.Moves.Count)
             {
-                Move move = _monster.Moves[i];
+                Move move = _battler.Moves[i];
 
                 _moveTypes[i].text = move.Base.Type.ToString().ToUpper();
                 _moveNames[i].text = move.Base.Name;
@@ -169,7 +169,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         base.UpdateSelectionInUI();
 
-        Move move = _monster.Moves[_selectedItem];
+        Move move = _battler.Moves[_selectedItem];
 
         _moveDescriptionText.text = move.Base.Description;
         _movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";

@@ -40,23 +40,23 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _affinityText;
     [SerializeField] private GameObject _affinityBar;
 
-    private Monster _monster;
+    private Battler _battler;
 
-    public void SetData(Monster monster)
+    public void SetData(Battler battler)
     {
-        if (_monster != null)
+        if (_battler != null)
         {
             ClearData();
         }
 
-        _monster = monster;
+        _battler = battler;
 
-        _nameText.text = monster.Base.Name;
+        _nameText.text = battler.Base.Name;
         SetLevel();
-        _image.sprite = monster.Base.Sprite;
+        _image.sprite = battler.Base.Sprite;
 
-        _hpBar.SetHP((float)monster.Hp / monster.MaxHp);
-        _hpText.text = $"{monster.Hp} / {monster.MaxHp}";
+        _hpBar.SetHP((float)battler.Hp / battler.MaxHp);
+        _hpText.text = $"{battler.Hp} / {battler.MaxHp}";
         SetExp();
         ToggleAffinityBar(false);
         SetAffinity();
@@ -64,23 +64,23 @@ public class BattleHUD : MonoBehaviour
         SetStatusText();
         UpdateStatBoosts();
 
-        _monster.OnStatusChanged += SetStatusText;
-        _monster.OnHPChanged += UpdateHP;
+        _battler.OnStatusChanged += SetStatusText;
+        _battler.OnHPChanged += UpdateHP;
     }
 
     private void SetStatusText()
     {
-        _brnText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Brn));
-        _psnText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Psn));
-        _frzText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Frz));
-        _slpText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Slp));
-        _parText.SetActive(_monster.Statuses.ContainsKey(ConditionID.Par));
-        _conText.SetActive(_monster.VolatileStatuses.ContainsKey(ConditionID.Con));
+        _brnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Brn));
+        _psnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Psn));
+        _frzText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Frz));
+        _slpText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Slp));
+        _parText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Par));
+        _conText.SetActive(_battler.VolatileStatuses.ContainsKey(ConditionID.Con));
     }
 
     public void SetLevel()
     {
-        _levelText.text = "Lvl " + _monster.Level;
+        _levelText.text = "Lvl " + _battler.Level;
     }
 
     public void SetExp()
@@ -90,16 +90,16 @@ public class BattleHUD : MonoBehaviour
             return;
         }
 
-        float normalizedExp = _monster.GetNormalizedExp();
+        float normalizedExp = _battler.GetNormalizedExp();
         _expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
-        if (_monster.Level == GlobalSettings.Instance.MaxLevel)
+        if (_battler.Level == GlobalSettings.Instance.MaxLevel)
         {
             _expText.text = "MAX";
         }
         else
         {
-            int expForLevel = _monster.Base.GetExpForLevel(_monster.Level);
-            _expText.text = $"{_monster.Exp - expForLevel} / {_monster.Base.GetExpForLevel(_monster.Level + 1) - expForLevel}";
+            int expForLevel = _battler.Base.GetExpForLevel(_battler.Level);
+            _expText.text = $"{_battler.Exp - expForLevel} / {_battler.Base.GetExpForLevel(_battler.Level + 1) - expForLevel}";
         }
     }
 
@@ -115,17 +115,17 @@ public class BattleHUD : MonoBehaviour
             _expBar.transform.localScale = new Vector3(0, 1, 1);
         }
 
-        float normalizedExp = _monster.GetNormalizedExp();
+        float normalizedExp = _battler.GetNormalizedExp();
         yield return _expBar.transform.DOScaleX(normalizedExp, 1.15f).WaitForCompletion();
 
-        if (_monster.Level == GlobalSettings.Instance.MaxLevel)
+        if (_battler.Level == GlobalSettings.Instance.MaxLevel)
         {
             _expText.text = "MAX";
         }
         else
         {
-            int expForLevel = _monster.Base.GetExpForLevel(_monster.Level);
-            _expText.text = $"{_monster.Exp - expForLevel} / {_monster.Base.GetExpForLevel(_monster.Level + 1) - expForLevel}";
+            int expForLevel = _battler.Base.GetExpForLevel(_battler.Level);
+            _expText.text = $"{_battler.Exp - expForLevel} / {_battler.Base.GetExpForLevel(_battler.Level + 1) - expForLevel}";
 
         }
     }
@@ -159,7 +159,7 @@ public class BattleHUD : MonoBehaviour
 
         float normalizedAffinity = GetNormalizedAffinity();
         _affinityBar.transform.localScale = new Vector3(normalizedAffinity, 1, 1);
-        _affinityText.text = $"{_monster.AffinityLevel} / 6";
+        _affinityText.text = $"{_battler.AffinityLevel} / 6";
     }
 
     public IEnumerator SetAffinitySmooth()
@@ -172,12 +172,12 @@ public class BattleHUD : MonoBehaviour
         float normalizedAffinity = GetNormalizedAffinity();
 
         yield return _affinityBar.transform.DOScaleX(normalizedAffinity, 1.15f).WaitForCompletion();
-        _affinityText.text = $"{_monster.AffinityLevel} / 6";
+        _affinityText.text = $"{_battler.AffinityLevel} / 6";
     }
 
     private float GetNormalizedAffinity()
     {
-        float normalizedAffinity = (float)_monster.AffinityLevel / 6;
+        float normalizedAffinity = (float)_battler.AffinityLevel / 6;
 
         return Mathf.Clamp01(normalizedAffinity);
     }
@@ -189,8 +189,8 @@ public class BattleHUD : MonoBehaviour
 
     public IEnumerator UpdateHPAsync()
     {
-        yield return _hpBar.SetHPSmooth((float)_monster.Hp / _monster.MaxHp);
-        _hpText.text = $"{_monster.Hp} / {_monster.MaxHp}";
+        yield return _hpBar.SetHPSmooth((float)_battler.Hp / _battler.MaxHp);
+        _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
     }
 
     public IEnumerator WaitForHPUpdate()
@@ -212,7 +212,7 @@ public class BattleHUD : MonoBehaviour
 
     private void UpdateBoost(GameObject boostContainer, Stat stat)
     {
-        int boostValue = _monster.StatBoosts[stat];
+        int boostValue = _battler.StatBoosts[stat];
         boostContainer.SetActive(boostValue != 0);
 
         TextMeshProUGUI boostText = boostContainer.GetComponentInChildren<TextMeshProUGUI>();
@@ -243,7 +243,7 @@ public class BattleHUD : MonoBehaviour
 
     public void ClearData()
     {
-        _monster.OnStatusChanged -= SetStatusText;
-        _monster.OnHPChanged -= UpdateHP;
+        _battler.OnStatusChanged -= SetStatusText;
+        _battler.OnHPChanged -= UpdateHP;
     }
 }

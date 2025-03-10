@@ -4,12 +4,12 @@ using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class Monster
+public class Battler
 {
-    [SerializeField] private MonsterBase _base;
+    [SerializeField] private BattlerBase _base;
     [SerializeField] private int _level;
 
-    public MonsterBase Base => _base;
+    public BattlerBase Base => _base;
     public int Level => _level;
     public bool IsPlayer { get; set; }
     public bool HasJustLeveledUp { get; set; }
@@ -34,7 +34,7 @@ public class Monster
     public int Agility => GetStat(Stat.Agility);
     public Dictionary<Stat, float> StatPerformanceValues { get; private set; }
 
-    public Monster(MonsterBase pBase, int pLevel)
+    public Battler(BattlerBase pBase, int pLevel)
     {
         _base = pBase;
         _level = pLevel;
@@ -52,7 +52,7 @@ public class Monster
             {
                 Moves.Add(new Move(move.Base));
             }
-            if (Moves.Count >= MonsterBase.MaxMoveCount)
+            if (Moves.Count >= BattlerBase.MaxMoveCount)
             {
                 break;
             }
@@ -79,9 +79,9 @@ public class Monster
         AffinityLevel = 0;
     }
 
-    public Monster(MonsterSaveData saveData)
+    public Battler(BattlerSaveData saveData)
     {
-        _base = MonsterDB.GetObjectByName(saveData.Name);
+        _base = BattlerDB.GetObjectByName(saveData.Name);
         Hp = saveData.Hp;
         _level = saveData.Level;
         Exp = saveData.Exp;
@@ -105,9 +105,9 @@ public class Monster
         ResetStatBoosts();
     }
 
-    public MonsterSaveData GetSaveData()
+    public BattlerSaveData GetSaveData()
     {
-        MonsterSaveData saveData = new()
+        BattlerSaveData saveData = new()
         {
             Name = Base.Name,
             Hp = Hp,
@@ -239,7 +239,7 @@ public class Monster
 
     public void LearnMove(MoveBase moveToLearn)
     {
-        if (Moves.Count > MonsterBase.MaxMoveCount)
+        if (Moves.Count > BattlerBase.MaxMoveCount)
         {
             return;
         }
@@ -252,7 +252,7 @@ public class Monster
         return Moves.Count(m => m.Base == move) > 0;
     }
 
-    public bool HasType(MonsterType type)
+    public bool HasType(BattlerType type)
     {
         return (_base.Type1 == type) || (_base.Type2 == type);
     }
@@ -295,7 +295,7 @@ public class Monster
         return Mathf.Clamp01(normalizedExp);
     }
 
-    public DamageDetails TakeDamage(Move move, Monster attacker, Condition weather)
+    public DamageDetails TakeDamage(Move move, Battler attacker, Condition weather)
     {
         if (move.Base.OneHitKO.IsOneHitKO)
         {
@@ -526,7 +526,7 @@ public class Monster
 }
 
 [Serializable]
-public class MonsterSaveData
+public class BattlerSaveData
 {
     public string Name;
     public int Hp;

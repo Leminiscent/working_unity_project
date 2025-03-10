@@ -9,11 +9,11 @@ public class PartyState : State<GameController>
     [SerializeField] private PartyScreen _partyScreen;
 
     private GameController _gameController;
-    private MonsterParty _playerParty;
+    private BattleParty _playerParty;
     private bool _isSwitchingPosition;
     private int _selectedSwitchToIndex = 0;
 
-    public Monster SelectedMonster { get; private set; }
+    public Battler SelectedMember { get; private set; }
     public static PartyState Instance { get; private set; }
 
     private void Awake()
@@ -30,15 +30,15 @@ public class PartyState : State<GameController>
 
     private void Start()
     {
-        _playerParty = PlayerController.Instance.GetComponent<MonsterParty>();
+        _playerParty = PlayerController.Instance.GetComponent<BattleParty>();
     }
 
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        SelectedMonster = null;
+        SelectedMember = null;
         _partyScreen.gameObject.SetActive(true);
-        _partyScreen.OnSelected += OnMonsterSelected;
+        _partyScreen.OnSelected += OnBattlerSelected;
         _partyScreen.OnBack += OnBack;
     }
 
@@ -50,18 +50,18 @@ public class PartyState : State<GameController>
     public override void Exit()
     {
         _partyScreen.gameObject.SetActive(false);
-        _partyScreen.OnSelected -= OnMonsterSelected;
+        _partyScreen.OnSelected -= OnBattlerSelected;
         _partyScreen.OnBack -= OnBack;
     }
 
-    private void OnMonsterSelected(int selection)
+    private void OnBattlerSelected(int selection)
     {
-        SelectedMonster = _partyScreen.SelectedMember;
-        StartCoroutine(MonsterSelectedAction(selection));
+        SelectedMember = _partyScreen.SelectedMember;
+        StartCoroutine(BattlerSelectedAction(selection));
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
-    private IEnumerator MonsterSelectedAction(int selectedMonsterIndex)
+    private IEnumerator BattlerSelectedAction(int selectedBattlerIndex)
     {
         State<GameController> prevState = _gameController.StateMachine.GetPrevState();
 
@@ -84,28 +84,28 @@ public class PartyState : State<GameController>
             switch (DynamicMenuState.Instance.SelectedItem)
             {
                 case 0:
-                    if (SelectedMonster.Hp <= 0)
+                    if (SelectedMember.Hp <= 0)
                     {
-                        _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is unable to fight!");
+                        _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is unable to fight!");
                         yield break;
                     }
-                    if (battleState.BattleSystem.PlayerUnits.Any(u => u.Monster == SelectedMonster))
+                    if (battleState.BattleSystem.PlayerUnits.Any(u => u.Battler == SelectedMember))
                     {
-                        _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already in battle!");
+                        _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is already in battle!");
                         yield break;
                     }
-                    if (battleState.BattleSystem.UnableToSwitch(SelectedMonster))
+                    if (battleState.BattleSystem.UnableToSwitch(SelectedMember))
                     {
-                        _partyScreen.SetMessageText($"{SelectedMonster.Base.Name} is already preparing for battle!");
+                        _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is already preparing for battle!");
                         yield break;
                     }
                     _partyScreen.ResetSelection();
                     _gameController.StateMachine.Pop();
                     break;
                 case 1:
-                    SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
+                    SummaryState.Instance.SelectedBattlerIndex = selectedBattlerIndex;
                     yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
-                    _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedMonsterIndex);
+                    _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedBattlerIndex);
                     break;
                 default:
                     yield break;
@@ -115,14 +115,14 @@ public class PartyState : State<GameController>
         {
             if (_isSwitchingPosition)
             {
-                if (_selectedSwitchToIndex == selectedMonsterIndex)
+                if (_selectedSwitchToIndex == selectedBattlerIndex)
                 {
                     _partyScreen.SetMessageText("You can't switch with the same party member!");
                     yield break;
                 }
 
                 _isSwitchingPosition = false;
-                (_playerParty.Monsters[selectedMonsterIndex], _playerParty.Monsters[_selectedSwitchToIndex]) = (_playerParty.Monsters[_selectedSwitchToIndex], _playerParty.Monsters[selectedMonsterIndex]);
+                (_playerParty.Battlers[selectedBattlerIndex], _playerParty.Battlers[_selectedSwitchToIndex]) = (_playerParty.Battlers[_selectedSwitchToIndex], _playerParty.Battlers[selectedBattlerIndex]);
                 _playerParty.PartyUpdated();
                 yield break;
             }
@@ -138,15 +138,15 @@ public class PartyState : State<GameController>
             switch (DynamicMenuState.Instance.SelectedItem)
             {
                 case 0:
-                    SummaryState.Instance.SelectedMonsterIndex = selectedMonsterIndex;
+                    SummaryState.Instance.SelectedBattlerIndex = selectedBattlerIndex;
                     yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
-                    _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedMonsterIndex);
+                    _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedBattlerIndex);
                     break;
                 case 1:
                     _isSwitchingPosition = true;
-                    _selectedSwitchToIndex = selectedMonsterIndex;
+                    _selectedSwitchToIndex = selectedBattlerIndex;
                     _partyScreen.SaveSelection();
-                    _partyScreen.SetMessageText($"Choose a party member to switch with {_playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
+                    _partyScreen.SetMessageText($"Choose a party member to switch with {_playerParty.Battlers[selectedBattlerIndex].Base.Name}.");
                     break;
                 default:
                     yield break;
@@ -171,7 +171,7 @@ public class PartyState : State<GameController>
             return;
         }
 
-        SelectedMonster = null;
+        SelectedMember = null;
 
         State<GameController> prevState = _gameController.StateMachine.GetPrevState();
 
@@ -179,7 +179,7 @@ public class PartyState : State<GameController>
         {
             BattleState battleState = prevState as BattleState;
 
-            if (battleState.BattleSystem.PlayerUnits.Any(static u => u.Monster.Hp <= 0))
+            if (battleState.BattleSystem.PlayerUnits.Any(static u => u.Battler.Hp <= 0))
             {
                 _partyScreen.SetMessageText("You have to choose a party member!");
                 return;

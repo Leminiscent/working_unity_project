@@ -18,7 +18,7 @@ public class BattleUnit : MonoBehaviour
 
     public bool IsPlayerUnit => _isPlayerUnit;
     public BattleHUD Hud => _hud;
-    public Monster Monster { get; set; }
+    public Battler Battler { get; set; }
 
     private void Awake()
     {
@@ -49,18 +49,18 @@ public class BattleUnit : MonoBehaviour
         yield return new WaitForSeconds((sprites.Count * frameRate) + 0.5f);
     }
 
-    public void Setup(Monster monster)
+    public void Setup(Battler battler)
     {
-        if (Monster != null)
+        if (Battler != null)
         {
             ClearData();
         }
 
-        Monster = monster;
-        _image.sprite = Monster.Base.Sprite;
+        Battler = battler;
+        _image.sprite = Battler.Base.Sprite;
         _image.SetNativeSize();
         _hud.gameObject.SetActive(true);
-        _hud.SetData(monster);
+        _hud.SetData(battler);
         _image.color = _originalColor;
         _currentColor = _originalColor;
         _currentPos = _originalPos;
@@ -69,7 +69,7 @@ public class BattleUnit : MonoBehaviour
 
     public void ClearData()
     {
-        if (Monster != null)
+        if (Battler != null)
         {
             _hud.ClearData();
         }
@@ -262,13 +262,13 @@ public class BattleUnit : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.Append(_image.transform.DOLocalMoveY(_currentPos.y - 0.5f, 0.75f));
         sequence.Join(_image.DOFade(0f, 0.75f));
-        AudioManager.Instance.PlaySFX(AudioID.MonsterDefeat);
+        AudioManager.Instance.PlaySFX(AudioID.UnitDefeat);
         yield return sequence.WaitForCompletion();
     }
 
     public IEnumerator StartGuarding()
     {
-        Monster.IsGuarding = true;
+        Battler.IsGuarding = true;
         float guardOffsetX = 0.25f;
         float guardOffsetY = 0.025f;
         Sequence sequence = DOTween.Sequence();
@@ -284,7 +284,7 @@ public class BattleUnit : MonoBehaviour
 
     public IEnumerator StopGuarding()
     {
-        Monster.IsGuarding = false;
+        Battler.IsGuarding = false;
         Sequence sequence = DOTween.Sequence();
         _currentColor = _originalColor;
         _currentPos = _originalPos;

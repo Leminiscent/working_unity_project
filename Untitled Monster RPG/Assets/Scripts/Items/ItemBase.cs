@@ -21,7 +21,7 @@ public class ItemBase : ScriptableObject
     public float Price => _price;
     public bool IsSellable => _isSellable;
 
-    public virtual bool Use(Monster monster)
+    public virtual bool Use(Battler battler)
     {
         return false;
     }

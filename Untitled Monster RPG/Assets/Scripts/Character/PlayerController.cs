@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour, ISavable
 {
     [SerializeField] private string _name;
 
-    private Monster _playerMonster;
+    private Battler _playerBattler;
     private Vector2 _input;
     private Character _character;
     private DeputyController _deputy;
@@ -108,40 +108,40 @@ public class PlayerController : MonoBehaviour, ISavable
         }
     }
 
-    public void SetPlayerMonster(Monster monster)
+    public void SetPlayerBattler(Battler battler)
     {
-        if (_playerMonster != null)
+        if (_playerBattler != null)
         {
             return;
         }
 
-        _playerMonster = monster ?? throw new ArgumentNullException(nameof(monster));
-        _playerMonster.IsPlayer = true;
-        _name = monster.Base.Name;
+        _playerBattler = battler ?? throw new ArgumentNullException(nameof(battler));
+        _playerBattler.IsPlayer = true;
+        _name = battler.Base.Name;
 
-        MonsterParty party = GetComponent<MonsterParty>();
-        if (!party.Monsters.Contains(monster))
+        BattleParty party = GetComponent<BattleParty>();
+        if (!party.Battlers.Contains(battler))
         {
-            party.AddMonster(monster);
+            party.AddMember(battler);
         }
 
-        _character.Animator.SetSprites(monster.Base.WalkDownSprites,
-                            monster.Base.WalkUpSprites,
-                            monster.Base.WalkRightSprites,
-                            monster.Base.WalkLeftSprites);
+        _character.Animator.SetSprites(battler.Base.WalkDownSprites,
+                            battler.Base.WalkUpSprites,
+                            battler.Base.WalkRightSprites,
+                            battler.Base.WalkLeftSprites);
     }
 
     public object CaptureState()
     {
-        List<Monster> party = GetComponent<MonsterParty>().Monsters;
+        List<Battler> party = GetComponent<BattleParty>().Battlers;
         int playerIndex = party.FindIndex(static m => m.IsPlayer);
 
         PlayerSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,
-            Monsters = party.Select(static m => m.GetSaveData()).ToList(),
-            PlayerMonsterIndex = playerIndex
+            Battlers = party.Select(static m => m.GetSaveData()).ToList(),
+            PlayerBattlerIndex = playerIndex
         };
 
         return saveData;
@@ -154,10 +154,10 @@ public class PlayerController : MonoBehaviour, ISavable
         transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
         _character.Animator.FacingDirection = saveData.FacingDirection;
 
-        List<Monster> monsters = saveData.Monsters.Select(static s => new Monster(s)).ToList();
-        GetComponent<MonsterParty>().Monsters = monsters;
+        List<Battler> battlers = saveData.Battlers.Select(static s => new Battler(s)).ToList();
+        GetComponent<BattleParty>().Battlers = battlers;
 
-        SetPlayerMonster(monsters[saveData.PlayerMonsterIndex]);
+        SetPlayerBattler(battlers[saveData.PlayerBattlerIndex]);
     }
 }
 
@@ -166,6 +166,6 @@ public class PlayerSaveData
 {
     public float[] Position;
     public FacingDirection FacingDirection;
-    public List<MonsterSaveData> Monsters;
-    public int PlayerMonsterIndex;
+    public List<BattlerSaveData> Battlers;
+    public int PlayerBattlerIndex;
 }

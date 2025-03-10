@@ -19,70 +19,70 @@ public class RecoveryItem : ItemBase
     [SerializeField] private bool _revive;
     [SerializeField] private bool _maxRevive;
 
-    public override bool Use(Monster monster)
+    public override bool Use(Battler battler)
     {
         if (_revive || _maxRevive)
         {
-            if (monster.Hp > 0)
+            if (battler.Hp > 0)
             {
                 return false;
             }
 
             if (_revive)
             {
-                monster.IncreaseHP(monster.MaxHp / 2);
+                battler.IncreaseHP(battler.MaxHp / 2);
             }
             else
             {
-                monster.IncreaseHP(monster.MaxHp);
+                battler.IncreaseHP(battler.MaxHp);
             }
 
-            monster.CureStatus();
+            battler.CureStatus();
             return true;
         }
 
-        if (monster.Hp == 0)
+        if (battler.Hp == 0)
         {
             return false;
         }
 
         if (_restoreMaxHP || _hpAmount > 0)
         {
-            if (monster.Hp == monster.MaxHp)
+            if (battler.Hp == battler.MaxHp)
             {
                 return false;
             }
 
             if (_restoreMaxHP)
             {
-                monster.IncreaseHP(monster.MaxHp);
+                battler.IncreaseHP(battler.MaxHp);
             }
             else
             {
-                monster.IncreaseHP(_hpAmount);
+                battler.IncreaseHP(_hpAmount);
             }
         }
 
         if (_recoverAllStatus || _status != ConditionID.None)
         {
-            if ((monster.Statuses == null && monster.VolatileStatuses == null) || (monster.Statuses.Count == 0 && monster.VolatileStatuses.Count == 0))
+            if ((battler.Statuses == null && battler.VolatileStatuses == null) || (battler.Statuses.Count == 0 && battler.VolatileStatuses.Count == 0))
             {
                 return false;
             }
 
             if (_recoverAllStatus)
             {
-                monster.CureAllStatus();
+                battler.CureAllStatus();
             }
             else
             {
-                if (monster.Statuses != null && monster.Statuses.ContainsKey(_status))
+                if (battler.Statuses != null && battler.Statuses.ContainsKey(_status))
                 {
-                    monster.CureStatus();
+                    battler.CureStatus();
                 }
-                else if (monster.VolatileStatuses != null && monster.VolatileStatuses.ContainsKey(_status))
+                else if (battler.VolatileStatuses != null && battler.VolatileStatuses.ContainsKey(_status))
                 {
-                    monster.CureVolatileStatus();
+                    battler.CureVolatileStatus();
                 }
                 else
                 {
@@ -93,11 +93,11 @@ public class RecoveryItem : ItemBase
 
         if (_restoreMaxSP)
         {
-            monster.Moves.ForEach(m => m.RestoreSP(m.Base.SP));
+            battler.Moves.ForEach(m => m.RestoreSP(m.Base.SP));
         }
         else if (_spAmount > 0)
         {
-            monster.Moves.ForEach(m => m.RestoreSP(_spAmount));
+            battler.Moves.ForEach(m => m.RestoreSP(_spAmount));
         }
 
         return true;

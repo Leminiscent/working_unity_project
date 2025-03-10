@@ -24,8 +24,8 @@ public class ConditionsDB
                 Name = "Poison",
                 StartMessage = " has been poisoned!",
                 FailMessage = " is already poisoned!",
-                OnEndOfTurn = static monster => {
-                    monster.AddStatusEvent(StatusEventType.Damage, " is hurt by poison!", monster.MaxHp / 8);
+                OnEndOfTurn = static battler => {
+                    battler.AddStatusEvent(StatusEventType.Damage, " is hurt by poison!", battler.MaxHp / 8);
                 }
             }
         },
@@ -36,8 +36,8 @@ public class ConditionsDB
                 Name = "Burn",
                 StartMessage = " has been burned!",
                 FailMessage = " is already burned!",
-                OnEndOfTurn = static monster => {
-                    monster.AddStatusEvent(StatusEventType.Damage, " is hurt by its burn!", monster.MaxHp / 16);
+                OnEndOfTurn = static battler => {
+                    battler.AddStatusEvent(StatusEventType.Damage, " is hurt by its burn!", battler.MaxHp / 16);
                 }
             }
         },
@@ -48,16 +48,16 @@ public class ConditionsDB
                 Name = "Sleep",
                 StartMessage = " has been put to sleep!",
                 FailMessage = " is already asleep!",
-                OnStartTimed = static monster => Random.Range(1, 4),
-                OnBeginningOfTurnTimed = static (monster, timer) =>
+                OnStartTimed = static battler => Random.Range(1, 4),
+                OnBeginningOfTurnTimed = static (battler, timer) =>
                 {
                     if (timer == 0)
                     {
-                        monster.AddStatusEvent(StatusEventType.CureCondition, " woke up!");
+                        battler.AddStatusEvent(StatusEventType.CureCondition, " woke up!");
                         return (true, 0);
                     }
                     timer--;
-                    monster.AddStatusEvent(" is fast asleep!");
+                    battler.AddStatusEvent(" is fast asleep!");
                     return (false, timer);
                 }
             }
@@ -69,10 +69,10 @@ public class ConditionsDB
                 Name = "Paralyzed",
                 StartMessage = " has been paralyzed!",
                 FailMessage = " is already paralyzed!",
-                OnBeginningofTurn = static monster => {
+                OnBeginningofTurn = static battler => {
                     if (Random.Range(1, 5) == 1)
                     {
-                        monster.AddStatusEvent(" is fully paralyzed and cannot move!");
+                        battler.AddStatusEvent(" is fully paralyzed and cannot move!");
                         return false;
                     }
                     return true;
@@ -86,16 +86,16 @@ public class ConditionsDB
                 Name = "Frozen",
                 StartMessage = " has been frozen solid!",
                 FailMessage = " is already frozen!",
-                OnBeginningofTurn = static monster => {
+                OnBeginningofTurn = static battler => {
                     if (Random.Range(1, 5) == 1)
                     {
-                        monster.CureStatus();
-                        monster.AddStatusEvent(StatusEventType.CureCondition, " is no longer frozen!");
+                        battler.CureStatus();
+                        battler.AddStatusEvent(StatusEventType.CureCondition, " is no longer frozen!");
                         return true;
                     }
                     else
                     {
-                        monster.AddStatusEvent(" is frozen solid and cannot move!");
+                        battler.AddStatusEvent(" is frozen solid and cannot move!");
                         return false;
                     }
                 }
@@ -110,18 +110,18 @@ public class ConditionsDB
                 Name = "Confusion",
                 StartMessage = " has been confused!",
                 FailMessage = " is already confused!",
-                OnStartTimed = static monster => Random.Range(2, 5),
-                OnBeginningOfTurnTimed = static (monster, timer) =>
+                OnStartTimed = static battler => Random.Range(2, 5),
+                OnBeginningOfTurnTimed = static (battler, timer) =>
                 {
                     if (timer == 0)
                     {
-                        monster.AddStatusEvent(StatusEventType.CureCondition, " snapped out of confusion!");
+                        battler.AddStatusEvent(StatusEventType.CureCondition, " snapped out of confusion!");
                         return (true, 0);
                     }
                     timer--;
                     if (Random.Range(1, 4) == 1)
                     {
-                        monster.AddStatusEvent(StatusEventType.Damage, " hurt itself in its confusion!", monster.MaxHp / 8);
+                        battler.AddStatusEvent(StatusEventType.Damage, " hurt itself in its confusion!", battler.MaxHp / 8);
                         return (false, timer);
                     }
                     return (true, timer);
@@ -139,11 +139,11 @@ public class ConditionsDB
                 EffectMessage = "The sunlight is harsh!",
                 OnDamageModify = static (source, target, move) =>
                 {
-                    if (move.Base.Type == MonsterType.Fire)
+                    if (move.Base.Type == BattlerType.Fire)
                     {
                         return 1.5f;
                     }
-                    else if (move.Base.Type == MonsterType.Water)
+                    else if (move.Base.Type == BattlerType.Water)
                     {
                         return 0.5f;
                     }
@@ -161,11 +161,11 @@ public class ConditionsDB
                 EffectMessage = "The rain is falling!",
                 OnDamageModify = static (source, target, move) =>
                 {
-                    if (move.Base.Type == MonsterType.Water)
+                    if (move.Base.Type == BattlerType.Water)
                     {
                         return 1.5f;
                     }
-                    else if (move.Base.Type == MonsterType.Fire)
+                    else if (move.Base.Type == BattlerType.Fire)
                     {
                         return 0.5f;
                     }
@@ -181,8 +181,8 @@ public class ConditionsDB
                 Name = "Sandstorm",
                 StartMessage = "A sandstorm kicked up!",
                 EffectMessage = "The sandstorm rages!",
-                OnWeather = static monster => {
-                    monster.AddStatusEvent(StatusEventType.Damage, " is buffeted by the sandstorm!", monster.MaxHp / 16);
+                OnWeather = static battler => {
+                    battler.AddStatusEvent(StatusEventType.Damage, " is buffeted by the sandstorm!", battler.MaxHp / 16);
                 }
             }
         },
@@ -193,8 +193,8 @@ public class ConditionsDB
                 Name = "Hail",
                 StartMessage = "It started to hail!",
                 EffectMessage = "The hail is falling!",
-                OnWeather = static monster => {
-                    monster.AddStatusEvent(StatusEventType.Damage, " is buffeted by the hail!", monster.MaxHp / 16);
+                OnWeather = static battler => {
+                    battler.AddStatusEvent(StatusEventType.Damage, " is buffeted by the hail!", battler.MaxHp / 16);
                 }
             }
         }

@@ -48,16 +48,16 @@ public class Inventory : MonoBehaviour, ISavable
         return currentSlots[itemIndex].Item;
     }
 
-    public ItemBase UseItem(int itemIndex, Monster selectedMonster, int selectedCategory)
+    public ItemBase UseItem(int itemIndex, Battler selectedBattler, int selectedCategory)
     {
         ItemBase item = GetItem(itemIndex, selectedCategory);
 
-        return UseItem(item, selectedMonster);
+        return UseItem(item, selectedBattler);
     }
 
-    public ItemBase UseItem(ItemBase item, Monster selectedMonster)
+    public ItemBase UseItem(ItemBase item, Battler selectedBattler)
     {
-        bool itemUsed = item.Use(selectedMonster);
+        bool itemUsed = item.Use(selectedBattler);
 
         if (itemUsed)
         {

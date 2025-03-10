@@ -7,10 +7,10 @@ using Utils.GenericSelectionUI;
 public class CharacterSelectScreen : DummySelectionUI
 {
     [Header("Basic Details")]
-    [SerializeField] private TextMeshProUGUI _monsterNameText;
-    [SerializeField] private Image _monsterImage;
-    [SerializeField] private TextMeshProUGUI _monsterType1;
-    [SerializeField] private TextMeshProUGUI _monsterType2;
+    [SerializeField] private TextMeshProUGUI _battlerNameText;
+    [SerializeField] private Image _battlerImage;
+    [SerializeField] private TextMeshProUGUI _battlerType1;
+    [SerializeField] private TextMeshProUGUI _battlerType2;
     [SerializeField] private TextMeshProUGUI _descriptionText;
 
     [Header("Stats")]
@@ -21,47 +21,47 @@ public class CharacterSelectScreen : DummySelectionUI
     [SerializeField] private TextMeshProUGUI _fortitudeText;
     [SerializeField] private TextMeshProUGUI _agilityText;
 
-    private List<Monster> _availableMonsters;
+    private List<Battler> _availableBattlers;
 
-    public void SetAvailableMonsters(List<Monster> monsters)
+    public void SetAvailableBattlers(List<Battler> battlers)
     {
-        _availableMonsters = monsters;
+        _availableBattlers = battlers;
 
         List<DummySelectable> dummyItems = new();
-        for (int i = 0; i < _availableMonsters.Count; i++)
+        for (int i = 0; i < _availableBattlers.Count; i++)
         {
             dummyItems.Add(new DummySelectable());
         }
         SetItems(dummyItems);
-        SetSelectionSettings(SelectionType.Grid, _availableMonsters.Count);
+        SetSelectionSettings(SelectionType.Grid, _availableBattlers.Count);
         IgnoreVerticalInput = true;
         UpdateDetails();
     }
 
     public void UpdateDetails()
     {
-        Monster selectedMonster = _availableMonsters[SelectedIndex];
+        Battler selectedBattler = _availableBattlers[SelectedIndex];
 
-        _monsterNameText.text = selectedMonster.Base.Name;
-        _monsterImage.sprite = selectedMonster.Base.Sprite;
-        _monsterType1.text = selectedMonster.Base.Type1.ToString();
-        if (selectedMonster.Base.Type2 != MonsterType.None)
+        _battlerNameText.text = selectedBattler.Base.Name;
+        _battlerImage.sprite = selectedBattler.Base.Sprite;
+        _battlerType1.text = selectedBattler.Base.Type1.ToString();
+        if (selectedBattler.Base.Type2 != BattlerType.None)
         {
-            _monsterType2.gameObject.SetActive(true);
-            _monsterType2.text = selectedMonster.Base.Type2.ToString();
+            _battlerType2.gameObject.SetActive(true);
+            _battlerType2.text = selectedBattler.Base.Type2.ToString();
         }
         else
         {
-            _monsterType2.gameObject.SetActive(false);
+            _battlerType2.gameObject.SetActive(false);
         }
-        _descriptionText.text = selectedMonster.Base.Description;
+        _descriptionText.text = selectedBattler.Base.Description;
 
-        _hpText.text = selectedMonster.Hp.ToString();
-        _strengthText.text = selectedMonster.Strength.ToString();
-        _enduranceText.text = selectedMonster.Endurance.ToString();
-        _intelligenceText.text = selectedMonster.Intelligence.ToString();
-        _fortitudeText.text = selectedMonster.Fortitude.ToString();
-        _agilityText.text = selectedMonster.Agility.ToString();
+        _hpText.text = selectedBattler.Hp.ToString();
+        _strengthText.text = selectedBattler.Strength.ToString();
+        _enduranceText.text = selectedBattler.Endurance.ToString();
+        _intelligenceText.text = selectedBattler.Intelligence.ToString();
+        _fortitudeText.text = selectedBattler.Fortitude.ToString();
+        _agilityText.text = selectedBattler.Agility.ToString();
     }
 
     public override void UpdateSelectionInUI()

@@ -1,31 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterStorage : MonoBehaviour, ISavable
+public class BattlerStorage : MonoBehaviour, ISavable
 {
     private const int NUMBER_OF_DEPOTS = 10;
     private const int NUMBER_OF_SLOTS = 48; // 6 * 8
-    private Monster[,] _depots = new Monster[NUMBER_OF_DEPOTS, NUMBER_OF_SLOTS];
+    private Battler[,] _depots = new Battler[NUMBER_OF_DEPOTS, NUMBER_OF_SLOTS];
 
     public int NumberOfDepots => NUMBER_OF_DEPOTS;
     public int NumberOfSlots => NUMBER_OF_SLOTS;
 
-    public void AddMonster(Monster monster, int depotIndex, int slotIndex)
+    public void AddBattler(Battler monster, int depotIndex, int slotIndex)
     {
         _depots[depotIndex, slotIndex] = monster;
     }
 
-    public void RemoveMonster(int depotIndex, int slotIndex)
+    public void RemoveBattler(int depotIndex, int slotIndex)
     {
         _depots[depotIndex, slotIndex] = null;
     }
 
-    public Monster GetMonster(int depotIndex, int slotIndex)
+    public Battler GetBattler(int depotIndex, int slotIndex)
     {
         return _depots[depotIndex, slotIndex];
     }
 
-    public void AddMonsterToFirstEmptySlot(Monster monster)
+    public void AddBattlerToFirstEmptySlot(Battler monster)
     {
         for (int depotIndex = 0; depotIndex < NUMBER_OF_DEPOTS; depotIndex++)
         {
@@ -40,9 +40,9 @@ public class MonsterStorage : MonoBehaviour, ISavable
         }
     }
 
-    public static MonsterStorage GetPlayerStorage()
+    public static BattlerStorage GetPlayerStorage()
     {
-        return FindObjectOfType<PlayerController>().GetComponent<MonsterStorage>();
+        return FindObjectOfType<PlayerController>().GetComponent<BattlerStorage>();
     }
 
     public object CaptureState()
@@ -87,7 +87,7 @@ public class MonsterStorage : MonoBehaviour, ISavable
 
         foreach (DepotSlotSaveData slot in saveData.DepotSlots)
         {
-            _depots[slot.DepotIndex, slot.SlotIndex] = new Monster(slot.MonsterData);
+            _depots[slot.DepotIndex, slot.SlotIndex] = new Battler(slot.MonsterData);
         }
     }
 }
@@ -101,7 +101,7 @@ public class DepotSaveData
 [System.Serializable]
 public class DepotSlotSaveData
 {
-    public MonsterSaveData MonsterData;
+    public BattlerSaveData MonsterData;
     public int DepotIndex;
     public int SlotIndex;
 }

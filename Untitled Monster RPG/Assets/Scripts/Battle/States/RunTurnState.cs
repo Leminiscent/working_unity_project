@@ -8,8 +8,8 @@ public class RunTurnState : State<BattleSystem>
 {
     private BattleSystem _battleSystem;
     private BattleDialogueBox _dialogueBox;
-    private MonsterParty _playerParty;
-    private MonsterParty _enemyParty;
+    private BattleParty _playerParty;
+    private BattleParty _enemyParty;
     private bool _isMasterBattle;
     private Field _field;
 
@@ -51,7 +51,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (action.ActionType == BattleActionType.Fight)
             {
-                action.SourceUnit.Monster.CurrentMove = action.SelectedMove;
+                action.SourceUnit.Battler.CurrentMove = action.SelectedMove;
                 yield return RunMove(action.SourceUnit, action.TargetUnits, action.SelectedMove);
             }
             else if (action.ActionType == BattleActionType.Talk)
@@ -66,11 +66,11 @@ public class RunTurnState : State<BattleSystem>
             else if (action.ActionType == BattleActionType.Guard)
             {
                 StartCoroutine(action.SourceUnit.StartGuarding());
-                yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Monster.Base.Name} has begun guarding!");
+                yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Battler.Base.Name} has begun guarding!");
             }
-            else if (action.ActionType == BattleActionType.SwitchMonster)
+            else if (action.ActionType == BattleActionType.SwitchBattler)
             {
-                yield return _battleSystem.SwitchMonster(action.SelectedMonster, action.SourceUnit);
+                yield return _battleSystem.SwitchBattler(action.SelectedBattler, action.SourceUnit);
             }
             else if (action.ActionType == BattleActionType.Run)
             {
@@ -83,7 +83,7 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).OrderByDescending(static u => u.Monster.Agility).ToList();
+        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).OrderByDescending(static u => u.Battler.Agility).ToList();
 
         if (_field.Weather != null)
         {
@@ -91,12 +91,12 @@ public class RunTurnState : State<BattleSystem>
 
             foreach (BattleUnit unit in agilitySortedUnits)
             {
-                _field.Weather.OnWeather?.Invoke(unit.Monster);
+                _field.Weather.OnWeather?.Invoke(unit.Battler);
                 yield return ShowStatusChanges(unit);
                 yield return unit.Hud.WaitForHPUpdate();
-                if (unit.Monster.Hp <= 0)
+                if (unit.Battler.Hp <= 0)
                 {
-                    yield return HandleMonsterDefeat(unit);
+                    yield return HandleUnitDefeat(unit);
                 }
             }
 
@@ -121,7 +121,7 @@ public class RunTurnState : State<BattleSystem>
 
         foreach (BattleUnit unit in _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits))
         {
-            if (unit.Monster.IsGuarding)
+            if (unit.Battler.IsGuarding)
             {
                 StartCoroutine(unit.StopGuarding());
             }
@@ -140,15 +140,15 @@ public class RunTurnState : State<BattleSystem>
             yield break;
         }
 
-        sourceUnit.Monster.OnEndOfTurn();
+        sourceUnit.Battler.OnEndOfTurn();
         yield return ShowStatusChanges(sourceUnit);
-        if (sourceUnit.Monster.Hp <= 0)
+        if (sourceUnit.Battler.Hp <= 0)
         {
-            yield return HandleMonsterDefeat(sourceUnit);
+            yield return HandleUnitDefeat(sourceUnit);
         }
     }
 
-    private bool CheckIfMoveHits(Move move, Monster source, Monster target)
+    private bool CheckIfMoveHits(Move move, Battler source, Battler target)
     {
         if (move.Base.AlwaysHits)
         {
@@ -201,7 +201,7 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator RunMove(BattleUnit sourceUnit, List<BattleUnit> targetUnits, Move move)
     {
-        bool canRunMove = sourceUnit.Monster.OnStartOfTurn();
+        bool canRunMove = sourceUnit.Battler.OnStartOfTurn();
         if (!canRunMove)
         {
             yield return ShowStatusChanges(sourceUnit);
@@ -215,24 +215,24 @@ public class RunTurnState : State<BattleSystem>
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
         {
-            yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} has no SP left!");
+            yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} has no SP left!");
         }
 
-        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}!");
+        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {move.Base.Name}!");
         yield return sourceUnit.PlayMoveCastAnimation(move.Base);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
         {
-            if (sourceUnit.Monster.Hp <= 0)
+            if (sourceUnit.Battler.Hp <= 0)
             {
                 yield break;
             }
 
-            if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
+            if (CheckIfMoveHits(move, sourceUnit.Battler, targetUnit.Battler))
             {
                 int hitCount = move.Base.GetHitCount();
-                float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Monster.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Monster.Base.Type2);
+                float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Battler.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Battler.Base.Type2);
                 int hit = 1;
 
                 for (int i = 1; i <= hitCount; i++)
@@ -248,14 +248,14 @@ public class RunTurnState : State<BattleSystem>
                     }
                     else
                     {
-                        damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster, _field.Weather);
+                        damageDetails = targetUnit.Battler.TakeDamage(move, sourceUnit.Battler, _field.Weather);
                         StartCoroutine(targetUnit.PlayDamageAnimation());
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
                     }
 
-                    if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && typeEffectiveness > 0 && targetUnit.Monster.Hp > 0)
+                    if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && typeEffectiveness > 0 && targetUnit.Battler.Hp > 0)
                     {
                         foreach (SecondaryEffects effect in move.Base.SecondaryEffects)
                         {
@@ -270,7 +270,7 @@ public class RunTurnState : State<BattleSystem>
                     yield return RunAfterMove(damageDetails, move.Base, sourceUnit, targetUnit);
                     hit = i;
 
-                    if (targetUnit.Monster.Hp <= 0 || sourceUnit.Monster.Hp <= 0)
+                    if (targetUnit.Battler.Hp <= 0 || sourceUnit.Battler.Hp <= 0)
                     {
                         break;
                     }
@@ -285,19 +285,19 @@ public class RunTurnState : State<BattleSystem>
                     yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
                 }
 
-                if (targetUnit.Monster.Hp <= 0)
+                if (targetUnit.Battler.Hp <= 0)
                 {
-                    yield return HandleMonsterDefeat(targetUnit);
+                    yield return HandleUnitDefeat(targetUnit);
                 }
 
-                if (sourceUnit.Monster.Hp <= 0)
+                if (sourceUnit.Battler.Hp <= 0)
                 {
-                    yield return HandleMonsterDefeat(sourceUnit);
+                    yield return HandleUnitDefeat(sourceUnit);
                 }
             }
             else
             {
-                yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name}'s attack missed!");
+                yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name}'s attack missed!");
             }
         }
     }
@@ -316,18 +316,18 @@ public class RunTurnState : State<BattleSystem>
             switch (move.Recoil.RecoilType)
             {
                 case RecoilType.RecoilByMaxHP:
-                    int maxHp = sourceUnit.Monster.MaxHp;
+                    int maxHp = sourceUnit.Battler.MaxHp;
                     damage = Mathf.FloorToInt(maxHp * (move.Recoil.RecoilDamage / 100f));
-                    sourceUnit.Monster.TakeRecoilDamage(damage);
+                    sourceUnit.Battler.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByCurrentHP:
-                    int currentHp = sourceUnit.Monster.Hp;
+                    int currentHp = sourceUnit.Battler.Hp;
                     damage = Mathf.FloorToInt(currentHp * (move.Recoil.RecoilDamage / 100f));
-                    sourceUnit.Monster.TakeRecoilDamage(damage);
+                    sourceUnit.Battler.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.RecoilByDamage:
                     damage = Mathf.FloorToInt(details.ActualDamageDealt * (move.Recoil.RecoilDamage / 100f));
-                    sourceUnit.Monster.TakeRecoilDamage(damage);
+                    sourceUnit.Battler.TakeRecoilDamage(damage);
                     break;
                 case RecoilType.None:
                     break;
@@ -336,10 +336,10 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        if (move.DrainPercentage != 0 && sourceUnit.Monster.Hp != sourceUnit.Monster.MaxHp)
+        if (move.DrainPercentage != 0 && sourceUnit.Battler.Hp != sourceUnit.Battler.MaxHp)
         {
-            int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Monster.MaxHp);
-            sourceUnit.Monster.DrainHealth(heal, targetUnit.Monster.Base.Name);
+            int heal = Mathf.Clamp(Mathf.CeilToInt(details.ActualDamageDealt / 100f * move.DrainPercentage), 1, sourceUnit.Battler.MaxHp);
+            sourceUnit.Battler.DrainHealth(heal, targetUnit.Battler.Base.Name);
         }
 
         yield return ShowStatusChanges(sourceUnit);
@@ -353,35 +353,35 @@ public class RunTurnState : State<BattleSystem>
         {
             if (moveTarget == MoveTarget.Self)
             {
-                sourceUnit.Monster.ApplyBoosts(effects.Boosts);
+                sourceUnit.Battler.ApplyBoosts(effects.Boosts);
             }
             else
             {
-                targetUnit.Monster.ApplyBoosts(effects.Boosts);
+                targetUnit.Battler.ApplyBoosts(effects.Boosts);
             }
         }
 
         // Status Conditions
         if (effects.Status != ConditionID.None)
         {
-            if (targetUnit.Monster.Statuses.ContainsKey(effects.Status))
+            if (targetUnit.Battler.Statuses.ContainsKey(effects.Status))
             {
-                yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {ConditionsDB.Conditions[effects.Status].FailMessage}");
+                yield return _dialogueBox.TypeDialogue($"{targetUnit.Battler.Base.Name} {ConditionsDB.Conditions[effects.Status].FailMessage}");
             }
             else
             {
-                targetUnit.Monster.SetStatus(effects.Status);
+                targetUnit.Battler.SetStatus(effects.Status);
             }
         }
         if (effects.VolatileStatus != ConditionID.None)
         {
-            if (targetUnit.Monster.VolatileStatuses.ContainsKey(effects.VolatileStatus))
+            if (targetUnit.Battler.VolatileStatuses.ContainsKey(effects.VolatileStatus))
             {
-                yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {ConditionsDB.Conditions[effects.VolatileStatus].FailMessage}");
+                yield return _dialogueBox.TypeDialogue($"{targetUnit.Battler.Base.Name} {ConditionsDB.Conditions[effects.VolatileStatus].FailMessage}");
             }
             else
             {
-                targetUnit.Monster.SetVolatileStatus(effects.VolatileStatus);
+                targetUnit.Battler.SetVolatileStatus(effects.VolatileStatus);
             }
         }
 
@@ -399,18 +399,18 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator ShowStatusChanges(BattleUnit unit)
     {
-        while (unit.Monster.StatusChanges.Count > 0)
+        while (unit.Battler.StatusChanges.Count > 0)
         {
-            StatusEvent statusEvent = unit.Monster.StatusChanges.Dequeue();
+            StatusEvent statusEvent = unit.Battler.StatusChanges.Dequeue();
 
             if (statusEvent.Type == StatusEventType.Damage)
             {
-                unit.Monster.DecreaseHP((int)statusEvent.Value);
+                unit.Battler.DecreaseHP((int)statusEvent.Value);
                 StartCoroutine(unit.PlayDamageAnimation());
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {
-                unit.Monster.IncreaseHP((int)statusEvent.Value);
+                unit.Battler.IncreaseHP((int)statusEvent.Value);
                 StartCoroutine(unit.PlayHealAnimation());
             }
             else if (statusEvent.Type == StatusEventType.SetCondition)
@@ -439,13 +439,13 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
 
-            yield return _dialogueBox.TypeDialogue($"{unit.Monster.Base.Name}{statusEvent.Message}");
+            yield return _dialogueBox.TypeDialogue($"{unit.Battler.Base.Name}{statusEvent.Message}");
         }
     }
 
     private IEnumerator UseItem(BattleUnit sourceUnit, List<BattleUnit> targetUnits, ItemBase item)
     {
-        bool canUseItem = sourceUnit.Monster.OnStartOfTurn();
+        bool canUseItem = sourceUnit.Battler.OnStartOfTurn();
         if (!canUseItem)
         {
             yield return ShowStatusChanges(sourceUnit);
@@ -461,24 +461,24 @@ public class RunTurnState : State<BattleSystem>
             yield break;
         }
         StartCoroutine(sourceUnit.PlayMoveCastAnimation()); // TODO: Decouple move and item casting animations
-        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Monster.Base.Name} used {item.Name}!");
+        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {item.Name}!");
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
         {
-            bool itemUsed = item.Use(targetUnit.Monster);
+            bool itemUsed = item.Use(targetUnit.Battler);
             if (itemUsed)
             {
                 if (item is RecoveryItem)
                 {
-                    yield return _dialogueBox.TypeDialogue($"{targetUnit.Monster.Base.Name} {item.Message}!");
+                    yield return _dialogueBox.TypeDialogue($"{targetUnit.Battler.Base.Name} {item.Message}!");
                 }
             }
             else
             {
                 if (item is RecoveryItem)
                 {
-                    yield return _dialogueBox.TypeDialogue($"The {item.Name} didn't have any effect on {targetUnit.Monster.Base.Name}!");
+                    yield return _dialogueBox.TypeDialogue($"The {item.Name} didn't have any effect on {targetUnit.Battler.Base.Name}!");
                 }
             }
         }
@@ -489,19 +489,19 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    private IEnumerator HandleMonsterDefeat(BattleUnit defeatedUnit)
+    private IEnumerator HandleUnitDefeat(BattleUnit defeatedUnit)
     {
         StartCoroutine(defeatedUnit.PlayDefeatAnimation());
-        yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Monster.Base.Name} has been defeated!");
+        yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Battler.Base.Name} has been defeated!");
 
         if (!defeatedUnit.IsPlayerUnit)
         {
-            int enemyLevel = defeatedUnit.Monster.Level;
+            int enemyLevel = defeatedUnit.Battler.Level;
             float masterBonus = _isMasterBattle ? 1.5f : 1f;
 
             List<string> lootDescriptions = new();
 
-            int gpYield = defeatedUnit.Monster.Base.CalculateGpYield();
+            int gpYield = defeatedUnit.Battler.Base.CalculateGpYield();
             int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * masterBonus / 7);
 
             if (gpDropped > 0)
@@ -510,7 +510,7 @@ public class RunTurnState : State<BattleSystem>
                 Wallet.Instance.GetWallet().AddMoney(gpDropped);
             }
 
-            DropTable dropTable = defeatedUnit.Monster.Base.DropTable;
+            DropTable dropTable = defeatedUnit.Battler.Base.DropTable;
 
             if (dropTable != null)
             {
@@ -531,7 +531,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (lootDescriptions.Count > 0)
             {
-                string initialMessage = $"{defeatedUnit.Monster.Base.Name} dropped";
+                string initialMessage = $"{defeatedUnit.Battler.Base.Name} dropped";
 
                 AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                 foreach (string loot in lootDescriptions)
@@ -542,63 +542,63 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
 
-            int expYield = defeatedUnit.Monster.Base.ExpYield;
+            int expYield = defeatedUnit.Battler.Base.ExpYield;
             int expGain = Mathf.FloorToInt(expYield * enemyLevel * masterBonus / 7) / _battleSystem.PlayerUnits.Count;
 
             for (int i = 0; i < _battleSystem.PlayerUnits.Count; i++)
             {
                 BattleUnit playerUnit = _battleSystem.PlayerUnits[i];
-                playerUnit.Monster.GainPvs(defeatedUnit.Monster.Base.PvYield);
+                playerUnit.Battler.GainPvs(defeatedUnit.Battler.Base.PvYield);
 
-                if (playerUnit.Monster.Level < GlobalSettings.Instance.MaxLevel)
+                if (playerUnit.Battler.Level < GlobalSettings.Instance.MaxLevel)
                 {
-                    int maxExp = playerUnit.Monster.Base.GetExpForLevel(GlobalSettings.Instance.MaxLevel);
-                    int expNeeded = maxExp - playerUnit.Monster.Exp;
+                    int maxExp = playerUnit.Battler.Base.GetExpForLevel(GlobalSettings.Instance.MaxLevel);
+                    int expNeeded = maxExp - playerUnit.Battler.Exp;
 
                     expGain = Mathf.Min(expGain, expNeeded);
-                    playerUnit.Monster.Exp += expGain;
+                    playerUnit.Battler.Exp += expGain;
                     StartCoroutine(playerUnit.PlayExpGainAnimation());
                     yield return playerUnit.Hud.SetExpSmooth();
-                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} gained {expGain} experience!");
+                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} experience!");
 
-                    while (playerUnit.Monster.CheckForLevelUp())
+                    while (playerUnit.Battler.CheckForLevelUp())
                     {
-                        playerUnit.Monster.HasJustLeveledUp = true;
+                        playerUnit.Battler.HasJustLeveledUp = true;
                         playerUnit.Hud.SetLevel();
                         StartCoroutine(playerUnit.PlayLevelUpAnimation());
-                        yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} grew to level {playerUnit.Monster.Level}!");
+                        yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} grew to level {playerUnit.Battler.Level}!");
 
-                        LearnableMove newMove = playerUnit.Monster.GetLearnableMoveAtCurrentLevel();
+                        LearnableMove newMove = playerUnit.Battler.GetLearnableMoveAtCurrentLevel();
                         if (newMove != null)
                         {
-                            if (playerUnit.Monster.Moves.Count < MonsterBase.MaxMoveCount)
+                            if (playerUnit.Battler.Moves.Count < BattlerBase.MaxMoveCount)
                             {
-                                playerUnit.Monster.LearnMove(newMove.Base);
-                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} learned {newMove.Base.Name}!");
-                                _dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
+                                playerUnit.Battler.LearnMove(newMove.Base);
+                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} learned {newMove.Base.Name}!");
+                                _dialogueBox.SetMoveNames(playerUnit.Battler.Moves);
                             }
                             else
                             {
-                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} is trying to learn {newMove.Base.Name}!");
-                                yield return _dialogueBox.TypeDialogue($"But {playerUnit.Monster.Base.Name} already knows {MonsterBase.MaxMoveCount} moves!");
+                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} is trying to learn {newMove.Base.Name}!");
+                                yield return _dialogueBox.TypeDialogue($"But {playerUnit.Battler.Base.Name} already knows {BattlerBase.MaxMoveCount} moves!");
                                 yield return _dialogueBox.TypeDialogue($"Choose a move to forget.");
 
-                                ForgettingMoveState.Instance.CurrentMoves = playerUnit.Monster.Moves.Select(static m => m.Base).ToList();
+                                ForgettingMoveState.Instance.CurrentMoves = playerUnit.Battler.Moves.Select(static m => m.Base).ToList();
                                 ForgettingMoveState.Instance.NewMove = newMove.Base;
                                 yield return GameController.Instance.StateMachine.PushAndWait(ForgettingMoveState.Instance);
 
                                 int moveIndex = ForgettingMoveState.Instance.Selection;
 
-                                if (moveIndex == MonsterBase.MaxMoveCount || moveIndex == -1)
+                                if (moveIndex == BattlerBase.MaxMoveCount || moveIndex == -1)
                                 {
-                                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} did not learn {newMove.Base.Name}!");
+                                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} did not learn {newMove.Base.Name}!");
                                 }
                                 else
                                 {
-                                    Move selectedMove = playerUnit.Monster.Moves[moveIndex];
+                                    Move selectedMove = playerUnit.Battler.Moves[moveIndex];
 
-                                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
-                                    playerUnit.Monster.Moves[moveIndex] = new Move(newMove.Base);
+                                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
+                                    playerUnit.Battler.Moves[moveIndex] = new Move(newMove.Base);
                                 }
                             }
                         }
@@ -623,10 +623,10 @@ public class RunTurnState : State<BattleSystem>
 
         if (defeatedUnit.IsPlayerUnit)
         {
-            List<Monster> activeMonsters = _battleSystem.PlayerUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
-            Monster nextMonster = _playerParty.GetHealthyMonster(excludedMonsters: activeMonsters);
+            List<Battler> activeBattlers = _battleSystem.PlayerUnits.Select(static u => u.Battler).Where(m => m.Hp > 0).ToList();
+            Battler nextBattler = _playerParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
 
-            if (nextMonster == null && activeMonsters.Count == 0)
+            if (nextBattler == null && activeBattlers.Count == 0)
             {
                 yield return new WaitForSeconds(0.5f);
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
@@ -638,7 +638,7 @@ public class RunTurnState : State<BattleSystem>
                 }
                 _battleSystem.BattleOver(false);
             }
-            else if (nextMonster == null && activeMonsters.Count > 0)
+            else if (nextBattler == null && activeBattlers.Count > 0)
             {
                 _battleSystem.PlayerUnits.Remove(defeatedUnit);
                 defeatedUnit.ClearData();
@@ -653,19 +653,19 @@ public class RunTurnState : State<BattleSystem>
                     }
                 }
             }
-            else if (nextMonster != null)
+            else if (nextBattler != null)
             {
                 yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
-                yield return _battleSystem.SwitchMonster(PartyState.Instance.SelectedMonster, defeatedUnit);
+                yield return _battleSystem.SwitchBattler(PartyState.Instance.SelectedMember, defeatedUnit);
             }
         }
         else
         {
-            List<Monster> activeMonsters = _battleSystem.EnemyUnits.Select(static u => u.Monster).Where(m => m.Hp > 0).ToList();
+            List<Battler> activeBattlers = _battleSystem.EnemyUnits.Select(static u => u.Battler).Where(b => b.Hp > 0).ToList();
 
             if (!_isMasterBattle)
             {
-                if (activeMonsters.Count == 0)
+                if (activeBattlers.Count == 0)
                 {
                     yield return new WaitForSeconds(0.5f);
                     AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
@@ -695,9 +695,9 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                Monster nextMonster = _enemyParty.GetHealthyMonster(excludedMonsters: activeMonsters);
+                Battler nextBattler = _enemyParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
 
-                if (nextMonster == null && activeMonsters.Count == 0)
+                if (nextBattler == null && activeBattlers.Count == 0)
                 {
                     yield return new WaitForSeconds(0.5f);
                     AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
@@ -709,7 +709,7 @@ public class RunTurnState : State<BattleSystem>
                     }
                     _battleSystem.BattleOver(true);
                 }
-                else if (nextMonster == null && activeMonsters.Count > 0)
+                else if (nextBattler == null && activeBattlers.Count > 0)
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.ClearData();
@@ -724,9 +724,9 @@ public class RunTurnState : State<BattleSystem>
                         }
                     }
                 }
-                else if (nextMonster != null)
+                else if (nextBattler != null)
                 {
-                    yield return _battleSystem.SendNextMasterMonster(nextMonster, defeatedUnit);
+                    yield return _battleSystem.SendNextMasterBattler(nextBattler, defeatedUnit);
                 }
             }
         }
@@ -766,8 +766,8 @@ public class RunTurnState : State<BattleSystem>
 
         ++_battleSystem.EscapeAttempts;
 
-        int minPlayerAgility = _battleSystem.PlayerUnits.Min(static u => u.Monster.Agility);
-        int maxEnemyAgility = _battleSystem.EnemyUnits.Max(static u => u.Monster.Agility);
+        int minPlayerAgility = _battleSystem.PlayerUnits.Min(static u => u.Battler.Agility);
+        int maxEnemyAgility = _battleSystem.EnemyUnits.Max(static u => u.Battler.Agility);
 
         if (minPlayerAgility >= maxEnemyAgility)
         {

@@ -9,7 +9,7 @@ public class GlobalSettings : MonoBehaviour
     [SerializeField] private Color _emptyColor;
     [SerializeField] private Color _bgHighlightColor;
 
-    [Header("Monster Details")]
+    [Header("Battler Details")]
     [SerializeField] private int _maxPvs;
     [SerializeField] private int _maxPvPerStat;
     [SerializeField] private int _maxLevel;

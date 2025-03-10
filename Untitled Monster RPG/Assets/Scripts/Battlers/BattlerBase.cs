@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create new monster")]
-public class MonsterBase : ScriptableObject
+public class BattlerBase : ScriptableObject
 {
     [Header("Basic Details")]
     [SerializeField] private string _name;
     [TextArea]
     [SerializeField] private string _description;
     [SerializeField] private Sprite _sprite;
-    [SerializeField] private MonsterType _type1;
-    [SerializeField] private MonsterType _type2;
+    [SerializeField] private BattlerType _type1;
+    [SerializeField] private BattlerType _type2;
     [SerializeField] private Rarity _rarity;
 
     [Header("Stat Weights")]
@@ -76,9 +76,9 @@ public class MonsterBase : ScriptableObject
     public string Name => _name;
     public string Description => _description;
     public Sprite Sprite => _sprite;
-    public MonsterType Type1 => _type1;
-    public MonsterType Type2 => _type2;
-    public bool IsDualType => _type2 != MonsterType.None;
+    public BattlerType Type1 => _type1;
+    public BattlerType Type2 => _type2;
+    public bool IsDualType => _type2 != BattlerType.None;
     public Rarity Rarity => _rarity;
 
     public int HP => _hp;
@@ -263,11 +263,11 @@ public class LearnableMove
 [Serializable]
 public class Transformation
 {
-    [SerializeField] private MonsterBase _transformsInto;
+    [SerializeField] private BattlerBase _transformsInto;
     [SerializeField] private int _requiredLevel;
     [SerializeField] private TransformationItem _requiredItem;
 
-    public MonsterBase TransformsInto => _transformsInto;
+    public BattlerBase TransformsInto => _transformsInto;
     public int RequiredLevel => _requiredLevel;
     public TransformationItem RequiredItem => _requiredItem;
 }
@@ -331,9 +331,9 @@ public class TypeChart
         /*Light*/    { 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f }
     };
 
-    public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
+    public static float GetEffectiveness(BattlerType attackType, BattlerType defenseType)
     {
-        if (attackType == MonsterType.None || defenseType == MonsterType.None)
+        if (attackType == BattlerType.None || defenseType == BattlerType.None)
         {
             return 1f;
         }
@@ -454,7 +454,7 @@ public class AttributeCalculator
     }
 }
 
-public enum MonsterType
+public enum BattlerType
 {
     None,
     Normal,
