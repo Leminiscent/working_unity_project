@@ -5,7 +5,6 @@ using UnityEngine;
 public class MasterController : MonoBehaviour, IInteractable, ISavable
 {
     [SerializeField] private string _name;
-    [SerializeField] private Sprite _sprite;
     [SerializeField] private Dialogue _dialogue;
     [SerializeField] private Dialogue _postBattleDialogue;
     [SerializeField] private GameObject _los;
@@ -14,7 +13,6 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
     private Character _character;
 
     public string Name => _name;
-    public Sprite Sprite => _sprite;
     public Character Character => _character;
 
     private void Awake()

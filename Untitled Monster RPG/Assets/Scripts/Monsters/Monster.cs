@@ -11,6 +11,7 @@ public class Monster
 
     public MonsterBase Base => _base;
     public int Level => _level;
+    public bool IsPlayer { get; set; }
     public bool HasJustLeveledUp { get; set; }
     public int Exp { get; set; }
     public int Hp { get; set; }

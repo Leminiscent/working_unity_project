@@ -78,9 +78,12 @@ public class MainMenuController : SelectionUI<TextSlot>
     {
         yield return Fader.Instance.FadeIn(0.1f);
 
-        GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
-        SavingSystem.Instance.Delete("saveSlot1");
-        SceneManager.LoadScene(1);
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
+
+        GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
+
+        Destroy(gameObject);
 
         yield return Fader.Instance.FadeOut(0.75f);
     }

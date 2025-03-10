@@ -117,7 +117,7 @@ public class PartyState : State<GameController>
             {
                 if (_selectedSwitchToIndex == selectedMonsterIndex)
                 {
-                    _partyScreen.SetMessageText("You can't switch with the same monster!");
+                    _partyScreen.SetMessageText("You can't switch with the same party member!");
                     yield break;
                 }
 
@@ -146,7 +146,7 @@ public class PartyState : State<GameController>
                     _isSwitchingPosition = true;
                     _selectedSwitchToIndex = selectedMonsterIndex;
                     _partyScreen.SaveSelection();
-                    _partyScreen.SetMessageText($"Choose a monster to switch with {_playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
+                    _partyScreen.SetMessageText($"Choose a party member to switch with {_playerParty.Monsters[selectedMonsterIndex].Base.Name}.");
                     break;
                 default:
                     yield break;
@@ -167,7 +167,7 @@ public class PartyState : State<GameController>
             _isSwitchingPosition = false;
             _partyScreen.RestoreSelection();
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-            _partyScreen.SetMessageText("Choose a monster!");
+            _partyScreen.SetMessageText("Choose a party member!");
             return;
         }
 
@@ -181,7 +181,7 @@ public class PartyState : State<GameController>
 
             if (battleState.BattleSystem.PlayerUnits.Any(static u => u.Monster.Hp <= 0))
             {
-                _partyScreen.SetMessageText("You have to choose a monster!");
+                _partyScreen.SetMessageText("You have to choose a party member!");
                 return;
             }
             _partyScreen.gameObject.SetActive(false);

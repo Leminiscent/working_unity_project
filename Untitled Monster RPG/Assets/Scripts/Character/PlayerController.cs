@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour, ISavable
 {
     [SerializeField] private string _name;
 
+    private Monster _playerMonster;
     private Vector2 _input;
     private Character _character;
     private DeputyController _deputy;
@@ -32,33 +33,6 @@ public class PlayerController : MonoBehaviour, ISavable
 
         _character = GetComponent<Character>();
         _deputy = FindObjectOfType<DeputyController>();
-    }
-
-    public void HandleUpdate()
-    {
-        if (!_character.IsMoving)
-        {
-            _input.x = Input.GetAxisRaw("Horizontal");
-            _input.y = Input.GetAxisRaw("Vertical");
-
-            if (_input.x != 0)
-            {
-                _input.y = 0;
-            }
-
-            if (_input != Vector2.zero)
-            {
-                StartCoroutine(_character.Move(_input, OnMoveOver));
-            }
-        }
-
-        _character.HandleUpdate();
-
-        if (Input.GetButtonDown("Action") && !_isInteracting)
-        {
-            _isInteracting = true;
-            StartCoroutine(Interact());
-        }
     }
 
     private IEnumerator Interact()
@@ -105,6 +79,56 @@ public class PlayerController : MonoBehaviour, ISavable
         {
             _currentlyInTrigger = null;
         }
+    }
+
+    public void HandleUpdate()
+    {
+        if (!_character.IsMoving)
+        {
+            _input.x = Input.GetAxisRaw("Horizontal");
+            _input.y = Input.GetAxisRaw("Vertical");
+
+            if (_input.x != 0)
+            {
+                _input.y = 0;
+            }
+
+            if (_input != Vector2.zero)
+            {
+                StartCoroutine(_character.Move(_input, OnMoveOver));
+            }
+        }
+
+        _character.HandleUpdate();
+
+        if (Input.GetButtonDown("Action") && !_isInteracting)
+        {
+            _isInteracting = true;
+            StartCoroutine(Interact());
+        }
+    }
+
+    public void SetPlayerMonster(Monster monster)
+    {
+        if (_playerMonster != null)
+        {
+            return;
+        }
+
+        _playerMonster = monster ?? throw new ArgumentNullException(nameof(monster));
+        _playerMonster.IsPlayer = true;
+        _name = monster.Base.Name;
+
+        MonsterParty party = GetComponent<MonsterParty>();
+        if (!party.Monsters.Contains(monster))
+        {
+            party.AddMonster(monster);
+        }
+
+        _character.Animator.SetSprites(monster.Base.WalkDownSprites,
+                            monster.Base.WalkUpSprites,
+                            monster.Base.WalkRightSprites,
+                            monster.Base.WalkLeftSprites);
     }
 
     public object CaptureState()

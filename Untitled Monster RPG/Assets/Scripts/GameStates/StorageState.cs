@@ -59,6 +59,13 @@ public class StorageState : State<GameController>
         }
         else
         {
+            if (_selectedMonsterToMove.IsPlayer && !_storageUI.IsPartySlot(slotIndex))
+            {
+                _storageUI.PlaceMonsterIntoSlot(_selectedSlotToMove, _selectedMonsterToMove);
+                StartCoroutine(HandlePlayerMoveAttempt());
+                return;
+            }
+
             if (slotIndex == _selectedSlotToMove)
             {
                 _isMovingMonster = false;
@@ -86,6 +93,14 @@ public class StorageState : State<GameController>
                 return;
             }
 
+            if (secondMonster != null && secondMonster.IsPlayer && !_storageUI.IsPartySlot(firstSlotIndex))
+            {
+                _storageUI.PlaceMonsterIntoSlot(secondSlotIndex, secondMonster);
+                _storageUI.PlaceMonsterIntoSlot(firstSlotIndex, _selectedMonsterToMove);
+                StartCoroutine(HandlePlayerMoveAttempt());
+                return;
+            }
+
             _storageUI.PlaceMonsterIntoSlot(secondSlotIndex, _selectedMonsterToMove);
             if (secondMonster != null)
             {
@@ -97,6 +112,16 @@ public class StorageState : State<GameController>
             _storageUI.SetPartyData();
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
         }
+    }
+
+    private IEnumerator HandlePlayerMoveAttempt()
+    {
+        _isMovingMonster = false;
+        _storageUI.RestoreSelection();
+        _storageUI.SetStorageData();
+        _storageUI.SetPartyData();
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+        yield return DialogueManager.Instance.ShowDialogueText($"{PlayerController.Instance.Name} cannot be moved to storage.");
     }
 
     private IEnumerator HandleMonsterSelection(int slotIndex)
@@ -146,6 +171,8 @@ public class StorageState : State<GameController>
                 break;
         }
     }
+
+
 
     private void OnBack()
     {

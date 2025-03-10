@@ -158,7 +158,7 @@ public class MonsterBase : ScriptableObject
 
     private int CalculateTotalStats(int minTotal, int maxTotal)
     {
-        float totalRange = maxTotal - minTotal;
+        int totalRange = maxTotal - minTotal;
         int totalStats = Mathf.RoundToInt(_totalStatsWeight * totalRange) + minTotal;
         return Mathf.Clamp(totalStats, minTotal, maxTotal);
     }
@@ -191,6 +191,11 @@ public class MonsterBase : ScriptableObject
 
     public int GetExpForLevel(int level)
     {
+        if (level == 1)
+        {
+            return 0;
+        }
+
         switch (GrowthRate)
         {
             case GrowthRate.Erratic:

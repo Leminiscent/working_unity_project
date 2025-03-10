@@ -203,7 +203,7 @@ namespace Utils.GenericSelectionUI
         }
     }
 
-    // Dummy selectable item implementation.
+    // Dummy selectable item
     public class DummySelectable : ISelectableItem
     {
         public void Init() { }
@@ -211,7 +211,7 @@ namespace Utils.GenericSelectionUI
         public void OnSelectionChanged(bool selected) { }
     }
 
-    // Non-generic concrete subclass for dummy selection.
+    // Non-generic concrete subclass for dummy selection
     public class DummySelectionUI : SelectionUI<DummySelectable> { }
 
     public enum SelectionType
