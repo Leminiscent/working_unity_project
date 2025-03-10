@@ -133,11 +133,15 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public object CaptureState()
     {
+        List<Monster> party = GetComponent<MonsterParty>().Monsters;
+        int playerIndex = party.FindIndex(static m => m.IsPlayer);
+
         PlayerSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,
-            Monsters = GetComponent<MonsterParty>().Monsters.Select(static m => m.GetSaveData()).ToList()
+            Monsters = party.Select(static m => m.GetSaveData()).ToList(),
+            PlayerMonsterIndex = playerIndex
         };
 
         return saveData;
@@ -149,7 +153,11 @@ public class PlayerController : MonoBehaviour, ISavable
 
         transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
         _character.Animator.FacingDirection = saveData.FacingDirection;
-        GetComponent<MonsterParty>().Monsters = saveData.Monsters.Select(static s => new Monster(s)).ToList();
+
+        List<Monster> monsters = saveData.Monsters.Select(static s => new Monster(s)).ToList();
+        GetComponent<MonsterParty>().Monsters = monsters;
+
+        SetPlayerMonster(monsters[saveData.PlayerMonsterIndex]);
     }
 }
 
@@ -159,4 +167,5 @@ public class PlayerSaveData
     public float[] Position;
     public FacingDirection FacingDirection;
     public List<MonsterSaveData> Monsters;
+    public int PlayerMonsterIndex;
 }

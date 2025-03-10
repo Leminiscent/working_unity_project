@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -41,13 +42,13 @@ public class DeputyController : MonoBehaviour, ISavable
 
     private void UpdateDeputyMonster()
     {
-        Monster leader = _party.Monsters[0];
+        Monster deputy = _party.Monsters.First(monster => !monster.IsPlayer);
 
         _animator.SetSprites(
-            leader.Base.WalkDownSprites,
-            leader.Base.WalkUpSprites,
-            leader.Base.WalkRightSprites,
-            leader.Base.WalkLeftSprites);
+            deputy.Base.WalkDownSprites,
+            deputy.Base.WalkUpSprites,
+            deputy.Base.WalkRightSprites,
+            deputy.Base.WalkLeftSprites);
     }
 
     private void OnPlayerMoveStart(Vector3 playerPosition)
