@@ -13,12 +13,14 @@ public class DeputyController : MonoBehaviour, ISavable
     private BattleParty _party;
     private float _moveSpeed;
     private Queue<Vector3> _positionQueue = new();
+    private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
         _animator = GetComponent<CharacterAnimator>();
         _player = FindObjectOfType<PlayerController>();
         _party = _player.GetComponent<BattleParty>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -28,11 +30,15 @@ public class DeputyController : MonoBehaviour, ISavable
         _party.OnUpdated += UpdateDeputyBattler;
 
         UpdateDeputyBattler();
-        SetPosition();
     }
 
     private void Update()
     {
+        if (_party.Battlers.Count < 2)
+        {
+            return;
+        }
+
         if (!_isMoving && _positionQueue.Count > 0)
         {
             Vector3 targetPosition = _positionQueue.Dequeue();
@@ -42,17 +48,34 @@ public class DeputyController : MonoBehaviour, ISavable
 
     private void UpdateDeputyBattler()
     {
-        Battler deputy = _party.Battlers.First(battler => !battler.IsPlayer);
+        if (_party.Battlers.Count < 2)
+        {
+            _spriteRenderer.enabled = false;
+            return;
+        }
+        else
+        {
+            _spriteRenderer.enabled = true;
+        }
+
+        Battler deputy = _party.Battlers.First(static battler => !battler.IsPlayer);
 
         _animator.SetSprites(
             deputy.Base.WalkDownSprites,
             deputy.Base.WalkUpSprites,
             deputy.Base.WalkRightSprites,
             deputy.Base.WalkLeftSprites);
+
+        SetPosition();
     }
 
     private void OnPlayerMoveStart(Vector3 playerPosition)
     {
+        if (_party.Battlers.Count < 2)
+        {
+            return;
+        }
+
         _positionQueue.Enqueue(playerPosition);
     }
 
@@ -76,7 +99,6 @@ public class DeputyController : MonoBehaviour, ISavable
                 if (ledge.CanJump(moveVec))
                 {
                     Vector3 jumpDest = transform.position + ((Vector3)moveVec * 2);
-
                     yield return Jump(jumpDest);
                     continue;
                 }
@@ -98,7 +120,6 @@ public class DeputyController : MonoBehaviour, ISavable
     private Vector2 GetNextMoveVector(Vector3 fromPosition, Vector3 toPosition)
     {
         Vector2 direction = toPosition - fromPosition;
-
         return Mathf.Abs(direction.x) > Mathf.Epsilon
             ? new Vector2(Mathf.Sign(direction.x), 0)
             : Mathf.Abs(direction.y) > Mathf.Epsilon ? new Vector2(0, Mathf.Sign(direction.y)) : Vector2.zero;
@@ -114,15 +135,22 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         _isMoving = true;
         _animator.IsJumping = true;
-
         yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
-
         _animator.IsJumping = false;
         _isMoving = false;
     }
 
     public void SetPosition()
     {
+        if (_party.Battlers.Count < 2)
+        {
+            _spriteRenderer.enabled = false;
+            return;
+        }
+        else
+        {
+            _spriteRenderer.enabled = true;
+        }
         transform.position = _player.transform.position;
         _animator.IsMoving = false;
         _isMoving = false;
@@ -135,14 +163,12 @@ public class DeputyController : MonoBehaviour, ISavable
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _animator.FacingDirection,
         };
-
         return saveData;
     }
 
     public void RestoreState(object state)
     {
         DeputySaveData saveData = (DeputySaveData)state;
-
         transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
         _animator.FacingDirection = saveData.FacingDirection;
     }

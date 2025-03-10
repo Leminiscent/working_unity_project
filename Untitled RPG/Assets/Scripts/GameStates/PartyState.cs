@@ -145,7 +145,7 @@ public class PartyState : State<GameController>
                 case 1:
                     if (_playerParty.Battlers.Count == 1)
                     {
-                        _partyScreen.SetMessageText("There are no other members to switch with!");
+                        _partyScreen.SetMessageText("There are no other party members to switch with!");
                         yield break;
                     }
                     _isSwitchingPosition = true;

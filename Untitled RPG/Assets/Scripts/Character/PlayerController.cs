@@ -150,6 +150,7 @@ public class PlayerController : MonoBehaviour, ISavable
     public void RestoreState(object state)
     {
         PlayerSaveData saveData = (PlayerSaveData)state;
+        BattleParty party = GetComponent<BattleParty>();
 
         transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
         _character.Animator.FacingDirection = saveData.FacingDirection;
@@ -158,6 +159,7 @@ public class PlayerController : MonoBehaviour, ISavable
         GetComponent<BattleParty>().Battlers = battlers;
 
         SetPlayerBattler(battlers[saveData.PlayerBattlerIndex]);
+        party.PartyUpdated();
     }
 }
 
