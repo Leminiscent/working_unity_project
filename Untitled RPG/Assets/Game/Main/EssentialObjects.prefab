@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transformationUI: {fileID: 7487083077385601073}
-  _monsterImage: {fileID: 6087407577925630173}
+  _battlerImage: {fileID: 0}
   _transformationMusic: {fileID: 8300000, guid: cf234c072f288f246ba6f76cc5764794, type: 3}
 --- !u!114 &8421208173127565085
 MonoBehaviour:
@@ -1885,7 +1885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSelectScreen: {fileID: 6859684935092990284}
-  _availableMonsters:
+  _availableBattlers:
   - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
     _level: 5
   - _base: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
@@ -27540,17 +27540,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eae673faa0476d041a27730266e900ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6087407577925630173 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3731119335480120136, guid: 12d8bdcaf31bde0408e96e2c115ce517, type: 3}
-  m_PrefabInstance: {fileID: 7475211997716769685}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6859684935092990284 stripped
