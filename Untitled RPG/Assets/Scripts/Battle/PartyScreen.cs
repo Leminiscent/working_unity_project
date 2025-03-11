@@ -42,10 +42,25 @@ public class PartyScreen : SelectionUI<TextSlot>
         }
 
         IEnumerable<TextSlot> textSlots = _memberSlots.Select(static m => m.GetComponent<TextSlot>());
-
         SetItems(textSlots.Take(_battlers.Count).ToList());
 
-        _messageText.text = "Choose a member!";
+        bool deputyAssigned = false;
+        for (int i = 0; i < _battlers.Count; i++)
+        {
+            string roleMessage = "";
+            if (_battlers[i].IsMaster)
+            {
+                roleMessage = "Master";
+            }
+            else if (!deputyAssigned)
+            {
+                roleMessage = "Deputy";
+                deputyAssigned = true;
+            }
+            _memberSlots[i].SetMessage(roleMessage);
+        }
+
+        _messageText.text = "Choose a party member!";
     }
 
     public void ShowSkillBookUsability(SkillBook skillBook)
@@ -53,7 +68,6 @@ public class PartyScreen : SelectionUI<TextSlot>
         for (int i = 0; i < _battlers.Count; ++i)
         {
             string message = skillBook.CanBeLearned(_battlers[i]) ? "Learnable" : "Not Learnable";
-
             _memberSlots[i].SetMessage(message);
         }
     }

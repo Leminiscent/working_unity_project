@@ -119,7 +119,7 @@ public class BattleSystem : MonoBehaviour
     {
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
-        _playerUnitCount = Mathf.Min(PlayerParty.Battlers.Count(static m => m.Hp > 0), 3);
+        _playerUnitCount = Mathf.Min(PlayerParty.Battlers.Count(static b => b.Hp > 0), 3);
         _playerElementsSingle.SetActive(_playerUnitCount == 1);
         _playerElementsDouble.SetActive(_playerUnitCount == 2);
         _playerElementsTriple.SetActive(_playerUnitCount == 3);
@@ -221,7 +221,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleOver(bool won)
     {
         BattleIsOver = true;
-        PlayerParty.Battlers.ForEach(static m => m.OnBattleOver());
+        PlayerParty.Battlers.ForEach(static b => b.OnBattleOver());
 
         PlayerUnits.ForEach(static u => u.ClearData());
         EnemyUnits.ForEach(static u => u.ClearData());

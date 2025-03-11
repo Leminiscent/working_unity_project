@@ -9,6 +9,7 @@ public class PartyState : State<GameController>
     [SerializeField] private PartyScreen _partyScreen;
 
     private GameController _gameController;
+    State<GameController> _prevState;
     private BattleParty _playerParty;
     private bool _isSwitchingPosition;
     private int _selectedSwitchToIndex = 0;
@@ -36,7 +37,15 @@ public class PartyState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
+        _prevState = _gameController.StateMachine.GetPrevState();
         SelectedMember = null;
+
+        _partyScreen.SetPartyData();
+        if (_prevState == InventoryState.Instance && InventoryState.Instance.SelectedItem is SkillBook)
+        {
+            _partyScreen.ShowSkillBookUsability(InventoryState.Instance.SelectedItem as SkillBook);
+        }
+
         _partyScreen.gameObject.SetActive(true);
         _partyScreen.OnSelected += OnBattlerSelected;
         _partyScreen.OnBack += OnBack;
@@ -50,6 +59,7 @@ public class PartyState : State<GameController>
     public override void Exit()
     {
         _partyScreen.gameObject.SetActive(false);
+        _partyScreen.ClearMessageText();
         _partyScreen.OnSelected -= OnBattlerSelected;
         _partyScreen.OnBack -= OnBack;
     }
@@ -63,15 +73,13 @@ public class PartyState : State<GameController>
 
     private IEnumerator BattlerSelectedAction(int selectedBattlerIndex)
     {
-        State<GameController> prevState = _gameController.StateMachine.GetPrevState();
-
-        if (prevState == InventoryState.Instance)
+        if (_prevState == InventoryState.Instance)
         {
             StartCoroutine(GoToUseItemState());
         }
-        else if (prevState == BattleState.Instance)
+        else if (_prevState == BattleState.Instance)
         {
-            BattleState battleState = prevState as BattleState;
+            BattleState battleState = _prevState as BattleState;
 
             DynamicMenuState.Instance.MenuItems = new List<string>
             {

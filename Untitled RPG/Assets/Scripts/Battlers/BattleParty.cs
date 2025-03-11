@@ -62,7 +62,7 @@ public class BattleParty : MonoBehaviour
 
     public bool CheckForTransformations()
     {
-        return _battlers.Any(static m => m.HasJustLeveledUp && m.CheckForTransformation() != null);
+        return _battlers.Any(static b => b.HasJustLeveledUp && b.CheckForTransformation() != null);
     }
 
 

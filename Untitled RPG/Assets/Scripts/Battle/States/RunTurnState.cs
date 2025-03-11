@@ -623,7 +623,7 @@ public class RunTurnState : State<BattleSystem>
 
         if (defeatedUnit.IsPlayerUnit)
         {
-            List<Battler> activeBattlers = _battleSystem.PlayerUnits.Select(static u => u.Battler).Where(m => m.Hp > 0).ToList();
+            List<Battler> activeBattlers = _battleSystem.PlayerUnits.Select(static u => u.Battler).Where(b => b.Hp > 0).ToList();
             Battler nextBattler = _playerParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
 
             if (nextBattler == null && activeBattlers.Count == 0)

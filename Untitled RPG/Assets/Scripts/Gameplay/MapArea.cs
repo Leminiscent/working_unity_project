@@ -42,7 +42,7 @@ public class MapArea : MonoBehaviour
     {
         List<BattlerEncounterRecord> battlerList = _rogueBattlers;
         int randVal = Random.Range(1, 101);
-        BattlerEncounterRecord battlerRecord = battlerList.First(m => randVal >= m.ChanceLower && randVal <= m.ChanceUpper);
+        BattlerEncounterRecord battlerRecord = battlerList.First(b => randVal >= b.ChanceLower && randVal <= b.ChanceUpper);
         Vector2Int levelRange = battlerRecord.LevelRange;
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
         Battler rogueBattler = new(battlerRecord.Battler, level);

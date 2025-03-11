@@ -106,7 +106,7 @@ public class StorageState : State<GameController>
             {
                 _storageUI.PlaceBattlerIntoSlot(firstSlotIndex, secondBattler);
             }
-            _party.Battlers.RemoveAll(static m => m == null);
+            _party.Battlers.RemoveAll(static b => b == null);
             _party.PartyUpdated();
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();

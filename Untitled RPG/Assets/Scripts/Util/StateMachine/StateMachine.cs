@@ -21,7 +21,10 @@ namespace Utils.StateMachine
 
         public void Execute()
         {
-            CurrentState?.Execute();
+            if (CurrentState != null)
+            {
+                CurrentState.Execute();
+            }
         }
 
         public void Push(State<T> newState)

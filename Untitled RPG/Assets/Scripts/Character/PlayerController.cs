@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour, ISavable
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,
-            Battlers = party.Select(static m => m.GetSaveData()).ToList(),
+            Battlers = party.Select(static b => b.GetSaveData()).ToList(),
             PlayerBattlerIndex = playerIndex
         };
 
