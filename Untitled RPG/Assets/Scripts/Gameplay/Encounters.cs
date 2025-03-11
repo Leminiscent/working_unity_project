@@ -23,6 +23,6 @@ public class Encounters : MonoBehaviour, IPlayerTriggerable
         player.Character.Exclamation.SetActive(false);
         yield return DialogueManager.Instance.ShowDialogueText("Something's in the brush!", false, 0.75f);
         GameController.Instance.StateMachine.Pop();
-        GameController.Instance.StartWildBattle();
+        GameController.Instance.StartRogueBattle();
     }
 }

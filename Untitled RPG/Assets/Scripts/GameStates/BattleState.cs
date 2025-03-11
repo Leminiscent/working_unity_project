@@ -35,15 +35,15 @@ public class BattleState : State<GameController>
 
         if (Master == null)
         {
-            List<Battler> wildBattlers = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomWildBattlers(Random.Range(1, 4));
-            List<Battler> wildBattlerCopies = new();
+            List<Battler> rogueBattlers = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomRogueBattlers(Random.Range(1, 4));
+            List<Battler> rogueBattlerCopies = new();
 
-            for (int i = 0; i < wildBattlers.Count; i++)
+            for (int i = 0; i < rogueBattlers.Count; i++)
             {
-                wildBattlerCopies.Add(new(wildBattlers[i].Base, wildBattlers[i].Level));
+                rogueBattlerCopies.Add(new(rogueBattlers[i].Base, rogueBattlers[i].Level));
             }
 
-            _battleSystem.StartWildBattle(playerParty, wildBattlerCopies, Trigger, wildBattlers.Count);
+            _battleSystem.StartRogueBattle(playerParty, rogueBattlerCopies, Trigger, rogueBattlers.Count);
         }
         else
         {

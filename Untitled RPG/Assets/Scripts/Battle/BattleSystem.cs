@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
@@ -17,8 +16,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private List<BattleUnit> _enemyUnitsTriple;
     [SerializeField] private BattleDialogueBox _dialogueBox;
     [SerializeField] private PartyScreen _partyScreen;
-    [SerializeField] private Image _playerImage;
-    [SerializeField] private Image _enemyImage;
     [SerializeField] private MoveForgettingUI _moveForgettingUI;
     [SerializeField] private InventoryUI _inventoryUI;
     [SerializeField] private GameObject _playerElementsSingle;
@@ -29,7 +26,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject _enemyElementsTriple;
 
     [Header("Audio")]
-    [SerializeField] private AudioClip _wildBattleMusic;
+    [SerializeField] private AudioClip _rogueBattleMusic;
     [SerializeField] private AudioClip _masterBattleMusic;
     [SerializeField] private AudioClip _battleWonMusic;
     [SerializeField] private AudioClip _battleLostMusic;
@@ -60,7 +57,7 @@ public class BattleSystem : MonoBehaviour
     public bool BattleIsOver { get; private set; }
     public BattleParty PlayerParty { get; private set; }
     public BattleParty EnemyParty { get; private set; }
-    public List<Battler> WildBattlers { get; private set; }
+    public List<Battler> RogueBattlers { get; private set; }
     public Field Field { get; private set; }
     public bool IsMasterBattle { get; private set; }
     public int EscapeAttempts { get; set; }
@@ -90,16 +87,16 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    public void StartWildBattle(BattleParty playerParty, List<Battler> wildBattlers, BattleTrigger trigger, int unitCount = 1)
+    public void StartRogueBattle(BattleParty playerParty, List<Battler> rogueBattlers, BattleTrigger trigger, int unitCount = 1)
     {
         IsMasterBattle = false;
 
         PlayerParty = playerParty;
-        WildBattlers = wildBattlers;
+        RogueBattlers = rogueBattlers;
         _enemyUnitCount = unitCount;
 
         _battleTrigger = trigger;
-        AudioManager.Instance.PlayMusic(_wildBattleMusic);
+        AudioManager.Instance.PlayMusic(_rogueBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
@@ -187,68 +184,29 @@ public class BattleSystem : MonoBehaviour
             }
             for (int i = 0; i < _enemyUnitCount; i++)
             {
-                _enemyUnits[i].Setup(WildBattlers[i]);
+                _enemyUnits[i].Setup(RogueBattlers[i]);
             }
 
-            string wildAppearance = WildBattlers.Count > 1
-                ? $"Wild {string.Join(", ", WildBattlers.Select(static m => m.Base.Name).Take(WildBattlers.Count - 1))} and {WildBattlers.Last().Base.Name} have appeared!"
-                : $"A wild {WildBattlers[0].Base.Name} has appeared!";
+            string rogueAppearance = RogueBattlers.Count > 1
+                ? $"A group of rogue battlers has appeared!"
+                : $"A rogue {RogueBattlers[0].Base.Name} has appeared!";
 
-            yield return _dialogueBox.TypeDialogue(wildAppearance);
+            yield return _dialogueBox.TypeDialogue(rogueAppearance);
         }
         else
         {
-            for (int i = 0; i < _playerUnitCount; i++)
-            {
-                _playerUnits[i].gameObject.SetActive(false);
-            }
-            for (int i = 0; i < _enemyUnitCount; i++)
-            {
-                _enemyUnits[i].gameObject.SetActive(false);
-            }
-
-            _playerImage.gameObject.SetActive(true);
-            _enemyImage.gameObject.SetActive(true);
-            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[8];
-            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[12];
-
-            yield return _dialogueBox.TypeDialogue($"{Enemy.Name} wants to battle!");
-
-            _enemyImage.sprite = Enemy.Character.Animator.GetAllSprites()[8];
-            _enemyImage.transform.DOLocalMoveX(1500, 1f);
-            yield return new WaitForSeconds(0.75f);
-            _enemyImage.gameObject.SetActive(false);
-
             List<Battler> enemyBattlers = EnemyParty.GetHealthyBattlers(_enemyUnitCount);
 
+            for (int i = 0; i < _playerUnitCount; i++)
+            {
+                _playerUnits[i].Setup(playerBattlers[i]);
+            }
             for (int i = 0; i < _enemyUnitCount; i++)
             {
-                _enemyUnits[i].gameObject.SetActive(true);
                 _enemyUnits[i].Setup(enemyBattlers[i]);
             }
 
-            string battlerNames = enemyBattlers.Count > 1
-                ? $"{string.Join(", ", enemyBattlers.Select(static m => m.Base.Name).Take(enemyBattlers.Count - 1))} and {enemyBattlers.Last().Base.Name}"
-                : enemyBattlers[0].Base.Name;
-
-            yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {battlerNames}!");
-
-            _playerImage.sprite = Player.Character.Animator.GetAllSprites()[12];
-            _playerImage.transform.DOLocalMoveX(-1500, 1f);
-            yield return new WaitForSeconds(0.75f);
-            _playerImage.gameObject.SetActive(false);
-
-            for (int i = 0; i < _playerUnitCount; i++)
-            {
-                _playerUnits[i].gameObject.SetActive(true);
-                _playerUnits[i].Setup(playerBattlers[i]);
-            }
-
-            battlerNames = playerBattlers.Count > 1
-                ? $"{string.Join(", ", playerBattlers.Select(static m => m.Base.Name).Take(playerBattlers.Count - 1))} and {playerBattlers.Last().Base.Name}"
-                : playerBattlers[0].Base.Name;
-
-            yield return _dialogueBox.TypeDialogue($"Go {battlerNames}!");
+            yield return _dialogueBox.TypeDialogue($"Master {Enemy.Name} wants to battle!");
         }
 
         Field = new Field();
@@ -284,7 +242,7 @@ public class BattleSystem : MonoBehaviour
         if (_battleActions.Count == _playerUnits.Count)
         {
             SelectingUnit.SetSelected(false);
-            
+
             foreach (BattleUnit enemyUnit in _enemyUnits)
             {
                 if (UnityEngine.Random.value < 0.2f)
@@ -363,7 +321,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SendNextMasterBattler(Battler newBattler, BattleUnit defeatedUnit)
     {
         defeatedUnit.Setup(newBattler);
-        yield return _dialogueBox.TypeDialogue($"{Enemy.Name} sent out {newBattler.Base.Name}!");
+        yield return _dialogueBox.TypeDialogue($"Master {Enemy.Name} summoned {newBattler.Base.Name} to battle!");
     }
 }
 

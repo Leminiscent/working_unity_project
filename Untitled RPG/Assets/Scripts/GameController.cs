@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void StartWildBattle()
+    public void StartRogueBattle()
     {
         BattleState.Instance.Trigger = CurrentScene.GetComponent<MapArea>().Terrain;
         StateMachine.Push(BattleState.Instance);
