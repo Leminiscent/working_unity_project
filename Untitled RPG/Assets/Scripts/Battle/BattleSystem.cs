@@ -196,6 +196,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             List<Battler> enemyBattlers = EnemyParty.GetHealthyBattlers(_enemyUnitCount);
+            enemyBattlers[0].IsMaster = true;
 
             for (int i = 0; i < _playerUnitCount; i++)
             {

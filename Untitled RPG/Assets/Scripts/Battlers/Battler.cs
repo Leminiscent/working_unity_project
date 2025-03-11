@@ -11,7 +11,7 @@ public class Battler
 
     public BattlerBase Base => _base;
     public int Level => _level;
-    public bool IsPlayer { get; set; }
+    public bool IsMaster { get; set; }
     public bool HasJustLeveledUp { get; set; }
     public int Exp { get; set; }
     public int Hp { get; set; }
@@ -133,15 +133,15 @@ public class Battler
     {
         Stats = new Dictionary<Stat, int>
         {
-            { Stat.Strength, Mathf.FloorToInt((((2f * Base.Strength) + (StatPerformanceValues[Stat.Strength] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Endurance, Mathf.FloorToInt((((2f * Base.Endurance) + (StatPerformanceValues[Stat.Endurance] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Intelligence, Mathf.FloorToInt((((2f * Base.Intelligence) + (StatPerformanceValues[Stat.Intelligence] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Fortitude, Mathf.FloorToInt((((2f * Base.Fortitude) + (StatPerformanceValues[Stat.Fortitude] / 4f)) * Level / 100f) + 5f) }, // Todo Nature + IV's
-            { Stat.Agility, Mathf.FloorToInt((((2f * Base.Agility) + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) } // Todo Nature + IV's
+            { Stat.Strength, Mathf.FloorToInt((((2f * Base.Strength) + (StatPerformanceValues[Stat.Strength] / 4f)) * Level / 100f) + 5f) },
+            { Stat.Endurance, Mathf.FloorToInt((((2f * Base.Endurance) + (StatPerformanceValues[Stat.Endurance] / 4f)) * Level / 100f) + 5f) },
+            { Stat.Intelligence, Mathf.FloorToInt((((2f * Base.Intelligence) + (StatPerformanceValues[Stat.Intelligence] / 4f)) * Level / 100f) + 5f) },
+            { Stat.Fortitude, Mathf.FloorToInt((((2f * Base.Fortitude) + (StatPerformanceValues[Stat.Fortitude] / 4f)) * Level / 100f) + 5f) },
+            { Stat.Agility, Mathf.FloorToInt((((2f * Base.Agility) + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) }
         };
 
         int prevMaxHp = MaxHp;
-        MaxHp = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f); // Todo IV's
+        MaxHp = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f);
         Hp += MaxHp - prevMaxHp;
         if (MaxHp > prevMaxHp)
         {

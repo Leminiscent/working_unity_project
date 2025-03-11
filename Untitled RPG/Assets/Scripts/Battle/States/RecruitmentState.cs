@@ -60,7 +60,9 @@ public class RecruitmentState : State<BattleSystem>
     {
         if (_battleSystem.IsMasterBattle)
         {
-            yield return _dialogueBox.TypeDialogue("You can't recruit another Master's battler!");
+            yield return !RecruitTarget.Battler.IsMaster ? _dialogueBox.TypeDialogue("You can't recruit another Master's battler!")
+                : _dialogueBox.TypeDialogue("You can't recruit another Master!");
+
             _battleSystem.StateMachine.Pop();
             yield break;
         }
@@ -212,7 +214,7 @@ public class RecruitmentState : State<BattleSystem>
             {
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
                 yield return _dialogueBox.TypeDialogue("There are no more enemies remaining!");
-                yield return _dialogueBox.TypeDialogue("You are victorious!");
+                yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
                 while (AudioManager.Instance.MusicPlayer.isPlaying)
                 {
                     yield return null;
