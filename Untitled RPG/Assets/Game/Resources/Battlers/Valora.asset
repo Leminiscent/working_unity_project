@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: Valora
+  m_EditorClassIdentifier: 
+  _name: Valora
+  _description: A versatile combatant known for her balance between offense and defense.
+  _sprite: {fileID: 21300000, guid: 1826ec83d43e66944874229772c628cf, type: 3}
+  _type1: 1
+  _type2: 0
+  _rarity: 2
+  _totalStatsWeight: 0.5
+  _hpWeight: 0.161
+  _strengthWeight: 0.195
+  _enduranceWeight: 0.177
+  _intelligenceWeight: 0.145
+  _fortitudeWeight: 0.161
+  _agilityWeight: 0.161
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: 67a8f0e4ce9a4b046a66eaf68b38c502, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 0c3bd64be6bb83345a1f201ead41ab65, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 0d26c261add2edb499a9016f4069bcc9, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: b59cb9e50252b3247a33911123a68cc0, type: 2}
+    _level: 1
+  _learnableBySkillBook: []
+  _transformations: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  _dropTable:
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: -1021478116, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1125652833, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1021478116, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1485240463, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  _walkUpSprites:
+  - {fileID: 1527435080, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1693406668, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 1527435080, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -469660041, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  _walkRightSprites:
+  - {fileID: -138958242, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 1279484090, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -138958242, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -658629286, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  _walkLeftSprites:
+  - {fileID: 348771587, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -826453128, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 348771587, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 2124642022, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  _sumOfWeights: 1
