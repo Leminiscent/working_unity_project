@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: Garrick
+  m_EditorClassIdentifier: 
+  _name: Garrick
+  _description: A robust and determined warrior excelling in physical prowess and
+    resilience.
+  _sprite: {fileID: 21300000, guid: 872b468c0275b82429dc70a6d84c39c6, type: 3}
+  _type1: 1
+  _type2: 0
+  _rarity: 2
+  _totalStatsWeight: 0.5
+  _hpWeight: 0.172
+  _strengthWeight: 0.203
+  _enduranceWeight: 0.188
+  _intelligenceWeight: 0.124
+  _fortitudeWeight: 0.172
+  _agilityWeight: 0.141
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: ce4a75b868dad40419bcd4fa3c427357, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 0ac480fae8f54034bb300898252533e5, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 808744ba52d73c3499615b0f55b81910, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 94f6dda11a1d4ff48b63ab6191c8fe4d, type: 2}
+    _level: 1
+  _learnableBySkillBook: []
+  _transformations: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  _dropTable:
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: 1126287188, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -397339072, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 1126287188, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1337030054, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  _walkUpSprites:
+  - {fileID: 2003988600, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -58311293, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 2003988600, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 1950211151, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  _walkRightSprites:
+  - {fileID: -1845137100, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1644328703, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1845137100, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -2026978198, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  _walkLeftSprites:
+  - {fileID: 1862837293, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1197283172, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 1862837293, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -2095712447, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  _sumOfWeights: 1
