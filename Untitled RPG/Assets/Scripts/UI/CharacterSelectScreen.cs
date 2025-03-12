@@ -47,12 +47,12 @@ public class CharacterSelectScreen : DummySelectionUI
         _battlerType1.text = selectedBattler.Base.Type1.ToString();
         if (selectedBattler.Base.Type2 != BattlerType.None)
         {
-            _battlerType2.gameObject.SetActive(true);
+            _battlerType2.transform.parent.gameObject.SetActive(true);
             _battlerType2.text = selectedBattler.Base.Type2.ToString();
         }
         else
         {
-            _battlerType2.gameObject.SetActive(false);
+            _battlerType2.transform.parent.gameObject.SetActive(false);
         }
         _descriptionText.text = selectedBattler.Base.Description;
 
