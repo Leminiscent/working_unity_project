@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: Morgana
+  m_EditorClassIdentifier: 
+  _name: Morgana
+  _description: A mystical spellcaster who wields powerful magic and manipulates
+    the forces of the arcane.
+  _sprite: {fileID: 21300000, guid: de354cdaef8e50a408dd4ab42f98b03a, type: 3}
+  _type1: 3
+  _type2: 7
+  _rarity: 2
+  _totalStatsWeight: 0.5
+  _hpWeight: 0.115
+  _strengthWeight: 0.098
+  _enduranceWeight: 0.131
+  _intelligenceWeight: 0.279
+  _fortitudeWeight: 0.213
+  _agilityWeight: 0.164
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: 9b64ed0638efdcc498b3196ac7f80d48, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: c6b68c8eae18eb14ca3ac37140b60e1e, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: d75792d77d63498499c4e28221c4e7f7, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 792b21ba4e14226409357c6b427baec3, type: 2}
+    _level: 1
+  _learnableBySkillBook: []
+  _transformations: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  _dropTable:
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: -1081282243, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 176313303, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -1081282243, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 271248414, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  _walkUpSprites:
+  - {fileID: -2088535506, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -914694301, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -2088535506, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -2080668981, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  _walkRightSprites:
+  - {fileID: -978759595, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 1552193430, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -978759595, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 1628535414, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  _walkLeftSprites:
+  - {fileID: -1059077946, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 1581064259, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -1059077946, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -870620250, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  _sumOfWeights: 1
