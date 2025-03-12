@@ -10,30 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: Artemis
+  m_Name: Seraphina
   m_EditorClassIdentifier: 
-  _name: Atemis
-  _description: A nimble ranged combatant specializing in swift, precise attacks
-    from a distance.
-  _sprite: {fileID: 21300000, guid: 00183b7a485f711439536809743cac75, type: 3}
-  _type1: 9
+  _name: Seraphina
+  _description: A graceful performer whose moves mesmerize foes and inspire allies.
+  _sprite: {fileID: 21300000, guid: df4e02af9841f114dbe06549dfa55ac1, type: 3}
+  _type1: 12
   _type2: 0
   _rarity: 2
   _totalStatsWeight: 0.5
-  _hpWeight: 0.131
-  _strengthWeight: 0.164
-  _enduranceWeight: 0.148
-  _intelligenceWeight: 0.18
-  _fortitudeWeight: 0.131
-  _agilityWeight: 0.246
+  _hpWeight: 0.15
+  _strengthWeight: 0.133
+  _enduranceWeight: 0.167
+  _intelligenceWeight: 0.2
+  _fortitudeWeight: 0.133
+  _agilityWeight: 0.217
   _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 0805b9ccffa779247951b72aae1f299d, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 14cd557eb34afbe4a97215f8ee98c977, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 62a918c9d63336b468eb926ec188bab8, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 6e36e32f9dbd32848b6d80981724bbea, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 0ec4245acbec5ce43859b1f7e5d250e6, type: 2}
+  - _moveBase: {fileID: 11400000, guid: ebed171240ab26c47b12326e498db5ac, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 30ce39c2fa097974ab3efb3e69d1d0f9, type: 2}
+  - _moveBase: {fileID: 11400000, guid: d88a6a2775515e443a6116e43f4d94a3, type: 2}
     _level: 1
   _learnableBySkillBook: []
   _transformations: []
@@ -114,23 +113,23 @@ MonoBehaviour:
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
   _walkDownSprites:
-  - {fileID: -813453478, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -512963522, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -813453478, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 1333701900, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: 950597360, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 1761583262, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 950597360, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: -959249421, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
   _walkUpSprites:
-  - {fileID: -522881067, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 1677871391, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -522881067, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 586911588, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: 54002797, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 665104222, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 54002797, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 1370509838, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
   _walkRightSprites:
-  - {fileID: -1975491363, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -1027927445, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -1975491363, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -2048051302, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: 645125734, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: -1938620037, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 645125734, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: -1392580857, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
   _walkLeftSprites:
-  - {fileID: 624039127, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -538064205, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 624039127, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -1926597068, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: -397786599, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 29548140, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: -397786599, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 1336871233, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
   _sumOfWeights: 1
