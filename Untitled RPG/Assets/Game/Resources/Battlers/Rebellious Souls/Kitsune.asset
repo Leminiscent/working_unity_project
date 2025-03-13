@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: Kitsune
+  m_EditorClassIdentifier: 
+  _name: Kitsune
+  _description: A mystical shrine maiden whose ethereal presence and graceful movements
+    captivate all who see her.
+  _sprite: {fileID: 21300000, guid: acd7694ee1f215748b829d7204b21793, type: 3}
+  _type1: 6
+  _type2: 12
+  _rarity: 3
+  _totalStatsWeight: 0.58
+  _hpWeight: 0.11
+  _strengthWeight: 0.1
+  _enduranceWeight: 0.12
+  _intelligenceWeight: 0.27
+  _fortitudeWeight: 0.15
+  _agilityWeight: 0.25
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: 80dc3e26011381d459921b2c598ecf9b, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: ebed171240ab26c47b12326e498db5ac, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 475e7af426ca8b1489946c43d9878451, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: e049f20b92334204a97f8f1b1e558a74, type: 2}
+    _level: 1
+  _learnableBySkillBook: []
+  _transformations: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  _dropTable:
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: 138730680, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -1122360032, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: 138730680, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: 930906342, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  _walkUpSprites:
+  - {fileID: -1870144266, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -995122945, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -1870144266, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: 923246474, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  _walkRightSprites:
+  - {fileID: -1504321188, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -559092864, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -1504321188, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -534892120, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  _walkLeftSprites:
+  - {fileID: -1667931308, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -1185575762, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: -1667931308, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  - {fileID: 380823738, guid: bb8c249f5fceb1b4da7f362855836079, type: 3}
+  _sumOfWeights: 1

@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: Gromma
+  m_EditorClassIdentifier: 
+  _name: Gromma
+  _description: A fierce orc with a resolute spirit and unmatched determination.
+  _sprite: {fileID: 21300000, guid: 95b535c6ea1018141bc6f905513a1f1c, type: 3}
+  _type1: 8
+  _type2: 0
+  _rarity: 3
+  _totalStatsWeight: 0.7
+  _hpWeight: 0.18
+  _strengthWeight: 0.25
+  _enduranceWeight: 0.2
+  _intelligenceWeight: 0.08
+  _fortitudeWeight: 0.14
+  _agilityWeight: 0.15
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: ce4a75b868dad40419bcd4fa3c427357, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: bfb80fa74b9ec8f448b5b78032d685d8, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: bb4576e6f28a24a47bcd2fbb09f0caa2, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 3dc16307bebc9c54d801a7b09d02cde1, type: 2}
+    _level: 1
+  _learnableBySkillBook: []
+  _transformations: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  _dropTable:
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: 1971172984, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: -1704869014, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 1971172984, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 914915687, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  _walkUpSprites:
+  - {fileID: -2089570101, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: -1805952183, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: -2089570101, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 371715603, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  _walkRightSprites:
+  - {fileID: -781320844, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 1839062663, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: -781320844, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 574344172, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  _walkLeftSprites:
+  - {fileID: -1381093258, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 1128446106, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: -1381093258, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  - {fileID: 690582666, guid: 40a5f1d9aa6d1a048a5949ecfd199942, type: 3}
+  _sumOfWeights: 1
