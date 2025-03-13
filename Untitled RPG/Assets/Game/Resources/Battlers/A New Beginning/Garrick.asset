@@ -10,29 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: Seraphina
+  m_Name: Garrick
   m_EditorClassIdentifier: 
-  _name: Seraphina
-  _description: A graceful performer whose moves mesmerize foes and inspire allies.
-  _sprite: {fileID: 21300000, guid: df4e02af9841f114dbe06549dfa55ac1, type: 3}
-  _type1: 12
+  _name: Garrick
+  _description: A robust and determined warrior excelling in physical prowess and
+    resilience.
+  _sprite: {fileID: 21300000, guid: 872b468c0275b82429dc70a6d84c39c6, type: 3}
+  _type1: 1
   _type2: 0
   _rarity: 2
   _totalStatsWeight: 0.5
-  _hpWeight: 0.15
-  _strengthWeight: 0.133
-  _enduranceWeight: 0.167
-  _intelligenceWeight: 0.2
-  _fortitudeWeight: 0.133
-  _agilityWeight: 0.217
+  _hpWeight: 0.17
+  _strengthWeight: 0.21
+  _enduranceWeight: 0.19
+  _intelligenceWeight: 0.12
+  _fortitudeWeight: 0.17
+  _agilityWeight: 0.14
   _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 14cd557eb34afbe4a97215f8ee98c977, type: 2}
+  - _moveBase: {fileID: 11400000, guid: ce4a75b868dad40419bcd4fa3c427357, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 6e36e32f9dbd32848b6d80981724bbea, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 0ac480fae8f54034bb300898252533e5, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: ebed171240ab26c47b12326e498db5ac, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 808744ba52d73c3499615b0f55b81910, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: d88a6a2775515e443a6116e43f4d94a3, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 94f6dda11a1d4ff48b63ab6191c8fe4d, type: 2}
     _level: 1
   _learnableBySkillBook: []
   _transformations: []
@@ -113,23 +114,23 @@ MonoBehaviour:
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
   _walkDownSprites:
-  - {fileID: 950597360, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 1761583262, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 950597360, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: -959249421, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 1126287188, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -397339072, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 1126287188, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1337030054, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
   _walkUpSprites:
-  - {fileID: 54002797, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 665104222, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 54002797, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 1370509838, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 2003988600, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -58311293, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 2003988600, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 1950211151, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
   _walkRightSprites:
-  - {fileID: 645125734, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: -1938620037, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 645125734, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: -1392580857, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: -1845137100, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1644328703, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1845137100, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -2026978198, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
   _walkLeftSprites:
-  - {fileID: -397786599, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 29548140, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: -397786599, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
-  - {fileID: 1336871233, guid: 9fc242c0e27ef724b8b8b8b4340f57dc, type: 3}
+  - {fileID: 1862837293, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -1197283172, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: 1862837293, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
+  - {fileID: -2095712447, guid: cd82716ca7f62e64e82afa2b9b3e7af4, type: 3}
   _sumOfWeights: 1

@@ -10,29 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: Valora
+  m_Name: Morgana
   m_EditorClassIdentifier: 
-  _name: Valora
-  _description: A versatile combatant known for her balance between offense and defense.
-  _sprite: {fileID: 21300000, guid: 1826ec83d43e66944874229772c628cf, type: 3}
-  _type1: 1
-  _type2: 0
+  _name: Morgana
+  _description: A mystical spellcaster who wields powerful magic and manipulates
+    the forces of the arcane.
+  _sprite: {fileID: 21300000, guid: de354cdaef8e50a408dd4ab42f98b03a, type: 3}
+  _type1: 3
+  _type2: 7
   _rarity: 2
   _totalStatsWeight: 0.5
-  _hpWeight: 0.161
-  _strengthWeight: 0.195
-  _enduranceWeight: 0.177
-  _intelligenceWeight: 0.145
-  _fortitudeWeight: 0.161
-  _agilityWeight: 0.161
+  _hpWeight: 0.12
+  _strengthWeight: 0.09
+  _enduranceWeight: 0.13
+  _intelligenceWeight: 0.28
+  _fortitudeWeight: 0.22
+  _agilityWeight: 0.16
   _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 67a8f0e4ce9a4b046a66eaf68b38c502, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 9b64ed0638efdcc498b3196ac7f80d48, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 0c3bd64be6bb83345a1f201ead41ab65, type: 2}
+  - _moveBase: {fileID: 11400000, guid: c6b68c8eae18eb14ca3ac37140b60e1e, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 0d26c261add2edb499a9016f4069bcc9, type: 2}
+  - _moveBase: {fileID: 11400000, guid: d75792d77d63498499c4e28221c4e7f7, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: b59cb9e50252b3247a33911123a68cc0, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 792b21ba4e14226409357c6b427baec3, type: 2}
     _level: 1
   _learnableBySkillBook: []
   _transformations: []
@@ -113,23 +114,23 @@ MonoBehaviour:
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
   _walkDownSprites:
-  - {fileID: -1021478116, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -1125652833, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -1021478116, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -1485240463, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1081282243, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 176313303, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -1081282243, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 271248414, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
   _walkUpSprites:
-  - {fileID: 1527435080, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -1693406668, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: 1527435080, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -469660041, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -2088535506, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -914694301, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -2088535506, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -2080668981, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
   _walkRightSprites:
-  - {fileID: -138958242, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: 1279484090, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -138958242, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -658629286, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -978759595, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 1552193430, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -978759595, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 1628535414, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
   _walkLeftSprites:
-  - {fileID: 348771587, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: -826453128, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: 348771587, guid: a9693a293585be14cbb898a867c00542, type: 3}
-  - {fileID: 2124642022, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1059077946, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 1581064259, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -1059077946, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -870620250, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
   _sumOfWeights: 1

@@ -10,30 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: Artemis
+  m_Name: Valora
   m_EditorClassIdentifier: 
-  _name: Artemis
-  _description: A nimble ranged combatant specializing in swift, precise attacks
-    from a distance.
-  _sprite: {fileID: 21300000, guid: 00183b7a485f711439536809743cac75, type: 3}
-  _type1: 9
+  _name: Valora
+  _description: A versatile combatant known for her balance between offense and defense.
+  _sprite: {fileID: 21300000, guid: 1826ec83d43e66944874229772c628cf, type: 3}
+  _type1: 1
   _type2: 0
   _rarity: 2
   _totalStatsWeight: 0.5
-  _hpWeight: 0.131
-  _strengthWeight: 0.164
-  _enduranceWeight: 0.148
-  _intelligenceWeight: 0.18
-  _fortitudeWeight: 0.131
-  _agilityWeight: 0.246
+  _hpWeight: 0.16
+  _strengthWeight: 0.2
+  _enduranceWeight: 0.18
+  _intelligenceWeight: 0.14
+  _fortitudeWeight: 0.16
+  _agilityWeight: 0.16
   _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 0805b9ccffa779247951b72aae1f299d, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 67a8f0e4ce9a4b046a66eaf68b38c502, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 62a918c9d63336b468eb926ec188bab8, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 0c3bd64be6bb83345a1f201ead41ab65, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 0ec4245acbec5ce43859b1f7e5d250e6, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 0d26c261add2edb499a9016f4069bcc9, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: c8ff17488dc315840b4d2f759fe1079d, type: 2}
+  - _moveBase: {fileID: 11400000, guid: b59cb9e50252b3247a33911123a68cc0, type: 2}
     _level: 1
   _learnableBySkillBook: []
   _transformations: []
@@ -114,23 +113,23 @@ MonoBehaviour:
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
   _walkDownSprites:
-  - {fileID: -813453478, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -512963522, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -813453478, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 1333701900, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: -1021478116, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1125652833, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1021478116, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1485240463, guid: a9693a293585be14cbb898a867c00542, type: 3}
   _walkUpSprites:
-  - {fileID: -522881067, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 1677871391, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -522881067, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 586911588, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: 1527435080, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -1693406668, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 1527435080, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -469660041, guid: a9693a293585be14cbb898a867c00542, type: 3}
   _walkRightSprites:
-  - {fileID: -1975491363, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -1027927445, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -1975491363, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -2048051302, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: -138958242, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 1279484090, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -138958242, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -658629286, guid: a9693a293585be14cbb898a867c00542, type: 3}
   _walkLeftSprites:
-  - {fileID: 624039127, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -538064205, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: 624039127, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  - {fileID: -1926597068, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
+  - {fileID: 348771587, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: -826453128, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 348771587, guid: a9693a293585be14cbb898a867c00542, type: 3}
+  - {fileID: 2124642022, guid: a9693a293585be14cbb898a867c00542, type: 3}
   _sumOfWeights: 1

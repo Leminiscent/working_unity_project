@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: Raven
+  m_Name: Takeshi
   m_EditorClassIdentifier: 
-  _name: Raven
-  _description: A cunning rogue who relies on speed and stealth to outmaneuver opponents
-    and pilfer treasures.
-  _sprite: {fileID: 21300000, guid: d7d65994b7049d14b936ba185a26c89f, type: 3}
-  _type1: 11
+  _name: Takeshi
+  _description: A disciplined swordsman whose precision and honor define his combat
+    style.
+  _sprite: {fileID: 21300000, guid: 06550bacd245ab24db53e8f18332a16b, type: 3}
+  _type1: 4
   _type2: 0
   _rarity: 2
   _totalStatsWeight: 0.5
-  _hpWeight: 0.136
-  _strengthWeight: 0.153
-  _enduranceWeight: 0.136
-  _intelligenceWeight: 0.169
-  _fortitudeWeight: 0.136
-  _agilityWeight: 0.27
+  _hpWeight: 0.15
+  _strengthWeight: 0.2
+  _enduranceWeight: 0.14
+  _intelligenceWeight: 0.13
+  _fortitudeWeight: 0.18
+  _agilityWeight: 0.2
   _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 937d89c18c1896d4a96dcd41cc2e584f, type: 2}
+  - _moveBase: {fileID: 11400000, guid: fa1a86de87170dc40a78cd45312aa9f9, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: f1b928d16010a904995a4582b6e0b1c5, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 5c6f8c262bf040940897b708976a038b, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 841c3063fb2342541bf9df05f12bc5c7, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 769653b0efe985d4d8c5f4d25a5e5ede, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: aefc6cc71ce97624ca0a1b00e2dcca3d, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 7ef5e1fac0802fb4883bbef206293c48, type: 2}
     _level: 1
   _learnableBySkillBook: []
   _transformations: []
@@ -114,23 +114,23 @@ MonoBehaviour:
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
   _walkDownSprites:
-  - {fileID: 1672825402, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: 527874185, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: 1672825402, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: -1881120203, guid: a99c6c60101f54545a69012b87318772, type: 3}
+  - {fileID: 1282763090, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: -304870818, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 1282763090, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 1036385640, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
   _walkUpSprites:
-  - {fileID: 1231864256, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: -1394729810, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: 1231864256, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: -784383565, guid: a99c6c60101f54545a69012b87318772, type: 3}
+  - {fileID: 1946301264, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: -125548712, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 1946301264, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: -1560300583, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
   _walkRightSprites:
-  - {fileID: 1871258223, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: -501170376, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: 1871258223, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: -1289659527, guid: a99c6c60101f54545a69012b87318772, type: 3}
+  - {fileID: 2046689347, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: -1695180915, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 2046689347, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 306411366, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
   _walkLeftSprites:
-  - {fileID: 1474058458, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: 1634632330, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: 1474058458, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  - {fileID: -703375496, guid: a99c6c60101f54545a69012b87318772, type: 3}
+  - {fileID: 362790928, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: -1956898080, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 362790928, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
+  - {fileID: 362065183, guid: 864846ef4a9d71c42ba33d0968799b72, type: 3}
   _sumOfWeights: 1

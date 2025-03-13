@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
-  m_Name: Morgana
+  m_Name: Drake
   m_EditorClassIdentifier: 
-  _name: Morgana
-  _description: A mystical spellcaster who wields powerful magic and manipulates
-    the forces of the arcane.
-  _sprite: {fileID: 21300000, guid: de354cdaef8e50a408dd4ab42f98b03a, type: 3}
-  _type1: 3
-  _type2: 7
+  _name: Drake
+  _description: A formidable warrior who melds brute strength with draconic fire,
+    wielding both might and magic.
+  _sprite: {fileID: 21300000, guid: 23a45f6bfd7af934cb93c0f62141c67c, type: 3}
+  _type1: 2
+  _type2: 8
   _rarity: 2
   _totalStatsWeight: 0.5
-  _hpWeight: 0.115
-  _strengthWeight: 0.098
-  _enduranceWeight: 0.131
-  _intelligenceWeight: 0.279
-  _fortitudeWeight: 0.213
-  _agilityWeight: 0.164
+  _hpWeight: 0.18
+  _strengthWeight: 0.22
+  _enduranceWeight: 0.2
+  _intelligenceWeight: 0.1
+  _fortitudeWeight: 0.17
+  _agilityWeight: 0.13
   _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 9b64ed0638efdcc498b3196ac7f80d48, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 80dc3e26011381d459921b2c598ecf9b, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: c6b68c8eae18eb14ca3ac37140b60e1e, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 3b9b1299378808740979ae1a0828101b, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: d75792d77d63498499c4e28221c4e7f7, type: 2}
+  - _moveBase: {fileID: 11400000, guid: bfb80fa74b9ec8f448b5b78032d685d8, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 792b21ba4e14226409357c6b427baec3, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 6a70cfd5170c67345b7d42bfd7e8b1b1, type: 2}
     _level: 1
   _learnableBySkillBook: []
   _transformations: []
@@ -114,23 +114,23 @@ MonoBehaviour:
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
   _walkDownSprites:
-  - {fileID: -1081282243, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: 176313303, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -1081282243, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: 271248414, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -1458606318, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -1474144104, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -1458606318, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: 1781830217, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
   _walkUpSprites:
-  - {fileID: -2088535506, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -914694301, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -2088535506, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -2080668981, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -972895219, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -1867102456, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -972895219, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: 441383135, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
   _walkRightSprites:
-  - {fileID: -978759595, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: 1552193430, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -978759595, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: 1628535414, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: -2143810446, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: 1849546994, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -2143810446, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -116625908, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
   _walkLeftSprites:
-  - {fileID: -1059077946, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: 1581064259, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -1059077946, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
-  - {fileID: -870620250, guid: 6a480f8299ee7044181b367ba750b741, type: 3}
+  - {fileID: 261032592, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -137447677, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: 261032592, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
+  - {fileID: -1569344011, guid: 6ea5af09c7c337144a91adc9a3d61301, type: 3}
   _sumOfWeights: 1
