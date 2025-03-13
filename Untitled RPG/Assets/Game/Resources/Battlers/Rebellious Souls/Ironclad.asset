@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
+  m_Name: Ironclad
+  m_EditorClassIdentifier: 
+  _name: Ironclad
+  _description: A sentient construct built for battle, merging technological ingenuity
+    with relentless efficiency.
+  _sprite: {fileID: 21300000, guid: f7cdb26bf6b99ef4599d22dce98e9714, type: 3}
+  _type1: 4
+  _type2: 8
+  _rarity: 3
+  _totalStatsWeight: 0.75
+  _hpWeight: 0.17
+  _strengthWeight: 0.21
+  _enduranceWeight: 0.2
+  _intelligenceWeight: 0.13
+  _fortitudeWeight: 0.15
+  _agilityWeight: 0.14
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: 9b64ed0638efdcc498b3196ac7f80d48, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 1650749f4b3168746a13de18eb42c575, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 71ce6d62e516805418b3ed27e5ea7b97, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: bc53b96c7ccf3234c9a45ced86bce63e, type: 2}
+    _level: 1
+  _learnableBySkillBook: []
+  _transformations: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  _dropTable:
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: -573180683, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -1900419123, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -573180683, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: 385767590, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  _walkUpSprites:
+  - {fileID: 1588292379, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -134264812, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: 1588292379, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -1570307426, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  _walkRightSprites:
+  - {fileID: 1609625461, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: 1546759207, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: 1609625461, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: 809535714, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  _walkLeftSprites:
+  - {fileID: -982149384, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -2088200274, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -982149384, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  - {fileID: -749473729, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
+  _sumOfWeights: 1
