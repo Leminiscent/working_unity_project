@@ -26,14 +26,111 @@ MonoBehaviour:
   _intelligenceWeight: 0.22
   _fortitudeWeight: 0.16
   _agilityWeight: 0.24
-  _learnableMoves: []
+  _learnableMoves:
+  - _moveBase: {fileID: 11400000, guid: b2a344848b0e33a478864c736a4de889, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: ee06e6b4bf51e084dbe6902c28f2873d, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 08519bb63ddb3554b8c0c36d092ff06c, type: 2}
+    _level: 1
+  - _moveBase: {fileID: 11400000, guid: 14e29fe93d0266a4088be121ac738423, type: 2}
+    _level: 1
   _learnableBySkillBook: []
   _transformations: []
-  _recruitmentQuestions: []
+  _recruitmentQuestions:
+  - _questionText: Question 1
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 2
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 3
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 4
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 5
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 6
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
+  - _questionText: Question 7
+    _answers:
+    - _answerText: Answer 1
+      _affinityScore: 1
+    - _answerText: Answer 2
+      _affinityScore: 2
+    - _answerText: Answer 3
+      _affinityScore: -1
+    - _answerText: Answer 4
+      _affinityScore: -2
   _dropTable:
-    _itemDrops: []
-  _walkDownSprites: []
-  _walkUpSprites: []
-  _walkRightSprites: []
-  _walkLeftSprites: []
+    _itemDrops:
+    - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+      _quantityRange: {x: 1, y: 1}
+      _dropChance: 100
+  _walkDownSprites:
+  - {fileID: 954836702, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: 1418458511, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: 954836702, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: 898271931, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  _walkUpSprites:
+  - {fileID: -947958779, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: -507326608, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: -947958779, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: -1037883875, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  _walkRightSprites:
+  - {fileID: -2108501185, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: 1900267476, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: -2108501185, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: 2095511793, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  _walkLeftSprites:
+  - {fileID: 1410065924, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: -1808571709, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: 1410065924, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
+  - {fileID: -2108456221, guid: adcc4488e4af62e4ab955c1e8297c875, type: 3}
   _sumOfWeights: 1
