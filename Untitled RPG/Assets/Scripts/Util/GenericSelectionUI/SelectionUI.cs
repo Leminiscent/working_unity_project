@@ -61,7 +61,7 @@ namespace Utils.GenericSelectionUI
             {
                 UpdateSelectionInUI();
                 OnIndexChanged?.Invoke(_selectedItem);
-                AudioManager.Instance.PlaySFX(AudioID.UIShift);
+                PlayShiftAudio(prevSelection, _selectedItem);
             }
             if (Input.GetButtonDown("Action"))
             {
@@ -201,9 +201,13 @@ namespace Utils.GenericSelectionUI
                 _selectionTimer = Mathf.Clamp(_selectionTimer - Time.deltaTime, 0, _selectionTimer);
             }
         }
+
+        protected virtual void PlayShiftAudio(int previousSelection, int newSelection)
+        {
+            AudioManager.Instance.PlaySFX(AudioID.UIShift);
+        }
     }
 
-    // Dummy selectable item
     public class DummySelectable : ISelectableItem
     {
         public void Init() { }
@@ -211,7 +215,6 @@ namespace Utils.GenericSelectionUI
         public void OnSelectionChanged(bool selected) { }
     }
 
-    // Non-generic concrete subclass for dummy selection
     public class DummySelectionUI : SelectionUI<DummySelectable> { }
 
     public enum SelectionType

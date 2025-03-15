@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using Utils.StateMachine;
 
@@ -9,6 +10,8 @@ public class ActionSelectionState : State<BattleSystem>
     [SerializeField] private ActionSelectionUI _selectionUI;
 
     private BattleSystem _battleSystem;
+    private int _prevSelection = 0;
+    private TextMeshProUGUI _talkText;
 
     public static ActionSelectionState Instance { get; private set; }
     public ActionSelectionUI SelectionUI => _selectionUI;
@@ -33,11 +36,36 @@ public class ActionSelectionState : State<BattleSystem>
         _selectionUI.OnBack += OnBack;
         _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Battler.Base.Name}!");
         _battleSystem.SelectingUnit.SetSelected(true);
+
+        _talkText = _selectionUI.GetComponentsInChildren<TextSlot>().ToList()[1].GetComponent<TextMeshProUGUI>();
+        if (!_battleSystem.SelectingUnit.Battler.IsCommander)
+        {
+            _talkText.color = GlobalSettings.Instance.EmptyColor;
+        }
+        else
+        {
+            _talkText.color = Color.white;
+        }
     }
 
     public override void Execute()
     {
         _selectionUI.HandleUpdate();
+
+        if (!_battleSystem.SelectingUnit.Battler.IsCommander)
+        {
+            if (_selectionUI.SelectedIndex == 1)
+            {
+                int newIndex = _prevSelection == 0 ? 2
+                    : _prevSelection == 2 ? 0
+                    : 4;
+
+                _selectionUI.SetSelectedIndex(newIndex);
+            }
+
+            _talkText.color = GlobalSettings.Instance.EmptyColor;
+        }
+        _prevSelection = _selectionUI.SelectedIndex;
     }
 
     public override void Exit()
@@ -52,31 +80,25 @@ public class ActionSelectionState : State<BattleSystem>
         switch (selection)
         {
             case 0:
-                // Fight
                 MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Battler.Moves;
                 _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
                 break;
             case 1:
-                // Talk
                 StartCoroutine(SelectRecruitTarget());
                 break;
             case 2:
-                // Item
                 StartCoroutine(SelectItemAndTarget());
                 break;
             case 3:
-                // Guard
                 _battleSystem.AddBattleAction(new BattleAction()
                 {
                     ActionType = BattleActionType.Guard
                 });
                 break;
             case 4:
-                // Switch
                 StartCoroutine(GoToPartyState());
                 break;
             case 5:
-                // Run
                 _battleSystem.AddBattleAction(new BattleAction()
                 {
                     ActionType = BattleActionType.Run
@@ -105,7 +127,6 @@ public class ActionSelectionState : State<BattleSystem>
         {
             ActionType = BattleActionType.Talk,
             TargetUnits = new List<BattleUnit> { _battleSystem.EnemyUnits[recruitTarget] }
-
         });
     }
 
