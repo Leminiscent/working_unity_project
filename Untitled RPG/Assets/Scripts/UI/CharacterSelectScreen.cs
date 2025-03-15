@@ -56,12 +56,12 @@ public class CharacterSelectScreen : DummySelectionUI
         }
         _descriptionText.text = selectedBattler.Base.Description;
 
-        _hpText.text = selectedBattler.Hp.ToString();
-        _strengthText.text = selectedBattler.Strength.ToString();
-        _enduranceText.text = selectedBattler.Endurance.ToString();
-        _intelligenceText.text = selectedBattler.Intelligence.ToString();
-        _fortitudeText.text = selectedBattler.Fortitude.ToString();
-        _agilityText.text = selectedBattler.Agility.ToString();
+        _hpText.text = selectedBattler.Base.HP.ToString();
+        _strengthText.text = selectedBattler.Base.Strength.ToString();
+        _enduranceText.text = selectedBattler.Base.Endurance.ToString();
+        _intelligenceText.text = selectedBattler.Base.Intelligence.ToString();
+        _fortitudeText.text = selectedBattler.Base.Fortitude.ToString();
+        _agilityText.text = selectedBattler.Base.Agility.ToString();
     }
 
     public override void UpdateSelectionInUI()
