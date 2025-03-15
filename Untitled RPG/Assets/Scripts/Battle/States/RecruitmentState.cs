@@ -58,10 +58,10 @@ public class RecruitmentState : State<BattleSystem>
 
     private IEnumerator StartRecruitment()
     {
-        if (_battleSystem.IsMasterBattle)
+        if (_battleSystem.IsCommanderBattle)
         {
-            yield return !RecruitTarget.Battler.IsMaster ? _dialogueBox.TypeDialogue("You can't recruit another Master's battler!")
-                : _dialogueBox.TypeDialogue("You can't recruit another Master!");
+            yield return !RecruitTarget.Battler.IsCommander ? _dialogueBox.TypeDialogue("You can't recruit another Commander's battler!")
+                : _dialogueBox.TypeDialogue("You can't recruit another Commander!");
 
             _battleSystem.StateMachine.Pop();
             yield break;

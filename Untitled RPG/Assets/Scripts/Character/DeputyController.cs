@@ -58,7 +58,7 @@ public class DeputyController : MonoBehaviour, ISavable
             _spriteRenderer.enabled = true;
         }
 
-        Battler deputy = _party.Battlers.First(static battler => !battler.IsMaster);
+        Battler deputy = _party.Battlers.First(static battler => !battler.IsCommander);
 
         _animator.SetSprites(
             deputy.Base.WalkDownSprites,

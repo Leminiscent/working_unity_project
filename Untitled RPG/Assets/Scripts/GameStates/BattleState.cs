@@ -8,7 +8,7 @@ public class BattleState : State<GameController>
     private GameController _gameController;
 
     public BattleTrigger Trigger { get; set; }
-    public MasterController Master { get; set; }
+    public CommanderController Commander { get; set; }
     public BattleSystem BattleSystem => _battleSystem;
     public static BattleState Instance { get; private set; }
 
@@ -33,7 +33,7 @@ public class BattleState : State<GameController>
 
         BattleParty playerParty = _gameController.PlayerController.GetComponent<BattleParty>();
 
-        if (Master == null)
+        if (Commander == null)
         {
             List<Battler> rogueBattlers = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomRogueBattlers(Random.Range(1, 4));
             List<Battler> rogueBattlerCopies = new();
@@ -47,8 +47,8 @@ public class BattleState : State<GameController>
         }
         else
         {
-            BattleParty enemyParty = Master.GetComponent<BattleParty>();
-            _battleSystem.StartMasterBattle(playerParty, enemyParty, Trigger, Mathf.Min(enemyParty.Battlers.Count, 3));
+            BattleParty enemyParty = Commander.GetComponent<BattleParty>();
+            _battleSystem.StartCommanderBattle(playerParty, enemyParty, Trigger, Mathf.Min(enemyParty.Battlers.Count, 3));
         }
 
         _battleSystem.OnBattleOver += EndBattle;
@@ -70,10 +70,10 @@ public class BattleState : State<GameController>
     {
         if (won)
         {
-            if (Master != null)
+            if (Commander != null)
             {
-                Master.BattleLost();
-                Master = null;
+                Commander.BattleLost();
+                Commander = null;
             }
             _gameController.StateMachine.Pop();
         }

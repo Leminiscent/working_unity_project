@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour, ISavable
         }
 
         _playerBattler = battler ?? throw new ArgumentNullException(nameof(battler));
-        _playerBattler.IsMaster = true;
+        _playerBattler.IsCommander = true;
         _name = battler.Base.Name;
 
         BattleParty party = GetComponent<BattleParty>();
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour, ISavable
     public object CaptureState()
     {
         List<Battler> party = GetComponent<BattleParty>().Battlers;
-        int playerIndex = party.FindIndex(static m => m.IsMaster);
+        int playerIndex = party.FindIndex(static m => m.IsCommander);
 
         PlayerSaveData saveData = new()
         {

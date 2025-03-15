@@ -67,16 +67,16 @@ public class GameController : MonoBehaviour
         StateMachine.Push(BattleState.Instance);
     }
 
-    public void StartMasterBattle(MasterController master)
+    public void StartCommanderBattle(CommanderController commander)
     {
         BattleState.Instance.Trigger = CurrentScene.GetComponent<MapArea>().Terrain;
-        BattleState.Instance.Master = master;
+        BattleState.Instance.Commander = commander;
         StateMachine.Push(BattleState.Instance);
     }
 
-    public void OnEnterMasterView(MasterController master)
+    public void OnEnterCommanderView(CommanderController commander)
     {
-        StartCoroutine(master.TriggerBattle(_playerController));
+        StartCoroutine(commander.TriggerBattle(_playerController));
     }
 
     private void EndBattle(bool won)

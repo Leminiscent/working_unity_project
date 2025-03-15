@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class MasterController : MonoBehaviour, IInteractable, ISavable
+public class CommanderController : MonoBehaviour, IInteractable, ISavable
 {
     [SerializeField] private string _name;
     [SerializeField] private Dialogue _dialogue;
@@ -40,7 +40,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
             yield return new WaitForSeconds(0.5f);
             _character.Exclamation.SetActive(false);
             yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 0.75f);
-            GameController.Instance.StartMasterBattle(this);
+            GameController.Instance.StartCommanderBattle(this);
         }
         else
         {
@@ -64,7 +64,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 
         yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 1f);
         GameController.Instance.StateMachine.Pop();
-        GameController.Instance.StartMasterBattle(this);
+        GameController.Instance.StartCommanderBattle(this);
     }
 
     public void BattleLost()
@@ -94,7 +94,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 
     public object CaptureState()
     {
-        MasterSaveData saveData = new()
+        CommanderSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,
@@ -106,7 +106,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 
     public void RestoreState(object state)
     {
-        MasterSaveData saveData = (MasterSaveData)state;
+        CommanderSaveData saveData = (CommanderSaveData)state;
 
         transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
         _character.Animator.FacingDirection = saveData.FacingDirection;
@@ -116,7 +116,7 @@ public class MasterController : MonoBehaviour, IInteractable, ISavable
 }
 
 [Serializable]
-public class MasterSaveData
+public class CommanderSaveData
 {
     public float[] Position;
     public FacingDirection FacingDirection;

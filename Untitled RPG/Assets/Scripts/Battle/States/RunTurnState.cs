@@ -10,7 +10,7 @@ public class RunTurnState : State<BattleSystem>
     private BattleDialogueBox _dialogueBox;
     private BattleParty _playerParty;
     private BattleParty _enemyParty;
-    private bool _isMasterBattle;
+    private bool _isCommanderBattle;
     private Field _field;
 
     public static RunTurnState Instance { get; private set; }
@@ -34,7 +34,7 @@ public class RunTurnState : State<BattleSystem>
         _dialogueBox = _battleSystem.DialogueBox;
         _playerParty = _battleSystem.PlayerParty;
         _enemyParty = _battleSystem.EnemyParty;
-        _isMasterBattle = _battleSystem.IsMasterBattle;
+        _isCommanderBattle = _battleSystem.IsCommanderBattle;
         _field = _battleSystem.Field;
 
         StartCoroutine(RunTurns());
@@ -497,12 +497,12 @@ public class RunTurnState : State<BattleSystem>
         if (!defeatedUnit.IsPlayerUnit)
         {
             int enemyLevel = defeatedUnit.Battler.Level;
-            float masterBonus = _isMasterBattle ? 1.5f : 1f;
+            float commanderBonus = _isCommanderBattle ? 1.5f : 1f;
 
             List<string> lootDescriptions = new();
 
             int gpYield = defeatedUnit.Battler.Base.CalculateGpYield();
-            int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * masterBonus / 7);
+            int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * commanderBonus / 7);
 
             if (gpDropped > 0)
             {
@@ -543,7 +543,7 @@ public class RunTurnState : State<BattleSystem>
             }
 
             int expYield = defeatedUnit.Battler.Base.ExpYield;
-            int expGain = Mathf.FloorToInt(expYield * enemyLevel * masterBonus / 7) / _battleSystem.PlayerUnits.Count;
+            int expGain = Mathf.FloorToInt(expYield * enemyLevel * commanderBonus / 7) / _battleSystem.PlayerUnits.Count;
 
             for (int i = 0; i < _battleSystem.PlayerUnits.Count; i++)
             {
@@ -663,7 +663,7 @@ public class RunTurnState : State<BattleSystem>
         {
             List<Battler> activeBattlers = _battleSystem.EnemyUnits.Select(static u => u.Battler).Where(b => b.Hp > 0).ToList();
 
-            if (!_isMasterBattle)
+            if (!_isCommanderBattle)
             {
                 if (activeBattlers.Count == 0)
                 {
@@ -726,7 +726,7 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else if (nextBattler != null)
                 {
-                    yield return _battleSystem.SendNextMasterBattler(nextBattler, defeatedUnit);
+                    yield return _battleSystem.SendNextCommanderBattler(nextBattler, defeatedUnit);
                 }
             }
         }
@@ -758,9 +758,9 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator AttemptEscape()
     {
-        if (_isMasterBattle)
+        if (_isCommanderBattle)
         {
-            yield return _dialogueBox.TypeDialogue("You can't run from a Master battle!");
+            yield return _dialogueBox.TypeDialogue("You can't run from a Commander battle!");
             yield break;
         }
 

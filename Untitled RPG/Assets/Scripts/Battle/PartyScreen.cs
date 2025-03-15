@@ -48,9 +48,9 @@ public class PartyScreen : SelectionUI<TextSlot>
         for (int i = 0; i < _battlers.Count; i++)
         {
             string roleMessage = "";
-            if (_battlers[i].IsMaster)
+            if (_battlers[i].IsCommander)
             {
-                roleMessage = "Master";
+                roleMessage = "Commander";
             }
             else if (!deputyAssigned)
             {

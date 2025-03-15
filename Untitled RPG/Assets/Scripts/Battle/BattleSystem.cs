@@ -27,7 +27,7 @@ public class BattleSystem : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private AudioClip _rogueBattleMusic;
-    [SerializeField] private AudioClip _masterBattleMusic;
+    [SerializeField] private AudioClip _commanderBattleMusic;
     [SerializeField] private AudioClip _battleWonMusic;
     [SerializeField] private AudioClip _battleLostMusic;
     [SerializeField] private AudioClip _battleFledMusic;
@@ -59,9 +59,9 @@ public class BattleSystem : MonoBehaviour
     public BattleParty EnemyParty { get; private set; }
     public List<Battler> RogueBattlers { get; private set; }
     public Field Field { get; private set; }
-    public bool IsMasterBattle { get; private set; }
+    public bool IsCommanderBattle { get; private set; }
     public int EscapeAttempts { get; set; }
-    public MasterController Enemy { get; private set; }
+    public CommanderController Enemy { get; private set; }
     public PlayerController Player { get; private set; }
     public BattleDialogueBox DialogueBox => _dialogueBox;
     public PartyScreen PartyScreen => _partyScreen;
@@ -89,7 +89,7 @@ public class BattleSystem : MonoBehaviour
 
     public void StartRogueBattle(BattleParty playerParty, List<Battler> rogueBattlers, BattleTrigger trigger, int unitCount = 1)
     {
-        IsMasterBattle = false;
+        IsCommanderBattle = false;
 
         PlayerParty = playerParty;
         RogueBattlers = rogueBattlers;
@@ -100,18 +100,18 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartMasterBattle(BattleParty playerParty, BattleParty enemyParty, BattleTrigger trigger, int unitCount = 1)
+    public void StartCommanderBattle(BattleParty playerParty, BattleParty enemyParty, BattleTrigger trigger, int unitCount = 1)
     {
-        IsMasterBattle = true;
+        IsCommanderBattle = true;
 
         PlayerParty = playerParty;
         EnemyParty = enemyParty;
         _enemyUnitCount = unitCount;
 
         Player = playerParty.GetComponent<PlayerController>();
-        Enemy = enemyParty.GetComponent<MasterController>();
+        Enemy = enemyParty.GetComponent<CommanderController>();
         _battleTrigger = trigger;
-        AudioManager.Instance.PlayMusic(_masterBattleMusic);
+        AudioManager.Instance.PlayMusic(_commanderBattleMusic);
         StartCoroutine(SetupBattle());
     }
 
@@ -176,7 +176,7 @@ public class BattleSystem : MonoBehaviour
 
         List<Battler> playerBattlers = PlayerParty.GetHealthyBattlers(_playerUnitCount);
 
-        if (!IsMasterBattle)
+        if (!IsCommanderBattle)
         {
             for (int i = 0; i < _playerUnitCount; i++)
             {
@@ -196,7 +196,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             List<Battler> enemyBattlers = EnemyParty.GetHealthyBattlers(_enemyUnitCount);
-            enemyBattlers[0].IsMaster = true;
+            enemyBattlers[0].IsCommander = true;
 
             for (int i = 0; i < _playerUnitCount; i++)
             {
@@ -207,7 +207,7 @@ public class BattleSystem : MonoBehaviour
                 _enemyUnits[i].Setup(enemyBattlers[i]);
             }
 
-            yield return _dialogueBox.TypeDialogue($"Master {Enemy.Name} wants to battle!");
+            yield return _dialogueBox.TypeDialogue($"Commander {Enemy.Name} wants to battle!");
         }
 
         Field = new Field();
@@ -319,10 +319,10 @@ public class BattleSystem : MonoBehaviour
         return _battleActions.Any(a => a.ActionType == BattleActionType.SwitchBattler && a.SelectedBattler == battler);
     }
 
-    public IEnumerator SendNextMasterBattler(Battler newBattler, BattleUnit defeatedUnit)
+    public IEnumerator SendNextCommanderBattler(Battler newBattler, BattleUnit defeatedUnit)
     {
         defeatedUnit.Setup(newBattler);
-        yield return _dialogueBox.TypeDialogue($"Master {Enemy.Name} summoned {newBattler.Base.Name} to battle!");
+        yield return _dialogueBox.TypeDialogue($"Commander {Enemy.Name} summoned {newBattler.Base.Name} to battle!");
     }
 }
 

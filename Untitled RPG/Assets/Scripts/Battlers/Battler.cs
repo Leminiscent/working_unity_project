@@ -11,7 +11,7 @@ public class Battler
 
     public BattlerBase Base => _base;
     public int Level => _level;
-    public bool IsMaster { get; set; }
+    public bool IsCommander { get; set; }
     public bool HasJustLeveledUp { get; set; }
     public int Exp { get; set; }
     public int Hp { get; set; }
