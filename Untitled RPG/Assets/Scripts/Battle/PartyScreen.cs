@@ -63,6 +63,29 @@ public class PartyScreen : SelectionUI<TextSlot>
         _messageText.text = "Choose a party member!";
     }
 
+    public void UpdateBattleIndicators(BattleSystem battleSystem)
+    {
+        for (int i = 0; i < _battlers.Count; i++)
+        {
+            Battler battler = _battlers[i];
+            bool isInBattle = battleSystem.PlayerUnits.Any(u => u.Battler == battler);
+            bool isSwitching = battleSystem.UnableToSwitch(battler);
+
+            if (isInBattle)
+            {
+                _memberSlots[i].SetMessage("In Battle");
+            }
+            else if (isSwitching)
+            {
+                _memberSlots[i].SetMessage("Preparing for battle");
+            }
+            else
+            {
+                _memberSlots[i].SetMessage("");
+            }
+        }
+    }
+
     public void ShowSkillBookUsability(SkillBook skillBook)
     {
         for (int i = 0; i < _battlers.Count; ++i)

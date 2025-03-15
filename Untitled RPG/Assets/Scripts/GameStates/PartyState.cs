@@ -9,7 +9,7 @@ public class PartyState : State<GameController>
     [SerializeField] private PartyScreen _partyScreen;
 
     private GameController _gameController;
-    State<GameController> _prevState;
+    private State<GameController> _prevState;
     private BattleParty _playerParty;
     private bool _isSwitchingPosition;
     private int _selectedSwitchToIndex = 0;
@@ -41,15 +41,22 @@ public class PartyState : State<GameController>
         SelectedMember = null;
 
         _partyScreen.SetPartyData();
+
         if (_prevState == InventoryState.Instance && InventoryState.Instance.SelectedItem is SkillBook)
         {
             _partyScreen.ShowSkillBookUsability(InventoryState.Instance.SelectedItem as SkillBook);
+        }
+        else if (_prevState == BattleState.Instance)
+        {
+            BattleState battleState = _prevState as BattleState;
+            _partyScreen.UpdateBattleIndicators(battleState.BattleSystem);
         }
 
         _partyScreen.gameObject.SetActive(true);
         _partyScreen.OnSelected += OnBattlerSelected;
         _partyScreen.OnBack += OnBack;
     }
+
 
     public override void Execute()
     {
