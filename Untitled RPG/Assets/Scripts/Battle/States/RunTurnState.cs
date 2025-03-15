@@ -290,7 +290,7 @@ public class RunTurnState : State<BattleSystem>
                     yield return HandleUnitDefeat(targetUnit);
                 }
 
-                if (sourceUnit.Battler.Hp <= 0)
+                if (sourceUnit.Battler.Hp <= 0 && !_battleSystem.BattleIsOver)
                 {
                     yield return HandleUnitDefeat(sourceUnit);
                 }
