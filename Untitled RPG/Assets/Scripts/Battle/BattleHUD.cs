@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages and updates the battle HUD display.
+/// </summary>
 public class BattleHUD : MonoBehaviour
 {
     [Header("Basic Info")]
@@ -40,23 +43,52 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _affinityText;
     [SerializeField] private GameObject _affinityBar;
 
+    private const float TWEEN_DURATION = 1.15f;
+    private const float WAIT_AFTER_HP_UPDATE = 0.33f;
+
     private Battler _battler;
 
+    /// <summary>
+    /// Sets the data for the battle HUD using the provided battler.
+    /// </summary>
+    /// <param name="battler">The battler whose data will be displayed.</param>
     public void SetData(Battler battler)
     {
+        // Clear previous event subscriptions if any.
         if (_battler != null)
         {
             ClearData();
         }
 
         _battler = battler;
+        if (_battler == null)
+        {
+            Debug.LogWarning("Battler is null in BattleHUD.SetData");
+            return;
+        }
 
-        _nameText.text = battler.Base.Name;
+        if (_nameText != null)
+        {
+            _nameText.text = _battler.Base.Name;
+        }
+
         SetLevel();
-        _image.sprite = battler.Base.Sprite;
 
-        _hpBar.SetHP((float)battler.Hp / battler.MaxHp);
-        _hpText.text = $"{battler.Hp} / {battler.MaxHp}";
+        if (_image != null)
+        {
+            _image.sprite = _battler.Base.Sprite;
+        }
+
+        if (_hpBar != null)
+        {
+            _hpBar.SetHP((float)_battler.Hp / _battler.MaxHp);
+        }
+
+        if (_hpText != null)
+        {
+            _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
+        }
+
         SetExp();
         ToggleAffinityBar(false);
         SetAffinity();
@@ -68,30 +100,76 @@ public class BattleHUD : MonoBehaviour
         _battler.OnHPChanged += UpdateHP;
     }
 
+    /// <summary>
+    /// Updates the status text UI elements based on the battler's conditions.
+    /// </summary>
     private void SetStatusText()
     {
-        _brnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Brn));
-        _psnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Psn));
-        _frzText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Frz));
-        _slpText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Slp));
-        _parText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Par));
-        _conText.SetActive(_battler.VolatileStatuses.ContainsKey(ConditionID.Con));
+        if (_battler == null)
+        {
+            return;
+        }
+
+        if (_brnText != null)
+        {
+            _brnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Brn));
+        }
+
+        if (_psnText != null)
+        {
+            _psnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Psn));
+        }
+
+        if (_frzText != null)
+        {
+            _frzText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Frz));
+        }
+
+        if (_slpText != null)
+        {
+            _slpText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Slp));
+        }
+
+        if (_parText != null)
+        {
+            _parText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Par));
+        }
+
+        if (_conText != null)
+        {
+            _conText.SetActive(_battler.VolatileStatuses.ContainsKey(ConditionID.Con));
+        }
     }
 
+    /// <summary>
+    /// Sets the level text for the battler.
+    /// </summary>
     public void SetLevel()
     {
-        _levelText.text = "Lvl " + _battler.Level;
+        if (_levelText != null && _battler != null)
+        {
+            _levelText.text = $"Lvl {_battler.Level}";
+        }
     }
 
+    /// <summary>
+    /// Updates the experience bar and text.
+    /// </summary>
     public void SetExp()
     {
-        if (_expBar == null)
+        if (_expBar == null || _battler == null)
         {
             return;
         }
 
         float normalizedExp = _battler.GetNormalizedExp();
         _expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
+
+        if (_expText == null)
+        {
+            return;
+        }
+
         if (_battler.Level == GlobalSettings.Instance.MaxLevel)
         {
             _expText.text = "MAX";
@@ -99,13 +177,19 @@ public class BattleHUD : MonoBehaviour
         else
         {
             int expForLevel = _battler.Base.GetExpForLevel(_battler.Level);
-            _expText.text = $"{_battler.Exp - expForLevel} / {_battler.Base.GetExpForLevel(_battler.Level + 1) - expForLevel}";
+            int nextLevelExp = _battler.Base.GetExpForLevel(_battler.Level + 1);
+            _expText.text = $"{_battler.Exp - expForLevel} / {nextLevelExp - expForLevel}";
         }
     }
 
+    /// <summary>
+    /// Smoothly animates the experience bar update.
+    /// </summary>
+    /// <param name="reset">If true, resets the exp bar scale before animating.</param>
+    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator SetExpSmooth(bool reset = false)
     {
-        if (_expBar == null)
+        if (_expBar == null || _battler == null)
         {
             yield break;
         }
@@ -116,7 +200,12 @@ public class BattleHUD : MonoBehaviour
         }
 
         float normalizedExp = _battler.GetNormalizedExp();
-        yield return _expBar.transform.DOScaleX(normalizedExp, 1.15f).WaitForCompletion();
+        yield return _expBar.transform.DOScaleX(normalizedExp, TWEEN_DURATION).WaitForCompletion();
+
+        if (_expText == null)
+        {
+            yield break;
+        }
 
         if (_battler.Level == GlobalSettings.Instance.MaxLevel)
         {
@@ -125,11 +214,15 @@ public class BattleHUD : MonoBehaviour
         else
         {
             int expForLevel = _battler.Base.GetExpForLevel(_battler.Level);
-            _expText.text = $"{_battler.Exp - expForLevel} / {_battler.Base.GetExpForLevel(_battler.Level + 1) - expForLevel}";
-
+            int nextLevelExp = _battler.Base.GetExpForLevel(_battler.Level + 1);
+            _expText.text = $"{_battler.Exp - expForLevel} / {nextLevelExp - expForLevel}";
         }
     }
 
+    /// <summary>
+    /// Toggles the visibility of the experience bar's parent container.
+    /// </summary>
+    /// <param name="toggle">If true, shows the exp bar; otherwise, hides it.</param>
     public void ToggleExpBar(bool toggle)
     {
         if (_expBar == null)
@@ -140,6 +233,10 @@ public class BattleHUD : MonoBehaviour
         _expBar.transform.parent.gameObject.SetActive(toggle);
     }
 
+    /// <summary>
+    /// Toggles the visibility of the affinity bar's parent container.
+    /// </summary>
+    /// <param name="toggle">If true, shows the affinity bar; otherwise, hides it.</param>
     public void ToggleAffinityBar(bool toggle)
     {
         if (_affinityBar == null)
@@ -150,57 +247,105 @@ public class BattleHUD : MonoBehaviour
         _affinityBar.transform.parent.gameObject.SetActive(toggle);
     }
 
+    /// <summary>
+    /// Updates the affinity bar and text.
+    /// </summary>
     public void SetAffinity()
     {
-        if (_affinityBar == null)
+        if (_affinityBar == null || _battler == null)
         {
             return;
         }
 
         float normalizedAffinity = GetNormalizedAffinity();
         _affinityBar.transform.localScale = new Vector3(normalizedAffinity, 1, 1);
-        _affinityText.text = $"{_battler.AffinityLevel} / 6";
+        if (_affinityText != null)
+        {
+            _affinityText.text = $"{_battler.AffinityLevel} / 6";
+        }
     }
 
+    /// <summary>
+    /// Smoothly animates the affinity bar update.
+    /// </summary>
+    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator SetAffinitySmooth()
     {
-        if (_affinityBar == null)
+        if (_affinityBar == null || _battler == null)
         {
             yield break;
         }
 
         float normalizedAffinity = GetNormalizedAffinity();
-
-        yield return _affinityBar.transform.DOScaleX(normalizedAffinity, 1.15f).WaitForCompletion();
-        _affinityText.text = $"{_battler.AffinityLevel} / 6";
+        yield return _affinityBar.transform.DOScaleX(normalizedAffinity, TWEEN_DURATION).WaitForCompletion();
+        if (_affinityText != null)
+        {
+            _affinityText.text = $"{_battler.AffinityLevel} / 6";
+        }
     }
 
+    /// <summary>
+    /// Calculates the normalized affinity value.
+    /// </summary>
+    /// <returns>A float between 0 and 1 representing the normalized affinity.</returns>
     private float GetNormalizedAffinity()
     {
-        float normalizedAffinity = (float)_battler.AffinityLevel / 6;
+        if (_battler == null)
+        {
+            return 0f;
+        }
 
+        float normalizedAffinity = _battler.AffinityLevel / 6f;
         return Mathf.Clamp01(normalizedAffinity);
     }
 
+    /// <summary>
+    /// Initiates a smooth update of the HP bar.
+    /// </summary>
     public void UpdateHP()
     {
         StartCoroutine(UpdateHPAsync());
     }
 
+    /// <summary>
+    /// Smoothly updates the HP bar and text.
+    /// </summary>
+    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator UpdateHPAsync()
     {
-        yield return _hpBar.SetHPSmooth((float)_battler.Hp / _battler.MaxHp);
-        _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
+        if (_hpBar != null && _battler != null)
+        {
+            yield return _hpBar.SetHPSmooth((float)_battler.Hp / _battler.MaxHp);
+            if (_hpText != null)
+            {
+                _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
+            }
+        }
     }
 
+    /// <summary>
+    /// Waits for the HP bar update to complete and then waits an additional short duration.
+    /// </summary>
+    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator WaitForHPUpdate()
     {
-        yield return new WaitUntil(() => !_hpBar.IsUpdating);
-        yield return new WaitForSeconds(0.33f);
+        if (_hpBar != null)
+        {
+            yield return new WaitUntil(() => !_hpBar.IsUpdating);
+            yield return new WaitForSeconds(WAIT_AFTER_HP_UPDATE);
+        }
     }
 
+    /// <summary>
+    /// Updates the stat boosts displayed on the HUD.
+    /// </summary>
     public void UpdateStatBoosts()
     {
+        if (_battler == null)
+        {
+            return;
+        }
+
         UpdateBoost(_strBoost, Stat.Strength);
         UpdateBoost(_endBoost, Stat.Endurance);
         UpdateBoost(_intBoost, Stat.Intelligence);
@@ -210,18 +355,37 @@ public class BattleHUD : MonoBehaviour
         UpdateBoost(_evaBoost, Stat.Evasion);
     }
 
+    /// <summary>
+    /// Updates the boost display for a given stat.
+    /// </summary>
+    /// <param name="boostContainer">The UI container for the stat boost.</param>
+    /// <param name="stat">The stat to update.</param>
     private void UpdateBoost(GameObject boostContainer, Stat stat)
     {
+        if (boostContainer == null || _battler == null)
+        {
+            return;
+        }
+
         int boostValue = _battler.StatBoosts[stat];
         boostContainer.SetActive(boostValue != 0);
 
         TextMeshProUGUI boostText = boostContainer.GetComponentInChildren<TextMeshProUGUI>();
+        if (boostText == null)
+        {
+            return;
+        }
+
+        // The arrow container is the second child (index 1)
+        if (boostContainer.transform.childCount < 2)
+        {
+            return;
+        }
+
         Transform arrowContainer = boostContainer.transform.GetChild(1);
 
-        for (int i = arrowContainer.childCount - 1; i >= 0; i--)
-        {
-            Destroy(arrowContainer.GetChild(i).gameObject);
-        }
+        // Clear existing arrow indicators.
+        ClearArrowIndicators(arrowContainer);
 
         if (boostValue == 0)
         {
@@ -233,17 +397,38 @@ public class BattleHUD : MonoBehaviour
             boostText.color = boostValue > 0 ? _upBoostColor : _downBoostColor;
         }
 
-        GameObject arrowPrefab = (boostValue > 0) ? _upArrowPrefab : _downArrowPrefab;
+        GameObject arrowPrefab = boostValue > 0 ? _upArrowPrefab : _downArrowPrefab;
         int count = Mathf.Abs(boostValue);
         for (int i = 0; i < count; i++)
         {
-            Instantiate(arrowPrefab, arrowContainer);
+            if (arrowPrefab != null && arrowContainer != null)
+            {
+                Instantiate(arrowPrefab, arrowContainer);
+            }
         }
     }
 
+    /// <summary>
+    /// Clears all arrow indicators from the specified container.
+    /// </summary>
+    /// <param name="arrowContainer">The transform containing arrow indicators.</param>
+    private void ClearArrowIndicators(Transform arrowContainer)
+    {
+        for (int i = arrowContainer.childCount - 1; i >= 0; i--)
+        {
+            Destroy(arrowContainer.GetChild(i).gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Clears event subscriptions to prevent memory leaks.
+    /// </summary>
     public void ClearData()
     {
-        _battler.OnStatusChanged -= SetStatusText;
-        _battler.OnHPChanged -= UpdateHP;
+        if (_battler != null)
+        {
+            _battler.OnStatusChanged -= SetStatusText;
+            _battler.OnHPChanged -= UpdateHP;
+        }
     }
 }
