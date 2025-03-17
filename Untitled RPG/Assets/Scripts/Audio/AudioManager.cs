@@ -27,10 +27,12 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(this);
         }
-        Instance = this;
+        else
+        {
+            Instance = this;
+        }
     }
 
     private void Start()

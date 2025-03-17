@@ -5,12 +5,15 @@ using TMPro;
 using UnityEngine;
 using Utils.StateMachine;
 
+/// <summary>
+/// Represents the state where a player selects an action during battle.
+/// </summary>
 public class ActionSelectionState : State<BattleSystem>
 {
     [SerializeField] private ActionSelectionUI _selectionUI;
 
     private BattleSystem _battleSystem;
-    private int _prevSelection = 0;
+    private int _previousSelectionIndex = 0;
     private TextMeshProUGUI _talkText;
 
     public static ActionSelectionState Instance { get; private set; }
@@ -56,8 +59,8 @@ public class ActionSelectionState : State<BattleSystem>
         {
             if (_selectionUI.SelectedIndex == 1)
             {
-                int newIndex = _prevSelection == 0 ? 2
-                    : _prevSelection == 2 ? 0
+                int newIndex = _previousSelectionIndex == 0 ? 2
+                    : _previousSelectionIndex == 2 ? 0
                     : 4;
 
                 _selectionUI.SetSelectedIndex(newIndex);
@@ -65,7 +68,7 @@ public class ActionSelectionState : State<BattleSystem>
 
             _talkText.color = GlobalSettings.Instance.EmptyColor;
         }
-        _prevSelection = _selectionUI.SelectedIndex;
+        _previousSelectionIndex = _selectionUI.SelectedIndex;
     }
 
     public override void Exit()
