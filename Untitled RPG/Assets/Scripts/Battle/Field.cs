@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Represents the current battlefield state.
 /// </summary>
-public sealed class Field
+public class Field
 {
     public Condition Weather { get; set; }
     public int? WeatherDuration { get; set; }
