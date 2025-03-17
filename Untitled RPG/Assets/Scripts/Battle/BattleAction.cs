@@ -1,22 +1,37 @@
 using System.Collections.Generic;
 
+/// <summary>
+/// Represents an action taken during battle.
+/// </summary>
 public class BattleAction
 {
     public BattleActionType ActionType { get; set; }
     public BattleUnit SourceUnit { get; set; }
     public List<BattleUnit> TargetUnits { get; set; }
-    public Move SelectedMove { get; set; }
-    public Battler SelectedBattler { get; set; }
-    public ItemBase SelectedItem { get; set; }
+    public Move SelectedMove { get; set; } // The selected move for a Fight action.
+    public Battler SelectedBattler { get; set; } // The selected battler for a SwitchBattler action.
+    public ItemBase SelectedItem { get; set; } // The selected item for a UseItem action.
     public bool IsValid { get; set; } = true;
-    public int Priority => (ActionType == BattleActionType.Fight) ? SelectedMove.Base.Priority
-    : (ActionType == BattleActionType.UseItem) ? 95
-    : (ActionType == BattleActionType.Guard) ? 96
-    : (ActionType == BattleActionType.SwitchBattler) ? 97
-    : (ActionType == BattleActionType.Talk) ? 98
-    : 99;
+
+    /// <summary>
+    /// Gets the priority of the battle action.
+    /// Lower numbers indicate higher priority.
+    /// </summary>
+    public int Priority => ActionType switch
+    {
+        BattleActionType.Fight => SelectedMove != null ? SelectedMove.Base.Priority : int.MaxValue,
+        BattleActionType.UseItem => 95,
+        BattleActionType.Guard => 96,
+        BattleActionType.SwitchBattler => 97,
+        BattleActionType.Talk => 98,
+        BattleActionType.Run => 99,
+        _ => int.MaxValue
+    };
 }
 
+/// <summary>
+/// Enumerates the possible types of battle actions.
+/// </summary>
 public enum BattleActionType
 {
     Fight,
