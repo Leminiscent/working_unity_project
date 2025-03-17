@@ -836,7 +836,7 @@ public class RunTurnState : State<BattleSystem>
     }
 
     /// <summary>
-    /// Displays damage details, such as a critical hit message.
+    /// Displays damage details for a move.
     /// </summary>
     private IEnumerator ShowDamageDetails(DamageDetails damageDetails)
     {
