@@ -4,6 +4,9 @@ using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
+/// <summary>
+/// Represents the recruitment state in battle, handling dialogue, question selection, and the recruitment process.
+/// </summary>
 public class RecruitmentState : State<BattleSystem>
 {
     [SerializeField] private AnswerSelectionUI _selectionUI;
@@ -31,38 +34,69 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Enters the recruitment state, initializing dialogue and starting the recruitment sequence.
+    /// </summary>
+    /// <param name="owner">The BattleSystem owning this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
         _dialogueBox = _battleSystem.DialogueBox;
+
+        // Validate references
+        if (_selectionUI == null)
+        {
+            Debug.LogError("AnswerSelectionUI is not assigned.");
+            return;
+        }
+        if (RecruitTarget == null)
+        {
+            Debug.LogError("RecruitTarget is not assigned.");
+            _battleSystem.StateMachine.Pop();
+            return;
+        }
+
         StartCoroutine(StartRecruitment());
     }
 
+    /// <summary>
+    /// Updates the recruitment state by handling UI input.
+    /// </summary>
     public override void Execute()
     {
-        if (_selectionUI.gameObject.activeInHierarchy)
+        if (_selectionUI != null && _selectionUI.gameObject.activeInHierarchy)
         {
             _selectionUI.HandleUpdate();
         }
-        else if (_dialogueBox.IsChoiceBoxEnabled)
+        else if (_dialogueBox != null && _dialogueBox.IsChoiceBoxEnabled)
         {
             HandleChoiceBoxInput();
         }
     }
 
+    /// <summary>
+    /// Exits the recruitment state, cleaning up UI and event subscriptions.
+    /// </summary>
     public override void Exit()
     {
-        _selectionUI.gameObject.SetActive(false);
-        _selectionUI.OnSelected -= OnAnswerSelected;
+        if (_selectionUI != null)
+        {
+            _selectionUI.gameObject.SetActive(false);
+            _selectionUI.OnSelected -= OnAnswerSelected;
+        }
     }
 
+    /// <summary>
+    /// Begins the recruitment sequence by presenting initial dialogue and selecting recruitment questions.
+    /// </summary>
     private IEnumerator StartRecruitment()
     {
+        // Prevent recruitment during a commander battle.
         if (_battleSystem.IsCommanderBattle)
         {
-            yield return !RecruitTarget.Battler.IsCommander ? _dialogueBox.TypeDialogue("You can't recruit another Commander's battler!")
+            yield return !RecruitTarget.Battler.IsCommander
+                ? _dialogueBox.TypeDialogue("You can't recruit another Commander's battler!")
                 : _dialogueBox.TypeDialogue("You can't recruit another Commander!");
-
             _battleSystem.StateMachine.Pop();
             yield break;
         }
@@ -70,21 +104,25 @@ public class RecruitmentState : State<BattleSystem>
         yield return _dialogueBox.TypeDialogue("You want to talk?");
         yield return _dialogueBox.TypeDialogue("Alright, let's talk!");
 
-        // Select 3 random questions
+        // Randomly select 3 recruitment questions.
         _questions = RecruitTarget.Battler.Base.RecruitmentQuestions.OrderBy(static q => Random.value).ToList();
         _selectedQuestions = _questions.Take(3).ToList();
         _currentQuestionIndex = 0;
+
         RecruitTarget.Hud.ToggleAffinityBar(true);
         yield return PresentQuestion();
     }
 
+    /// <summary>
+    /// Presents the current recruitment question and sets up the answer selection UI.
+    /// </summary>
     private IEnumerator PresentQuestion()
     {
         RecruitmentQuestion currentQuestion = _selectedQuestions[_currentQuestionIndex];
 
         yield return _dialogueBox.TypeDialogue(currentQuestion.QuestionText);
 
-        // Set up the answer selection UI
+        // Set up answer selection UI.
         _dialogueBox.EnableDialogueText(false);
         _selectionUI.gameObject.SetActive(true);
         _selectionUI.OnSelected += OnAnswerSelected;
@@ -92,14 +130,23 @@ public class RecruitmentState : State<BattleSystem>
         _selectionUI.UpdateSelectionInUI();
     }
 
+    /// <summary>
+    /// Callback invoked when an answer is selected.
+    /// </summary>
+    /// <param name="selection">Index of the selected answer.</param>
     private void OnAnswerSelected(int selection)
     {
         StartCoroutine(ProcessAnswer(selection));
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
+    /// <summary>
+    /// Processes the selected answer, updates affinity, and advances the recruitment dialogue.
+    /// </summary>
+    /// <param name="selectedAnswerIndex">Index of the selected answer.</param>
     private IEnumerator ProcessAnswer(int selectedAnswerIndex)
     {
+        // Disable selection UI and unsubscribe to prevent multiple triggers.
         _selectionUI.gameObject.SetActive(false);
         _selectionUI.OnSelected -= OnAnswerSelected;
 
@@ -110,6 +157,7 @@ public class RecruitmentState : State<BattleSystem>
         RecruitTarget.Battler.UpdateAffinityLevel(selectedAnswer.AffinityScore);
         int newAffinity = RecruitTarget.Battler.AffinityLevel;
 
+        // Play corresponding affinity animations if there is a change.
         if (newAffinity != oldAffinity)
         {
             if (newAffinity > oldAffinity)
@@ -120,7 +168,6 @@ public class RecruitmentState : State<BattleSystem>
             {
                 StartCoroutine(RecruitTarget.PlayAffinityLossAnimation());
             }
-
             yield return RecruitTarget.Hud.SetAffinitySmooth();
         }
         else
@@ -131,6 +178,7 @@ public class RecruitmentState : State<BattleSystem>
         _dialogueBox.EnableDialogueText(true);
         yield return _dialogueBox.TypeDialogue(GenerateReaction(selectedAnswer.AffinityScore));
 
+        // If more questions remain, present the next one; otherwise, attempt recruitment.
         if (_currentQuestionIndex < _selectedQuestions.Count - 1)
         {
             _currentQuestionIndex++;
@@ -142,40 +190,33 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-
+    /// <summary>
+    /// Generates a reaction string based on the affinity score.
+    /// </summary>
+    /// <param name="affinityScore">The affinity score of the selected answer.</param>
+    /// <returns>A reaction string.</returns>
     private string GenerateReaction(int affinityScore)
     {
+        string name = RecruitTarget.Battler.Base.Name;
         return affinityScore == 2
-            ? RecruitTarget.Battler.Base.Name + " seems to love your answer!"
+            ? $"{name} seems to love your answer!"
             : affinityScore == 1
-                ? RecruitTarget.Battler.Base.Name + " seems to like your answer."
-                : affinityScore == -1
-                            ? RecruitTarget.Battler.Base.Name + " seems to dislike your answer..."
-                            : RecruitTarget.Battler.Base.Name + " seems to hate your answer!";
+                ? $"{name} seems to like your answer."
+                : affinityScore == -1 ? $"{name} seems to dislike your answer..." : $"{name} seems to hate your answer!";
     }
 
+    /// <summary>
+    /// Attempts to recruit the target by calculating the recruitment chance.
+    /// </summary>
     private IEnumerator AttemptRecruitment()
     {
-        // Calculate recruitment chance
-        float a = Mathf.Min(Mathf.Max(RecruitTarget.Battler.AffinityLevel - 3, 0), 3) * ((3 * RecruitTarget.Battler.MaxHp) - (2 * RecruitTarget.Battler.Hp)) * RecruitTarget.Battler.Base.RecruitRate * ConditionsDB.GetStatusBonus(RecruitTarget.Battler.Statuses) / (3 * RecruitTarget.Battler.MaxHp);
-        bool canRecruit;
-
-        if (a >= 255)
-        {
-            canRecruit = true;
-        }
-        else
-        {
-            float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
-
-            canRecruit = Random.Range(0, 65536) < b;
-        }
+        bool canRecruit = CanRecruit();
 
         if (canRecruit)
         {
-            yield return _dialogueBox.TypeDialogue(RecruitTarget.Battler.Base.Name + " wants to join your party! Will you accept?");
+            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} wants to join your party! Will you accept?");
 
-            // Present choice to accept or reject
+            // Present choice to accept or reject.
             _dialogueBox.EnableDialogueText(false);
             _dialogueBox.EnableChoiceBox(true);
             _yesSelected = true;
@@ -183,7 +224,7 @@ public class RecruitmentState : State<BattleSystem>
         }
         else
         {
-            yield return _dialogueBox.TypeDialogue(RecruitTarget.Battler.Base.Name + " refused to join you.");
+            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} refused to join you.");
             if (RecruitTarget.Battler.AffinityLevel == 0)
             {
                 RecruitTarget.Hud.ToggleAffinityBar(false);
@@ -192,13 +233,39 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Calculates the recruitment chance and returns whether recruitment is successful.
+    /// </summary>
+    /// <returns>True if recruitment can occur; otherwise, false.</returns>
+    private bool CanRecruit()
+    {
+        float a = Mathf.Min(Mathf.Max(RecruitTarget.Battler.AffinityLevel - 3, 0), 3) *
+                  ((3 * RecruitTarget.Battler.MaxHp) - (2 * RecruitTarget.Battler.Hp)) *
+                  RecruitTarget.Battler.Base.RecruitRate *
+                  ConditionsDB.GetStatusBonus(RecruitTarget.Battler.Statuses) /
+                  (3 * RecruitTarget.Battler.MaxHp);
+        if (a >= 255)
+        {
+            return true;
+        }
+        else
+        {
+            float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
+            return Random.Range(0, 65536) < b;
+        }
+    }
+
+    /// <summary>
+    /// Processes the player's accept/reject choice for recruitment.
+    /// </summary>
+    /// <param name="selection">0 for Yes, 1 for No.</param>
     private IEnumerator ProcessAcceptReject(int selection)
     {
         _dialogueBox.EnableDialogueText(true);
 
         if (selection == 0)
         {
-            // Yes
+            // Recruitment accepted.
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} was recruited!");
             StartCoroutine(RecruitTarget.PlayExitAnimation());
             RecruitTarget.ClearData();
@@ -223,26 +290,12 @@ public class RecruitmentState : State<BattleSystem>
             }
             else
             {
-                BattleAction recruitedUnitAction = RunTurnState.Instance.BattleActions.FirstOrDefault(a => a.SourceUnit == RecruitTarget);
-                if (recruitedUnitAction != null)
-                {
-                    recruitedUnitAction.IsValid = false;
-                }
-
-                List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(RecruitTarget)).ToList();
-                foreach (BattleAction a in actionsToAdjust)
-                {
-                    a.TargetUnits.Remove(RecruitTarget);
-                    if (a.TargetUnits.Count == 0)
-                    {
-                        a.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
-                    }
-                }
+                AdjustBattleActionsAfterRecruitment();
             }
         }
         else
         {
-            // No
+            // Recruitment rejected.
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} was rejected.");
             if (RecruitTarget.Battler.AffinityLevel == 0)
             {
@@ -253,17 +306,45 @@ public class RecruitmentState : State<BattleSystem>
         _battleSystem.StateMachine.Pop();
     }
 
+    /// <summary>
+    /// Adjusts battle actions after a successful recruitment to remove references to the recruited unit.
+    /// </summary>
+    private void AdjustBattleActionsAfterRecruitment()
+    {
+        BattleAction recruitedAction = RunTurnState.Instance.BattleActions.FirstOrDefault(a => a.SourceUnit == RecruitTarget);
+        if (recruitedAction != null)
+        {
+            recruitedAction.IsValid = false;
+        }
+
+        List<BattleAction> actionsToAdjust = RunTurnState.Instance.BattleActions
+            .Where(a => a.TargetUnits != null && a.TargetUnits.Contains(RecruitTarget))
+            .ToList();
+        foreach (BattleAction action in actionsToAdjust)
+        {
+            action.TargetUnits.Remove(RecruitTarget);
+            if (action.TargetUnits.Count == 0)
+            {
+                action.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Handles user input when the choice box is active.
+    /// </summary>
     private void HandleChoiceBoxInput()
     {
         const float SELECTION_SPEED = 5f;
-        float v = Input.GetAxisRaw("Vertical");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
+        // Countdown timer to control selection speed.
         if (_selectionTimer > 0)
         {
             _selectionTimer = Mathf.Clamp(_selectionTimer - Time.deltaTime, 0, _selectionTimer);
         }
 
-        if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
+        if (_selectionTimer == 0 && Mathf.Abs(verticalInput) > 0.2f)
         {
             _yesSelected = !_yesSelected;
             _selectionTimer = 1 / SELECTION_SPEED;
