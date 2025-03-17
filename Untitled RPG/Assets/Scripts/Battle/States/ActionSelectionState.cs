@@ -13,7 +13,7 @@ public class ActionSelectionState : State<BattleSystem>
     [SerializeField] private ActionSelectionUI _selectionUI;
 
     private BattleSystem _battleSystem;
-    private int _previousSelectionIndex = 0;
+    private int _prevSelectionIndex = 0;
     private TextMeshProUGUI _talkText;
 
     public static ActionSelectionState Instance { get; private set; }
@@ -31,46 +31,61 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Enters the Action Selection state. Initializes UI, sets up event listeners, and displays dialogue.
+    /// </summary>
+    /// <param name="owner">The BattleSystem that owns this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
+
+        if (_selectionUI == null)
+        {
+            Debug.LogError("ActionSelectionUI is not assigned.");
+            return;
+        }
+
         _selectionUI.gameObject.SetActive(true);
         _selectionUI.OnSelected += OnActionSelected;
         _selectionUI.OnBack += OnBack;
+
+        // Display dialogue and set the selecting unit as active.
         _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Battler.Base.Name}!");
         _battleSystem.SelectingUnit.SetSelected(true);
 
-        _talkText = _selectionUI.GetComponentsInChildren<TextSlot>().ToList()[1].GetComponent<TextMeshProUGUI>();
-        if (!_battleSystem.SelectingUnit.Battler.IsCommander)
-        {
-            _talkText.color = GlobalSettings.Instance.EmptyColor;
-        }
-        else
-        {
-            _talkText.color = Color.white;
-        }
+        // Initialize the talk text component from the UI.
+        InitializeTalkText();
+
+        // Set text color based on whether the unit is a commander.
+        _talkText.color = !_battleSystem.SelectingUnit.Battler.IsCommander ? GlobalSettings.Instance.EmptyColor : Color.white;
     }
 
+    /// <summary>
+    /// Updates the state by handling input and updating the selection UI.
+    /// </summary>
     public override void Execute()
     {
         _selectionUI.HandleUpdate();
 
         if (!_battleSystem.SelectingUnit.Battler.IsCommander)
         {
+            // If the unit is not the commander, ignore the "Talk" option.
             if (_selectionUI.SelectedIndex == 1)
             {
-                int newIndex = _previousSelectionIndex == 0 ? 2
-                    : _previousSelectionIndex == 2 ? 0
+                int newIndex = _prevSelectionIndex == 0 ? 2
+                    : _prevSelectionIndex == 2 ? 0
                     : 4;
-
                 _selectionUI.SetSelectedIndex(newIndex);
             }
-
             _talkText.color = GlobalSettings.Instance.EmptyColor;
         }
-        _previousSelectionIndex = _selectionUI.SelectedIndex;
+
+        _prevSelectionIndex = _selectionUI.SelectedIndex;
     }
 
+    /// <summary>
+    /// Exits the Action Selection state and unsubscribes from UI events.
+    /// </summary>
     public override void Exit()
     {
         _selectionUI.gameObject.SetActive(false);
@@ -78,42 +93,73 @@ public class ActionSelectionState : State<BattleSystem>
         _selectionUI.OnBack -= OnBack;
     }
 
+    /// <summary>
+    /// Safely initializes the talk text component from the ActionSelectionUI.
+    /// </summary>
+    private void InitializeTalkText()
+    {
+        List<TextSlot> textSlots = _selectionUI.GetComponentsInChildren<TextSlot>().ToList();
+        if (textSlots.Count > 1)
+        {
+            _talkText = textSlots[1].GetComponent<TextMeshProUGUI>();
+            if (_talkText == null)
+            {
+                Debug.LogWarning("Expected TextMeshProUGUI component not found in the second TextSlot.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Expected at least two TextSlot components in the ActionSelectionUI.");
+        }
+    }
+
+    /// <summary>
+    /// Called when an action is selected in the UI. Dispatches to the appropriate handler.
+    /// </summary>
+    /// <param name="selection">The index of the selected action.</param>
     private void OnActionSelected(int selection)
     {
         switch (selection)
         {
             case 0:
-                MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Battler.Moves;
-                _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
+                HandleMoveSelection();
                 break;
             case 1:
-                StartCoroutine(SelectRecruitTarget());
+                StartCoroutine(HandleRecruitAction());
                 break;
             case 2:
-                StartCoroutine(SelectItemAndTarget());
+                StartCoroutine(HandleItemSelection());
                 break;
             case 3:
-                _battleSystem.AddBattleAction(new BattleAction()
-                {
-                    ActionType = BattleActionType.Guard
-                });
+                HandleGuardAction();
                 break;
             case 4:
-                StartCoroutine(GoToPartyState());
+                StartCoroutine(HandlePartySwitch());
                 break;
             case 5:
-                _battleSystem.AddBattleAction(new BattleAction()
-                {
-                    ActionType = BattleActionType.Run
-                });
+                HandleRunAction();
                 break;
             default:
+                Debug.LogWarning($"Unhandled action selection: {selection}");
                 break;
         }
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
-    private IEnumerator SelectRecruitTarget()
+    /// <summary>
+    /// Handles the move selection action.
+    /// </summary>
+    private void HandleMoveSelection()
+    {
+        MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Battler.Moves;
+        _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
+    }
+
+    /// <summary>
+    /// Coroutine that handles selecting a recruit target.
+    /// </summary>
+    /// <returns>IEnumerator for coroutine.</returns>
+    private IEnumerator HandleRecruitAction()
     {
         int recruitTarget = 0;
         if (_battleSystem.EnemyUnits.Count > 1)
@@ -133,13 +179,18 @@ public class ActionSelectionState : State<BattleSystem>
         });
     }
 
-    private IEnumerator SelectItemAndTarget()
+    /// <summary>
+    /// Coroutine that handles item selection and target assignment.
+    /// </summary>
+    /// <returns>IEnumerator for coroutine.</returns>
+    private IEnumerator HandleItemSelection()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
 
         ItemBase selectedItem = InventoryState.Instance.SelectedItem;
         if (selectedItem != null)
         {
+            // If the item's target type doesn't require specific selection, determine targets automatically.
             if (selectedItem.Target is MoveTarget.Self or MoveTarget.AllAllies or MoveTarget.AllEnemies or MoveTarget.Others)
             {
                 _battleSystem.AddBattleAction(new BattleAction()
@@ -155,7 +206,8 @@ public class ActionSelectionState : State<BattleSystem>
             }
 
             int itemTarget = 0;
-            if ((selectedItem.Target is MoveTarget.Enemy && _battleSystem.EnemyUnits.Count > 1) || (selectedItem.Target is MoveTarget.Ally && _battleSystem.PlayerUnits.Count > 1))
+            if ((selectedItem.Target is MoveTarget.Enemy && _battleSystem.EnemyUnits.Count > 1) ||
+                (selectedItem.Target is MoveTarget.Ally && _battleSystem.PlayerUnits.Count > 1))
             {
                 TargetSelectionState.Instance.IsTargetingAllies = selectedItem.Target is MoveTarget.Ally;
                 yield return _battleSystem.StateMachine.PushAndWait(TargetSelectionState.Instance);
@@ -176,7 +228,22 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    private IEnumerator GoToPartyState()
+    /// <summary>
+    /// Handles the guard action.
+    /// </summary>
+    private void HandleGuardAction()
+    {
+        _battleSystem.AddBattleAction(new BattleAction()
+        {
+            ActionType = BattleActionType.Guard
+        });
+    }
+
+    /// <summary>
+    /// Coroutine that handles switching to the party state.
+    /// </summary>
+    /// <returns>IEnumerator for coroutine.</returns>
+    private IEnumerator HandlePartySwitch()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
 
@@ -191,6 +258,20 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Handles the run action.
+    /// </summary>
+    private void HandleRunAction()
+    {
+        _battleSystem.AddBattleAction(new BattleAction()
+        {
+            ActionType = BattleActionType.Run
+        });
+    }
+
+    /// <summary>
+    /// Called when the back action is triggered from the UI.
+    /// </summary>
     private void OnBack()
     {
         _battleSystem.UndoBattleAction();

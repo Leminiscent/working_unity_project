@@ -195,7 +195,7 @@ public class Battler
 
             string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
 
-            AddStatusEvent(StatusEventType.StatBoost, $"'s {stat}{bigChange}{riseOrFall}!", boost);
+            AddStatusEvent(StatusEventType.StatBoost, $"{(Base.Name.EndsWith("s") ? "'" : "'s")} {stat}{bigChange}{riseOrFall}!", boost);
         }
     }
 

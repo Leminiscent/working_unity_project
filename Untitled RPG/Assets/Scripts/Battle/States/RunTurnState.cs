@@ -210,15 +210,15 @@ public class RunTurnState : State<BattleSystem>
         }
 
         yield return ShowStatusChanges(sourceUnit);
-
         move.Sp--;
+        string sourceUnitName = sourceUnit.Battler.Base.Name;
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
         {
-            yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} has no SP left!");
+            yield return _dialogueBox.TypeDialogue($"{sourceUnitName} has no SP left!");
         }
 
-        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {move.Base.Name}!");
+        yield return _dialogueBox.TypeDialogue($"{sourceUnitName} used {move.Base.Name}!");
         yield return sourceUnit.PlayMoveCastAnimation(move.Base);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
@@ -297,7 +297,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name}'s attack missed!");
+                yield return _dialogueBox.TypeDialogue($"{(sourceUnitName.EndsWith('s') ? $"{sourceUnitName}'" : $"{sourceUnitName}'s")} attack missed!");
             }
         }
     }
@@ -425,7 +425,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 unit.Hud.UpdateStatBoosts();
 
-                string statName = statusEvent.Message[3..].Split(' ')[0];
+                string statName = statusEvent.Message.Split(' ')[1];
                 if (System.Enum.TryParse(statName, out Stat stat))
                 {
                     if (statusEvent.Value > 0)
