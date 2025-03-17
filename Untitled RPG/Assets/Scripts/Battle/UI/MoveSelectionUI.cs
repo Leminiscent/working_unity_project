@@ -4,6 +4,10 @@ using TMPro;
 using UnityEngine;
 using Utils.GenericSelectionUI;
 
+/// <summary>
+/// MoveSelectionUI handles the display of available moves in a grid layout and updates
+/// additional UI elements (SP and type texts) based on the currently selected move.
+/// </summary>
 public class MoveSelectionUI : SelectionUI<TextSlot>
 {
     [SerializeField] private List<TextSlot> _moveTexts;
@@ -12,17 +16,34 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
 
     private List<Move> _moves;
 
+    /// <summary>
+    /// Configures the selection settings on start.
+    /// </summary>
     private void Start()
     {
+        // Setup selection UI with a grid layout of 2 columns.
         SetSelectionSettings(SelectionType.Grid, 2);
     }
 
+    /// <summary>
+    /// Sets the available moves for selection and updates the UI items accordingly.
+    /// </summary>
+    /// <param name="moves">List of moves available for selection.</param>
     public void SetMoves(List<Move> moves)
     {
         _moves = moves;
         _selectedItem = 0;
+
+        // Warn if there are more moves than available UI slots.
+        if (moves.Count > _moveTexts.Count)
+        {
+            Debug.LogWarning($"There are {moves.Count} moves but only {_moveTexts.Count} text slots available.");
+        }
+
+        // Use only as many text slots as moves available.
         SetItems(_moveTexts.Take(moves.Count).ToList());
 
+        // Update each text slot with the move name, or show "-" if no move is available.
         for (int i = 0; i < _moveTexts.Count; ++i)
         {
             if (i < moves.Count)
@@ -36,13 +57,29 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
         }
     }
 
+    /// <summary>
+    /// Updates the UI to reflect the current selection.
+    /// Displays SP and type information for the selected move.
+    /// </summary>
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();
+
+        // Ensure there is a valid move selected.
+        if (_moves == null || _moves.Count == 0 || _selectedItem < 0 || _selectedItem >= _moves.Count)
+        {
+            Debug.LogWarning("UpdateSelectionInUI called with invalid move data.");
+            return;
+        }
+
+        // Retrieve the currently selected move.
         Move move = _moves[_selectedItem];
 
+        // Update the SP and type text fields.
         _spText.text = $"SP {move.Sp}/{move.Base.SP}";
         _typeText.text = move.Base.Type.ToString();
+
+        // Change SP text color based on availability.
         _spText.color = move.Sp == 0 ? GlobalSettings.Instance.EmptyColor : GlobalSettings.Instance.InactiveColor;
     }
 }
