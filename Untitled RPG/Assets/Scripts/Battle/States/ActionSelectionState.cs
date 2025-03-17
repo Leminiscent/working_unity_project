@@ -69,7 +69,7 @@ public class ActionSelectionState : State<BattleSystem>
 
         if (!_battleSystem.SelectingUnit.Battler.IsCommander)
         {
-            // If the unit is not the commander, ignore the "Talk" option.
+            // If the unit is not the commander, ignore the talk option.
             if (_selectionUI.SelectedIndex == 1)
             {
                 int newIndex = _prevSelectionIndex == 0 ? 2

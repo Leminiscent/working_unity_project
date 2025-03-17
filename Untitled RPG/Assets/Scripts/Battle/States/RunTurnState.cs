@@ -4,6 +4,10 @@ using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
+/// <summary>
+/// Manages the turn-based execution of battle actions, including moves, items, status effects, weather,
+/// and unit defeat handling during a battle.
+/// </summary>
 public class RunTurnState : State<BattleSystem>
 {
     private BattleSystem _battleSystem;
@@ -28,6 +32,10 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Initializes the state by caching battle-related references and starts processing turns.
+    /// </summary>
+    /// <param name="owner">The BattleSystem that owns this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
@@ -40,8 +48,13 @@ public class RunTurnState : State<BattleSystem>
         StartCoroutine(RunTurns());
     }
 
+    /// <summary>
+    /// Processes all battle actions, weather effects, post-turn effects, and then transitions back
+    /// to the ActionSelection state if the battle is still ongoing.
+    /// </summary>
     private IEnumerator RunTurns()
     {
+        // Process each battle action.
         foreach (BattleAction action in BattleActions)
         {
             if (!action.IsValid)
@@ -49,33 +62,7 @@ public class RunTurnState : State<BattleSystem>
                 continue;
             }
 
-            if (action.ActionType == BattleActionType.Fight)
-            {
-                action.SourceUnit.Battler.CurrentMove = action.SelectedMove;
-                yield return RunMove(action.SourceUnit, action.TargetUnits, action.SelectedMove);
-            }
-            else if (action.ActionType == BattleActionType.Talk)
-            {
-                RecruitmentState.Instance.RecruitTarget = action.TargetUnits[0];
-                yield return _battleSystem.StateMachine.PushAndWait(RecruitmentState.Instance);
-            }
-            else if (action.ActionType == BattleActionType.UseItem)
-            {
-                yield return UseItem(action.SourceUnit, action.TargetUnits, action.SelectedItem);
-            }
-            else if (action.ActionType == BattleActionType.Guard)
-            {
-                StartCoroutine(action.SourceUnit.StartGuarding());
-                yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Battler.Base.Name} has begun guarding!");
-            }
-            else if (action.ActionType == BattleActionType.SwitchBattler)
-            {
-                yield return _battleSystem.SwitchBattler(action.SelectedBattler, action.SourceUnit);
-            }
-            else if (action.ActionType == BattleActionType.Run)
-            {
-                yield return AttemptEscape();
-            }
+            yield return ProcessBattleAction(action);
 
             if (_battleSystem.BattleIsOver)
             {
@@ -83,13 +70,130 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits).OrderByDescending(static u => u.Battler.Agility).ToList();
+        // Process weather effects.
+        List<BattleUnit> agilitySortedUnits = _battleSystem.PlayerUnits
+            .Concat(_battleSystem.EnemyUnits)
+            .OrderByDescending(static u => u.Battler.Agility)
+            .ToList();
 
+        yield return ProcessWeatherEffects(agilitySortedUnits);
+
+        // Process end-of-turn effects for all units.
+        foreach (BattleUnit unit in agilitySortedUnits)
+        {
+            yield return RunAfterTurn(unit);
+        }
+
+        _battleSystem.ClearBattleActions();
+
+        // Stop guarding on all units.
+        foreach (BattleUnit unit in _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits))
+        {
+            if (unit.Battler.IsGuarding)
+            {
+                StartCoroutine(unit.StopGuarding());
+            }
+        }
+
+        if (!_battleSystem.BattleIsOver)
+        {
+            _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
+        }
+    }
+
+    /// <summary>
+    /// Processes a single battle action by dispatching to the appropriate handler based on its type.
+    /// </summary>
+    /// <param name="action">The battle action to process.</param>
+    private IEnumerator ProcessBattleAction(BattleAction action)
+    {
+        switch (action.ActionType)
+        {
+            case BattleActionType.Fight:
+                yield return ProcessFightAction(action);
+                break;
+            case BattleActionType.Talk:
+                yield return ProcessTalkAction(action);
+                break;
+            case BattleActionType.UseItem:
+                yield return ProcessUseItemAction(action);
+                break;
+            case BattleActionType.Guard:
+                yield return ProcessGuardAction(action);
+                break;
+            case BattleActionType.SwitchBattler:
+                yield return ProcessSwitchBattlerAction(action);
+                break;
+            case BattleActionType.Run:
+                yield return ProcessRunAction();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Processes a fight action by setting the current move and running it.
+    /// </summary>
+    private IEnumerator ProcessFightAction(BattleAction action)
+    {
+        action.SourceUnit.Battler.CurrentMove = action.SelectedMove;
+        yield return RunMove(action.SourceUnit, action.TargetUnits, action.SelectedMove);
+    }
+
+    /// <summary>
+    /// Processes a talk action by pushing the RecruitmentState.
+    /// </summary>
+    private IEnumerator ProcessTalkAction(BattleAction action)
+    {
+        RecruitmentState.Instance.RecruitTarget = action.TargetUnits[0];
+        yield return _battleSystem.StateMachine.PushAndWait(RecruitmentState.Instance);
+    }
+
+    /// <summary>
+    /// Processes a use item action.
+    /// </summary>
+    private IEnumerator ProcessUseItemAction(BattleAction action)
+    {
+        yield return UseItem(action.SourceUnit, action.TargetUnits, action.SelectedItem);
+    }
+
+    /// <summary>
+    /// Processes a guard action by starting the guarding animation and displaying dialogue.
+    /// </summary>
+    private IEnumerator ProcessGuardAction(BattleAction action)
+    {
+        StartCoroutine(action.SourceUnit.StartGuarding());
+        yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Battler.Base.Name} has begun guarding!");
+    }
+
+    /// <summary>
+    /// Processes a switch battler action.
+    /// </summary>
+    private IEnumerator ProcessSwitchBattlerAction(BattleAction action)
+    {
+        yield return _battleSystem.SwitchBattler(action.SelectedBattler, action.SourceUnit);
+    }
+
+    /// <summary>
+    /// Processes a run action by attempting an escape.
+    /// </summary>
+    private IEnumerator ProcessRunAction()
+    {
+        yield return AttemptEscape();
+    }
+
+    /// <summary>
+    /// Processes weather effects on all units and handles weather duration updates.
+    /// </summary>
+    /// <param name="sortedUnits">Units sorted by agility.</param>
+    private IEnumerator ProcessWeatherEffects(List<BattleUnit> sortedUnits)
+    {
         if (_field.Weather != null)
         {
             yield return _dialogueBox.TypeDialogue(_field.Weather.EffectMessage);
 
-            foreach (BattleUnit unit in agilitySortedUnits)
+            foreach (BattleUnit unit in sortedUnits)
             {
                 _field.Weather.OnWeather?.Invoke(unit.Battler);
                 yield return ShowStatusChanges(unit);
@@ -111,28 +215,12 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
         }
-
-        foreach (BattleUnit unit in agilitySortedUnits)
-        {
-            yield return RunAfterTurn(unit);
-        }
-
-        _battleSystem.ClearBattleActions();
-
-        foreach (BattleUnit unit in _battleSystem.PlayerUnits.Concat(_battleSystem.EnemyUnits))
-        {
-            if (unit.Battler.IsGuarding)
-            {
-                StartCoroutine(unit.StopGuarding());
-            }
-        }
-
-        if (!_battleSystem.BattleIsOver)
-        {
-            _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);
-        }
     }
 
+    /// <summary>
+    /// Processes after-turn effects for a given unit.
+    /// </summary>
+    /// <param name="sourceUnit">The unit to process.</param>
     private IEnumerator RunAfterTurn(BattleUnit sourceUnit)
     {
         if (_battleSystem.BattleIsOver)
@@ -148,6 +236,13 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Checks if a move hits its target.
+    /// </summary>
+    /// <param name="move">The move used.</param>
+    /// <param name="source">The attacking battler.</param>
+    /// <param name="target">The defending battler.</param>
+    /// <returns>True if the move hits; otherwise, false.</returns>
     private bool CheckIfMoveHits(Move move, Battler source, Battler target)
     {
         if (move.Base.AlwaysHits)
@@ -199,6 +294,9 @@ public class RunTurnState : State<BattleSystem>
         return Random.Range(1, 101) <= moveAccuracy;
     }
 
+    /// <summary>
+    /// Runs the move for the source unit on the target units.
+    /// </summary>
     private IEnumerator RunMove(BattleUnit sourceUnit, List<BattleUnit> targetUnits, Move move)
     {
         bool canRunMove = sourceUnit.Battler.OnStartOfTurn();
@@ -232,7 +330,8 @@ public class RunTurnState : State<BattleSystem>
             if (CheckIfMoveHits(move, sourceUnit.Battler, targetUnit.Battler))
             {
                 int hitCount = move.Base.GetHitCount();
-                float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Battler.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Battler.Base.Type2);
+                float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Battler.Base.Type1) *
+                                          TypeChart.GetEffectiveness(move.Base.Type, targetUnit.Battler.Base.Type2);
                 int hit = 1;
 
                 for (int i = 1; i <= hitCount; i++)
@@ -297,11 +396,14 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                yield return _dialogueBox.TypeDialogue($"{(sourceUnitName.EndsWith('s') ? $"{sourceUnitName}'" : $"{sourceUnitName}'s")} attack missed!");
+                yield return _dialogueBox.TypeDialogue($"{(sourceUnitName.EndsWith("s") ? $"{sourceUnitName}'" : $"{sourceUnitName}'s")} attack missed!");
             }
         }
     }
 
+    /// <summary>
+    /// Processes recoil, drain, and post-move status changes.
+    /// </summary>
     private IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         if (details == null || details.TypeEffectiveness == 0f)
@@ -312,7 +414,6 @@ public class RunTurnState : State<BattleSystem>
         if (move.Recoil.RecoilType != RecoilType.None)
         {
             int damage;
-
             switch (move.Recoil.RecoilType)
             {
                 case RecoilType.RecoilByMaxHP:
@@ -346,6 +447,9 @@ public class RunTurnState : State<BattleSystem>
         yield return ShowStatusChanges(targetUnit);
     }
 
+    /// <summary>
+    /// Processes move effects such as boosts, status conditions, and weather changes.
+    /// </summary>
     private IEnumerator RunMoveEffects(MoveEffects effects, BattleUnit sourceUnit, BattleUnit targetUnit, MoveTarget moveTarget)
     {
         // Stat Boosts
@@ -385,7 +489,7 @@ public class RunTurnState : State<BattleSystem>
             }
         }
 
-        // Weather
+        // Weather effects
         if (effects.Weather != ConditionID.None)
         {
             _field.SetWeather(effects.Weather);
@@ -397,6 +501,9 @@ public class RunTurnState : State<BattleSystem>
         yield return ShowStatusChanges(targetUnit);
     }
 
+    /// <summary>
+    /// Displays status changes for a unit by processing queued status events.
+    /// </summary>
     private IEnumerator ShowStatusChanges(BattleUnit unit)
     {
         while (unit.Battler.StatusChanges.Count > 0)
@@ -424,7 +531,6 @@ public class RunTurnState : State<BattleSystem>
             else if (statusEvent.Type == StatusEventType.StatBoost)
             {
                 unit.Hud.UpdateStatBoosts();
-
                 string statName = statusEvent.Message.Split(' ')[1];
                 if (System.Enum.TryParse(statName, out Stat stat))
                 {
@@ -443,6 +549,9 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Uses an item from the source unit on the target units.
+    /// </summary>
     private IEnumerator UseItem(BattleUnit sourceUnit, List<BattleUnit> targetUnits, ItemBase item)
     {
         bool canUseItem = sourceUnit.Battler.OnStartOfTurn();
@@ -489,6 +598,9 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Handles the defeat of a unit by playing defeat animations and processing loot/experience.
+    /// </summary>
     private IEnumerator HandleUnitDefeat(BattleUnit defeatedUnit)
     {
         StartCoroutine(defeatedUnit.PlayDefeatAnimation());
@@ -498,12 +610,10 @@ public class RunTurnState : State<BattleSystem>
         {
             int enemyLevel = defeatedUnit.Battler.Level;
             float commanderBonus = _isCommanderBattle ? 1.5f : 1f;
-
             List<string> lootDescriptions = new();
 
             int gpYield = defeatedUnit.Battler.Base.CalculateGpYield();
             int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * commanderBonus / 7);
-
             if (gpDropped > 0)
             {
                 lootDescriptions.Add($"{gpDropped} GP");
@@ -511,7 +621,6 @@ public class RunTurnState : State<BattleSystem>
             }
 
             DropTable dropTable = defeatedUnit.Battler.Base.DropTable;
-
             if (dropTable != null)
             {
                 foreach (ItemDrop itemDrop in dropTable.ItemDrops)
@@ -519,7 +628,6 @@ public class RunTurnState : State<BattleSystem>
                     if (Random.Range(1, 101) <= itemDrop.DropChance)
                     {
                         int quantity = Random.Range(itemDrop.QuantityRange.x, itemDrop.QuantityRange.y + 1);
-
                         if (quantity > 0)
                         {
                             lootDescriptions.Add($"{quantity}x {itemDrop.Item.Name}");
@@ -532,19 +640,22 @@ public class RunTurnState : State<BattleSystem>
             if (lootDescriptions.Count > 0)
             {
                 string initialMessage = $"{defeatedUnit.Battler.Base.Name} dropped";
-
                 AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                 foreach (string loot in lootDescriptions)
                 {
-                    yield return loot != lootDescriptions.First() & loot != lootDescriptions.Last() ? _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage, clearDialogue: false)
-                        : loot == lootDescriptions.First() ? _dialogueBox.TypeDialogue($"{initialMessage} {loot}", clearDialogue: false)
-                        : _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage);
+                    // Adjust dialogue formatting based on position in list.
+                    yield return loot == lootDescriptions.First()
+                        ? _dialogueBox.TypeDialogue($"{initialMessage} {loot}", clearDialogue: false)
+                        : loot == lootDescriptions.Last()
+                            ? _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage)
+                            : _dialogueBox.TypeDialogue(loot, setDialogue: initialMessage, clearDialogue: false);
                 }
             }
 
             int expYield = defeatedUnit.Battler.Base.ExpYield;
             int expGain = Mathf.FloorToInt(expYield * enemyLevel * commanderBonus / 7) / _battleSystem.PlayerUnits.Count;
 
+            // Process experience and potential level-up for each player unit.
             for (int i = 0; i < _battleSystem.PlayerUnits.Count; i++)
             {
                 BattleUnit playerUnit = _battleSystem.PlayerUnits[i];
@@ -554,7 +665,6 @@ public class RunTurnState : State<BattleSystem>
                 {
                     int maxExp = playerUnit.Battler.Base.GetExpForLevel(GlobalSettings.Instance.MaxLevel);
                     int expNeeded = maxExp - playerUnit.Battler.Exp;
-
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Battler.Exp += expGain;
                     StartCoroutine(playerUnit.PlayExpGainAnimation());
@@ -581,14 +691,13 @@ public class RunTurnState : State<BattleSystem>
                             {
                                 yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} is trying to learn {newMove.Base.Name}!");
                                 yield return _dialogueBox.TypeDialogue($"But {playerUnit.Battler.Base.Name} already knows {BattlerBase.MaxMoveCount} moves!");
-                                yield return _dialogueBox.TypeDialogue($"Choose a move to forget.");
+                                yield return _dialogueBox.TypeDialogue("Choose a move to forget.");
 
                                 ForgettingMoveState.Instance.CurrentMoves = playerUnit.Battler.Moves.Select(static m => m.Base).ToList();
                                 ForgettingMoveState.Instance.NewMove = newMove.Base;
                                 yield return GameController.Instance.StateMachine.PushAndWait(ForgettingMoveState.Instance);
 
                                 int moveIndex = ForgettingMoveState.Instance.Selection;
-
                                 if (moveIndex == BattlerBase.MaxMoveCount || moveIndex == -1)
                                 {
                                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} did not learn {newMove.Base.Name}!");
@@ -596,7 +705,6 @@ public class RunTurnState : State<BattleSystem>
                                 else
                                 {
                                     Move selectedMove = playerUnit.Battler.Moves[moveIndex];
-
                                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} forgot {selectedMove.Base.Name} and learned {newMove.Base.Name}!");
                                     playerUnit.Battler.Moves[moveIndex] = new Move(newMove.Base);
                                 }
@@ -612,10 +720,14 @@ public class RunTurnState : State<BattleSystem>
         yield return CheckForBattleOver(defeatedUnit);
     }
 
+    /// <summary>
+    /// Adjusts battle actions for a defeated unit and checks whether the battle is over.
+    /// </summary>
+    /// <param name="defeatedUnit">The unit that was defeated.</param>
     private IEnumerator CheckForBattleOver(BattleUnit defeatedUnit)
     {
+        // Invalidate any action originating from the defeated unit.
         BattleAction defeatedUnitAction = BattleActions.FirstOrDefault(a => a.SourceUnit == defeatedUnit);
-
         if (defeatedUnitAction != null)
         {
             defeatedUnitAction.IsValid = false;
@@ -623,7 +735,7 @@ public class RunTurnState : State<BattleSystem>
 
         if (defeatedUnit.IsPlayerUnit)
         {
-            List<Battler> activeBattlers = _battleSystem.PlayerUnits.Select(static u => u.Battler).Where(b => b.Hp > 0).ToList();
+            List<Battler> activeBattlers = _battleSystem.PlayerUnits.Select(u => u.Battler).Where(b => b.Hp > 0).ToList();
             Battler nextBattler = _playerParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
 
             if (nextBattler == null && activeBattlers.Count == 0)
@@ -642,16 +754,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 _battleSystem.PlayerUnits.Remove(defeatedUnit);
                 defeatedUnit.ClearData();
-
-                List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
-                foreach (BattleAction a in actionsToAdjust)
-                {
-                    a.TargetUnits.Remove(defeatedUnit);
-                    if (a.TargetUnits.Count == 0)
-                    {
-                        a.TargetUnits.Add(_battleSystem.PlayerUnits[Random.Range(0, _battleSystem.PlayerUnits.Count)]);
-                    }
-                }
+                AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.PlayerUnits);
             }
             else if (nextBattler != null)
             {
@@ -661,7 +764,7 @@ public class RunTurnState : State<BattleSystem>
         }
         else
         {
-            List<Battler> activeBattlers = _battleSystem.EnemyUnits.Select(static u => u.Battler).Where(b => b.Hp > 0).ToList();
+            List<Battler> activeBattlers = _battleSystem.EnemyUnits.Select(u => u.Battler).Where(b => b.Hp > 0).ToList();
 
             if (!_isCommanderBattle)
             {
@@ -681,22 +784,12 @@ public class RunTurnState : State<BattleSystem>
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.ClearData();
-
-                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
-                    foreach (BattleAction a in actionsToAdjust)
-                    {
-                        a.TargetUnits.Remove(defeatedUnit);
-                        if (a.TargetUnits.Count == 0)
-                        {
-                            a.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
-                        }
-                    }
+                    AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.EnemyUnits);
                 }
             }
             else
             {
                 Battler nextBattler = _enemyParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
-
                 if (nextBattler == null && activeBattlers.Count == 0)
                 {
                     yield return new WaitForSeconds(0.5f);
@@ -713,16 +806,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.ClearData();
-
-                    List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
-                    foreach (BattleAction a in actionsToAdjust)
-                    {
-                        a.TargetUnits.Remove(defeatedUnit);
-                        if (a.TargetUnits.Count == 0)
-                        {
-                            a.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
-                        }
-                    }
+                    AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.EnemyUnits);
                 }
                 else if (nextBattler != null)
                 {
@@ -732,6 +816,28 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Adjusts battle actions by removing the defeated unit from any target lists.
+    /// If a target list becomes empty, a random fallback unit is added.
+    /// </summary>
+    /// <param name="defeatedUnit">The defeated unit.</param>
+    /// <param name="fallbackUnits">The list of units to choose a fallback target from.</param>
+    private void AdjustBattleActionsForDefeatedUnit(BattleUnit defeatedUnit, List<BattleUnit> fallbackUnits)
+    {
+        List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
+        foreach (BattleAction a in actionsToAdjust)
+        {
+            a.TargetUnits.Remove(defeatedUnit);
+            if (a.TargetUnits.Count == 0 && fallbackUnits.Count > 0)
+            {
+                a.TargetUnits.Add(fallbackUnits[Random.Range(0, fallbackUnits.Count)]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Displays damage details, such as a critical hit message.
+    /// </summary>
     private IEnumerator ShowDamageDetails(DamageDetails damageDetails)
     {
         if (damageDetails.Critical > 1f)
@@ -740,6 +846,9 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Displays a message based on type effectiveness.
+    /// </summary>
     private IEnumerator ShowEffectiveness(float typeEffectiveness)
     {
         if (typeEffectiveness > 1f)
@@ -756,6 +865,9 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
+    /// <summary>
+    /// Attempts to escape from battle.
+    /// </summary>
     private IEnumerator AttemptEscape()
     {
         if (_isCommanderBattle)
@@ -777,12 +889,12 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return null;
             }
+
             _battleSystem.BattleOver(true);
         }
         else
         {
             float f = ((minPlayerAgility * 128 / maxEnemyAgility) + (30 * _battleSystem.EscapeAttempts)) % 256;
-
             if (Random.Range(0, 256) < f)
             {
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleFledMusic, loop: false);
@@ -791,6 +903,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     yield return null;
                 }
+
                 _battleSystem.BattleOver(true);
             }
             else
