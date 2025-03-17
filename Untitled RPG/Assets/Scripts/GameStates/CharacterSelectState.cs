@@ -55,6 +55,7 @@ public class CharacterSelectState : State<GameController>
         PlayerController.Instance.SetPlayerBattler(selectedBattler);
 
         StartCoroutine(StartGame());
+        AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator StartGame()
