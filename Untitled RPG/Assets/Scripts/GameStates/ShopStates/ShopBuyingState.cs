@@ -5,7 +5,7 @@ using Utils.StateMachine;
 
 public class ShopBuyingState : State<GameController>
 {
-    [SerializeField] private Vector2 _shopCameraOffest;
+    [SerializeField] private Vector2 _shopCameraOffset;
     [SerializeField] private ShopUI _shopUI;
     [SerializeField] private WalletUI _walletUI;
     [SerializeField] private CountSelectorUI _countSelectorUI;
@@ -53,7 +53,7 @@ public class ShopBuyingState : State<GameController>
 
     private IEnumerator StartBuying()
     {
-        yield return GameController.Instance.MoveCamera(_shopCameraOffest);
+        yield return GameController.Instance.MoveCamera(_shopCameraOffset);
         _walletUI.Show();
         _shopUI.Show(AvailableItems,
             (item) => StartCoroutine(BuyItem(item)),
@@ -115,7 +115,7 @@ public class ShopBuyingState : State<GameController>
     private IEnumerator OnBackFromBuying()
     {
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-        yield return GameController.Instance.MoveCamera(-_shopCameraOffest);
+        yield return GameController.Instance.MoveCamera(-_shopCameraOffset);
         _shopUI.Close();
         _walletUI.Close();
         _gameController.StateMachine.Pop();
