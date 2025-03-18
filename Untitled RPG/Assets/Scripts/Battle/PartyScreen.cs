@@ -4,9 +4,6 @@ using TMPro;
 using UnityEngine;
 using Utils.GenericSelectionUI;
 
-/// <summary>
-/// Manages the party screen UI, displaying party member data and handling selection and status messages.
-/// </summary>
 public class PartyScreen : SelectionUI<TextSlot>
 {
     [SerializeField] private TextMeshProUGUI _messageText;
@@ -17,9 +14,6 @@ public class PartyScreen : SelectionUI<TextSlot>
 
     public Battler SelectedMember => _battlers[_selectedItem];
 
-    /// <summary>
-    /// Initializes the party screen UI by fetching party members and setting up event listeners.
-    /// </summary>
     public void Init()
     {
         _memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
@@ -36,9 +30,6 @@ public class PartyScreen : SelectionUI<TextSlot>
         _party.OnUpdated += SetPartyData;
     }
 
-    /// <summary>
-    /// Updates the party data on the UI, including member details and role messages.
-    /// </summary>
     public void SetPartyData()
     {
         if (_party == null)
@@ -88,10 +79,6 @@ public class PartyScreen : SelectionUI<TextSlot>
         }
     }
 
-    /// <summary>
-    /// Updates the battle indicators on each party member's UI based on their battle status.
-    /// </summary>
-    /// <param name="battleSystem">The current battle system instance.</param>
     public void UpdateBattleIndicators(BattleSystem battleSystem)
     {
         if (_battlers == null || _memberSlots == null)
@@ -120,10 +107,6 @@ public class PartyScreen : SelectionUI<TextSlot>
         }
     }
 
-    /// <summary>
-    /// Displays whether a skill book can be learned by each party member.
-    /// </summary>
-    /// <param name="skillBook">The skill book to evaluate.</param>
     public void ShowSkillBookUsability(SkillBook skillBook)
     {
         if (_battlers == null || _memberSlots == null)
@@ -138,10 +121,6 @@ public class PartyScreen : SelectionUI<TextSlot>
         }
     }
 
-    /// <summary>
-    /// Sets a custom message on the party screen.
-    /// </summary>
-    /// <param name="message">The message to display.</param>
     public void SetMessageText(string message)
     {
         if (_messageText != null)
@@ -150,9 +129,6 @@ public class PartyScreen : SelectionUI<TextSlot>
         }
     }
 
-    /// <summary>
-    /// Clears any messages displayed on individual party member UI elements.
-    /// </summary>
     public void ClearMessageText()
     {
         if (_battlers == null || _memberSlots == null)

@@ -1,9 +1,6 @@
 using TMPro;
 using UnityEngine;
 
-/// <summary>
-/// Manages the UI display for an individual party member, showing their name, level, HP bar, and a message.
-/// </summary>
 public class PartyMemberUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _nameText;
@@ -13,10 +10,6 @@ public class PartyMemberUI : MonoBehaviour
 
     private Battler _battler;
 
-    /// <summary>
-    /// Initializes the UI with the given battler data.
-    /// </summary>
-    /// <param name="battler">The battler associated with this party member.</param>
     public void Init(Battler battler)
     {
         _battler = battler;
@@ -28,9 +21,6 @@ public class PartyMemberUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Updates the UI elements based on the battler's current data.
-    /// </summary>
     private void UpdateData()
     {
         if (_battler == null)
@@ -55,10 +45,6 @@ public class PartyMemberUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Sets the color of the party member's name to indicate selection.
-    /// </summary>
-    /// <param name="selected">True to set as selected, false to set as unselected.</param>
     public void SetSelected(bool selected)
     {
         if (_nameText != null && GlobalSettings.Instance != null)
@@ -67,10 +53,6 @@ public class PartyMemberUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Displays the specified message in the UI.
-    /// </summary>
-    /// <param name="message">The message to display.</param>
     public void SetMessage(string message)
     {
         if (_messageText != null)

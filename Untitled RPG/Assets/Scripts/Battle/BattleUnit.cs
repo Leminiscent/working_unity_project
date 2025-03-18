@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BattleUnit : MonoBehaviour
 {
-    [SerializeField] private bool _isPlayerUnit;
-    [SerializeField] private BattleHUD _hud;
     [SerializeField] private GameObject _moveAnimationPrefab;
+
+    [field: SerializeField, FormerlySerializedAs("_isPlayerUnit")] public bool IsPlayerUnit { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_hud")] public BattleHUD Hud { get; private set; }
 
     private const int ENTER_EXIT_OFFSET = 15;
     private const float ANIMATION_FRAME_RATE = 0.0167f;
@@ -32,8 +34,6 @@ public class BattleUnit : MonoBehaviour
     private Vector3 _currentPos;
     private Color _currentColor;
 
-    public bool IsPlayerUnit => _isPlayerUnit;
-    public BattleHUD Hud => _hud;
     public Battler Battler { get; set; }
 
     private void Awake()
@@ -64,10 +64,10 @@ public class BattleUnit : MonoBehaviour
             _image.SetNativeSize();
             _image.color = _originalColor;
         }
-        if (_hud != null)
+        if (Hud != null)
         {
-            _hud.gameObject.SetActive(true);
-            _hud.SetData(battler);
+            Hud.gameObject.SetActive(true);
+            Hud.SetData(battler);
         }
         _currentColor = _originalColor;
         _currentPos = _originalPos;
@@ -76,13 +76,13 @@ public class BattleUnit : MonoBehaviour
 
     public void ClearData()
     {
-        if (Battler != null && _hud != null)
+        if (Battler != null && Hud != null)
         {
-            _hud.ClearData();
+            Hud.ClearData();
         }
-        if (_hud != null)
+        if (Hud != null)
         {
-            _hud.gameObject.SetActive(false);
+            Hud.gameObject.SetActive(false);
         }
     }
 
@@ -147,7 +147,7 @@ public class BattleUnit : MonoBehaviour
             yield break;
         }
 
-        _image.transform.localPosition = _isPlayerUnit
+        _image.transform.localPosition = IsPlayerUnit
             ? new Vector3(-ENTER_EXIT_OFFSET, _originalPos.y)
             : new Vector3(ENTER_EXIT_OFFSET, _originalPos.y);
         yield return _image.transform.DOLocalMoveX(_originalPos.x, ENTER_EXIT_DURATION).WaitForCompletion();
@@ -161,7 +161,7 @@ public class BattleUnit : MonoBehaviour
         }
 
         _image.transform.localPosition = _originalPos;
-        yield return _isPlayerUnit
+        yield return IsPlayerUnit
             ? _image.transform.DOLocalMoveX(-ENTER_EXIT_OFFSET, ENTER_EXIT_DURATION).WaitForCompletion()
             : _image.transform.DOLocalMoveX(ENTER_EXIT_OFFSET, ENTER_EXIT_DURATION).WaitForCompletion();
     }
@@ -175,7 +175,7 @@ public class BattleUnit : MonoBehaviour
         }
 
         Sequence sequence = DOTween.Sequence();
-        Vector3 attackOffset = _isPlayerUnit ? new Vector3(ATTACK_OFFSET, 0) : new Vector3(-ATTACK_OFFSET, 0);
+        Vector3 attackOffset = IsPlayerUnit ? new Vector3(ATTACK_OFFSET, 0) : new Vector3(-ATTACK_OFFSET, 0);
         _ = sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, ATTACK_MOVE_DURATION));
         _ = sequence.Append(_image.transform.DOLocalMove(_currentPos, ATTACK_MOVE_DURATION));
         AudioManager.Instance.PlaySFX(AudioID.MoveCast);
@@ -298,7 +298,7 @@ public class BattleUnit : MonoBehaviour
         }
 
         Sequence sequence = DOTween.Sequence();
-        Vector3 hitOffset = _isPlayerUnit ? new Vector3(-HIT_OFFSET, 0) : new Vector3(HIT_OFFSET, 0);
+        Vector3 hitOffset = IsPlayerUnit ? new Vector3(-HIT_OFFSET, 0) : new Vector3(HIT_OFFSET, 0);
         _ = sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, HIT_MOVE_DURATION));
         _ = sequence.Join(_image.DOColor(Color.gray, HIT_COLOR_DURATION));
         _ = sequence.Append(_image.transform.DOLocalMove(_currentPos, HIT_MOVE_DURATION));
@@ -336,7 +336,7 @@ public class BattleUnit : MonoBehaviour
         Battler.IsGuarding = true;
         Sequence sequence = DOTween.Sequence();
         _currentColor = Color.gray;
-        _currentPos = _isPlayerUnit
+        _currentPos = IsPlayerUnit
             ? new Vector3(_currentPos.x - GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z)
             : new Vector3(_currentPos.x + GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z);
         _ = sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));

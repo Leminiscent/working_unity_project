@@ -7,15 +7,15 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] private List<AudioData> _sfxList;
     [SerializeField] private float _fadeDuration = 0.75f;
+    
+    [field: SerializeField] public AudioSource MusicPlayer { get; private set; }
+    [field: SerializeField] public AudioSource SfxPlayer { get; private set; }
 
     private AudioClip _currentMusic;
     private float _originalMusicVolume;
     private Dictionary<AudioID, AudioData> _sfxDictionary;
     private int _pauseCount = 0; // Counter to track overlapping SFX that require pausing the music.
     private Tween _musicTween; // Tracks the active tween for music transitions.
-
-    [field: SerializeField] public AudioSource MusicPlayer { get; private set; }
-    [field: SerializeField] public AudioSource SfxPlayer { get; private set; }
 
     public static AudioManager Instance { get; private set; }
 

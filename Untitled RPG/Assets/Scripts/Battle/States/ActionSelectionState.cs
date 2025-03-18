@@ -7,11 +7,11 @@ using Utils.StateMachine;
 
 public class ActionSelectionState : State<BattleSystem>
 {
+    [field: SerializeField] public ActionSelectionUI SelectionUI { get; private set; }
+    
     private BattleSystem _battleSystem;
     private int _prevSelectionIndex = 0;
     private TextMeshProUGUI _talkText;
-
-    [field: SerializeField] public ActionSelectionUI SelectionUI { get; private set; }
 
     public static ActionSelectionState Instance { get; private set; }
 

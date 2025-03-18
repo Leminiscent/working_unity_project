@@ -71,9 +71,6 @@ public class Battler
         CalculateStats();
     }
 
-    /// <summary>
-    /// Initializes a new battler using the provided base and level.
-    /// </summary>
     public void InitBattler()
     {
         InitMoves();
@@ -83,9 +80,6 @@ public class Battler
         Hp = MaxHp;
     }
 
-    /// <summary>
-    /// Initializes common collections and default values.
-    /// </summary>
     private void InitCommon()
     {
         Moves ??= new List<Move>();
@@ -107,9 +101,6 @@ public class Battler
         };
     }
 
-    /// <summary>
-    /// Adds moves available at or below the current level.
-    /// </summary>
     private void InitMoves()
     {
         Moves = new List<Move>();
@@ -128,9 +119,6 @@ public class Battler
         }
     }
 
-    /// <summary>
-    /// Calculates and updates the battler's stats.
-    /// </summary>
     public void CalculateStats()
     {
         Stats = new Dictionary<Stat, int>
@@ -152,17 +140,11 @@ public class Battler
         }
     }
 
-    /// <summary>
-    /// Calculates non-HP stat values.
-    /// </summary>
     private int CalculateNonHpStat(int baseStat, float performance)
     {
         return Mathf.FloorToInt((((2f * baseStat) + (performance / 4f)) * Level / 100f) + NON_HP_BASE_ADD);
     }
 
-    /// <summary>
-    /// Calculates maximum HP.
-    /// </summary>
     private int CalculateMaxHp(int baseHp, float performance)
     {
         return Mathf.FloorToInt((((2f * baseHp) + (performance / 4f)) * Level / 100f) + Level + HP_LEVEL_ADD);
@@ -182,9 +164,6 @@ public class Battler
         };
     }
 
-    /// <summary>
-    /// Retrieves a stat's effective value, taking into account any boosts.
-    /// </summary>
     private int GetStat(Stat stat)
     {
         int baseStat = Stats.ContainsKey(stat) ? Stats[stat] : 0;
@@ -194,10 +173,6 @@ public class Battler
         return boost >= 0 ? Mathf.FloorToInt(baseStat * boostMultipliers[boost]) : Mathf.FloorToInt(baseStat / boostMultipliers[-boost]);
     }
 
-    /// <summary>
-    /// Increases stat performance values based on the provided gains.
-    /// Each stat is increased only if it hasn't reached its per-stat maximum and the overall total is below the global maximum.
-    /// </summary>
     public void GainPvs(Dictionary<Stat, float> pvGained)
     {
         // Iterate over a copy to safely modify the dictionary during iteration.
@@ -212,17 +187,11 @@ public class Battler
         }
     }
 
-    /// <summary>
-    /// Returns the sum of all stat performance values.
-    /// </summary>
     public float GetTotalPvs()
     {
         return StatPerformanceValues.Values.Sum();
     }
 
-    /// <summary>
-    /// Applies a list of stat boosts.
-    /// </summary>
     public void ApplyBoosts(List<StatBoost> statBoosts)
     {
         foreach (StatBoost statBoost in statBoosts)
@@ -231,9 +200,6 @@ public class Battler
         }
     }
 
-    /// <summary>
-    /// Applies a single stat boost and enqueues an appropriate status event.
-    /// </summary>
     private void ApplySingleBoost(Stat stat, int boost)
     {
         int currentBoost = StatBoosts.ContainsKey(stat) ? StatBoosts[stat] : 0;
@@ -355,9 +321,6 @@ public class Battler
         AudioManager.Instance.PlaySFX(AudioID.Heal);
     }
 
-    /// <summary>
-    /// Processes incoming damage from an attack and returns detailed damage information.
-    /// </summary>
     public DamageDetails TakeDamage(Move move, Battler attacker, Condition weather)
     {
         // One-hit KO move handling
@@ -387,9 +350,6 @@ public class Battler
         return details;
     }
 
-    /// <summary>
-    /// Determines the critical damage multiplier.
-    /// </summary>
     private float CalculateCriticalMultiplier(Move move, Battler attacker)
     {
         if (move.Base.CritBehavior == CritBehavior.NeverCrits)
@@ -408,9 +368,6 @@ public class Battler
         return UnityEngine.Random.value * 100f <= critChances[Mathf.Clamp(critChance, 0, 3)] ? 1.5f : 1f;
     }
 
-    /// <summary>
-    /// Calculates the final damage output using the attacker's and defender's stats and modifiers.
-    /// </summary>
     private int CalculateDamageOutput(Move move, Battler attacker, float crit, float typeEff, float weatherMod)
     {
         float attackStat = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
@@ -569,9 +526,6 @@ public class Battler
         AffinityLevel = Mathf.Clamp(AffinityLevel + affinity, 0, 6);
     }
 
-    /// <summary>
-    /// Generates save data representing the current state of the battler.
-    /// </summary>
     public BattlerSaveData GetSaveData()
     {
         return new BattlerSaveData
