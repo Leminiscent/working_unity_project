@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CharacterAnimator : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private List<Sprite> _walkUpSprites;
     [SerializeField] private List<Sprite> _walkRightSprites;
     [SerializeField] private List<Sprite> _walkLeftSprites;
-    [SerializeField] private FacingDirection _defaultDirection = FacingDirection.Down;
+    [field: SerializeField, FormerlySerializedAs("_defaultDirection")] public FacingDirection DefaultDirection { get; private set; } = FacingDirection.Down;
 
     private SpriteAnimator _walkDownAnim;
     private SpriteAnimator _walkUpAnim;
@@ -22,14 +23,12 @@ public class CharacterAnimator : MonoBehaviour
     public float MoveY { get; set; }
     public bool IsMoving { get; set; }
     public bool IsJumping { get; set; }
-    public FacingDirection DefaultDirection => _defaultDirection;
     public FacingDirection FacingDirection
     {
-        get => _currentAnim == _walkRightAnim
-                ? FacingDirection.Right
-                : _currentAnim == _walkLeftAnim
-                    ? FacingDirection.Left
-                    : _currentAnim == _walkUpAnim ? FacingDirection.Up : _currentAnim == _walkDownAnim ? FacingDirection.Down : _defaultDirection;
+        get => _currentAnim == _walkRightAnim ? FacingDirection.Right :
+                   _currentAnim == _walkLeftAnim ? FacingDirection.Left :
+                   _currentAnim == _walkUpAnim ? FacingDirection.Up :
+                   _currentAnim == _walkDownAnim ? FacingDirection.Down : DefaultDirection;
         set
         {
             SetFacingDirection(value);
@@ -45,50 +44,33 @@ public class CharacterAnimator : MonoBehaviour
         _walkUpAnim = new SpriteAnimator(_walkUpSprites, _spriteRenderer);
         _walkRightAnim = new SpriteAnimator(_walkRightSprites, _spriteRenderer);
         _walkLeftAnim = new SpriteAnimator(_walkLeftSprites, _spriteRenderer);
-        SetFacingDirection(_defaultDirection);
+        SetFacingDirection(DefaultDirection);
         _currentAnim = _walkDownAnim;
     }
 
     private void Update()
     {
-        SpriteAnimator prevAnim = _currentAnim;
+        UpdateAnimation();
+    }
 
-        if (MoveX == 1)
-        {
-            _currentAnim = _walkRightAnim;
-        }
-        else if (MoveX == -1)
-        {
-            _currentAnim = _walkLeftAnim;
-        }
-        else if (MoveY == 1)
-        {
-            _currentAnim = _walkUpAnim;
-        }
-        else if (MoveY == -1)
-        {
-            _currentAnim = _walkDownAnim;
-        }
+    public List<Sprite> GetAllSprites()
+    {
+        return new List<Sprite>(_walkDownSprites.Concat(_walkUpSprites)
+                                                .Concat(_walkRightSprites)
+                                                .Concat(_walkLeftSprites));
+    }
 
-        if (_currentAnim != prevAnim || IsMoving != _wasMoving)
-        {
-            _currentAnim.Start();
-        }
-
-        if (IsJumping)
-        {
-            _spriteRenderer.sprite = _currentAnim.Frames[^1];
-        }
-        else if (IsMoving)
-        {
-            _currentAnim.HandleUpdate();
-        }
-        else
-        {
-            _spriteRenderer.sprite = _currentAnim.Frames[0];
-        }
-
-        _wasMoving = IsMoving;
+    public void SetSprites(List<Sprite> walkDown, List<Sprite> walkUp, List<Sprite> walkRight, List<Sprite> walkLeft)
+    {
+        _walkDownSprites = walkDown;
+        _walkUpSprites = walkUp;
+        _walkRightSprites = walkRight;
+        _walkLeftSprites = walkLeft;
+        _walkDownAnim = new SpriteAnimator(_walkDownSprites, _spriteRenderer);
+        _walkUpAnim = new SpriteAnimator(_walkUpSprites, _spriteRenderer);
+        _walkRightAnim = new SpriteAnimator(_walkRightSprites, _spriteRenderer);
+        _walkLeftAnim = new SpriteAnimator(_walkLeftSprites, _spriteRenderer);
+        _currentAnim = GetAnimForFacingDirection(FacingDirection);
     }
 
     private SpriteAnimator GetAnimForFacingDirection(FacingDirection dir)
@@ -126,24 +108,52 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
-    public List<Sprite> GetAllSprites()
+    private void UpdateAnimation()
     {
-        return new List<Sprite>(_walkDownSprites.Concat(_walkUpSprites).Concat(_walkRightSprites).Concat(_walkLeftSprites).ToList());
-    }
+        SpriteAnimator previousAnim = _currentAnim;
 
-    public void SetSprites(List<Sprite> walkDown, List<Sprite> walkUp, List<Sprite> walkRight, List<Sprite> walkLeft)
-    {
-        _walkDownSprites = walkDown;
-        _walkUpSprites = walkUp;
-        _walkRightSprites = walkRight;
-        _walkLeftSprites = walkLeft;
-        _walkDownAnim = new SpriteAnimator(_walkDownSprites, _spriteRenderer);
-        _walkUpAnim = new SpriteAnimator(_walkUpSprites, _spriteRenderer);
-        _walkRightAnim = new SpriteAnimator(_walkRightSprites, _spriteRenderer);
-        _walkLeftAnim = new SpriteAnimator(_walkLeftSprites, _spriteRenderer);
-        _currentAnim = GetAnimForFacingDirection(FacingDirection);
-    }
+        // Determine new animation based on movement input values.
+        if (MoveX == 1)
+        {
+            _currentAnim = _walkRightAnim;
+        }
+        else if (MoveX == -1)
+        {
+            _currentAnim = _walkLeftAnim;
+        }
+        else if (MoveY == 1)
+        {
+            _currentAnim = _walkUpAnim;
+        }
+        else if (MoveY == -1)
+        {
+            _currentAnim = _walkDownAnim;
+        }
 
+        // Restart the animation if there is a change in animation or movement state.
+        if (_currentAnim != previousAnim || IsMoving != _wasMoving)
+        {
+            _currentAnim.Start();
+        }
+
+        // Update the sprite based on the current state.
+        if (IsJumping)
+        {
+            // While jumping, display the last frame of the current animation.
+            _spriteRenderer.sprite = _currentAnim.Frames[^1];
+        }
+        else if (IsMoving)
+        {
+            _currentAnim.HandleUpdate();
+        }
+        else
+        {
+            // When idle, display the first frame of the current animation.
+            _spriteRenderer.sprite = _currentAnim.Frames[0];
+        }
+
+        _wasMoving = IsMoving;
+    }
 }
 
 public enum FacingDirection
