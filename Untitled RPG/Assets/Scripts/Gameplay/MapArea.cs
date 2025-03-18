@@ -47,7 +47,7 @@ public class MapArea : MonoBehaviour
         int level = levelRange.y == 0 ? levelRange.x : Random.Range(levelRange.x, levelRange.y + 1);
         Battler rogueBattler = new(battlerRecord.Battler, level);
 
-        rogueBattler.InitNewBattler();
+        rogueBattler.InitBattler();
         return rogueBattler;
     }
 

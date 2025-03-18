@@ -11,7 +11,7 @@ public class BattlerGiver : MonoBehaviour, ISavable
     public IEnumerator GiveBattler(PlayerController player)
     {
         yield return DialogueManager.Instance.ShowDialogue(_dialogue);
-        _battler.InitNewBattler();
+        _battler.InitBattler();
         player.GetComponent<BattleParty>().AddMember(_battler);
         _used = true;
         AudioManager.Instance.PlaySFX(AudioID.BattlerObtained, pauseMusic: true);

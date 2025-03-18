@@ -44,7 +44,7 @@ public class Battler
     {
         _base = pBase;
         _level = pLevel;
-        InitNewBattler();
+        InitBattler();
     }
 
     public Battler(BattlerSaveData saveData)
@@ -74,7 +74,7 @@ public class Battler
     /// <summary>
     /// Initializes a new battler using the provided base and level.
     /// </summary>
-    public void InitNewBattler()
+    public void InitBattler()
     {
         InitMoves();
         InitCommon();
