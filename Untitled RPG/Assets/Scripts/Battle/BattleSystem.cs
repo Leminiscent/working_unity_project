@@ -112,7 +112,7 @@ public class BattleSystem : MonoBehaviour
         _enemyUnitCount = unitCount;
         _battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(_rogueBattleMusic);
-        StartCoroutine(SetupBattle());
+        _ = StartCoroutine(SetupBattle());
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ public class BattleSystem : MonoBehaviour
         Enemy = enemyParty.GetComponent<CommanderController>();
         _battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(_commanderBattleMusic);
-        StartCoroutine(SetupBattle());
+        _ = StartCoroutine(SetupBattle());
     }
 
     /// <summary>
@@ -305,7 +305,7 @@ public class BattleSystem : MonoBehaviour
         if (unitToSwitch.Battler.Hp > 0)
         {
             yield return _dialogueBox.TypeDialogue($"Get back {unitToSwitch.Battler.Base.Name}!");
-            StartCoroutine(unitToSwitch.PlayExitAnimation());
+            _ = StartCoroutine(unitToSwitch.PlayExitAnimation());
             yield return new WaitForSeconds(SWITCH_BATTLER_WAIT_DURATION);
         }
 

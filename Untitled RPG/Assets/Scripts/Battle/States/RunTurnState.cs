@@ -45,7 +45,7 @@ public class RunTurnState : State<BattleSystem>
         _isCommanderBattle = _battleSystem.IsCommanderBattle;
         _field = _battleSystem.Field;
 
-        StartCoroutine(RunTurns());
+        _ = StartCoroutine(RunTurns());
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class RunTurnState : State<BattleSystem>
         {
             if (unit.Battler.IsGuarding)
             {
-                StartCoroutine(unit.StopGuarding());
+                _ = StartCoroutine(unit.StopGuarding());
             }
         }
 
@@ -163,7 +163,7 @@ public class RunTurnState : State<BattleSystem>
     /// </summary>
     private IEnumerator ProcessGuardAction(BattleAction action)
     {
-        StartCoroutine(action.SourceUnit.StartGuarding());
+        _ = StartCoroutine(action.SourceUnit.StartGuarding());
         yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Battler.Base.Name} has begun guarding!");
     }
 
@@ -348,7 +348,7 @@ public class RunTurnState : State<BattleSystem>
                     else
                     {
                         damageDetails = targetUnit.Battler.TakeDamage(move, sourceUnit.Battler, _field.Weather);
-                        StartCoroutine(targetUnit.PlayDamageAnimation());
+                        _ = StartCoroutine(targetUnit.PlayDamageAnimation());
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -513,20 +513,20 @@ public class RunTurnState : State<BattleSystem>
             if (statusEvent.Type == StatusEventType.Damage)
             {
                 unit.Battler.DecreaseHP((int)statusEvent.Value);
-                StartCoroutine(unit.PlayDamageAnimation());
+                _ = StartCoroutine(unit.PlayDamageAnimation());
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {
                 unit.Battler.IncreaseHP((int)statusEvent.Value);
-                StartCoroutine(unit.PlayHealAnimation());
+                _ = StartCoroutine(unit.PlayHealAnimation());
             }
             else if (statusEvent.Type == StatusEventType.SetCondition)
             {
-                StartCoroutine(unit.PlayStatusSetAnimation());
+                _ = StartCoroutine(unit.PlayStatusSetAnimation());
             }
             else if (statusEvent.Type == StatusEventType.CureCondition)
             {
-                StartCoroutine(unit.PlayStatusCureAnimation());
+                _ = StartCoroutine(unit.PlayStatusCureAnimation());
             }
             else if (statusEvent.Type == StatusEventType.StatBoost)
             {
@@ -536,11 +536,11 @@ public class RunTurnState : State<BattleSystem>
                 {
                     if (statusEvent.Value > 0)
                     {
-                        StartCoroutine(unit.PlayStatGainAnimation(stat));
+                        _ = StartCoroutine(unit.PlayStatGainAnimation(stat));
                     }
                     else
                     {
-                        StartCoroutine(unit.PlayStatLossAnimation(stat));
+                        _ = StartCoroutine(unit.PlayStatLossAnimation(stat));
                     }
                 }
             }
@@ -569,7 +569,7 @@ public class RunTurnState : State<BattleSystem>
             yield return _dialogueBox.TypeDialogue($"There are no {item.Name}s remaining to use!");
             yield break;
         }
-        StartCoroutine(sourceUnit.PlayMoveCastAnimation()); // TODO: Decouple move and item casting animations
+        _ = StartCoroutine(sourceUnit.PlayMoveCastAnimation()); // TODO: Decouple move and item casting animations
         yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {item.Name}!");
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
@@ -603,7 +603,7 @@ public class RunTurnState : State<BattleSystem>
     /// </summary>
     private IEnumerator HandleUnitDefeat(BattleUnit defeatedUnit)
     {
-        StartCoroutine(defeatedUnit.PlayDefeatAnimation());
+        _ = StartCoroutine(defeatedUnit.PlayDefeatAnimation());
         yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Battler.Base.Name} has been defeated!");
 
         if (!defeatedUnit.IsPlayerUnit)
@@ -667,7 +667,7 @@ public class RunTurnState : State<BattleSystem>
                     int expNeeded = maxExp - playerUnit.Battler.Exp;
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Battler.Exp += expGain;
-                    StartCoroutine(playerUnit.PlayExpGainAnimation());
+                    _ = StartCoroutine(playerUnit.PlayExpGainAnimation());
                     yield return playerUnit.Hud.SetExpSmooth();
                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} experience!");
 
@@ -675,7 +675,7 @@ public class RunTurnState : State<BattleSystem>
                     {
                         playerUnit.Battler.HasJustLeveledUp = true;
                         playerUnit.Hud.SetLevel();
-                        StartCoroutine(playerUnit.PlayLevelUpAnimation());
+                        _ = StartCoroutine(playerUnit.PlayLevelUpAnimation());
                         yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} grew to level {playerUnit.Battler.Level}!");
 
                         LearnableMove newMove = playerUnit.Battler.GetLearnableMoveAtCurrentLevel();
@@ -752,7 +752,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else if (nextBattler == null && activeBattlers.Count > 0)
             {
-                _battleSystem.PlayerUnits.Remove(defeatedUnit);
+                _ = _battleSystem.PlayerUnits.Remove(defeatedUnit);
                 defeatedUnit.ClearData();
                 AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.PlayerUnits);
             }
@@ -782,7 +782,7 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else
                 {
-                    _battleSystem.EnemyUnits.Remove(defeatedUnit);
+                    _ = _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.ClearData();
                     AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.EnemyUnits);
                 }
@@ -804,7 +804,7 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else if (nextBattler == null && activeBattlers.Count > 0)
                 {
-                    _battleSystem.EnemyUnits.Remove(defeatedUnit);
+                    _ = _battleSystem.EnemyUnits.Remove(defeatedUnit);
                     defeatedUnit.ClearData();
                     AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.EnemyUnits);
                 }
@@ -827,7 +827,7 @@ public class RunTurnState : State<BattleSystem>
         List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
         foreach (BattleAction a in actionsToAdjust)
         {
-            a.TargetUnits.Remove(defeatedUnit);
+            _ = a.TargetUnits.Remove(defeatedUnit);
             if (a.TargetUnits.Count == 0 && fallbackUnits.Count > 0)
             {
                 a.TargetUnits.Add(fallbackUnits[Random.Range(0, fallbackUnits.Count)]);

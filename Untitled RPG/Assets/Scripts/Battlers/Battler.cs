@@ -531,7 +531,7 @@ public class Battler
     {
         if (Statuses.ContainsKey(conditionId))
         {
-            Statuses.Remove(conditionId);
+            _ = Statuses.Remove(conditionId);
             OnStatusChanged?.Invoke();
             AudioManager.Instance.PlaySFX(AudioID.CureStatus);
         }

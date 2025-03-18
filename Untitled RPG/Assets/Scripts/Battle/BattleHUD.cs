@@ -304,7 +304,7 @@ public class BattleHUD : MonoBehaviour
     /// </summary>
     public void UpdateHP()
     {
-        StartCoroutine(UpdateHPAsync());
+        _ = StartCoroutine(UpdateHPAsync());
     }
 
     /// <summary>
@@ -403,7 +403,7 @@ public class BattleHUD : MonoBehaviour
         {
             if (arrowPrefab != null && arrowContainer != null)
             {
-                Instantiate(arrowPrefab, arrowContainer);
+                _ = Instantiate(arrowPrefab, arrowContainer);
             }
         }
     }

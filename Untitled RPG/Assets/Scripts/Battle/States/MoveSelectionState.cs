@@ -108,7 +108,7 @@ public class MoveSelectionState : State<BattleSystem>
     /// <param name="selection">Index of the selected move.</param>
     private void OnMoveSelected(int selection)
     {
-        StartCoroutine(OnMoveSelectedAsync(selection));
+        _ = StartCoroutine(OnMoveSelectedAsync(selection));
     }
 
     /// <summary>

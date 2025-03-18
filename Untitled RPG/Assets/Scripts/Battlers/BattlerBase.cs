@@ -7,8 +7,7 @@ public class BattlerBase : ScriptableObject
 {
     [Header("Basic Details")]
     [SerializeField] private string _name;
-    [TextArea]
-    [SerializeField] private string _description;
+    [SerializeField, TextArea] private string _description;
     [SerializeField] private Sprite _sprite;
     [SerializeField] private BattlerType _type1;
     [SerializeField] private BattlerType _type2;

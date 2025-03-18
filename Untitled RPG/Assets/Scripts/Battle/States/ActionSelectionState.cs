@@ -125,16 +125,16 @@ public class ActionSelectionState : State<BattleSystem>
                 HandleMoveSelection();
                 break;
             case 1:
-                StartCoroutine(HandleRecruitAction());
+                _ = StartCoroutine(HandleRecruitAction());
                 break;
             case 2:
-                StartCoroutine(HandleItemSelection());
+                _ = StartCoroutine(HandleItemSelection());
                 break;
             case 3:
                 HandleGuardAction();
                 break;
             case 4:
-                StartCoroutine(HandlePartySwitch());
+                _ = StartCoroutine(HandlePartySwitch());
                 break;
             case 5:
                 HandleRunAction();

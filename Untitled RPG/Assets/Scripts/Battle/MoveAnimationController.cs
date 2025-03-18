@@ -39,7 +39,7 @@ public class MoveAnimationController : MonoBehaviour
         _frameRate = frameRate;
 
         _image.sprite = _frames[0];
-        StartCoroutine(PlayAnimation());
+        _ = StartCoroutine(PlayAnimation());
     }
 
     /// <summary>

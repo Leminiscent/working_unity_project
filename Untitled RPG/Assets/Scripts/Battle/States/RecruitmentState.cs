@@ -56,7 +56,7 @@ public class RecruitmentState : State<BattleSystem>
             return;
         }
 
-        StartCoroutine(StartRecruitment());
+        _ = StartCoroutine(StartRecruitment());
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public class RecruitmentState : State<BattleSystem>
     /// <param name="selection">Index of the selected answer.</param>
     private void OnAnswerSelected(int selection)
     {
-        StartCoroutine(ProcessAnswer(selection));
+        _ = StartCoroutine(ProcessAnswer(selection));
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
@@ -162,11 +162,11 @@ public class RecruitmentState : State<BattleSystem>
         {
             if (newAffinity > oldAffinity)
             {
-                StartCoroutine(RecruitTarget.PlayAffinityGainAnimation());
+                _ = StartCoroutine(RecruitTarget.PlayAffinityGainAnimation());
             }
             else if (newAffinity < oldAffinity)
             {
-                StartCoroutine(RecruitTarget.PlayAffinityLossAnimation());
+                _ = StartCoroutine(RecruitTarget.PlayAffinityLossAnimation());
             }
             yield return RecruitTarget.Hud.SetAffinitySmooth();
         }
@@ -267,9 +267,9 @@ public class RecruitmentState : State<BattleSystem>
         {
             // Recruitment accepted.
             yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} was recruited!");
-            StartCoroutine(RecruitTarget.PlayExitAnimation());
+            _ = StartCoroutine(RecruitTarget.PlayExitAnimation());
             RecruitTarget.ClearData();
-            _battleSystem.EnemyUnits.Remove(RecruitTarget);
+            _ = _battleSystem.EnemyUnits.Remove(RecruitTarget);
             _battleSystem.PlayerParty.AddMember(RecruitTarget.Battler);
             AudioManager.Instance.PlaySFX(AudioID.BattlerObtained);
             while (AudioManager.Instance.SfxPlayer.isPlaying)
@@ -322,7 +322,7 @@ public class RecruitmentState : State<BattleSystem>
             .ToList();
         foreach (BattleAction action in actionsToAdjust)
         {
-            action.TargetUnits.Remove(RecruitTarget);
+            _ = action.TargetUnits.Remove(RecruitTarget);
             if (action.TargetUnits.Count == 0)
             {
                 action.TargetUnits.Add(_battleSystem.EnemyUnits[Random.Range(0, _battleSystem.EnemyUnits.Count)]);
@@ -357,14 +357,14 @@ public class RecruitmentState : State<BattleSystem>
             _dialogueBox.EnableChoiceBox(false);
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
             int selection = _yesSelected ? 0 : 1;
-            StartCoroutine(ProcessAcceptReject(selection));
+            _ = StartCoroutine(ProcessAcceptReject(selection));
         }
 
         if (Input.GetButtonDown("Back"))
         {
             _dialogueBox.EnableChoiceBox(false);
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-            StartCoroutine(ProcessAcceptReject(1));
+            _ = StartCoroutine(ProcessAcceptReject(1));
         }
     }
 }

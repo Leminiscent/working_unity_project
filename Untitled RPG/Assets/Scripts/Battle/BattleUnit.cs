@@ -78,7 +78,7 @@ public class BattleUnit : MonoBehaviour
         }
         _currentColor = _originalColor;
         _currentPos = _originalPos;
-        StartCoroutine(PlayEnterAnimation());
+        _ = StartCoroutine(PlayEnterAnimation());
     }
 
     /// <summary>
@@ -214,8 +214,8 @@ public class BattleUnit : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
         Vector3 attackOffset = _isPlayerUnit ? new Vector3(ATTACK_OFFSET, 0) : new Vector3(-ATTACK_OFFSET, 0);
-        sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, ATTACK_MOVE_DURATION));
-        sequence.Append(_image.transform.DOLocalMove(_currentPos, ATTACK_MOVE_DURATION));
+        _ = sequence.Append(_image.transform.DOLocalMove(_currentPos + attackOffset, ATTACK_MOVE_DURATION));
+        _ = sequence.Append(_image.transform.DOLocalMove(_currentPos, ATTACK_MOVE_DURATION));
         AudioManager.Instance.PlaySFX(AudioID.MoveCast);
         yield return sequence.WaitForCompletion();
     }
@@ -380,10 +380,10 @@ public class BattleUnit : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
         Vector3 hitOffset = _isPlayerUnit ? new Vector3(-HIT_OFFSET, 0) : new Vector3(HIT_OFFSET, 0);
-        sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, HIT_MOVE_DURATION));
-        sequence.Join(_image.DOColor(Color.gray, HIT_COLOR_DURATION));
-        sequence.Append(_image.transform.DOLocalMove(_currentPos, HIT_MOVE_DURATION));
-        sequence.Join(_image.DOColor(_currentColor, HIT_COLOR_DURATION));
+        _ = sequence.Append(_image.transform.DOLocalMove(_currentPos + hitOffset, HIT_MOVE_DURATION));
+        _ = sequence.Join(_image.DOColor(Color.gray, HIT_COLOR_DURATION));
+        _ = sequence.Append(_image.transform.DOLocalMove(_currentPos, HIT_MOVE_DURATION));
+        _ = sequence.Join(_image.DOColor(_currentColor, HIT_COLOR_DURATION));
         AudioManager.Instance.PlaySFX(AudioID.Damage);
         yield return sequence.WaitForCompletion();
     }
@@ -409,8 +409,8 @@ public class BattleUnit : MonoBehaviour
         }
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(_image.transform.DOLocalMoveY(_currentPos.y - DEFEAT_MOVE_Y_OFFSET, DEFEAT_DURATION));
-        sequence.Join(_image.DOFade(0f, DEFEAT_DURATION));
+        _ = sequence.Append(_image.transform.DOLocalMoveY(_currentPos.y - DEFEAT_MOVE_Y_OFFSET, DEFEAT_DURATION));
+        _ = sequence.Join(_image.DOFade(0f, DEFEAT_DURATION));
         AudioManager.Instance.PlaySFX(AudioID.UnitDefeat);
         yield return sequence.WaitForCompletion();
     }
@@ -432,8 +432,8 @@ public class BattleUnit : MonoBehaviour
         _currentPos = _isPlayerUnit
             ? new Vector3(_currentPos.x - GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z)
             : new Vector3(_currentPos.x + GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z);
-        sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
-        sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));
+        _ = sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
+        _ = sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));
         AudioManager.Instance.PlaySFX(AudioID.Guard);
         yield return sequence.WaitForCompletion();
     }
@@ -453,8 +453,8 @@ public class BattleUnit : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         _currentColor = _originalColor;
         _currentPos = _originalPos;
-        sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
-        sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));
+        _ = sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
+        _ = sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));
         yield return sequence.WaitForCompletion();
     }
 }

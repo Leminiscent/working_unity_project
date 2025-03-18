@@ -21,7 +21,7 @@ public class BattlerBaseEditor : Editor
         showDerivedAttributes = EditorGUILayout.Foldout(showDerivedAttributes, "Derived Attributes");
         if (showDerivedAttributes)
         {
-            EditorGUILayout.BeginVertical("box");
+            _ = EditorGUILayout.BeginVertical("box");
             EditorGUILayout.Space();
 
             // Draw Stats Section

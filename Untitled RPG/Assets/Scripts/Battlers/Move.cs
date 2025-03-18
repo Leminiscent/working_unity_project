@@ -41,7 +41,7 @@ public class Move
     /// <returns>A <see cref="MoveSaveData"/> object containing the move's name and current SP.</returns>
     public MoveSaveData GetSaveData()
     {
-        MoveSaveData saveData = new MoveSaveData
+        MoveSaveData saveData = new()
         {
             Name = Base.name,
             Sp = Sp

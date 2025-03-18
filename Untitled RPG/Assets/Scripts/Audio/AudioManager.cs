@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages audio playback within the game, including background music and sound effects.
+/// Manages audio playback for sound effects and music.
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
@@ -19,22 +19,10 @@ public class AudioManager : MonoBehaviour
     private int _pauseCount = 0; // Counter to track overlapping SFX that require pausing the music.
     private Tween _musicTween; // Tracks the active tween for music transitions.
 
-    /// <summary>
-    /// Gets the AudioSource used for playing background music.
-    /// </summary>
     public AudioSource MusicPlayer => _musicPlayer;
-    /// <summary>
-    /// Gets the AudioSource used for playing sound effects.
-    /// </summary>
     public AudioSource SfxPlayer => _sfxPlayer;
-    /// <summary>
-    /// Gets the singleton instance of the AudioManager.
-    /// </summary>
     public static AudioManager Instance { get; private set; }
 
-    /// <summary>
-    /// Initializes the AudioManager singleton instance.
-    /// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -47,9 +35,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Initializes the AudioManager by verifying assigned AudioSource components and initializing the sound effects dictionary.
-    /// </summary>
     private void Start()
     {
         if (_musicPlayer == null)
