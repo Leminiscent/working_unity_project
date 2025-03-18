@@ -1,44 +1,43 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CommanderController : MonoBehaviour, IInteractable, ISavable
 {
-    [SerializeField] private string _name;
+    [field: SerializeField, FormerlySerializedAs("_name")] public string Name { get; private set; }
     [SerializeField] private Dialogue _dialogue;
     [SerializeField] private Dialogue _postBattleDialogue;
     [SerializeField] private GameObject _los;
 
     private bool _battleLost = false;
-    private Character _character;
 
-    public string Name => _name;
-    public Character Character => _character;
+    public Character Character { get; private set; }
 
     private void Awake()
     {
-        _character = GetComponent<Character>();
+        Character = GetComponent<Character>();
     }
 
     private void Start()
     {
-        SetLosRotation(_character.Animator.DefaultDirection);
+        SetLosRotation(Character.Animator.DefaultDirection);
     }
 
     private void Update()
     {
-        _character.UpdateAnimator();
+        // Delegate the update of animator to the Character component.
+        Character.UpdateAnimator();
     }
 
     public IEnumerator Interact(Transform initiator)
     {
-        _character.LookTowards(initiator.position);
+        Character.LookTowards(initiator.position);
+
         if (!_battleLost)
         {
             AudioManager.Instance.PlaySFX(AudioID.Spotted, pauseMusic: true);
-            _character.Exclamation.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
-            _character.Exclamation.SetActive(false);
+            yield return ShowExclamationIcon(0.5f);
             yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 0.75f);
             GameController.Instance.StartCommanderBattle(this);
         }
@@ -50,19 +49,18 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
 
     public IEnumerator TriggerBattle(PlayerController player)
     {
+        // Push cutscene state to prevent further input.
         GameController.Instance.StateMachine.Push(CutsceneState.Instance);
+
         AudioManager.Instance.PlaySFX(AudioID.Spotted, pauseMusic: true);
-        _character.Exclamation.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        _character.Exclamation.SetActive(false);
+        yield return ShowExclamationIcon(0.5f);
 
-        Vector3 diff = player.transform.position - transform.position;
-        Vector3 moveVector = diff - diff.normalized;
-        moveVector = new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
-
-        yield return _character.MoveRoutine(moveVector);
+        Vector3 moveVector = CalculateMoveVectorTowards(player.transform.position);
+        yield return Character.MoveRoutine(moveVector);
 
         yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 1f);
+
+        // Pop the cutscene state.
         GameController.Instance.StateMachine.Pop();
         GameController.Instance.StartCommanderBattle(this);
     }
@@ -97,7 +95,7 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
         CommanderSaveData saveData = new()
         {
             Position = new float[] { transform.position.x, transform.position.y },
-            FacingDirection = _character.Animator.FacingDirection,
+            FacingDirection = Character.Animator.FacingDirection,
             BattleLost = _battleLost
         };
 
@@ -109,9 +107,25 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
         CommanderSaveData saveData = (CommanderSaveData)state;
 
         transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
-        _character.Animator.FacingDirection = saveData.FacingDirection;
+        Character.Animator.FacingDirection = saveData.FacingDirection;
         _battleLost = saveData.BattleLost;
         _los.SetActive(!_battleLost);
+    }
+
+    private IEnumerator ShowExclamationIcon(float duration)
+    {
+        Character.Exclamation.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        Character.Exclamation.SetActive(false);
+    }
+
+    private Vector3 CalculateMoveVectorTowards(Vector3 targetPosition)
+    {
+        Vector3 diff = targetPosition - transform.position;
+        Vector3 normalizedDiff = diff.normalized;
+        Vector3 moveVector = diff - normalizedDiff;
+        // Round the values to ensure alignment with grid-based movement
+        return new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
     }
 }
 
