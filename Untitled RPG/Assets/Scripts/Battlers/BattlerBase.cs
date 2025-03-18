@@ -43,13 +43,13 @@ public class BattlerBase : ScriptableObject
     [SerializeField] private List<Sprite> _walkLeftSprites;
 
     // Calculated stat values
-    [SerializeField, HideInInspector] private int _hp;
-    [SerializeField, HideInInspector] private int _strength;
-    [SerializeField, HideInInspector] private int _endurance;
-    [SerializeField, HideInInspector] private int _intelligence;
-    [SerializeField, HideInInspector] private int _fortitude;
-    [SerializeField, HideInInspector] private int _agility;
-    [SerializeField, HideInInspector] private Vector2Int _baseGp;
+    private int _hp;
+    private int _strength;
+    private int _endurance;
+    private int _intelligence;
+    private int _fortitude;
+    private int _agility;
+    private Vector2Int _baseGp;
 
     private static readonly Dictionary<Rarity, (int min, int max)> _rarityStatRanges = new()
     {
