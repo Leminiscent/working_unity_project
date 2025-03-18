@@ -83,7 +83,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
             else
             {
                 yield return _healer != null
-                    ? _healer.Heal(initiator, _dialogue)
+                    ? _healer.Heal(initiator)
                     : _merchant != null ? _merchant.Trade() : (object)DialogueManager.Instance.ShowDialogue(_dialogue);
             }
 
