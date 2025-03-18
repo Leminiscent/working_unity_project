@@ -33,94 +33,85 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
         _merchant = GetComponent<Merchant>();
     }
 
-    public IEnumerator Interact(Transform initiator)
-    {
-        if (_state == NPCState.Idle)
-        {
-            _state = NPCState.Talking;
-            _character.LookTowards(initiator.position);
-
-            if (_questToComplete != null)
-            {
-                Quest quest = new(_questToComplete);
-
-                yield return quest.CompleteQuest(initiator);
-                _questToComplete = null;
-            }
-
-            if (_itemGiver != null && _itemGiver.CanBeGiven())
-            {
-                yield return _itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
-            }
-            else if (_battlerGiver != null && _battlerGiver.CanBeGiven())
-            {
-                yield return _battlerGiver.GiveBattler(initiator.GetComponent<PlayerController>());
-            }
-            else if (_questToStart != null)
-            {
-                _activeQuest = new Quest(_questToStart);
-                yield return _activeQuest.StartQuest();
-                _questToStart = null;
-
-                if (_activeQuest.CanBeCompleted())
-                {
-                    yield return _activeQuest.CompleteQuest(initiator);
-                    _activeQuest = null;
-                }
-            }
-            else if (_activeQuest != null)
-            {
-                if (_activeQuest.CanBeCompleted())
-                {
-                    yield return _activeQuest.CompleteQuest(initiator);
-                    _activeQuest = null;
-                }
-                else
-                {
-                    yield return DialogueManager.Instance.ShowDialogue(_activeQuest.Base.InProgressDialogue);
-                }
-            }
-            else
-            {
-                yield return _healer != null
-                    ? _healer.Heal(initiator)
-                    : _merchant != null ? _merchant.Trade() : (object)DialogueManager.Instance.ShowDialogue(_dialogue);
-            }
-
-            _idleTimer = 0f;
-            _state = NPCState.Idle;
-        }
-    }
-
     private void Update()
     {
+        // If idle, update the idle timer and start movement pattern if necessary.
         if (_state == NPCState.Idle)
         {
             _idleTimer += Time.deltaTime;
-            if (_idleTimer > _patternRate)
+            if (_idleTimer > _patternRate && _movementPattern.Count > 0)
             {
                 _idleTimer = 0f;
-                if (_movementPattern.Count > 0)
-                {
-                    StartCoroutine(Walk());
-                }
+                _ = StartCoroutine(Walk());
             }
         }
 
         _character.UpdateAnimator();
     }
 
-    private IEnumerator Walk()
+    public IEnumerator Interact(Transform initiator)
     {
-        _state = NPCState.Moving;
-
-        Vector3 prevPos = transform.position;
-
-        yield return _character.MoveRoutine(_movementPattern[_currentPattern]);
-        if (transform.position != prevPos)
+        if (_state != NPCState.Idle)
         {
-            _currentPattern = (_currentPattern + 1) % _movementPattern.Count;
+            yield break;
         }
+
+        _state = NPCState.Talking;
+        _character.LookTowards(initiator.position);
+
+        // Handle quest completion if available.
+        if (_questToComplete != null)
+        {
+            Quest questToComplete = new(_questToComplete);
+            yield return questToComplete.CompleteQuest(initiator);
+            _questToComplete = null;
+        }
+
+        // Give item if available.
+        if (_itemGiver != null && _itemGiver.CanBeGiven())
+        {
+            yield return _itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
+        }
+        // Give battler if available.
+        else if (_battlerGiver != null && _battlerGiver.CanBeGiven())
+        {
+            yield return _battlerGiver.GiveBattler(initiator.GetComponent<PlayerController>());
+        }
+        // Start a new quest if available.
+        else if (_questToStart != null)
+        {
+            _activeQuest = new Quest(_questToStart);
+            yield return _activeQuest.StartQuest();
+            _questToStart = null;
+
+            if (_activeQuest.CanBeCompleted())
+            {
+                yield return _activeQuest.CompleteQuest(initiator);
+                _activeQuest = null;
+            }
+        }
+        // Handle active quest progression.
+        else if (_activeQuest != null)
+        {
+            if (_activeQuest.CanBeCompleted())
+            {
+                yield return _activeQuest.CompleteQuest(initiator);
+                _activeQuest = null;
+            }
+            else
+            {
+                yield return DialogueManager.Instance.ShowDialogue(_activeQuest.Base.InProgressDialogue);
+            }
+        }
+        // Fallback dialogue or service interaction (Healer or Merchant).
+        else
+        {
+            yield return _healer != null
+                ? _healer.Heal(initiator)
+                : _merchant != null ? _merchant.Trade() : DialogueManager.Instance.ShowDialogue(_dialogue);
+        }
+
+        _idleTimer = 0f;
         _state = NPCState.Idle;
     }
 
@@ -130,18 +121,10 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
         {
             Position = new float[] { transform.position.x, transform.position.y },
             FacingDirection = _character.Animator.FacingDirection,
-            ActiveQuest = _activeQuest?.GetSaveData()
+            ActiveQuest = _activeQuest?.GetSaveData(),
+            QuestToStart = _questToStart != null ? new Quest(_questToStart).GetSaveData() : null,
+            QuestToComplete = _questToComplete != null ? new Quest(_questToComplete).GetSaveData() : null
         };
-
-        if (_questToStart != null)
-        {
-            saveData.QuestToStart = new Quest(_questToStart).GetSaveData();
-        }
-
-        if (_questToComplete != null)
-        {
-            saveData.QuestToComplete = new Quest(_questToComplete).GetSaveData();
-        }
 
         return saveData;
     }
@@ -154,10 +137,25 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
         {
             transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
             _character.Animator.FacingDirection = saveData.FacingDirection;
-            _activeQuest = (saveData.ActiveQuest != null) ? new Quest(saveData.ActiveQuest) : null;
-            _questToStart = (saveData.QuestToStart != null) ? new Quest(saveData.QuestToStart).Base : null;
-            _questToComplete = (saveData.QuestToComplete != null) ? new Quest(saveData.QuestToComplete).Base : null;
+            _activeQuest = saveData.ActiveQuest != null ? new Quest(saveData.ActiveQuest) : null;
+            _questToStart = saveData.QuestToStart != null ? new Quest(saveData.QuestToStart).Base : null;
+            _questToComplete = saveData.QuestToComplete != null ? new Quest(saveData.QuestToComplete).Base : null;
         }
+    }
+
+    private IEnumerator Walk()
+    {
+        _state = NPCState.Moving;
+        Vector3 previousPosition = transform.position;
+
+        yield return _character.MoveRoutine(_movementPattern[_currentPattern]);
+
+        if (transform.position != previousPosition)
+        {
+            _currentPattern = (_currentPattern + 1) % _movementPattern.Count;
+        }
+
+        _state = NPCState.Idle;
     }
 }
 
