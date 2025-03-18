@@ -137,9 +137,6 @@ public class BattlerBase : ScriptableObject
         }
     }
 
-    /// <summary>
-    /// Recalculates total stats, individual stat values, and base GP.
-    /// </summary>
     private void RecalculateStats()
     {
         // Calculate total stats based on rarity ranges and weight
@@ -179,9 +176,6 @@ public static class StatCalculator
     public const int MIN_STAT_VALUE = 5;
     public const int MAX_STAT_VALUE = 255;
 
-    /// <summary>
-    /// Calculates total stats based on a weight factor and rarity's defined stat range.
-    /// </summary>
     public static int CalculateTotalStats(float totalStatsWeight, Rarity rarity, Dictionary<Rarity, (int min, int max)> rarityStatRanges)
     {
         if (!rarityStatRanges.TryGetValue(rarity, out (int min, int max) statRange))
@@ -195,10 +189,6 @@ public static class StatCalculator
         return Mathf.Clamp(totalStats, statRange.min, statRange.max);
     }
 
-    /// <summary>
-    /// Distributes the total stats among individual stats according to provided weights.
-    /// Weights are normalized to ensure a proportional distribution.
-    /// </summary>
     public static Dictionary<string, int> AssignIndividualStats(int totalStats, float[] weights)
     {
         float weightSum = 0f;
@@ -230,9 +220,6 @@ public static class StatCalculator
         return stats;
     }
 
-    /// <summary>
-    /// Calculates the base GP (Gold Points or similar) based on total stats and a rarity multiplier.
-    /// </summary>
     public static Vector2Int CalculateBaseGP(int totalStats, float rarityMultiplier)
     {
         float statsMultiplier = totalStats * 0.05f;
@@ -244,9 +231,6 @@ public static class StatCalculator
 
 public static class ExperienceCalculator
 {
-    /// <summary>
-    /// Calculates the experience points required for a given level based on the growth rate.
-    /// </summary>
     public static int GetExpForLevel(GrowthRate growthRate, int level)
     {
         if (level == 1)
