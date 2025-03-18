@@ -110,11 +110,6 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public void SetPlayerBattler(Battler battler)
     {
-        if (_playerBattler != null)
-        {
-            return;
-        }
-
         _playerBattler = battler ?? throw new ArgumentNullException(nameof(battler));
         _playerBattler.IsCommander = true;
         _name = battler.Base.Name;
@@ -134,7 +129,7 @@ public class PlayerController : MonoBehaviour, ISavable
     public object CaptureState()
     {
         List<Battler> party = GetComponent<BattleParty>().Battlers;
-        int playerIndex = party.FindIndex(static m => m.IsCommander);
+        int playerIndex = party.FindIndex(static b => b.IsCommander);
 
         PlayerSaveData saveData = new()
         {
