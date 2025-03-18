@@ -204,18 +204,19 @@ public class Battler
     {
         int currentBoost = StatBoosts.ContainsKey(stat) ? StatBoosts[stat] : 0;
         bool isPositiveChange = boost > 0;
+        string suffix = Base.Name.EndsWith("s") ? "'" : "'s";
 
         if ((isPositiveChange && currentBoost == MAX_STAT_BOOST) || (!isPositiveChange && currentBoost == MIN_STAT_BOOST))
         {
             string direction = isPositiveChange ? "higher" : "lower";
-            AddStatusEvent($"'{Base.Name}'s {stat} won't go any {direction}!");
+            AddStatusEvent($"{suffix} {stat} won't go any {direction}!");
             return;
         }
 
         StatBoosts[stat] = Mathf.Clamp(currentBoost + boost, MIN_STAT_BOOST, MAX_STAT_BOOST);
         string descriptor = (Mathf.Abs(boost) >= 3) ? "severely" : (Mathf.Abs(boost) == 2) ? "harshly" : "";
         string result = isPositiveChange ? "rose" : "fell";
-        AddStatusEvent(StatusEventType.StatBoost, $"'{Base.Name}'s {stat} {descriptor} {result}!", boost);
+        AddStatusEvent(StatusEventType.StatBoost, $"{suffix} {stat} {descriptor} {result}!", boost);
     }
 
     public bool CheckForLevelUp()
