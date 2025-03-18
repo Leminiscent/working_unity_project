@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Battler", menuName = "Battler/Create new battler")]
 public class BattlerBase : ScriptableObject
 {
-    [Header("Basic Details")]
-    [SerializeField] private string _name;
-    [SerializeField, TextArea] private string _description;
-    [SerializeField] private Sprite _sprite;
-    [SerializeField] private BattlerType _type1;
-    [SerializeField] private BattlerType _type2;
-    [SerializeField] private Rarity _rarity;
+    [field: Header("Basic Details")]
+    [field: SerializeField, FormerlySerializedAs("_name")] public string Name { get; private set; }
+    [field: SerializeField, TextArea, FormerlySerializedAs("_description")] public string Description { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_sprite")] public Sprite Sprite { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_type1")] public BattlerType Type1 { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_type2")] public BattlerType Type2 { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_rarity")] public Rarity Rarity { get; private set; }
 
     [Header("Stat Weights")]
     [SerializeField] private float _totalStatsWeight;
@@ -22,33 +23,24 @@ public class BattlerBase : ScriptableObject
     [SerializeField] private float _fortitudeWeight;
     [SerializeField] private float _agilityWeight;
 
-    [Header("Moves")]
-    [SerializeField] private List<LearnableMove> _learnableMoves = new();
-    [SerializeField] private List<MoveBase> _learnableBySkillBook = new();
+    [field: Header("Moves")]
+    [field: SerializeField, FormerlySerializedAs("_learnableMoves")] public List<LearnableMove> LearnableMoves { get; private set; } = new();
+    [field: SerializeField, FormerlySerializedAs("_learnableBySkillBook")] public List<MoveBase> LearnableBySkillBook { get; private set; } = new();
 
-    [Header("Transformations")]
-    [SerializeField] private List<Transformation> _transformations = new();
+    [field: Header("Transformations")]
+    [field: SerializeField, FormerlySerializedAs("_transformations")] public List<Transformation> Transformations { get; private set; } = new();
 
-    [Header("Recruitment")]
-    [SerializeField] private List<RecruitmentQuestion> _recruitmentQuestions = new();
+    [field: Header("Recruitment")]
+    [field: SerializeField, FormerlySerializedAs("_recruitmentQuestions")] public List<RecruitmentQuestion> RecruitmentQuestions { get; private set; } = new();
 
-    [Header("Drops")]
-    [SerializeField] private DropTable _dropTable;
+    [field: Header("Drops")]
+    [field: SerializeField, FormerlySerializedAs("_dropTable")] public DropTable DropTable { get; private set; }
 
-    [Header("Overworld Sprites")]
-    [SerializeField] private List<Sprite> _walkDownSprites;
-    [SerializeField] private List<Sprite> _walkUpSprites;
-    [SerializeField] private List<Sprite> _walkRightSprites;
-    [SerializeField] private List<Sprite> _walkLeftSprites;
-
-    // Calculated stat values
-    private int _hp;
-    private int _strength;
-    private int _endurance;
-    private int _intelligence;
-    private int _fortitude;
-    private int _agility;
-    private Vector2Int _baseGp;
+    [field: Header("Overworld Sprites")]
+    [field: SerializeField, FormerlySerializedAs("_walkDownSprites")] public List<Sprite> WalkDownSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_walkUpSprites")] public List<Sprite> WalkUpSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_walkRightSprites")] public List<Sprite> WalkRightSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_walkLeftSprites")] public List<Sprite> WalkLeftSprites { get; private set; }
 
     private static readonly Dictionary<Rarity, (int min, int max)> _rarityStatRanges = new()
     {
@@ -58,7 +50,6 @@ public class BattlerBase : ScriptableObject
         { Rarity.Epic,       (919, 1224) },
         { Rarity.Legendary,  (1225, 1530) }
     };
-
     private static readonly Dictionary<Rarity, float> _rarityMultipliers = new()
     {
         { Rarity.Common, 1.0f },
@@ -68,39 +59,9 @@ public class BattlerBase : ScriptableObject
         { Rarity.Legendary, 2.0f }
     };
 
-    public string Name => _name;
-    public string Description => _description;
-    public Sprite Sprite => _sprite;
-    public BattlerType Type1 => _type1;
-    public BattlerType Type2 => _type2;
-    public bool IsDualType => _type2 != BattlerType.None;
-    public Rarity Rarity => _rarity;
-
-    public int HP => _hp;
-    public int Strength => _strength;
-    public int Endurance => _endurance;
-    public int Intelligence => _intelligence;
-    public int Fortitude => _fortitude;
-    public int Agility => _agility;
-    public int TotalStats => _hp + _strength + _endurance + _intelligence + _fortitude + _agility;
-
-    public Vector2Int BaseGp => _baseGp;
-
-    public Dictionary<Stat, float> PvYield => new()
-    {
-        { Stat.HP, _hp * 0.01f },
-        { Stat.Strength, _strength * 0.01f },
-        { Stat.Endurance, _endurance * 0.01f },
-        { Stat.Intelligence, _intelligence * 0.01f },
-        { Stat.Fortitude, _fortitude * 0.01f },
-        { Stat.Agility, _agility * 0.01f }
-    };
-
-    public List<LearnableMove> LearnableMoves => _learnableMoves;
-    public List<MoveBase> LearnableBySkillBook => _learnableBySkillBook;
-    public static int MaxMoveCount { get; } = 4;
-
-    public List<Transformation> Transformations => _transformations;
+    public bool IsDualType => Type2 != BattlerType.None;
+    public GrowthRate GrowthRate => AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
+    public int RecruitRate => AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
 
     public int BaseExp => Mathf.RoundToInt(TotalStats * 0.25f);
     public int ExpYield
@@ -111,17 +72,28 @@ public class BattlerBase : ScriptableObject
             return Mathf.RoundToInt(BaseExp * rarityMultiplier);
         }
     }
-    public GrowthRate GrowthRate => AttributeCalculator.CalculateGrowthRate(Rarity, TotalStats, IsDualType);
 
-    public int RecruitRate => AttributeCalculator.CalculateRecruitRate(Rarity, GrowthRate, TotalStats, IsDualType);
-    public List<RecruitmentQuestion> RecruitmentQuestions => _recruitmentQuestions;
+    public Dictionary<Stat, float> PvYield => new()
+    {
+        { Stat.HP, HP * 0.01f },
+        { Stat.Strength, Strength * 0.01f },
+        { Stat.Endurance, Endurance * 0.01f },
+        { Stat.Intelligence, Intelligence * 0.01f },
+        { Stat.Fortitude, Fortitude * 0.01f },
+        { Stat.Agility, Agility * 0.01f }
+    };
+    
+    public Vector2Int BaseGp { get; private set; }
 
-    public DropTable DropTable => _dropTable;
+    public int HP { get; private set; }
+    public int Strength { get; private set; }
+    public int Endurance { get; private set; }
+    public int Intelligence { get; private set; }
+    public int Fortitude { get; private set; }
+    public int Agility { get; private set; }
+    public int TotalStats => HP + Strength + Endurance + Intelligence + Fortitude + Agility;
 
-    public List<Sprite> WalkDownSprites => _walkDownSprites;
-    public List<Sprite> WalkUpSprites => _walkUpSprites;
-    public List<Sprite> WalkRightSprites => _walkRightSprites;
-    public List<Sprite> WalkLeftSprites => _walkLeftSprites;
+    public static int MaxMoveCount { get; } = 4;
 
     private void OnValidate()
     {
@@ -131,16 +103,16 @@ public class BattlerBase : ScriptableObject
 
     private void ValidateRarity()
     {
-        if (!_rarityStatRanges.ContainsKey(_rarity))
+        if (!_rarityStatRanges.ContainsKey(Rarity))
         {
-            Debug.LogError($"Rarity {_rarity} does not have a defined stat range.");
+            Debug.LogError($"Rarity {Rarity} does not have a defined stat range.");
         }
     }
 
     private void RecalculateStats()
     {
         // Calculate total stats based on rarity ranges and weight
-        int totalStats = StatCalculator.CalculateTotalStats(_totalStatsWeight, _rarity, _rarityStatRanges);
+        int totalStats = StatCalculator.CalculateTotalStats(_totalStatsWeight, Rarity, _rarityStatRanges);
 
         // Prepare weights for individual stats in the order: HP, Strength, Endurance, Intelligence, Fortitude, Agility
         float[] weights = { _hpWeight, _strengthWeight, _enduranceWeight, _intelligenceWeight, _fortitudeWeight, _agilityWeight };
@@ -148,15 +120,15 @@ public class BattlerBase : ScriptableObject
         // Calculate individual stats using normalized weights
         Dictionary<string, int> stats = StatCalculator.AssignIndividualStats(totalStats, weights);
 
-        _hp = stats["HP"];
-        _strength = stats["Strength"];
-        _endurance = stats["Endurance"];
-        _intelligence = stats["Intelligence"];
-        _fortitude = stats["Fortitude"];
-        _agility = stats["Agility"];
+        HP = stats["HP"];
+        Strength = stats["Strength"];
+        Endurance = stats["Endurance"];
+        Intelligence = stats["Intelligence"];
+        Fortitude = stats["Fortitude"];
+        Agility = stats["Agility"];
 
         // Calculate base GP using the total stats and rarity multiplier
-        _baseGp = StatCalculator.CalculateBaseGP(totalStats, _rarityMultipliers[Rarity]);
+        BaseGp = StatCalculator.CalculateBaseGP(totalStats, _rarityMultipliers[Rarity]);
     }
 
     public int GetExpForLevel(int level)
@@ -166,7 +138,7 @@ public class BattlerBase : ScriptableObject
 
     public int CalculateGpYield()
     {
-        return UnityEngine.Random.Range(_baseGp.x, _baseGp.y + 1);
+        return UnityEngine.Random.Range(BaseGp.x, BaseGp.y + 1);
     }
 }
 
