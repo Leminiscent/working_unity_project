@@ -87,6 +87,7 @@ public class Battler
         Exp = saveData.Exp;
 
         Statuses = new Dictionary<ConditionID, (Condition, int)>();
+        VolatileStatuses = new Dictionary<ConditionID, (Condition, int)>();
 
         if (saveData.Statuses != null && saveData.Statuses.Count > 0)
         {
