@@ -1,19 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConditionsDB
+public static class ConditionsDB
 {
-    public static void Init()
-    {
-        foreach (KeyValuePair<ConditionID, Condition> kvp in Conditions)
-        {
-            Condition condition = kvp.Value;
-            ConditionID conditionId = kvp.Key;
-
-            condition.ID = conditionId;
-        }
-    }
-
     public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>()
     {
         // Non-volatile status conditions
@@ -24,7 +13,8 @@ public class ConditionsDB
                 Name = "Poison",
                 StartMessage = " has been poisoned!",
                 FailMessage = " is already poisoned!",
-                OnEndOfTurn = static battler => {
+                OnEndOfTurn = static battler =>
+                {
                     battler.AddStatusEvent(StatusEventType.Damage, " is hurt by poison!", battler.MaxHp / 8);
                 }
             }
@@ -36,7 +26,8 @@ public class ConditionsDB
                 Name = "Burn",
                 StartMessage = " has been burned!",
                 FailMessage = " is already burned!",
-                OnEndOfTurn = static battler => {
+                OnEndOfTurn = static battler =>
+                {
                     battler.AddStatusEvent(StatusEventType.Damage, " is hurt by its burn!", battler.MaxHp / 16);
                 }
             }
@@ -69,7 +60,8 @@ public class ConditionsDB
                 Name = "Paralyzed",
                 StartMessage = " has been paralyzed!",
                 FailMessage = " is already paralyzed!",
-                OnBeginningofTurn = static battler => {
+                OnBeginningofTurn = static battler =>
+                {
                     if (Random.Range(1, 5) == 1)
                     {
                         battler.AddStatusEvent(" is fully paralyzed and cannot move!");
@@ -86,7 +78,8 @@ public class ConditionsDB
                 Name = "Frozen",
                 StartMessage = " has been frozen solid!",
                 FailMessage = " is already frozen!",
-                OnBeginningofTurn = static battler => {
+                OnBeginningofTurn = static battler =>
+                {
                     if (Random.Range(1, 5) == 1)
                     {
                         battler.CureStatus();
@@ -132,7 +125,7 @@ public class ConditionsDB
         // Weather conditions
         {
             ConditionID.Sun,
-            new Condition()
+            new Condition
             {
                 Name = "Harsh Sunlight",
                 StartMessage = "The sunlight turned harsh!",
@@ -147,14 +140,13 @@ public class ConditionsDB
                     {
                         return 0.5f;
                     }
-
                     return 1f;
                 }
             }
         },
         {
             ConditionID.Rain,
-            new Condition()
+            new Condition
             {
                 Name = "Heavy Rain",
                 StartMessage = "It started to rain!",
@@ -169,36 +161,49 @@ public class ConditionsDB
                     {
                         return 0.5f;
                     }
-
                     return 1f;
                 }
             }
         },
         {
             ConditionID.Sandstorm,
-            new Condition()
+            new Condition
             {
                 Name = "Sandstorm",
                 StartMessage = "A sandstorm kicked up!",
                 EffectMessage = "The sandstorm rages!",
-                OnWeather = static battler => {
+                OnWeather = static battler =>
+                {
                     battler.AddStatusEvent(StatusEventType.Damage, " is buffeted by the sandstorm!", battler.MaxHp / 16);
                 }
             }
         },
         {
             ConditionID.Hail,
-            new Condition()
+            new Condition
             {
                 Name = "Hail",
                 StartMessage = "It started to hail!",
                 EffectMessage = "The hail is falling!",
-                OnWeather = static battler => {
+                OnWeather = static battler =>
+                {
                     battler.AddStatusEvent(StatusEventType.Damage, " is buffeted by the hail!", battler.MaxHp / 16);
                 }
             }
         }
     };
+
+    public static void Init()
+    {
+        foreach (KeyValuePair<ConditionID, Condition> kvp in Conditions)
+        {
+            Condition condition = kvp.Value;
+            ConditionID conditionId = kvp.Key;
+
+            // Assign the key as the condition's ID.
+            condition.ID = conditionId;
+        }
+    }
 
     public static float GetStatusBonus(Dictionary<ConditionID, ConditionStatus> statuses)
     {
