@@ -42,18 +42,14 @@ public class BattlerBase : ScriptableObject
     [SerializeField] private List<Sprite> _walkRightSprites;
     [SerializeField] private List<Sprite> _walkLeftSprites;
 
-    [HideInInspector]
-    [SerializeField]
-    private float _sumOfWeights;
-
-    private int _hp;
-    private int _strength;
-    private int _endurance;
-    private int _intelligence;
-    private int _fortitude;
-    private int _agility;
-
-    private Vector2Int _baseGp;
+    // Calculated stat values
+    [SerializeField, HideInInspector] private int _hp;
+    [SerializeField, HideInInspector] private int _strength;
+    [SerializeField, HideInInspector] private int _endurance;
+    [SerializeField, HideInInspector] private int _intelligence;
+    [SerializeField, HideInInspector] private int _fortitude;
+    [SerializeField, HideInInspector] private int _agility;
+    [SerializeField, HideInInspector] private Vector2Int _baseGp;
 
     private static readonly Dictionary<Rarity, (int min, int max)> _rarityStatRanges = new()
     {
@@ -128,12 +124,10 @@ public class BattlerBase : ScriptableObject
     public List<Sprite> WalkRightSprites => _walkRightSprites;
     public List<Sprite> WalkLeftSprites => _walkLeftSprites;
 
-
     private void OnValidate()
     {
         ValidateRarity();
-        CalculateStats();
-        CalculateBaseGP();
+        RecalculateStats();
     }
 
     private void ValidateRarity()
@@ -144,71 +138,135 @@ public class BattlerBase : ScriptableObject
         }
     }
 
-    private void CalculateStats()
+    /// <summary>
+    /// Recalculates total stats, individual stat values, and base GP.
+    /// </summary>
+    private void RecalculateStats()
     {
-        if (!_rarityStatRanges.TryGetValue(_rarity, out (int min, int max) statRange))
-        {
-            Debug.LogError($"Cannot calculate stats due to undefined rarity {_rarity}.");
-            return;
-        }
+        // Calculate total stats based on rarity ranges and weight
+        int totalStats = StatCalculator.CalculateTotalStats(_totalStatsWeight, _rarity, _rarityStatRanges);
 
-        int totalStats = CalculateTotalStats(statRange.min, statRange.max);
-        AssignIndividualStats(totalStats);
-    }
-
-    private int CalculateTotalStats(int minTotal, int maxTotal)
-    {
-        int totalRange = maxTotal - minTotal;
-        int totalStats = Mathf.RoundToInt(_totalStatsWeight * totalRange) + minTotal;
-        return Mathf.Clamp(totalStats, minTotal, maxTotal);
-    }
-
-    private void AssignIndividualStats(int totalStats)
-    {
+        // Prepare weights for individual stats in the order: HP, Strength, Endurance, Intelligence, Fortitude, Agility
         float[] weights = { _hpWeight, _strengthWeight, _enduranceWeight, _intelligenceWeight, _fortitudeWeight, _agilityWeight };
-        _sumOfWeights = 0f;
 
-        foreach (float weight in weights)
-        {
-            _sumOfWeights += weight;
-        }
+        // Calculate individual stats using normalized weights
+        Dictionary<string, int> stats = StatCalculator.AssignIndividualStats(totalStats, weights);
 
-        _hp = Mathf.Clamp(Mathf.RoundToInt(weights[0] * totalStats), 5, 255);
-        _strength = Mathf.Clamp(Mathf.RoundToInt(weights[1] * totalStats), 5, 255);
-        _endurance = Mathf.Clamp(Mathf.RoundToInt(weights[2] * totalStats), 5, 255);
-        _intelligence = Mathf.Clamp(Mathf.RoundToInt(weights[3] * totalStats), 5, 255);
-        _fortitude = Mathf.Clamp(Mathf.RoundToInt(weights[4] * totalStats), 5, 255);
-        _agility = Mathf.Clamp(Mathf.RoundToInt(weights[5] * totalStats), 5, 255);
-    }
+        _hp = stats["HP"];
+        _strength = stats["Strength"];
+        _endurance = stats["Endurance"];
+        _intelligence = stats["Intelligence"];
+        _fortitude = stats["Fortitude"];
+        _agility = stats["Agility"];
 
-    private void CalculateBaseGP()
-    {
-        float rarityMultiplier = _rarityMultipliers.ContainsKey(Rarity) ? _rarityMultipliers[Rarity] : 1.0f;
-        float statsMultiplier = TotalStats * 0.05f;
-
-        _baseGp = new Vector2Int(Mathf.RoundToInt((1 * rarityMultiplier) + statsMultiplier), Mathf.RoundToInt((3 * rarityMultiplier) + statsMultiplier));
+        // Calculate base GP using the total stats and rarity multiplier
+        _baseGp = StatCalculator.CalculateBaseGP(totalStats, _rarityMultipliers[Rarity]);
     }
 
     public int GetExpForLevel(int level)
+    {
+        return ExperienceCalculator.GetExpForLevel(GrowthRate, level);
+    }
+
+    public int CalculateGpYield()
+    {
+        return UnityEngine.Random.Range(_baseGp.x, _baseGp.y + 1);
+    }
+}
+
+
+public static class StatCalculator
+{
+    // Named constants for clamping values.
+    public const int MIN_STAT_VALUE = 5;
+    public const int MAX_STAT_VALUE = 255;
+
+    /// <summary>
+    /// Calculates total stats based on a weight factor and rarity's defined stat range.
+    /// </summary>
+    public static int CalculateTotalStats(float totalStatsWeight, Rarity rarity, Dictionary<Rarity, (int min, int max)> rarityStatRanges)
+    {
+        if (!rarityStatRanges.TryGetValue(rarity, out (int min, int max) statRange))
+        {
+            Debug.LogError($"Cannot calculate total stats due to undefined rarity {rarity}.");
+            return 0;
+        }
+
+        int totalRange = statRange.max - statRange.min;
+        int totalStats = Mathf.RoundToInt(totalStatsWeight * totalRange) + statRange.min;
+        return Mathf.Clamp(totalStats, statRange.min, statRange.max);
+    }
+
+    /// <summary>
+    /// Distributes the total stats among individual stats according to provided weights.
+    /// Weights are normalized to ensure a proportional distribution.
+    /// </summary>
+    public static Dictionary<string, int> AssignIndividualStats(int totalStats, float[] weights)
+    {
+        float weightSum = 0f;
+        foreach (float weight in weights)
+        {
+            weightSum += weight;
+        }
+
+        if (weightSum <= 0)
+        {
+            Debug.LogWarning("Sum of stat weights is zero or negative. Defaulting to equal distribution.");
+            weightSum = weights.Length;
+            for (int i = 0; i < weights.Length; i++)
+            {
+                weights[i] = 1f;
+            }
+        }
+
+        Dictionary<string, int> stats = new()
+        {
+            ["HP"] = Mathf.Clamp(Mathf.RoundToInt(weights[0] / weightSum * totalStats), MIN_STAT_VALUE, MAX_STAT_VALUE),
+            ["Strength"] = Mathf.Clamp(Mathf.RoundToInt(weights[1] / weightSum * totalStats), MIN_STAT_VALUE, MAX_STAT_VALUE),
+            ["Endurance"] = Mathf.Clamp(Mathf.RoundToInt(weights[2] / weightSum * totalStats), MIN_STAT_VALUE, MAX_STAT_VALUE),
+            ["Intelligence"] = Mathf.Clamp(Mathf.RoundToInt(weights[3] / weightSum * totalStats), MIN_STAT_VALUE, MAX_STAT_VALUE),
+            ["Fortitude"] = Mathf.Clamp(Mathf.RoundToInt(weights[4] / weightSum * totalStats), MIN_STAT_VALUE, MAX_STAT_VALUE),
+            ["Agility"] = Mathf.Clamp(Mathf.RoundToInt(weights[5] / weightSum * totalStats), MIN_STAT_VALUE, MAX_STAT_VALUE)
+        };
+
+        return stats;
+    }
+
+    /// <summary>
+    /// Calculates the base GP (Gold Points or similar) based on total stats and a rarity multiplier.
+    /// </summary>
+    public static Vector2Int CalculateBaseGP(int totalStats, float rarityMultiplier)
+    {
+        float statsMultiplier = totalStats * 0.05f;
+        int gpMin = Mathf.RoundToInt((1 * rarityMultiplier) + statsMultiplier);
+        int gpMax = Mathf.RoundToInt((3 * rarityMultiplier) + statsMultiplier);
+        return new Vector2Int(gpMin, gpMax);
+    }
+}
+
+public static class ExperienceCalculator
+{
+    /// <summary>
+    /// Calculates the experience points required for a given level based on the growth rate.
+    /// </summary>
+    public static int GetExpForLevel(GrowthRate growthRate, int level)
     {
         if (level == 1)
         {
             return 0;
         }
 
-        switch (GrowthRate)
+        switch (growthRate)
         {
             case GrowthRate.Erratic:
                 if (level < 50)
                 {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (100 - level) / 50);
                 }
-
                 if (level < 68)
                 {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (150 - level) / 100);
                 }
-
                 if (level < 98)
                 {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (1911 - (10 * level)) / 3 / 500);
@@ -230,23 +288,17 @@ public class BattlerBase : ScriptableObject
             case GrowthRate.Fluctuating:
                 if (level < 15)
                 {
-                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (((level + 1) / 3) + 24) / 50);
+                    return Mathf.FloorToInt(Mathf.Pow(level, 3) * (((level + 1) / 3f) + 24) / 50);
                 }
-
                 if (level < 36)
                 {
                     return Mathf.FloorToInt(Mathf.Pow(level, 3) * (level + 14) / 50);
                 }
-                return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level / 2) + 32) / 50);
+                return Mathf.FloorToInt(Mathf.Pow(level, 3) * ((level / 2f) + 32) / 50);
 
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(growthRate), "Unsupported growth rate.");
         }
-    }
-
-    public int CalculateGpYield()
-    {
-        return UnityEngine.Random.Range(_baseGp.x, _baseGp.y + 1);
     }
 }
 
@@ -392,24 +444,22 @@ public class AttributeCalculator
 
     public static GrowthRate CalculateGrowthRate(Rarity rarity, int totalStats, bool isDualType)
     {
-        int rarityPoints = GetRarityPoints(rarity);
-        int statsPoints = GetStatsPoints(totalStats);
-        int typingPoints = isDualType ? DUAL_TYPE_POINTS : SINGLE_TYPE_POINTS;
+        int rarityPts = GetRarityPoints(rarity);
+        int statsPts = GetStatsPoints(totalStats);
+        int typingPts = isDualType ? DUAL_TYPE_POINTS : SINGLE_TYPE_POINTS;
 
-        int totalPoints = rarityPoints + statsPoints + typingPoints;
-
+        int totalPoints = rarityPts + statsPts + typingPts;
         return MapPointsToGrowthRate(totalPoints);
     }
 
     public static int CalculateRecruitRate(Rarity rarity, GrowthRate growthRate, int totalStats, bool isDualType)
     {
-        int rarityPoints = GetRarityPoints(rarity);
-        int growthRatePoints = GetGrowthRatePoints(growthRate);
-        int statsPoints = GetStatsPoints(totalStats);
-        int typingPoints = isDualType ? DUAL_TYPE_POINTS : SINGLE_TYPE_POINTS;
+        int rarityPts = GetRarityPoints(rarity);
+        int growthRatePts = GetGrowthRatePoints(growthRate);
+        int statsPts = GetStatsPoints(totalStats);
+        int typingPts = isDualType ? DUAL_TYPE_POINTS : SINGLE_TYPE_POINTS;
 
-        int totalPoints = rarityPoints + growthRatePoints + statsPoints + typingPoints;
-
+        int totalPoints = rarityPts + growthRatePts + statsPts + typingPts;
         totalPoints = Mathf.Clamp(totalPoints, MIN_TOTAL_POINTS, MAX_TOTAL_POINTS);
 
         float rate = (float)(MAX_TOTAL_POINTS - totalPoints) / (MAX_TOTAL_POINTS - MIN_TOTAL_POINTS) * 255f;
@@ -420,12 +470,12 @@ public class AttributeCalculator
 
     private static int GetRarityPoints(Rarity rarity)
     {
-        return _rarityPoints.TryGetValue(rarity, out int points) ? points : 1;
+        return _rarityPoints.TryGetValue(rarity, out int pts) ? pts : 1;
     }
 
     private static int GetGrowthRatePoints(GrowthRate growthRate)
     {
-        return _growthRatePoints.TryGetValue(growthRate, out int points) ? points : 2;
+        return _growthRatePoints.TryGetValue(growthRate, out int pts) ? pts : 2;
     }
 
     private static int GetStatsPoints(int totalStats)
@@ -437,7 +487,7 @@ public class AttributeCalculator
                 return points;
             }
         }
-        return 1; // Default fallback
+        return 1;
     }
 
     private static GrowthRate MapPointsToGrowthRate(int totalPoints)
@@ -449,8 +499,7 @@ public class AttributeCalculator
                 return rate;
             }
         }
-
-        return GrowthRate.MediumFast; // Default fallback
+        return GrowthRate.MediumFast;
     }
 }
 
