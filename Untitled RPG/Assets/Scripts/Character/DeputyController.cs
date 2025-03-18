@@ -7,10 +7,10 @@ using UnityEngine;
 
 public class DeputyController : MonoBehaviour, ISavable
 {
-    private const float LedgeCheckRadius = 0.15f;
-    private const float JumpPower = 1.42f;
-    private const int JumpNumJumps = 1;
-    private const float JumpDuration = 0.34f;
+    private const float LEDGE_CHECK_RADIUS = 0.15f;
+    private const float JUMP_POWER = 1.42f;
+    private const int NUM_JUMPS = 1;
+    private const float JUMP_DURATION = 0.34f;
 
     private CharacterAnimator _animator;
     private bool _isMoving;
@@ -167,7 +167,7 @@ public class DeputyController : MonoBehaviour, ISavable
 
     private Ledge CheckForLedge(Vector3 targetPos)
     {
-        Collider2D collider = Physics2D.OverlapCircle(targetPos, LedgeCheckRadius, GameLayers.Instance.LedgeLayer);
+        Collider2D collider = Physics2D.OverlapCircle(targetPos, LEDGE_CHECK_RADIUS, GameLayers.Instance.LedgeLayer);
         return collider != null ? collider.GetComponent<Ledge>() : null;
     }
 
@@ -175,7 +175,7 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         _isMoving = true;
         _animator.IsJumping = true;
-        yield return transform.DOJump(jumpDest, JumpPower, JumpNumJumps, JumpDuration).WaitForCompletion();
+        yield return transform.DOJump(jumpDest, JUMP_POWER, NUM_JUMPS, JUMP_DURATION).WaitForCompletion();
         _animator.IsJumping = false;
         _isMoving = false;
     }
