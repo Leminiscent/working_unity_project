@@ -12,37 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Sacrifice
   m_EditorClassIdentifier: 
-  _name: Sacrifice
-  _description: Sacrifices a portion of the user's health to greatly boost its strength.
-  _type: 10
-  _category: 2
-  _effects:
+  <Name>k__BackingField: Sacrifice
+  <Description>k__BackingField: Sacrifices a portion of the user's health to greatly
+    boost its strength.
+  <Type>k__BackingField: 10
+  <Category>k__BackingField: 2
+  <Target>k__BackingField: 4
+  <Effects>k__BackingField:
     _boosts:
     - Stat: 1
       Boost: 3
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
-  _critBehavior: 0
-  _recoil:
+  <SecondaryEffects>k__BackingField: []
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 1
     RecoilDamage: 33
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 4
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 100
-  _alwaysHits: 1
-  _sP: 10
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 0
+  <Accuracy>k__BackingField: 100
+  <AlwaysHits>k__BackingField: 1
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: -598594256, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: 644760341, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: 257512420, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
@@ -73,7 +74,7 @@ MonoBehaviour:
   - {fileID: -132626319, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: 1842149764, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: -11483756, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: -9865678, guid: 9d3fc73e12115af4fbed67f3151a9813, type: 3}
   - {fileID: -265039270, guid: 9d3fc73e12115af4fbed67f3151a9813, type: 3}
   - {fileID: 265363227, guid: 9d3fc73e12115af4fbed67f3151a9813, type: 3}

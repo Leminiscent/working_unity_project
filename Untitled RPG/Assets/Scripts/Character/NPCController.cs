@@ -107,7 +107,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
             }
         }
 
-        _character.HandleUpdate();
+        _character.UpdateAnimator();
     }
 
     private IEnumerator Walk()
@@ -116,7 +116,7 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
 
         Vector3 prevPos = transform.position;
 
-        yield return _character.Move(_movementPattern[_currentPattern]);
+        yield return _character.MoveRoutine(_movementPattern[_currentPattern]);
         if (transform.position != prevPos)
         {
             _currentPattern = (_currentPattern + 1) % _movementPattern.Count;

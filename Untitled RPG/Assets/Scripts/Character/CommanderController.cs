@@ -27,7 +27,7 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
 
     private void Update()
     {
-        _character.HandleUpdate();
+        _character.UpdateAnimator();
     }
 
     public IEnumerator Interact(Transform initiator)
@@ -60,7 +60,7 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
         Vector3 moveVector = diff - diff.normalized;
         moveVector = new Vector2(Mathf.Round(moveVector.x), Mathf.Round(moveVector.y));
 
-        yield return _character.Move(moveVector);
+        yield return _character.MoveRoutine(moveVector);
 
         yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 1f);
         GameController.Instance.StateMachine.Pop();

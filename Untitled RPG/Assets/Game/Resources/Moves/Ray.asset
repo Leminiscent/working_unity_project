@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Ray
   m_EditorClassIdentifier: 
-  _name: Ray
-  _description: Fires a concentrated beam of light that pierces the foe, with a chance
-    to lower its fortitude.
-  _type: 12
-  _category: 1
-  _effects:
+  <Name>k__BackingField: Ray
+  <Description>k__BackingField: Fires a concentrated beam of light that pierces the
+    foe, with a chance to lower its fortitude.
+  <Type>k__BackingField: 12
+  <Category>k__BackingField: 1
+  <Target>k__BackingField: 0
+  <Effects>k__BackingField:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects:
+  <SecondaryEffects>k__BackingField:
   - _boosts:
     - Stat: 4
       Boost: -1
@@ -31,25 +32,24 @@ MonoBehaviour:
     _weather: 0
     _chance: 20
     _target: 0
-  _critBehavior: 0
-  _recoil:
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 80
-  _accuracy: 95
-  _alwaysHits: 0
-  _sP: 15
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 80
+  <Accuracy>k__BackingField: 95
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: 1187486998, guid: ecb7e2a539ed5c4478c0445528658b95, type: 3}
   - {fileID: -1042867848, guid: ecb7e2a539ed5c4478c0445528658b95, type: 3}
   - {fileID: 976569964, guid: ecb7e2a539ed5c4478c0445528658b95, type: 3}
@@ -80,7 +80,7 @@ MonoBehaviour:
   - {fileID: -1341402218, guid: ecb7e2a539ed5c4478c0445528658b95, type: 3}
   - {fileID: -502366856, guid: ecb7e2a539ed5c4478c0445528658b95, type: 3}
   - {fileID: 1850914754, guid: ecb7e2a539ed5c4478c0445528658b95, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: -1628883705, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
   - {fileID: 1729863445, guid: f978706feb2162846be2e854d04b7f3b, type: 3}
   - {fileID: -2079608480, guid: f978706feb2162846be2e854d04b7f3b, type: 3}

@@ -14,7 +14,7 @@ public class MoveActorAction : CutsceneAction
 
         foreach (Vector2 movePattern in _movePatterns)
         {
-            yield return character.Move(movePattern, checkCollisions: false);
+            yield return character.MoveRoutine(movePattern, checkCollisions: false);
         }
     }
 }

@@ -12,37 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Barrier Break
   m_EditorClassIdentifier: 
-  _name: Barrier Break
-  _description: Disrupts enemy defenses, lowering their fortitude.
-  _type: 7
-  _category: 2
-  _effects:
+  <Name>k__BackingField: Barrier Break
+  <Description>k__BackingField: Disrupts enemy defenses, lowering their fortitude.
+  <Type>k__BackingField: 7
+  <Category>k__BackingField: 2
+  <Target>k__BackingField: 2
+  <Effects>k__BackingField:
     _boosts:
     - Stat: 4
       Boost: -2
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
-  _critBehavior: 0
-  _recoil:
+  <SecondaryEffects>k__BackingField: []
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 2
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 100
-  _alwaysHits: 0
-  _sP: 15
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 0
+  <Accuracy>k__BackingField: 100
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: 536549102, guid: 66111518ac738024294a23be038ca2d9, type: 3}
   - {fileID: 1451892192, guid: 66111518ac738024294a23be038ca2d9, type: 3}
   - {fileID: -1356921086, guid: 66111518ac738024294a23be038ca2d9, type: 3}
@@ -73,7 +73,7 @@ MonoBehaviour:
   - {fileID: -1409466651, guid: 66111518ac738024294a23be038ca2d9, type: 3}
   - {fileID: -1491244432, guid: 66111518ac738024294a23be038ca2d9, type: 3}
   - {fileID: 1764446446, guid: 66111518ac738024294a23be038ca2d9, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: -2137609237, guid: ae9a43f37b02b7340b5dbfc42bdfcf9c, type: 3}
   - {fileID: 1498397214, guid: ae9a43f37b02b7340b5dbfc42bdfcf9c, type: 3}
   - {fileID: -810302800, guid: ae9a43f37b02b7340b5dbfc42bdfcf9c, type: 3}

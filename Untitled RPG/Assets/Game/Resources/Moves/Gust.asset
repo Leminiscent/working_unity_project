@@ -12,35 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Gust
   m_EditorClassIdentifier: 
-  _name: Gust
-  _description: Unleashes a sudden blast of wind that strikes a single foe.
-  _type: 9
-  _category: 1
-  _effects:
+  <Name>k__BackingField: Gust
+  <Description>k__BackingField: Unleashes a sudden blast of wind that strikes a single
+    foe.
+  <Type>k__BackingField: 9
+  <Category>k__BackingField: 1
+  <Target>k__BackingField: 0
+  <Effects>k__BackingField:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
-  _critBehavior: 0
-  _recoil:
+  <SecondaryEffects>k__BackingField: []
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 50
-  _accuracy: 100
-  _alwaysHits: 0
-  _sP: 15
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 50
+  <Accuracy>k__BackingField: 100
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: -493978924, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 1665171130, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 351420225, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
@@ -71,7 +72,7 @@ MonoBehaviour:
   - {fileID: 523608821, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 1133294635, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 1425658364, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: -1722576122, guid: 1caec2b95d2a7cc49b5e0bcc56ad9737, type: 3}
   - {fileID: -11954919, guid: 1caec2b95d2a7cc49b5e0bcc56ad9737, type: 3}
   - {fileID: 682426549, guid: 1caec2b95d2a7cc49b5e0bcc56ad9737, type: 3}

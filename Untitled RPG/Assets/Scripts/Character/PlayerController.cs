@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private void OnMoveOver()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, _character.OffestY), 0.2f, GameLayers.Instance.TriggerableLayers);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, _character.OffsetY), 0.2f, GameLayers.Instance.TriggerableLayers);
         IPlayerTriggerable triggerable = null;
 
         foreach (Collider2D collider in colliders)
@@ -95,11 +95,11 @@ public class PlayerController : MonoBehaviour, ISavable
 
             if (_input != Vector2.zero)
             {
-                StartCoroutine(_character.Move(_input, OnMoveOver));
+                StartCoroutine(_character.MoveRoutine(_input, OnMoveOver));
             }
         }
 
-        _character.HandleUpdate();
+        _character.UpdateAnimator();
 
         if (Input.GetButtonDown("Action") && !_isInteracting)
         {

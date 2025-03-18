@@ -12,42 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Belch
   m_EditorClassIdentifier: 
-  _name: Belch
-  _description: Unleashes a putrid burst of noxious gas that damages the foe and
-    may leave it poisoned.
-  _type: 5
-  _category: 1
-  _effects:
+  <Name>k__BackingField: Belch
+  <Description>k__BackingField: Unleashes a putrid burst of noxious gas that damages
+    the foe and may leave it poisoned.
+  <Type>k__BackingField: 5
+  <Category>k__BackingField: 1
+  <Target>k__BackingField: 0
+  <Effects>k__BackingField:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects:
+  <SecondaryEffects>k__BackingField:
   - _boosts: []
     _status: 1
     _volatileStatus: 0
     _weather: 0
     _chance: 40
     _target: 0
-  _critBehavior: 0
-  _recoil:
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 70
-  _accuracy: 90
-  _alwaysHits: 0
-  _sP: 15
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 70
+  <Accuracy>k__BackingField: 90
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: 715315704, guid: 336a5ee242c0dfe43a7021180a7e9451, type: 3}
   - {fileID: 414446001, guid: 336a5ee242c0dfe43a7021180a7e9451, type: 3}
   - {fileID: 1936865905, guid: 336a5ee242c0dfe43a7021180a7e9451, type: 3}
@@ -78,7 +78,7 @@ MonoBehaviour:
   - {fileID: -128929898, guid: 336a5ee242c0dfe43a7021180a7e9451, type: 3}
   - {fileID: 1265234821, guid: 336a5ee242c0dfe43a7021180a7e9451, type: 3}
   - {fileID: 434664770, guid: 336a5ee242c0dfe43a7021180a7e9451, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: -948202218, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
   - {fileID: 654943950, guid: e25aa675e2a3732488cf2baea3624763, type: 3}
   - {fileID: 879398199, guid: e25aa675e2a3732488cf2baea3624763, type: 3}

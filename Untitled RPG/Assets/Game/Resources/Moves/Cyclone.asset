@@ -12,42 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Cyclone
   m_EditorClassIdentifier: 
-  _name: Cyclone
-  _description: Unleashes a ferocious cyclone that damages all foes and may leave
-    them confused.
-  _type: 9
-  _category: 0
-  _effects:
+  <Name>k__BackingField: Cyclone
+  <Description>k__BackingField: Unleashes a ferocious cyclone that damages all foes
+    and may leave them confused.
+  <Type>k__BackingField: 9
+  <Category>k__BackingField: 0
+  <Target>k__BackingField: 2
+  <Effects>k__BackingField:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects:
+  <SecondaryEffects>k__BackingField:
   - _boosts: []
     _status: 0
     _volatileStatus: 6
     _weather: 0
     _chance: 40
     _target: 2
-  _critBehavior: 0
-  _recoil:
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 2
   _hitRange: {x: 0, y: 0}
-  _power: 110
-  _accuracy: 85
-  _alwaysHits: 0
-  _sP: 10
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 110
+  <Accuracy>k__BackingField: 85
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: -493978924, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 1665171130, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 351420225, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
@@ -78,7 +78,7 @@ MonoBehaviour:
   - {fileID: 523608821, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 1133294635, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
   - {fileID: 1425658364, guid: 0e84ca5237b647944a603c312d69a1a0, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: 1670162274, guid: bb45a613b30fbb4428b70a6ca7b80e5a, type: 3}
   - {fileID: 152773955, guid: bb45a613b30fbb4428b70a6ca7b80e5a, type: 3}
   - {fileID: 1031228987, guid: bb45a613b30fbb4428b70a6ca7b80e5a, type: 3}

@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Bubble
   m_EditorClassIdentifier: 
-  _name: Bubble
-  _description: Shoots a stream of bubbles at the foe, causing damage and possibly
-    reducing its agility.
-  _type: 3
-  _category: 1
-  _effects:
+  <Name>k__BackingField: Bubble
+  <Description>k__BackingField: Shoots a stream of bubbles at the foe, causing damage
+    and possibly reducing its agility.
+  <Type>k__BackingField: 3
+  <Category>k__BackingField: 1
+  <Target>k__BackingField: 0
+  <Effects>k__BackingField:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects:
+  <SecondaryEffects>k__BackingField:
   - _boosts:
     - Stat: 5
       Boost: -1
@@ -31,25 +32,24 @@ MonoBehaviour:
     _weather: 0
     _chance: 30
     _target: 0
-  _critBehavior: 0
-  _recoil:
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 40
-  _accuracy: 100
-  _alwaysHits: 0
-  _sP: 20
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 40
+  <Accuracy>k__BackingField: 100
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: -1504565155, guid: a699aa7fac034404fa4e054d9f7f0d92, type: 3}
   - {fileID: -1902479792, guid: a699aa7fac034404fa4e054d9f7f0d92, type: 3}
   - {fileID: -497586156, guid: a699aa7fac034404fa4e054d9f7f0d92, type: 3}
@@ -80,7 +80,7 @@ MonoBehaviour:
   - {fileID: 1380730194, guid: a699aa7fac034404fa4e054d9f7f0d92, type: 3}
   - {fileID: -1615275690, guid: a699aa7fac034404fa4e054d9f7f0d92, type: 3}
   - {fileID: 1606024277, guid: a699aa7fac034404fa4e054d9f7f0d92, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: -1912143562, guid: 4480d8c2c23cd444fb1f0b5742e7f0d2, type: 3}
   - {fileID: 1614097068, guid: 4480d8c2c23cd444fb1f0b5742e7f0d2, type: 3}
   - {fileID: 1247448430, guid: 4480d8c2c23cd444fb1f0b5742e7f0d2, type: 3}

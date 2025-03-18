@@ -12,37 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Imprint
   m_EditorClassIdentifier: 
-  _name: Imprint
-  _description: Marks the foe with a dark sigil that diminishes its intelligence.
-  _type: 10
-  _category: 2
-  _effects:
+  <Name>k__BackingField: Imprint
+  <Description>k__BackingField: Marks the foe with a dark sigil that diminishes its
+    intelligence.
+  <Type>k__BackingField: 10
+  <Category>k__BackingField: 2
+  <Target>k__BackingField: 0
+  <Effects>k__BackingField:
     _boosts:
     - Stat: 3
       Boost: -2
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects: []
-  _critBehavior: 0
-  _recoil:
+  <SecondaryEffects>k__BackingField: []
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 0
-  _accuracy: 90
-  _alwaysHits: 0
-  _sP: 20
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 0
+  <Accuracy>k__BackingField: 90
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: -598594256, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: 644760341, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: 257512420, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
@@ -73,7 +74,7 @@ MonoBehaviour:
   - {fileID: -132626319, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: 1842149764, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
   - {fileID: -11483756, guid: e74e33fd9a8eab448ae903ec1a1529d3, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: 84288190, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
   - {fileID: -487443172, guid: afe9364009f083948b1dda61964ab5a5, type: 3}
   - {fileID: -1409007663, guid: afe9364009f083948b1dda61964ab5a5, type: 3}

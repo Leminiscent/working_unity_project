@@ -2,58 +2,65 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] private GameObject _exclamation;
+    [field: SerializeField, FormerlySerializedAs("_exclamation")] public GameObject Exclamation { get; private set; }
 
-    private CharacterAnimator _animator;
+    private const float SNAP_OFFSET = 0.5f;
+    private const float OVERLAP_CIRCLE_RADIUS = 0.15f;
+    private const float BOX_CAST_SIZE = 0.2f;
+    private const float LEDGE_JUMP_MULTIPLIER = 2f;
+    private const float JUMP_POWER = 1.42f;
+    private const int NUM_JUMPS = 1;
+    private const float JUMP_DURATION = 0.34f;
 
     public float MoveSpeed;
     public bool IsMoving { get; private set; }
-    public float OffestY { get; private set; } = 0.3f;
-    public GameObject Exclamation => _exclamation;
-    public CharacterAnimator Animator => _animator;
+    public float OffsetY { get; private set; } = 0.3f;
+
+    public CharacterAnimator Animator { get; private set; }
     public event Action<Vector3> OnMoveStart;
 
     private void Awake()
     {
-        _animator = GetComponent<CharacterAnimator>();
-        SetPositionAndSnapToTile(transform.position);
+        Animator = GetComponent<CharacterAnimator>();
+        SnapToTile(transform.position);
     }
 
-    public void SetPositionAndSnapToTile(Vector2 pos)
+    public void SnapToTile(Vector2 pos)
     {
-        pos.x = Mathf.Floor(pos.x) + 0.5f;
-        pos.y = Mathf.Floor(pos.y) + 0.5f + OffestY;
+        pos.x = Mathf.Floor(pos.x) + SNAP_OFFSET;
+        pos.y = Mathf.Floor(pos.y) + SNAP_OFFSET + OffsetY;
         transform.position = pos;
     }
 
-    public IEnumerator Move(Vector2 moveVector, Action OnMoveOver = null, bool checkCollisions = true)
+    public IEnumerator MoveRoutine(Vector2 moveVector, Action OnMoveOver = null, bool checkCollisions = true)
     {
-        _animator.MoveX = Mathf.Clamp(moveVector.x, -1f, 1f);
-        _animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
+        // Update animator with movement direction
+        Animator.MoveX = Mathf.Clamp(moveVector.x, -1f, 1f);
+        Animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
         Vector3 targetPos = transform.position + new Vector3(moveVector.x, moveVector.y);
-        Ledge ledge = CheckForLedge(targetPos);
 
-        if (ledge != null)
+        // Check for a ledge and handle jump if applicable
+        Ledge ledge = DetectLedge(targetPos);
+        if (ledge != null && ledge.CanJump(moveVector))
         {
-            if (ledge.CanJump(moveVector))
-            {
-                yield return Jump(moveVector, OnMoveOver);
-                yield break;
-            }
+            yield return JumpRoutine(moveVector, OnMoveOver);
+            yield break;
         }
 
+        // Check for obstacles if needed
         if (checkCollisions && !IsPathClear(targetPos))
         {
             yield break;
         }
 
-        IsMoving = true;
-        OnMoveStart?.Invoke(transform.position);
+        StartMovement(transform.position);
 
+        // Smoothly move towards the target position
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, MoveSpeed * Time.deltaTime);
@@ -61,58 +68,76 @@ public class Character : MonoBehaviour
         }
         transform.position = targetPos;
 
-        IsMoving = false;
+        EndMovement();
         OnMoveOver?.Invoke();
     }
 
-    public IEnumerator Jump(Vector2 moveDir, Action OnMoveOver = null)
+    public IEnumerator JumpRoutine(Vector2 moveDir, Action OnMoveOver = null)
     {
-        IsMoving = true;
-        OnMoveStart?.Invoke(transform.position);
+        StartMovement(transform.position);
+        Animator.IsJumping = true;
 
-        _animator.IsJumping = true;
+        Vector3 jumpDestination = transform.position + (new Vector3(moveDir.x, moveDir.y) * LEDGE_JUMP_MULTIPLIER);
 
-        Vector3 jumpDest = transform.position + (new Vector3(moveDir.x, moveDir.y) * 2);
+        yield return transform.DOJump(jumpDestination, JUMP_POWER, NUM_JUMPS, JUMP_DURATION)
+                                .WaitForCompletion();
 
-        yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
-
-        _animator.IsJumping = false;
-        IsMoving = false;
-
+        Animator.IsJumping = false;
+        EndMovement();
         OnMoveOver?.Invoke();
     }
 
-    public void HandleUpdate()
+    public void UpdateAnimator()
     {
-        _animator.IsMoving = IsMoving;
+        Animator.IsMoving = IsMoving;
     }
 
     public bool IsPathClear(Vector3 targetPos)
     {
         Vector3 diff = targetPos - transform.position;
-        Vector3 dir = diff.normalized;
+        Vector3 direction = diff.normalized;
         int collisionLayer = GameLayers.Instance.SolidObjectsLayer |
                              GameLayers.Instance.InteractablesLayer |
                              GameLayers.Instance.PlayerLayer;
 
-        return !Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, collisionLayer);
-    }
+        // Adjust the distance for the BoxCast so it doesn't detect the character itself
+        float distance = diff.magnitude - 1f;
 
-    private Ledge CheckForLedge(Vector3 targetPos)
-    {
-        Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
-        return collider != null ? collider.GetComponent<Ledge>() : null;
+        return !Physics2D.BoxCast(transform.position + direction,
+                                  new Vector2(BOX_CAST_SIZE, BOX_CAST_SIZE),
+                                  0f,
+                                  direction,
+                                  distance,
+                                  collisionLayer);
     }
 
     public void LookTowards(Vector3 target)
     {
-        float xdiff = Mathf.Floor(target.x) - Mathf.Floor(transform.position.x);
-        float ydiff = Mathf.Floor(target.y) - Mathf.Floor(transform.position.y);
+        float xDiff = Mathf.Floor(target.x) - Mathf.Floor(transform.position.x);
+        float yDiff = Mathf.Floor(target.y) - Mathf.Floor(transform.position.y);
 
-        if (xdiff == 0 || ydiff == 0)
+        // Only adjust direction if movement is axis-aligned
+        if (xDiff == 0 || yDiff == 0)
         {
-            _animator.MoveX = Mathf.Clamp(xdiff, -1f, 1f);
-            _animator.MoveY = Mathf.Clamp(ydiff, -1f, 1f);
+            Animator.MoveX = Mathf.Clamp(xDiff, -1f, 1f);
+            Animator.MoveY = Mathf.Clamp(yDiff, -1f, 1f);
         }
+    }
+
+    private Ledge DetectLedge(Vector3 targetPos)
+    {
+        Collider2D collider = Physics2D.OverlapCircle(targetPos, OVERLAP_CIRCLE_RADIUS, GameLayers.Instance.LedgeLayer);
+        return collider ? collider.GetComponent<Ledge>() : null;
+    }
+
+    private void StartMovement(Vector3 startPosition)
+    {
+        IsMoving = true;
+        OnMoveStart?.Invoke(startPosition);
+    }
+
+    private void EndMovement()
+    {
+        IsMoving = false;
     }
 }

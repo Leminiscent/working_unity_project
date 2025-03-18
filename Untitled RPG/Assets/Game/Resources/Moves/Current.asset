@@ -12,16 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a809c259c14754d98c1e788a235c50, type: 3}
   m_Name: Current
   m_EditorClassIdentifier: 
-  _name: Current
-  _description: Envelops the foe in a surge of electricity that may lower its endurance.
-  _type: 4
-  _category: 1
-  _effects:
+  <Name>k__BackingField: Current
+  <Description>k__BackingField: Envelops the foe in a surge of electricity that may
+    lower its endurance.
+  <Type>k__BackingField: 4
+  <Category>k__BackingField: 1
+  <Target>k__BackingField: 0
+  <Effects>k__BackingField:
     _boosts: []
     _status: 0
     _volatileStatus: 0
     _weather: 0
-  _secondaryEffects:
+  <SecondaryEffects>k__BackingField:
   - _boosts:
     - Stat: 2
       Boost: -1
@@ -30,25 +32,24 @@ MonoBehaviour:
     _weather: 0
     _chance: 20
     _target: 0
-  _critBehavior: 0
-  _recoil:
+  <CritBehavior>k__BackingField: 0
+  <Recoil>k__BackingField:
     RecoilType: 0
     RecoilDamage: 0
-  _drainPercentage: 0
-  _oneHitKO:
+  <DrainPercentage>k__BackingField: 0
+  <OneHitKO>k__BackingField:
     IsOneHitKO: 0
     LowerOddsException: 0
     ImmunityType: 0
-  _target: 0
   _hitRange: {x: 0, y: 0}
-  _power: 70
-  _accuracy: 100
-  _alwaysHits: 0
-  _sP: 15
-  _priority: 0
-  _castSound: {fileID: 0}
-  _effectSound: {fileID: 0}
-  _castAnimationSprites:
+  <Power>k__BackingField: 70
+  <Accuracy>k__BackingField: 100
+  <AlwaysHits>k__BackingField: 0
+  <SP>k__BackingField: 10
+  <Priority>k__BackingField: 0
+  <CastSound>k__BackingField: {fileID: 0}
+  <EffectSound>k__BackingField: {fileID: 0}
+  <CastAnimationSprites>k__BackingField:
   - {fileID: 1705823910, guid: dea9a4d5cf001304bb8633922b394d4d, type: 3}
   - {fileID: -1289634245, guid: dea9a4d5cf001304bb8633922b394d4d, type: 3}
   - {fileID: 675822973, guid: dea9a4d5cf001304bb8633922b394d4d, type: 3}
@@ -79,7 +80,7 @@ MonoBehaviour:
   - {fileID: 787859061, guid: dea9a4d5cf001304bb8633922b394d4d, type: 3}
   - {fileID: -2040756275, guid: dea9a4d5cf001304bb8633922b394d4d, type: 3}
   - {fileID: -1236397224, guid: dea9a4d5cf001304bb8633922b394d4d, type: 3}
-  _effectAnimationSprites:
+  <EffectAnimationSprites>k__BackingField:
   - {fileID: 495408561, guid: 21bd272575ee23b40951d7027803988d, type: 3}
   - {fileID: -2006294836, guid: 21bd272575ee23b40951d7027803988d, type: 3}
   - {fileID: 917754466, guid: 21bd272575ee23b40951d7027803988d, type: 3}
