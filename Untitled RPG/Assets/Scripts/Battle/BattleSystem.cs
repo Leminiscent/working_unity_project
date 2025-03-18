@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils.StateMachine;
 
@@ -21,7 +22,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private List<BattleUnit> _enemyUnitsTriple;
 
     [Header("UI Elements")]
-    [SerializeField] private BattleDialogueBox _dialogueBox;
     [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private GameObject _playerElementsSingle;
     [SerializeField] private GameObject _playerElementsDouble;
@@ -29,13 +29,14 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject _enemyElementsSingle;
     [SerializeField] private GameObject _enemyElementsDouble;
     [SerializeField] private GameObject _enemyElementsTriple;
+    [field: SerializeField, FormerlySerializedAs("_dialogueBox")] public BattleDialogueBox DialogueBox { get; private set; }
 
     [Header("Audio")]
     [SerializeField] private AudioClip _rogueBattleMusic;
     [SerializeField] private AudioClip _commanderBattleMusic;
-    [SerializeField] private AudioClip _battleWonMusic;
-    [SerializeField] private AudioClip _battleLostMusic;
-    [SerializeField] private AudioClip _battleFledMusic;
+    [field: SerializeField, FormerlySerializedAs("_battleWonMusic")] public AudioClip BattleWonMusic { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_battleLostMusic")] public AudioClip BattleLostMusic { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_battleFledMusic")] public AudioClip BattleFledMusic { get; private set; }
 
     [Header("Background")]
     [SerializeField] private Image _backgroundImage;
@@ -53,8 +54,6 @@ public class BattleSystem : MonoBehaviour
 
     private BattleTrigger _battleTrigger;
     private Dictionary<BattleTrigger, Sprite> _backgroundMapping;
-    private List<BattleUnit> _playerUnits;
-    private List<BattleUnit> _enemyUnits;
     private int _playerUnitCount = 1;
     private int _enemyUnitCount = 1;
     private int _selectingUnitIndex = 0;
@@ -71,13 +70,9 @@ public class BattleSystem : MonoBehaviour
     public int EscapeAttempts { get; set; }
     public CommanderController Enemy { get; private set; }
     public PlayerController Player { get; private set; }
-    public BattleDialogueBox DialogueBox => _dialogueBox;
-    public List<BattleUnit> PlayerUnits => _playerUnits;
-    public List<BattleUnit> EnemyUnits => _enemyUnits;
+    public List<BattleUnit> PlayerUnits { get; private set; }
+    public List<BattleUnit> EnemyUnits { get; private set; }
     public BattleUnit SelectingUnit => PlayerUnits[_selectingUnitIndex];
-    public AudioClip BattleWonMusic => _battleWonMusic;
-    public AudioClip BattleLostMusic => _battleLostMusic;
-    public AudioClip BattleFledMusic => _battleFledMusic;
 
     private void Awake()
     {
@@ -138,8 +133,8 @@ public class BattleSystem : MonoBehaviour
         AssignBattleUnitLists();
 
         // Clear any previous data on the battle units.
-        ClearUnitsData(_playerUnits);
-        ClearUnitsData(_enemyUnits);
+        ClearUnitsData(PlayerUnits);
+        ClearUnitsData(EnemyUnits);
 
         // Set the background image.
         if (_backgroundMapping.ContainsKey(_battleTrigger))
@@ -158,18 +153,18 @@ public class BattleSystem : MonoBehaviour
         {
             for (int i = 0; i < _playerUnitCount; i++)
             {
-                _playerUnits[i].Setup(playerBattlers[i]);
+                PlayerUnits[i].Setup(playerBattlers[i]);
             }
 
             for (int i = 0; i < _enemyUnitCount; i++)
             {
-                _enemyUnits[i].Setup(RogueBattlers[i]);
+                EnemyUnits[i].Setup(RogueBattlers[i]);
             }
 
             string rogueAppearance = RogueBattlers.Count > 1
                 ? $"A group of rogue battlers has appeared!"
                 : $"A rogue {RogueBattlers[0].Base.Name} has appeared!";
-            yield return _dialogueBox.TypeDialogue(rogueAppearance);
+            yield return DialogueBox.TypeDialogue(rogueAppearance);
         }
         else
         {
@@ -178,15 +173,15 @@ public class BattleSystem : MonoBehaviour
 
             for (int i = 0; i < _playerUnitCount; i++)
             {
-                _playerUnits[i].Setup(playerBattlers[i]);
+                PlayerUnits[i].Setup(playerBattlers[i]);
             }
 
             for (int i = 0; i < _enemyUnitCount; i++)
             {
-                _enemyUnits[i].Setup(enemyBattlers[i]);
+                EnemyUnits[i].Setup(enemyBattlers[i]);
             }
 
-            yield return _dialogueBox.TypeDialogue($"Commander {Enemy.Name} wants to battle!");
+            yield return DialogueBox.TypeDialogue($"Commander {Enemy.Name} wants to battle!");
         }
 
         Field = new Field();
@@ -218,7 +213,7 @@ public class BattleSystem : MonoBehaviour
         battleAction.SourceUnit = SelectingUnit;
         _battleActions.Add(battleAction);
 
-        if (_battleActions.Count == _playerUnits.Count)
+        if (_battleActions.Count == PlayerUnits.Count)
         {
             SelectingUnit.SetSelected(false);
             // Process enemy actions
@@ -260,14 +255,14 @@ public class BattleSystem : MonoBehaviour
     {
         if (unitToSwitch.Battler.Hp > 0)
         {
-            yield return _dialogueBox.TypeDialogue($"Get back {unitToSwitch.Battler.Base.Name}!");
+            yield return DialogueBox.TypeDialogue($"Get back {unitToSwitch.Battler.Base.Name}!");
             _ = StartCoroutine(unitToSwitch.PlayExitAnimation());
             yield return new WaitForSeconds(SWITCH_BATTLER_WAIT_DURATION);
         }
 
         unitToSwitch.Setup(newBattler);
-        _dialogueBox.SetMoveNames(newBattler.Moves);
-        yield return _dialogueBox.TypeDialogue($"Come forward {newBattler.Base.Name}!");
+        DialogueBox.SetMoveNames(newBattler.Moves);
+        yield return DialogueBox.TypeDialogue($"Come forward {newBattler.Base.Name}!");
     }
 
     public bool UnableToSwitch(Battler battler)
@@ -277,7 +272,7 @@ public class BattleSystem : MonoBehaviour
 
     private void ProcessEnemyActions()
     {
-        foreach (BattleUnit enemyUnit in _enemyUnits)
+        foreach (BattleUnit enemyUnit in EnemyUnits)
         {
             if (UnityEngine.Random.value < ENEMY_GUARD_CHANCE)
             {
@@ -307,25 +302,25 @@ public class BattleSystem : MonoBehaviour
         return selectedMove.Base.Target switch
         {
             MoveTarget.Self => new List<BattleUnit> { enemyUnit },
-            MoveTarget.AllAllies => _enemyUnits,
-            MoveTarget.AllEnemies => _playerUnits,
-            MoveTarget.Ally => new List<BattleUnit> { _enemyUnits[UnityEngine.Random.Range(0, _enemyUnits.Count)] },
-            MoveTarget.Enemy => new List<BattleUnit> { _playerUnits[UnityEngine.Random.Range(0, _playerUnits.Count)] },
+            MoveTarget.AllAllies => EnemyUnits,
+            MoveTarget.AllEnemies => PlayerUnits,
+            MoveTarget.Ally => new List<BattleUnit> { EnemyUnits[UnityEngine.Random.Range(0, EnemyUnits.Count)] },
+            MoveTarget.Enemy => new List<BattleUnit> { PlayerUnits[UnityEngine.Random.Range(0, PlayerUnits.Count)] },
             MoveTarget.Others => throw new NotImplementedException(),
-            _ => _enemyUnits.Where(u => u != enemyUnit).Concat(_playerUnits).ToList(),
+            _ => EnemyUnits.Where(u => u != enemyUnit).Concat(PlayerUnits).ToList(),
         };
     }
 
     public IEnumerator SendNextCommanderBattler(Battler newBattler, BattleUnit defeatedUnit)
     {
         defeatedUnit.Setup(newBattler);
-        yield return _dialogueBox.TypeDialogue($"Commander {Enemy.Name} summoned {newBattler.Base.Name} to battle!");
+        yield return DialogueBox.TypeDialogue($"Commander {Enemy.Name} summoned {newBattler.Base.Name} to battle!");
     }
 
     private void AssignBattleUnitLists()
     {
         // Assign player units
-        _playerUnits = _playerUnitCount switch
+        PlayerUnits = _playerUnitCount switch
         {
             1 => new List<BattleUnit> { _playerUnitSingle },
             2 => new List<BattleUnit>(_playerUnitsDouble),
@@ -334,7 +329,7 @@ public class BattleSystem : MonoBehaviour
         };
 
         // Assign enemy units
-        _enemyUnits = _enemyUnitCount switch
+        EnemyUnits = _enemyUnitCount switch
         {
             1 => new List<BattleUnit> { _enemyUnitSingle },
             2 => new List<BattleUnit>(_enemyUnitsDouble),
