@@ -4,9 +4,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Represents a unit in battle, handling setup, animations, and visual feedback.
-/// </summary>
 public class BattleUnit : MonoBehaviour
 {
     [SerializeField] private bool _isPlayerUnit;
@@ -53,10 +50,6 @@ public class BattleUnit : MonoBehaviour
         _currentColor = _originalColor;
     }
 
-    /// <summary>
-    /// Configures the unit with the given battler data and starts the entry animation.
-    /// </summary>
-    /// <param name="battler">The battler data to set up.</param>
     public void Setup(Battler battler)
     {
         if (Battler != null)
@@ -81,9 +74,6 @@ public class BattleUnit : MonoBehaviour
         _ = StartCoroutine(PlayEnterAnimation());
     }
 
-    /// <summary>
-    /// Clears the unit's data and hides its HUD.
-    /// </summary>
     public void ClearData()
     {
         if (Battler != null && _hud != null)
@@ -96,10 +86,6 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Highlights or unhighlights the unit to indicate selection.
-    /// </summary>
-    /// <param name="selected">True to select the unit; false to deselect.</param>
     public void SetSelected(bool selected)
     {
         Outline outline = GetComponent<Outline>();
@@ -122,10 +108,6 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Changes the unit's color to indicate it is targeted.
-    /// </summary>
-    /// <param name="selected">True to highlight; false to revert to the original color.</param>
     public void SetTargeted(bool selected)
     {
         if (_image != null)
@@ -134,13 +116,6 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Plays a custom animation using a sequence of sprites.
-    /// </summary>
-    /// <param name="sprites">The list of sprites for the animation.</param>
-    /// <param name="sfx">Optional sound effect to play.</param>
-    /// <param name="pauseMusic">Whether to pause the background music while playing the SFX.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     private IEnumerator PlayAnimation(List<Sprite> sprites, AudioID? sfx = null, bool pauseMusic = false)
     {
         if (sprites == null || sprites.Count == 0)
@@ -165,10 +140,6 @@ public class BattleUnit : MonoBehaviour
         yield return new WaitForSeconds((sprites.Count * ANIMATION_FRAME_RATE) + ANIMATION_EXTRA_WAIT);
     }
 
-    /// <summary>
-    /// Plays the entry animation for the unit.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayEnterAnimation()
     {
         if (_image == null)
@@ -182,10 +153,6 @@ public class BattleUnit : MonoBehaviour
         yield return _image.transform.DOLocalMoveX(_originalPos.x, ENTER_EXIT_DURATION).WaitForCompletion();
     }
 
-    /// <summary>
-    /// Plays the exit animation for the unit.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayExitAnimation()
     {
         if (_image == null)
@@ -199,11 +166,6 @@ public class BattleUnit : MonoBehaviour
             : _image.transform.DOLocalMoveX(ENTER_EXIT_OFFSET, ENTER_EXIT_DURATION).WaitForCompletion();
     }
 
-    /// <summary>
-    /// Plays the move cast animation, including an optional cast animation from the move data.
-    /// </summary>
-    /// <param name="move">The move whose cast animation to play.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayMoveCastAnimation(MoveBase move = null)
     {
         if (move != null)
@@ -220,11 +182,6 @@ public class BattleUnit : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
 
-    /// <summary>
-    /// Plays the effect animation for a move.
-    /// </summary>
-    /// <param name="move">The move whose effect animation to play.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayMoveEffectAnimation(MoveBase move)
     {
         if (move == null)
@@ -235,29 +192,16 @@ public class BattleUnit : MonoBehaviour
         yield return PlayAnimation(move.EffectAnimationSprites);
     }
 
-    /// <summary>
-    /// Plays the experience gain animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayExpGainAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.ExpGainAnimationSprites, AudioID.ExpGain);
     }
 
-    /// <summary>
-    /// Plays the level-up animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayLevelUpAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.LevelUpAnimationSprites, AudioID.LevelUp, true);
     }
 
-    /// <summary>
-    /// Plays the stat gain animation for the specified stat.
-    /// </summary>
-    /// <param name="stat">The stat that was gained.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayStatGainAnimation(Stat stat)
     {
         List<Sprite> sprites;
@@ -292,11 +236,6 @@ public class BattleUnit : MonoBehaviour
         yield return PlayAnimation(sprites, AudioID.StatusUp);
     }
 
-    /// <summary>
-    /// Plays the stat loss animation for the specified stat.
-    /// </summary>
-    /// <param name="stat">The stat that was lost.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayStatLossAnimation(Stat stat)
     {
         List<Sprite> sprites;
@@ -331,46 +270,26 @@ public class BattleUnit : MonoBehaviour
         yield return PlayAnimation(sprites, AudioID.StatusDown);
     }
 
-    /// <summary>
-    /// Plays the affinity gain animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayAffinityGainAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.AffinityGainAnimationSprites, AudioID.AffinityGain);
     }
 
-    /// <summary>
-    /// Plays the affinity loss animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayAffinityLossAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.AffinityLossAnimationSprites, AudioID.AffinityLoss);
     }
 
-    /// <summary>
-    /// Plays the status condition set animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayStatusSetAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.SetStatusConditionAnimationSprites, AudioID.SetStatus);
     }
 
-    /// <summary>
-    /// Plays the status condition cure animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayStatusCureAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.CureStatusConditionAnimationSprites);
     }
 
-    /// <summary>
-    /// Plays the damage reaction animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayDamageAnimation()
     {
         if (_image == null)
@@ -388,19 +307,11 @@ public class BattleUnit : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
 
-    /// <summary>
-    /// Plays the healing animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayHealAnimation()
     {
         yield return PlayAnimation(GlobalSettings.Instance.HealAnimationSprites);
     }
 
-    /// <summary>
-    /// Plays the defeat animation.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator PlayDefeatAnimation()
     {
         if (_image == null)
@@ -415,10 +326,6 @@ public class BattleUnit : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
 
-    /// <summary>
-    /// Initiates the guarding animation, moving the unit into a guarded position.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator StartGuarding()
     {
         if (Battler == null)
@@ -438,10 +345,6 @@ public class BattleUnit : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
 
-    /// <summary>
-    /// Ends the guarding animation, returning the unit to its original position and color.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator StopGuarding()
     {
         if (Battler == null)
