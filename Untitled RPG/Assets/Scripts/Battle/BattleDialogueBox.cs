@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BattleDialogueBox : MonoBehaviour
 {
-    [SerializeField] private int _lettersPerSecond = 45;
+    [SerializeField] private float _lettersPerSecond = 45f;
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private GameObject _choiceBox;
     [SerializeField] private List<TextMeshProUGUI> _moveTexts;

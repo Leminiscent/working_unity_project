@@ -9,7 +9,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject _dialogueBox;
     [SerializeField] private ChoiceBox _choiceBox;
     [SerializeField] private TextMeshProUGUI _dialogueText;
-    [SerializeField] private float _lettersPerSecond;
+    [SerializeField] private float _lettersPerSecond = 45f;
+
+    private const float ACCELERATION_FACTOR = 100f;
+    private const float POST_DIALOGUE_WAIT_TIME = 0.5f;
 
     public event Action OnShowDialogue;
     public event Action OnDialogueFinished;
@@ -28,24 +31,18 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public IEnumerator ShowDialogueText(string text, bool waitForInput = true, float waitTime = 0.5f, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
+    public IEnumerator ShowDialogueText(string text, bool waitForInput = true, float waitTime = POST_DIALOGUE_WAIT_TIME, bool autoClose = true, List<string> choices = null, Action<int> onChoiceSelected = null)
     {
-        yield return new WaitForEndOfFrame();
+        yield return InitializeDialogue();
 
-        OnShowDialogue?.Invoke();
-        IsShowing = true;
-        _dialogueText.text = "";
-        _dialogueBox.SetActive(true);
         yield return TypeDialogue(text);
-        if (waitForInput)
-        {
-            yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
-        }
-        else
-        {
-            yield return new WaitForSeconds(waitTime);
-        }
 
+        // Wait for input or a preset duration
+        yield return waitForInput
+            ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+            : new WaitForSeconds(waitTime);
+
+        // Handle choice selection if provided
         if (choices != null && choices.Count > 1)
         {
             yield return _choiceBox.ShowChoices(choices, onChoiceSelected);
@@ -58,58 +55,59 @@ public class DialogueManager : MonoBehaviour
         OnDialogueFinished?.Invoke();
     }
 
+    public IEnumerator ShowDialogue(Dialogue dialogue, bool waitForInput = true, float waitTime = POST_DIALOGUE_WAIT_TIME, List<string> choices = null, Action<int> onChoiceSelected = null)
+    {
+        yield return InitializeDialogue();
+
+        foreach (string line in dialogue.Lines)
+        {
+            yield return TypeDialogue(line);
+
+            yield return waitForInput
+                ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+                : new WaitForSeconds(waitTime);
+        }
+
+        // Handle choice selection if provided
+        if (choices != null && choices.Count > 1)
+        {
+            yield return _choiceBox.ShowChoices(choices, onChoiceSelected);
+        }
+
+        CloseDialogue();
+        OnDialogueFinished?.Invoke();
+    }
+
+    private IEnumerator InitializeDialogue()
+    {
+        yield return new WaitForEndOfFrame();
+        OnShowDialogue?.Invoke();
+        IsShowing = true;
+        _dialogueText.text = "";
+        _dialogueBox.SetActive(true);
+    }
+
     public void CloseDialogue()
     {
         _dialogueBox.SetActive(false);
         IsShowing = false;
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue, bool waitForInput = true, float waitTime = 0.5f, List<string> choices = null, Action<int> onChoiceSelected = null)
-    {
-        yield return new WaitForEndOfFrame();
-
-        OnShowDialogue?.Invoke();
-        IsShowing = true;
-        _dialogueText.text = "";
-        _dialogueBox.SetActive(true);
-        foreach (string line in dialogue.Lines)
-        {
-            yield return TypeDialogue(line);
-
-            if (waitForInput)
-            {
-                yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
-            }
-            else
-            {
-                yield return new WaitForSeconds(waitTime);
-            }
-        }
-
-        if (choices != null && choices.Count > 1)
-        {
-            yield return _choiceBox.ShowChoices(choices, onChoiceSelected);
-        }
-
-        _dialogueBox.SetActive(false);
-        IsShowing = false;
-        OnDialogueFinished?.Invoke();
-    }
-
     public IEnumerator TypeDialogue(string line)
     {
         _dialogueText.text = "";
         bool isAccelerated = false;
-        float accelerationFactor = 100f;
+        float accelerationFactor = ACCELERATION_FACTOR;
         float baseDelay = 1f / _lettersPerSecond;
 
-        foreach (char letter in line.ToCharArray())
+        foreach (char letter in line)
         {
             _dialogueText.text += letter;
             float delay = isAccelerated ? baseDelay / accelerationFactor : baseDelay;
             float elapsed = 0f;
             while (elapsed < delay)
             {
+                // Check for acceleration input
                 if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
                 {
                     isAccelerated = true;

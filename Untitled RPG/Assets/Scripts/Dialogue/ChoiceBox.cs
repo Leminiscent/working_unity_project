@@ -10,11 +10,13 @@ public class ChoiceBox : SelectionUI<TextSlot>
 
     public IEnumerator ShowChoices(List<string> choices, Action<int> onChoiceSelected)
     {
-        foreach (Transform child in transform)
+        // Clear existing choices by iterating in reverse order
+        for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            Destroy(child.gameObject);
+            Destroy(transform.GetChild(i).gameObject);
         }
 
+        // Create new choice items
         List<TextSlot> items = new();
         foreach (string choice in choices)
         {
@@ -23,6 +25,7 @@ public class ChoiceBox : SelectionUI<TextSlot>
             items.Add(textSlot);
         }
 
+        // Configure selection settings
         SetSelectionSettings(SelectionType.List, 1);
         SetItems(items);
 
@@ -31,24 +34,33 @@ public class ChoiceBox : SelectionUI<TextSlot>
         bool choiceMade = false;
         int selectedIndex = -1;
 
+        // Local event handlers for selection/back events
         void onSelectedHandler(int index)
         {
             selectedIndex = index;
             choiceMade = true;
-            AudioManager.Instance.PlaySFX(AudioID.UISelect);
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioID.UISelect);
+            }
         }
         void onBackHandler()
         {
             selectedIndex = items.Count - 1;
             choiceMade = true;
-            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+            }
         }
 
         OnSelected += onSelectedHandler;
         OnBack += onBackHandler;
 
+        // Wait until a choice is made
         yield return new WaitUntil(() => choiceMade);
 
+        // Unsubscribe the event handlers
         OnSelected -= onSelectedHandler;
         OnBack -= onBackHandler;
 
