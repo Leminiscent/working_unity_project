@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// AudioManager is responsible for playing music and sound effects with fade transitions and pause/resume logic.
+/// Manages audio playback within the game, including background music and sound effects.
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private List<AudioData> _sfxList;
-    [SerializeField] private AudioSource _musicPlayer;
-    [SerializeField] private AudioSource _sfxPlayer;
     [SerializeField] private float _fadeDuration = 0.75f;
 
     private AudioClip _currentMusic;
@@ -19,10 +17,26 @@ public class AudioManager : MonoBehaviour
     private int _pauseCount = 0; // Counter to track overlapping SFX that require pausing the music.
     private Tween _musicTween; // Tracks the active tween for music transitions.
 
-    public AudioSource MusicPlayer => _musicPlayer;
-    public AudioSource SfxPlayer => _sfxPlayer;
+    /// <summary>
+    /// Gets the AudioSource used for playing background music.
+    /// </summary>
+    [field: SerializeField]
+    public AudioSource MusicPlayer { get; private set; }
+
+    /// <summary>
+    /// Gets the AudioSource used for playing sound effects.
+    /// </summary>
+    [field: SerializeField]
+    public AudioSource SfxPlayer { get; private set; }
+
+    /// <summary>
+    /// Gets the singleton instance of the AudioManager.
+    /// </summary>
     public static AudioManager Instance { get; private set; }
 
+    /// <summary>
+    /// Initializes the AudioManager singleton instance.
+    /// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,19 +49,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes the AudioManager by verifying assigned AudioSource components and initializing the sound effects dictionary.
+    /// </summary>
     private void Start()
     {
-        if (_musicPlayer == null)
+        if (MusicPlayer == null)
         {
             Debug.LogError("MusicPlayer is not assigned in the inspector.");
         }
 
-        if (_sfxPlayer == null)
+        if (SfxPlayer == null)
         {
             Debug.LogError("SfxPlayer is not assigned in the inspector.");
         }
 
-        _originalMusicVolume = _musicPlayer.volume;
+        _originalMusicVolume = MusicPlayer.volume;
         InitializeSfxDictionary();
     }
 
@@ -114,7 +131,7 @@ public class AudioManager : MonoBehaviour
             HandleMusicPause(clip.length);
         }
 
-        _sfxPlayer.PlayOneShot(clip);
+        SfxPlayer.PlayOneShot(clip);
     }
 
     /// <summary>
@@ -138,7 +155,7 @@ public class AudioManager : MonoBehaviour
         }
 
         _currentMusic = clip;
-        StartCoroutine(PlayMusicAsync(clip, loop, fade));
+        _ = StartCoroutine(PlayMusicAsync(clip, loop, fade));
     }
 
     /// <summary>
@@ -159,19 +176,19 @@ public class AudioManager : MonoBehaviour
         if (fade)
         {
             // Fade out the current music.
-            _musicTween = _musicPlayer.DOFade(0, _fadeDuration);
+            _musicTween = MusicPlayer.DOFade(0, _fadeDuration);
             yield return _musicTween.WaitForCompletion();
         }
 
-        _musicPlayer.clip = clip;
-        _musicPlayer.loop = loop;
-        _musicPlayer.Play();
+        MusicPlayer.clip = clip;
+        MusicPlayer.loop = loop;
+        MusicPlayer.Play();
 
         if (fade)
         {
             // Fade in the new music.
-            _musicPlayer.volume = 0;
-            _musicTween = _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+            MusicPlayer.volume = 0;
+            _musicTween = MusicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
             yield return _musicTween.WaitForCompletion();
         }
     }
@@ -183,12 +200,12 @@ public class AudioManager : MonoBehaviour
     /// <param name="duration">The duration of the SFX, used to determine when to unpause the music.</param>
     private void HandleMusicPause(float duration)
     {
-        if (_musicPlayer.isPlaying && _pauseCount == 0)
+        if (MusicPlayer.isPlaying && _pauseCount == 0)
         {
-            _musicPlayer.Pause();
+            MusicPlayer.Pause();
         }
         _pauseCount++;
-        StartCoroutine(UnpauseMusicAfterDelay(duration));
+        _ = StartCoroutine(UnpauseMusicAfterDelay(duration));
     }
 
     /// <summary>
@@ -201,11 +218,11 @@ public class AudioManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         _pauseCount = Mathf.Max(0, _pauseCount - 1);
-        if (_pauseCount == 0 && !_musicPlayer.isPlaying)
+        if (_pauseCount == 0 && !MusicPlayer.isPlaying)
         {
-            _musicPlayer.volume = 0;
-            _musicPlayer.UnPause();
-            _musicTween = _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+            MusicPlayer.volume = 0;
+            MusicPlayer.UnPause();
+            _musicTween = MusicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
         }
     }
 }
