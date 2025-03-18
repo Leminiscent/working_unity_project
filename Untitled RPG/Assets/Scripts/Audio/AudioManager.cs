@@ -3,14 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Manages audio playback for sound effects and music.
-/// </summary>
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private List<AudioData> _sfxList;
-    [SerializeField] private AudioSource _musicPlayer;
-    [SerializeField] private AudioSource _sfxPlayer;
     [SerializeField] private float _fadeDuration = 0.75f;
 
     private AudioClip _currentMusic;
@@ -19,8 +14,9 @@ public class AudioManager : MonoBehaviour
     private int _pauseCount = 0; // Counter to track overlapping SFX that require pausing the music.
     private Tween _musicTween; // Tracks the active tween for music transitions.
 
-    public AudioSource MusicPlayer => _musicPlayer;
-    public AudioSource SfxPlayer => _sfxPlayer;
+    [field: SerializeField] public AudioSource MusicPlayer { get; private set; }
+    [field: SerializeField] public AudioSource SfxPlayer { get; private set; }
+
     public static AudioManager Instance { get; private set; }
 
     private void Awake()
@@ -37,23 +33,20 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        if (_musicPlayer == null)
+        if (MusicPlayer == null)
         {
             Debug.LogError("MusicPlayer is not assigned in the inspector.");
         }
 
-        if (_sfxPlayer == null)
+        if (SfxPlayer == null)
         {
             Debug.LogError("SfxPlayer is not assigned in the inspector.");
         }
 
-        _originalMusicVolume = _musicPlayer.volume;
+        _originalMusicVolume = MusicPlayer.volume;
         InitializeSfxDictionary();
     }
 
-    /// <summary>
-    /// Initializes the SFX dictionary from the provided list while checking for duplicates and null entries.
-    /// </summary>
     private void InitializeSfxDictionary()
     {
         _sfxDictionary = new Dictionary<AudioID, AudioData>();
@@ -79,11 +72,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Plays a sound effect based on its AudioID. Optionally pauses the music during the SFX.
-    /// </summary>
-    /// <param name="id">The AudioID to play.</param>
-    /// <param name="pauseMusic">If true, pauses the music for the duration of the SFX.</param>
     public void PlaySFX(AudioID id, bool pauseMusic = false)
     {
         if (_sfxDictionary.TryGetValue(id, out AudioData audioData))
@@ -96,11 +84,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Plays a sound effect using the specified AudioClip. Optionally pauses the music during the SFX.
-    /// </summary>
-    /// <param name="clip">The AudioClip to play.</param>
-    /// <param name="pauseMusic">If true, pauses the music for the duration of the SFX.</param>
     public void PlaySFX(AudioClip clip, bool pauseMusic = false)
     {
         if (clip == null)
@@ -114,15 +97,9 @@ public class AudioManager : MonoBehaviour
             HandleMusicPause(clip.length);
         }
 
-        _sfxPlayer.PlayOneShot(clip);
+        SfxPlayer.PlayOneShot(clip);
     }
 
-    /// <summary>
-    /// Plays music with options for looping and fade transitions.
-    /// </summary>
-    /// <param name="clip">The AudioClip to play as music.</param>
-    /// <param name="loop">Whether the music should loop.</param>
-    /// <param name="fade">Whether to fade out the current music and fade in the new clip.</param>
     public void PlayMusic(AudioClip clip, bool loop = true, bool fade = false)
     {
         if (clip == null)
@@ -141,13 +118,6 @@ public class AudioManager : MonoBehaviour
         _ = StartCoroutine(PlayMusicAsync(clip, loop, fade));
     }
 
-    /// <summary>
-    /// Coroutine that handles the asynchronous playing of music with optional fade transitions.
-    /// </summary>
-    /// <param name="clip">The new AudioClip to play.</param>
-    /// <param name="loop">Whether the clip should loop.</param>
-    /// <param name="fade">Whether to fade between tracks.</param>
-    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator PlayMusicAsync(AudioClip clip, bool loop, bool fade)
     {
         // If a tween is already running, kill it to avoid overlapping tweens.
@@ -159,60 +129,46 @@ public class AudioManager : MonoBehaviour
         if (fade)
         {
             // Fade out the current music.
-            _musicTween = _musicPlayer.DOFade(0, _fadeDuration);
+            _musicTween = MusicPlayer.DOFade(0, _fadeDuration);
             yield return _musicTween.WaitForCompletion();
         }
 
-        _musicPlayer.clip = clip;
-        _musicPlayer.loop = loop;
-        _musicPlayer.Play();
+        MusicPlayer.clip = clip;
+        MusicPlayer.loop = loop;
+        MusicPlayer.Play();
 
         if (fade)
         {
             // Fade in the new music.
-            _musicPlayer.volume = 0;
-            _musicTween = _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+            MusicPlayer.volume = 0;
+            _musicTween = MusicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
             yield return _musicTween.WaitForCompletion();
         }
     }
 
-    /// <summary>
-    /// Handles pausing the music when a SFX that requires pausing is played.
-    /// Uses a counter to manage overlapping pause requests.
-    /// </summary>
-    /// <param name="duration">The duration of the SFX, used to determine when to unpause the music.</param>
     private void HandleMusicPause(float duration)
     {
-        if (_musicPlayer.isPlaying && _pauseCount == 0)
+        if (MusicPlayer.isPlaying && _pauseCount == 0)
         {
-            _musicPlayer.Pause();
+            MusicPlayer.Pause();
         }
         _pauseCount++;
         _ = StartCoroutine(UnpauseMusicAfterDelay(duration));
     }
 
-    /// <summary>
-    /// Coroutine that waits for the specified duration before decrementing the pause counter.
-    /// When the counter reaches zero, the music is unpaused with a fade-in.
-    /// </summary>
-    /// <param name="delay">Delay in seconds.</param>
-    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator UnpauseMusicAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         _pauseCount = Mathf.Max(0, _pauseCount - 1);
-        if (_pauseCount == 0 && !_musicPlayer.isPlaying)
+        if (_pauseCount == 0 && !MusicPlayer.isPlaying)
         {
-            _musicPlayer.volume = 0;
-            _musicPlayer.UnPause();
-            _musicTween = _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+            MusicPlayer.volume = 0;
+            MusicPlayer.UnPause();
+            _musicTween = MusicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
         }
     }
 }
 
-/// <summary>
-/// Enumeration for different Audio IDs used for sound effects.
-/// </summary>
 public enum AudioID
 {
     UIShift,
@@ -236,9 +192,6 @@ public enum AudioID
     LevelUp
 }
 
-/// <summary>
-/// Serializable class to map AudioIDs to AudioClips.
-/// </summary>
 [System.Serializable]
 public class AudioData
 {
