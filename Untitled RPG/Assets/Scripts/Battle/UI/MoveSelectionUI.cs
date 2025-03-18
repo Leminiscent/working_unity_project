@@ -4,10 +4,6 @@ using TMPro;
 using UnityEngine;
 using Utils.GenericSelectionUI;
 
-/// <summary>
-/// MoveSelectionUI handles the display of available moves in a grid layout and updates
-/// additional UI elements (SP and type texts) based on the currently selected move.
-/// </summary>
 public class MoveSelectionUI : SelectionUI<TextSlot>
 {
     [SerializeField] private List<TextSlot> _moveTexts;
@@ -16,19 +12,12 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
 
     private List<Move> _moves;
 
-    /// <summary>
-    /// Configures the selection settings on start.
-    /// </summary>
     private void Start()
     {
         // Setup selection UI with a grid layout of 2 columns.
         SetSelectionSettings(SelectionType.Grid, 2);
     }
 
-    /// <summary>
-    /// Sets the available moves for selection and updates the UI items accordingly.
-    /// </summary>
-    /// <param name="moves">List of moves available for selection.</param>
     public void SetMoves(List<Move> moves)
     {
         _moves = moves;
@@ -57,10 +46,6 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
         }
     }
 
-    /// <summary>
-    /// Updates the UI to reflect the current selection.
-    /// Displays SP and type information for the selected move.
-    /// </summary>
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();

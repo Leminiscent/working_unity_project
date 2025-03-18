@@ -4,9 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
-/// <summary>
-/// State for move selection during battle, managing UI presentation and target selection for moves.
-/// </summary>
 public class MoveSelectionState : State<BattleSystem>
 {
     [SerializeField] private MoveSelectionUI _selectionUI;
@@ -29,10 +26,6 @@ public class MoveSelectionState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Enters the move selection state, sets up the UI, and checks for available moves.
-    /// </summary>
-    /// <param name="owner">The BattleSystem that owns this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
@@ -75,17 +68,11 @@ public class MoveSelectionState : State<BattleSystem>
         _selectionUI.OnBack += OnBack;
     }
 
-    /// <summary>
-    /// Updates the move selection state.
-    /// </summary>
     public override void Execute()
     {
         _selectionUI.HandleUpdate();
     }
 
-    /// <summary>
-    /// Exits the move selection state, cleans up UI, and unsubscribes from events.
-    /// </summary>
     public override void Exit()
     {
         if (_selectionUI != null)
@@ -102,20 +89,11 @@ public class MoveSelectionState : State<BattleSystem>
         _battleSystem.DialogueBox.EnableDialogueText(true);
     }
 
-    /// <summary>
-    /// Callback for when a move is selected from the UI.
-    /// </summary>
-    /// <param name="selection">Index of the selected move.</param>
     private void OnMoveSelected(int selection)
     {
         _ = StartCoroutine(OnMoveSelectedAsync(selection));
     }
 
-    /// <summary>
-    /// Coroutine that handles move selection and target determination asynchronously.
-    /// </summary>
-    /// <param name="selection">Index of the selected move.</param>
-    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator OnMoveSelectedAsync(int selection)
     {
         Move selectedMove = Moves[selection];
@@ -158,11 +136,6 @@ public class MoveSelectionState : State<BattleSystem>
         });
     }
 
-    /// <summary>
-    /// Determines the default target units for moves that do not require manual target selection.
-    /// </summary>
-    /// <param name="move">The move for which to determine targets.</param>
-    /// <returns>List of BattleUnits targeted by the move.</returns>
     private List<BattleUnit> GetAutoTargetUnits(Move move)
     {
         if (move.Base.Target is MoveTarget.Self)
@@ -186,12 +159,6 @@ public class MoveSelectionState : State<BattleSystem>
         return new List<BattleUnit>();
     }
 
-    /// <summary>
-    /// Determines the target unit for moves that require manual target selection.
-    /// </summary>
-    /// <param name="move">The move for which the target is selected.</param>
-    /// <param name="selectedIndex">The index of the selected target.</param>
-    /// <returns>List containing the single target unit.</returns>
     private List<BattleUnit> GetSelectedTargetUnits(Move move, int selectedIndex)
     {
         return move.Base.Target is MoveTarget.Enemy
@@ -199,9 +166,6 @@ public class MoveSelectionState : State<BattleSystem>
             : new List<BattleUnit> { _battleSystem.PlayerUnits[selectedIndex] };
     }
 
-    /// <summary>
-    /// Callback for when the back action is triggered from the UI.
-    /// </summary>
     private void OnBack()
     {
         _battleSystem.StateMachine.ChangeState(ActionSelectionState.Instance);

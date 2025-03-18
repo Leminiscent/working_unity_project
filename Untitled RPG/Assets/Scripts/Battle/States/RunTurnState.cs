@@ -4,10 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
-/// <summary>
-/// Manages the turn-based execution of battle actions, including moves, items, status effects, weather,
-/// and unit defeat handling during a battle.
-/// </summary>
 public class RunTurnState : State<BattleSystem>
 {
     private BattleSystem _battleSystem;
@@ -32,10 +28,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Initializes the state by caching battle-related references and starts processing turns.
-    /// </summary>
-    /// <param name="owner">The BattleSystem that owns this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
@@ -48,10 +40,6 @@ public class RunTurnState : State<BattleSystem>
         _ = StartCoroutine(RunTurns());
     }
 
-    /// <summary>
-    /// Processes all battle actions, weather effects, post-turn effects, and then transitions back
-    /// to the ActionSelection state if the battle is still ongoing.
-    /// </summary>
     private IEnumerator RunTurns()
     {
         // Process each battle action.
@@ -101,10 +89,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Processes a single battle action by dispatching to the appropriate handler based on its type.
-    /// </summary>
-    /// <param name="action">The battle action to process.</param>
     private IEnumerator ProcessBattleAction(BattleAction action)
     {
         switch (action.ActionType)
@@ -132,61 +116,39 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Processes a fight action by setting the current move and running it.
-    /// </summary>
     private IEnumerator ProcessFightAction(BattleAction action)
     {
         action.SourceUnit.Battler.CurrentMove = action.SelectedMove;
         yield return RunMove(action.SourceUnit, action.TargetUnits, action.SelectedMove);
     }
 
-    /// <summary>
-    /// Processes a talk action by pushing the RecruitmentState.
-    /// </summary>
     private IEnumerator ProcessTalkAction(BattleAction action)
     {
         RecruitmentState.Instance.RecruitTarget = action.TargetUnits[0];
         yield return _battleSystem.StateMachine.PushAndWait(RecruitmentState.Instance);
     }
 
-    /// <summary>
-    /// Processes a use item action.
-    /// </summary>
     private IEnumerator ProcessUseItemAction(BattleAction action)
     {
         yield return UseItem(action.SourceUnit, action.TargetUnits, action.SelectedItem);
     }
 
-    /// <summary>
-    /// Processes a guard action by starting the guarding animation and displaying dialogue.
-    /// </summary>
     private IEnumerator ProcessGuardAction(BattleAction action)
     {
         _ = StartCoroutine(action.SourceUnit.StartGuarding());
         yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Battler.Base.Name} has begun guarding!");
     }
 
-    /// <summary>
-    /// Processes a switch battler action.
-    /// </summary>
     private IEnumerator ProcessSwitchBattlerAction(BattleAction action)
     {
         yield return _battleSystem.SwitchBattler(action.SelectedBattler, action.SourceUnit);
     }
 
-    /// <summary>
-    /// Processes a run action by attempting an escape.
-    /// </summary>
     private IEnumerator ProcessRunAction()
     {
         yield return AttemptEscape();
     }
 
-    /// <summary>
-    /// Processes weather effects on all units and handles weather duration updates.
-    /// </summary>
-    /// <param name="sortedUnits">Units sorted by agility.</param>
     private IEnumerator ProcessWeatherEffects(List<BattleUnit> sortedUnits)
     {
         if (_field.Weather != null)
@@ -217,10 +179,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Processes after-turn effects for a given unit.
-    /// </summary>
-    /// <param name="sourceUnit">The unit to process.</param>
     private IEnumerator RunAfterTurn(BattleUnit sourceUnit)
     {
         if (_battleSystem.BattleIsOver)
@@ -236,13 +194,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Checks if a move hits its target.
-    /// </summary>
-    /// <param name="move">The move used.</param>
-    /// <param name="source">The attacking battler.</param>
-    /// <param name="target">The defending battler.</param>
-    /// <returns>True if the move hits; otherwise, false.</returns>
     private bool CheckIfMoveHits(Move move, Battler source, Battler target)
     {
         if (move.Base.AlwaysHits)
@@ -294,9 +245,6 @@ public class RunTurnState : State<BattleSystem>
         return Random.Range(1, 101) <= moveAccuracy;
     }
 
-    /// <summary>
-    /// Runs the move for the source unit on the target units.
-    /// </summary>
     private IEnumerator RunMove(BattleUnit sourceUnit, List<BattleUnit> targetUnits, Move move)
     {
         bool canRunMove = sourceUnit.Battler.OnStartOfTurn();
@@ -401,9 +349,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Processes recoil, drain, and post-move status changes.
-    /// </summary>
     private IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         if (details == null || details.TypeEffectiveness == 0f)
@@ -447,9 +392,6 @@ public class RunTurnState : State<BattleSystem>
         yield return ShowStatusChanges(targetUnit);
     }
 
-    /// <summary>
-    /// Processes move effects such as boosts, status conditions, and weather changes.
-    /// </summary>
     private IEnumerator RunMoveEffects(MoveEffects effects, BattleUnit sourceUnit, BattleUnit targetUnit, MoveTarget moveTarget)
     {
         // Stat Boosts
@@ -501,9 +443,6 @@ public class RunTurnState : State<BattleSystem>
         yield return ShowStatusChanges(targetUnit);
     }
 
-    /// <summary>
-    /// Displays status changes for a unit by processing queued status events.
-    /// </summary>
     private IEnumerator ShowStatusChanges(BattleUnit unit)
     {
         while (unit.Battler.StatusChanges.Count > 0)
@@ -534,14 +473,7 @@ public class RunTurnState : State<BattleSystem>
                 string statName = statusEvent.Message.Split(' ')[1];
                 if (System.Enum.TryParse(statName, out Stat stat))
                 {
-                    if (statusEvent.Value > 0)
-                    {
-                        _ = StartCoroutine(unit.PlayStatGainAnimation(stat));
-                    }
-                    else
-                    {
-                        _ = StartCoroutine(unit.PlayStatLossAnimation(stat));
-                    }
+                    _ = statusEvent.Value > 0 ? StartCoroutine(unit.PlayStatGainAnimation(stat)) : StartCoroutine(unit.PlayStatLossAnimation(stat));
                 }
             }
 
@@ -549,9 +481,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Uses an item from the source unit on the target units.
-    /// </summary>
     private IEnumerator UseItem(BattleUnit sourceUnit, List<BattleUnit> targetUnits, ItemBase item)
     {
         bool canUseItem = sourceUnit.Battler.OnStartOfTurn();
@@ -598,9 +527,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Handles the defeat of a unit by playing defeat animations and processing loot/experience.
-    /// </summary>
     private IEnumerator HandleUnitDefeat(BattleUnit defeatedUnit)
     {
         _ = StartCoroutine(defeatedUnit.PlayDefeatAnimation());
@@ -720,10 +646,6 @@ public class RunTurnState : State<BattleSystem>
         yield return CheckForBattleOver(defeatedUnit);
     }
 
-    /// <summary>
-    /// Adjusts battle actions for a defeated unit and checks whether the battle is over.
-    /// </summary>
-    /// <param name="defeatedUnit">The unit that was defeated.</param>
     private IEnumerator CheckForBattleOver(BattleUnit defeatedUnit)
     {
         // Invalidate any action originating from the defeated unit.
@@ -816,12 +738,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Adjusts battle actions by removing the defeated unit from any target lists.
-    /// If a target list becomes empty, a random fallback unit is added.
-    /// </summary>
-    /// <param name="defeatedUnit">The defeated unit.</param>
-    /// <param name="fallbackUnits">The list of units to choose a fallback target from.</param>
     private void AdjustBattleActionsForDefeatedUnit(BattleUnit defeatedUnit, List<BattleUnit> fallbackUnits)
     {
         List<BattleAction> actionsToAdjust = BattleActions.Where(a => a.TargetUnits != null && a.TargetUnits.Contains(defeatedUnit)).ToList();
@@ -835,9 +751,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Displays damage details for a move.
-    /// </summary>
     private IEnumerator ShowDamageDetails(DamageDetails damageDetails)
     {
         if (damageDetails.Critical > 1f)
@@ -846,9 +759,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Displays a message based on type effectiveness.
-    /// </summary>
     private IEnumerator ShowEffectiveness(float typeEffectiveness)
     {
         if (typeEffectiveness > 1f)
@@ -865,9 +775,6 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Attempts to escape from battle.
-    /// </summary>
     private IEnumerator AttemptEscape()
     {
         if (_isCommanderBattle)

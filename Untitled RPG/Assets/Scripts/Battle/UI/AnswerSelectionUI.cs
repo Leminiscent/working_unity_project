@@ -3,28 +3,15 @@ using System.Linq;
 using UnityEngine;
 using Utils.GenericSelectionUI;
 
-/// <summary>
-/// AnswerSelectionUI manages the display of recruitment answer choices within a grid-based selection UI.
-/// It extends the generic SelectionUI class specialized for TextSlot components.
-/// </summary>
 public class AnswerSelectionUI : SelectionUI<TextSlot>
 {
     [SerializeField] private List<TextSlot> _answerTexts;
 
-    /// <summary>
-    /// Initializes the selection settings for the answer UI.
-    /// Configures the layout to a grid with 2 columns.
-    /// </summary>
     private void Start()
     {
         SetSelectionSettings(SelectionType.Grid, 2);
     }
 
-    /// <summary>
-    /// Sets the available answers to be displayed in the UI.
-    /// It activates the required answer text slots, sets their text, and deactivates any extra slots.
-    /// </summary>
-    /// <param name="answers">A list of RecruitmentAnswer objects representing the available answer choices.</param>
     public void SetAnswers(List<RecruitmentAnswer> answers)
     {
         // Reset selection to the first item.

@@ -4,9 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Utils.StateMachine;
 
-/// <summary>
-/// Represents the recruitment state in battle, handling dialogue, question selection, and the recruitment process.
-/// </summary>
 public class RecruitmentState : State<BattleSystem>
 {
     [SerializeField] private AnswerSelectionUI _selectionUI;
@@ -34,10 +31,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Enters the recruitment state, initializing dialogue and starting the recruitment sequence.
-    /// </summary>
-    /// <param name="owner">The BattleSystem owning this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
@@ -59,9 +52,6 @@ public class RecruitmentState : State<BattleSystem>
         _ = StartCoroutine(StartRecruitment());
     }
 
-    /// <summary>
-    /// Updates the recruitment state by handling UI input.
-    /// </summary>
     public override void Execute()
     {
         if (_selectionUI != null && _selectionUI.gameObject.activeInHierarchy)
@@ -74,9 +64,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Exits the recruitment state, cleaning up UI and event subscriptions.
-    /// </summary>
     public override void Exit()
     {
         if (_selectionUI != null)
@@ -86,9 +73,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Begins the recruitment sequence by presenting initial dialogue and selecting recruitment questions.
-    /// </summary>
     private IEnumerator StartRecruitment()
     {
         // Prevent recruitment during a commander battle.
@@ -113,9 +97,6 @@ public class RecruitmentState : State<BattleSystem>
         yield return PresentQuestion();
     }
 
-    /// <summary>
-    /// Presents the current recruitment question and sets up the answer selection UI.
-    /// </summary>
     private IEnumerator PresentQuestion()
     {
         RecruitmentQuestion currentQuestion = _selectedQuestions[_currentQuestionIndex];
@@ -130,20 +111,12 @@ public class RecruitmentState : State<BattleSystem>
         _selectionUI.UpdateSelectionInUI();
     }
 
-    /// <summary>
-    /// Callback invoked when an answer is selected.
-    /// </summary>
-    /// <param name="selection">Index of the selected answer.</param>
     private void OnAnswerSelected(int selection)
     {
         _ = StartCoroutine(ProcessAnswer(selection));
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
-    /// <summary>
-    /// Processes the selected answer, updates affinity, and advances the recruitment dialogue.
-    /// </summary>
-    /// <param name="selectedAnswerIndex">Index of the selected answer.</param>
     private IEnumerator ProcessAnswer(int selectedAnswerIndex)
     {
         // Disable selection UI and unsubscribe to prevent multiple triggers.
@@ -190,11 +163,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Generates a reaction string based on the affinity score.
-    /// </summary>
-    /// <param name="affinityScore">The affinity score of the selected answer.</param>
-    /// <returns>A reaction string.</returns>
     private string GenerateReaction(int affinityScore)
     {
         string name = RecruitTarget.Battler.Base.Name;
@@ -205,9 +173,6 @@ public class RecruitmentState : State<BattleSystem>
                 : affinityScore == -1 ? $"{name} seems to dislike your answer..." : $"{name} seems to hate your answer!";
     }
 
-    /// <summary>
-    /// Attempts to recruit the target by calculating the recruitment chance.
-    /// </summary>
     private IEnumerator AttemptRecruitment()
     {
         bool canRecruit = CanRecruit();
@@ -233,10 +198,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Calculates the recruitment chance and returns whether recruitment is successful.
-    /// </summary>
-    /// <returns>True if recruitment can occur; otherwise, false.</returns>
     private bool CanRecruit()
     {
         float a = Mathf.Min(Mathf.Max(RecruitTarget.Battler.AffinityLevel - 3, 0), 3) *
@@ -255,10 +216,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Processes the player's accept/reject choice for recruitment.
-    /// </summary>
-    /// <param name="selection">0 for Yes, 1 for No.</param>
     private IEnumerator ProcessAcceptReject(int selection)
     {
         _dialogueBox.EnableDialogueText(true);
@@ -306,9 +263,6 @@ public class RecruitmentState : State<BattleSystem>
         _battleSystem.StateMachine.Pop();
     }
 
-    /// <summary>
-    /// Adjusts battle actions after a successful recruitment to remove references to the recruited unit.
-    /// </summary>
     private void AdjustBattleActionsAfterRecruitment()
     {
         BattleAction recruitedAction = RunTurnState.Instance.BattleActions.FirstOrDefault(a => a.SourceUnit == RecruitTarget);
@@ -330,9 +284,6 @@ public class RecruitmentState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Handles user input when the choice box is active.
-    /// </summary>
     private void HandleChoiceBoxInput()
     {
         const float SELECTION_SPEED = 5f;

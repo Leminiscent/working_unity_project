@@ -5,19 +5,15 @@ using TMPro;
 using UnityEngine;
 using Utils.StateMachine;
 
-/// <summary>
-/// Represents the state where a player selects an action during battle.
-/// </summary>
 public class ActionSelectionState : State<BattleSystem>
 {
-    [SerializeField] private ActionSelectionUI _selectionUI;
-
     private BattleSystem _battleSystem;
     private int _prevSelectionIndex = 0;
     private TextMeshProUGUI _talkText;
 
+    [field: SerializeField] public ActionSelectionUI SelectionUI { get; private set; }
+
     public static ActionSelectionState Instance { get; private set; }
-    public ActionSelectionUI SelectionUI => _selectionUI;
 
     private void Awake()
     {
@@ -31,23 +27,19 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Enters the Action Selection state. Initializes UI, sets up event listeners, and displays dialogue.
-    /// </summary>
-    /// <param name="owner">The BattleSystem that owns this state.</param>
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
 
-        if (_selectionUI == null)
+        if (SelectionUI == null)
         {
             Debug.LogError("ActionSelectionUI is not assigned.");
             return;
         }
 
-        _selectionUI.gameObject.SetActive(true);
-        _selectionUI.OnSelected += OnActionSelected;
-        _selectionUI.OnBack += OnBack;
+        SelectionUI.gameObject.SetActive(true);
+        SelectionUI.OnSelected += OnActionSelected;
+        SelectionUI.OnBack += OnBack;
 
         // Display dialogue and set the selecting unit as active.
         _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Battler.Base.Name}!");
@@ -60,45 +52,36 @@ public class ActionSelectionState : State<BattleSystem>
         _talkText.color = !_battleSystem.SelectingUnit.Battler.IsCommander ? GlobalSettings.Instance.EmptyColor : Color.white;
     }
 
-    /// <summary>
-    /// Updates the state by handling input and updating the selection UI.
-    /// </summary>
     public override void Execute()
     {
-        _selectionUI.HandleUpdate();
+        SelectionUI.HandleUpdate();
 
         if (!_battleSystem.SelectingUnit.Battler.IsCommander)
         {
             // If the unit is not the commander, ignore the talk option.
-            if (_selectionUI.SelectedIndex == 1)
+            if (SelectionUI.SelectedIndex == 1)
             {
                 int newIndex = _prevSelectionIndex == 0 ? 2
                     : _prevSelectionIndex == 2 ? 0
                     : 4;
-                _selectionUI.SetSelectedIndex(newIndex);
+                SelectionUI.SetSelectedIndex(newIndex);
             }
             _talkText.color = GlobalSettings.Instance.EmptyColor;
         }
 
-        _prevSelectionIndex = _selectionUI.SelectedIndex;
+        _prevSelectionIndex = SelectionUI.SelectedIndex;
     }
 
-    /// <summary>
-    /// Exits the Action Selection state and unsubscribes from UI events.
-    /// </summary>
     public override void Exit()
     {
-        _selectionUI.gameObject.SetActive(false);
-        _selectionUI.OnSelected -= OnActionSelected;
-        _selectionUI.OnBack -= OnBack;
+        SelectionUI.gameObject.SetActive(false);
+        SelectionUI.OnSelected -= OnActionSelected;
+        SelectionUI.OnBack -= OnBack;
     }
 
-    /// <summary>
-    /// Safely initializes the talk text component from the ActionSelectionUI.
-    /// </summary>
     private void InitializeTalkText()
     {
-        List<TextSlot> textSlots = _selectionUI.GetComponentsInChildren<TextSlot>().ToList();
+        List<TextSlot> textSlots = SelectionUI.GetComponentsInChildren<TextSlot>().ToList();
         if (textSlots.Count > 1)
         {
             _talkText = textSlots[1].GetComponent<TextMeshProUGUI>();
@@ -113,10 +96,6 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Called when an action is selected in the UI. Dispatches to the appropriate handler.
-    /// </summary>
-    /// <param name="selection">The index of the selected action.</param>
     private void OnActionSelected(int selection)
     {
         switch (selection)
@@ -146,19 +125,12 @@ public class ActionSelectionState : State<BattleSystem>
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
-    /// <summary>
-    /// Handles the move selection action.
-    /// </summary>
     private void HandleMoveSelection()
     {
         MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Battler.Moves;
         _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
     }
 
-    /// <summary>
-    /// Coroutine that handles selecting a recruit target.
-    /// </summary>
-    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator HandleRecruitAction()
     {
         int recruitTarget = 0;
@@ -179,10 +151,6 @@ public class ActionSelectionState : State<BattleSystem>
         });
     }
 
-    /// <summary>
-    /// Coroutine that handles item selection and target assignment.
-    /// </summary>
-    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator HandleItemSelection()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(InventoryState.Instance);
@@ -228,9 +196,6 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Handles the guard action.
-    /// </summary>
     private void HandleGuardAction()
     {
         _battleSystem.AddBattleAction(new BattleAction()
@@ -239,10 +204,6 @@ public class ActionSelectionState : State<BattleSystem>
         });
     }
 
-    /// <summary>
-    /// Coroutine that handles switching to the party state.
-    /// </summary>
-    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator HandlePartySwitch()
     {
         yield return GameController.Instance.StateMachine.PushAndWait(PartyState.Instance);
@@ -258,9 +219,6 @@ public class ActionSelectionState : State<BattleSystem>
         }
     }
 
-    /// <summary>
-    /// Handles the run action.
-    /// </summary>
     private void HandleRunAction()
     {
         _battleSystem.AddBattleAction(new BattleAction()
@@ -269,9 +227,6 @@ public class ActionSelectionState : State<BattleSystem>
         });
     }
 
-    /// <summary>
-    /// Called when the back action is triggered from the UI.
-    /// </summary>
     private void OnBack()
     {
         _battleSystem.UndoBattleAction();
