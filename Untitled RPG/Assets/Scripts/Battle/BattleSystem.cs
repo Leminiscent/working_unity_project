@@ -6,9 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.StateMachine;
 
-/// <summary>
-/// Manages the battle system, including battle setup, state transitions, and processing of battle actions.
-/// </summary>
 public class BattleSystem : MonoBehaviour
 {
     [Header("Battle Units - Single")]
@@ -97,13 +94,6 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// Starts a rogue battle.
-    /// </summary>
-    /// <param name="playerParty">The player's battle party.</param>
-    /// <param name="rogueBattlers">List of rogue battlers.</param>
-    /// <param name="trigger">The battle trigger (environment).</param>
-    /// <param name="unitCount">The number of enemy units.</param>
     public void StartRogueBattle(BattleParty playerParty, List<Battler> rogueBattlers, BattleTrigger trigger, int unitCount = 1)
     {
         IsCommanderBattle = false;
@@ -115,13 +105,6 @@ public class BattleSystem : MonoBehaviour
         _ = StartCoroutine(SetupBattle());
     }
 
-    /// <summary>
-    /// Starts a commander battle.
-    /// </summary>
-    /// <param name="playerParty">The player's battle party.</param>
-    /// <param name="enemyParty">The enemy's battle party.</param>
-    /// <param name="trigger">The battle trigger (environment).</param>
-    /// <param name="unitCount">The number of enemy units.</param>
     public void StartCommanderBattle(BattleParty playerParty, BattleParty enemyParty, BattleTrigger trigger, int unitCount = 1)
     {
         IsCommanderBattle = true;
@@ -135,10 +118,6 @@ public class BattleSystem : MonoBehaviour
         _ = StartCoroutine(SetupBattle());
     }
 
-    /// <summary>
-    /// Sets up the battle, initializing parties, UI elements, and background.
-    /// </summary>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator SetupBattle()
     {
         StateMachine = new StateMachine<BattleSystem>(this);
@@ -218,10 +197,6 @@ public class BattleSystem : MonoBehaviour
         StateMachine.ChangeState(ActionSelectionState.Instance);
     }
 
-    /// <summary>
-    /// Ends the battle and cleans up battle data.
-    /// </summary>
-    /// <param name="won">True if the player won the battle; otherwise, false.</param>
     public void BattleOver(bool won)
     {
         BattleIsOver = true;
@@ -233,18 +208,11 @@ public class BattleSystem : MonoBehaviour
         OnBattleOver?.Invoke(won);
     }
 
-    /// <summary>
-    /// Called from the update loop to progress the battle state.
-    /// </summary>
     public void HandleUpdate()
     {
         StateMachine.Execute();
     }
 
-    /// <summary>
-    /// Adds a battle action for the currently selecting unit and processes enemy actions if needed.
-    /// </summary>
-    /// <param name="battleAction">The battle action to add.</param>
     public void AddBattleAction(BattleAction battleAction)
     {
         battleAction.SourceUnit = SelectingUnit;
@@ -271,18 +239,12 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Clears all currently stored battle actions and resets selection index.
-    /// </summary>
     public void ClearBattleActions()
     {
         _battleActions = new List<BattleAction>();
         _selectingUnitIndex = 0;
     }
 
-    /// <summary>
-    /// Removes the last battle action and updates the selection state.
-    /// </summary>
     public void UndoBattleAction()
     {
         if (_battleActions.Count > 0)
@@ -294,12 +256,6 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Switches the battler for a given battle unit, playing exit and entry animations.
-    /// </summary>
-    /// <param name="newBattler">The new battler to switch in.</param>
-    /// <param name="unitToSwitch">The battle unit to switch out.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator SwitchBattler(Battler newBattler, BattleUnit unitToSwitch)
     {
         if (unitToSwitch.Battler.Hp > 0)
@@ -314,19 +270,11 @@ public class BattleSystem : MonoBehaviour
         yield return _dialogueBox.TypeDialogue($"Come forward {newBattler.Base.Name}!");
     }
 
-    /// <summary>
-    /// Determines if the given battler is already scheduled to switch.
-    /// </summary>
-    /// <param name="battler">The battler to check.</param>
-    /// <returns>True if the battler is already scheduled for switching; otherwise, false.</returns>
     public bool UnableToSwitch(Battler battler)
     {
         return _battleActions.Any(a => a.ActionType == BattleActionType.SwitchBattler && a.SelectedBattler == battler);
     }
 
-    /// <summary>
-    /// Processes the enemy actions by generating actions for each enemy unit.
-    /// </summary>
     private void ProcessEnemyActions()
     {
         foreach (BattleUnit enemyUnit in _enemyUnits)
@@ -354,12 +302,6 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Determines the target units for an enemy action based on the move's target type.
-    /// </summary>
-    /// <param name="enemyUnit">The enemy battle unit performing the move.</param>
-    /// <param name="selectedMove">The move selected.</param>
-    /// <returns>A list of target BattleUnits.</returns>
     private List<BattleUnit> DetermineTargets(BattleUnit enemyUnit, Move selectedMove)
     {
         return selectedMove.Base.Target switch
@@ -374,21 +316,12 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// Sends the next battler for the enemy commander into battle.
-    /// </summary>
-    /// <param name="newBattler">The new battler to be sent in.</param>
-    /// <param name="defeatedUnit">The battle unit that was defeated.</param>
-    /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator SendNextCommanderBattler(Battler newBattler, BattleUnit defeatedUnit)
     {
         defeatedUnit.Setup(newBattler);
         yield return _dialogueBox.TypeDialogue($"Commander {Enemy.Name} summoned {newBattler.Base.Name} to battle!");
     }
 
-    /// <summary>
-    /// Assigns the correct BattleUnit lists for player and enemy based on the current unit counts.
-    /// </summary>
     private void AssignBattleUnitLists()
     {
         // Assign player units
@@ -410,10 +343,6 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// Clears data for each BattleUnit in the provided list.
-    /// </summary>
-    /// <param name="units">The list of BattleUnits to clear.</param>
     private void ClearUnitsData(List<BattleUnit> units)
     {
         foreach (BattleUnit unit in units)
@@ -423,9 +352,6 @@ public class BattleSystem : MonoBehaviour
     }
 }
 
-/// <summary>
-/// Enumerates possible battle trigger types for setting battle backgrounds.
-/// </summary>
 public enum BattleTrigger
 {
     Desert,

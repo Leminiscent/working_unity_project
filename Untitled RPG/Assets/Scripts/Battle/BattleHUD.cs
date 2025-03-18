@@ -4,9 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Manages and updates the battle HUD display.
-/// </summary>
 public class BattleHUD : MonoBehaviour
 {
     [Header("Basic Info")]
@@ -48,10 +45,6 @@ public class BattleHUD : MonoBehaviour
 
     private Battler _battler;
 
-    /// <summary>
-    /// Sets the data for the battle HUD using the provided battler.
-    /// </summary>
-    /// <param name="battler">The battler whose data will be displayed.</param>
     public void SetData(Battler battler)
     {
         // Clear previous event subscriptions if any.
@@ -100,9 +93,6 @@ public class BattleHUD : MonoBehaviour
         _battler.OnHPChanged += UpdateHP;
     }
 
-    /// <summary>
-    /// Updates the status text UI elements based on the battler's conditions.
-    /// </summary>
     private void SetStatusText()
     {
         if (_battler == null)
@@ -141,9 +131,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Sets the level text for the battler.
-    /// </summary>
     public void SetLevel()
     {
         if (_levelText != null && _battler != null)
@@ -152,9 +139,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Updates the experience bar and text.
-    /// </summary>
     public void SetExp()
     {
         if (_expBar == null || _battler == null)
@@ -182,11 +166,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Smoothly animates the experience bar update.
-    /// </summary>
-    /// <param name="reset">If true, resets the exp bar scale before animating.</param>
-    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator SetExpSmooth(bool reset = false)
     {
         if (_expBar == null || _battler == null)
@@ -219,10 +198,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Toggles the visibility of the experience bar's parent container.
-    /// </summary>
-    /// <param name="toggle">If true, shows the exp bar; otherwise, hides it.</param>
     public void ToggleExpBar(bool toggle)
     {
         if (_expBar == null)
@@ -233,10 +208,6 @@ public class BattleHUD : MonoBehaviour
         _expBar.transform.parent.gameObject.SetActive(toggle);
     }
 
-    /// <summary>
-    /// Toggles the visibility of the affinity bar's parent container.
-    /// </summary>
-    /// <param name="toggle">If true, shows the affinity bar; otherwise, hides it.</param>
     public void ToggleAffinityBar(bool toggle)
     {
         if (_affinityBar == null)
@@ -247,9 +218,6 @@ public class BattleHUD : MonoBehaviour
         _affinityBar.transform.parent.gameObject.SetActive(toggle);
     }
 
-    /// <summary>
-    /// Updates the affinity bar and text.
-    /// </summary>
     public void SetAffinity()
     {
         if (_affinityBar == null || _battler == null)
@@ -265,10 +233,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Smoothly animates the affinity bar update.
-    /// </summary>
-    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator SetAffinitySmooth()
     {
         if (_affinityBar == null || _battler == null)
@@ -284,10 +248,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Calculates the normalized affinity value.
-    /// </summary>
-    /// <returns>A float between 0 and 1 representing the normalized affinity.</returns>
     private float GetNormalizedAffinity()
     {
         if (_battler == null)
@@ -299,18 +259,11 @@ public class BattleHUD : MonoBehaviour
         return Mathf.Clamp01(normalizedAffinity);
     }
 
-    /// <summary>
-    /// Initiates a smooth update of the HP bar.
-    /// </summary>
     public void UpdateHP()
     {
         _ = StartCoroutine(UpdateHPAsync());
     }
 
-    /// <summary>
-    /// Smoothly updates the HP bar and text.
-    /// </summary>
-    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator UpdateHPAsync()
     {
         if (_hpBar != null && _battler != null)
@@ -323,10 +276,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Waits for the HP bar update to complete and then waits an additional short duration.
-    /// </summary>
-    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator WaitForHPUpdate()
     {
         if (_hpBar != null)
@@ -336,9 +285,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Updates the stat boosts displayed on the HUD.
-    /// </summary>
     public void UpdateStatBoosts()
     {
         if (_battler == null)
@@ -355,11 +301,6 @@ public class BattleHUD : MonoBehaviour
         UpdateBoost(_evaBoost, Stat.Evasion);
     }
 
-    /// <summary>
-    /// Updates the boost display for a given stat.
-    /// </summary>
-    /// <param name="boostContainer">The UI container for the stat boost.</param>
-    /// <param name="stat">The stat to update.</param>
     private void UpdateBoost(GameObject boostContainer, Stat stat)
     {
         if (boostContainer == null || _battler == null)
@@ -408,10 +349,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Clears all arrow indicators from the specified container.
-    /// </summary>
-    /// <param name="arrowContainer">The transform containing arrow indicators.</param>
     private void ClearArrowIndicators(Transform arrowContainer)
     {
         for (int i = arrowContainer.childCount - 1; i >= 0; i--)
@@ -420,9 +357,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Clears event subscriptions to prevent memory leaks.
-    /// </summary>
     public void ClearData()
     {
         if (_battler != null)

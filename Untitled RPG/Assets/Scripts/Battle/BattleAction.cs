@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 
-/// <summary>
-/// Represents an action taken during battle.
-/// </summary>
 public class BattleAction
 {
     public BattleActionType ActionType { get; set; }
@@ -13,10 +10,6 @@ public class BattleAction
     public ItemBase SelectedItem { get; set; } // The selected item for a UseItem action.
     public bool IsValid { get; set; } = true;
 
-    /// <summary>
-    /// Gets the priority of the battle action.
-    /// Lower numbers indicate higher priority.
-    /// </summary>
     public int Priority => ActionType switch
     {
         BattleActionType.Fight => SelectedMove != null ? SelectedMove.Base.Priority : int.MaxValue,
@@ -29,9 +22,6 @@ public class BattleAction
     };
 }
 
-/// <summary>
-/// Enumerates the possible types of battle actions.
-/// </summary>
 public enum BattleActionType
 {
     Fight,

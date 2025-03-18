@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-/// <summary>
-/// Handles the dialogue box UI during battles.
-/// </summary>
 public class BattleDialogueBox : MonoBehaviour
 {
     [SerializeField] private int _lettersPerSecond = 45;
@@ -20,10 +17,6 @@ public class BattleDialogueBox : MonoBehaviour
 
     public bool IsChoiceBoxEnabled => _choiceBox != null && _choiceBox.activeSelf;
 
-    /// <summary>
-    /// Sets the dialogue text instantly.
-    /// </summary>
-    /// <param name="dialogue">The dialogue string to display.</param>
     public void SetDialogue(string dialogue)
     {
         if (_dialogueText != null)
@@ -32,14 +25,6 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Types out the dialogue letter-by-letter.
-    /// </summary>
-    /// <param name="dialogueToType">The dialogue to type out.</param>
-    /// <param name="waitForInput">If true, waits for user input before finishing.</param>
-    /// <param name="setDialogue">An optional initial dialogue string to set.</param>
-    /// <param name="clearDialogue">If true, clears the dialogue after finishing.</param>
-    /// <returns>A coroutine enumerator.</returns>
     public IEnumerator TypeDialogue(string dialogueToType, bool waitForInput = false, string setDialogue = null, bool clearDialogue = true)
     {
         // Wait for the end of the frame to ensure UI updates are ready.
@@ -95,10 +80,6 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Enables or disables the dialogue text.
-    /// </summary>
-    /// <param name="enabled">If true, enables the dialogue text; otherwise, disables it.</param>
     public void EnableDialogueText(bool enabled)
     {
         if (_dialogueText != null)
@@ -108,10 +89,6 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Activates or deactivates the choice box.
-    /// </summary>
-    /// <param name="enabled">If true, activates the choice box; otherwise, deactivates it.</param>
     public void EnableChoiceBox(bool enabled)
     {
         if (_choiceBox != null)
@@ -120,10 +97,6 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Sets the move names in the move texts UI elements.
-    /// </summary>
-    /// <param name="moves">A list of moves to display.</param>
     public void SetMoveNames(List<Move> moves)
     {
         for (int i = 0; i < _moveTexts.Count; i++)
@@ -132,10 +105,6 @@ public class BattleDialogueBox : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Updates the choice box UI to indicate which option is selected.
-    /// </summary>
-    /// <param name="yesSelected">If true, highlights the 'Yes' option; otherwise, highlights 'No'.</param>
     public void UpdateChoiceBox(bool yesSelected)
     {
         if (_yesText != null && _noText != null && GlobalSettings.Instance != null)
