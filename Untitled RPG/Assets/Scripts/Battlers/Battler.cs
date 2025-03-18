@@ -20,8 +20,8 @@ public class Battler
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public bool IsGuarding { get; set; }
-    public Dictionary<ConditionID, (Condition, int)> Statuses { get; private set; }
-    public Dictionary<ConditionID, (Condition, int)> VolatileStatuses { get; private set; }
+    public Dictionary<ConditionID, ConditionStatus> Statuses { get; private set; }
+    public Dictionary<ConditionID, ConditionStatus> VolatileStatuses { get; private set; }
     public Queue<StatusEvent> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
     public event Action OnStatusChanged;
@@ -34,17 +34,86 @@ public class Battler
     public int Agility => GetStat(Stat.Agility);
     public Dictionary<Stat, float> StatPerformanceValues { get; private set; }
 
+    // Constants for stat formulas and boost limits
+    private const float NON_HP_BASE_ADD = 5f;
+    private const float HP_LEVEL_ADD = 10f;
+    private const int MAX_STAT_BOOST = 6;
+    private const int MIN_STAT_BOOST = -6;
+
     public Battler(BattlerBase pBase, int pLevel)
     {
         _base = pBase;
         _level = pLevel;
-
-        Init();
+        InitNewBattler();
     }
 
-    public void Init()
+    public Battler(BattlerSaveData saveData)
+    {
+        _base = BattlerDB.GetObjectByName(saveData.Name);
+        Hp = saveData.Hp;
+        _level = saveData.Level;
+        Exp = saveData.Exp;
+        Moves = saveData.Moves.Select(static s => new Move(s)).ToList();
+        StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.Pv);
+        InitCommon();
+
+        // Load saved statuses if any
+        Statuses = new Dictionary<ConditionID, ConditionStatus>();
+        VolatileStatuses = new Dictionary<ConditionID, ConditionStatus>();
+        if (saveData.Statuses != null && saveData.Statuses.Count > 0)
+        {
+            foreach (ConditionSaveData statusSave in saveData.Statuses)
+            {
+                Condition condition = ConditionsDB.Conditions[statusSave.ConditionId];
+                Statuses.Add(statusSave.ConditionId, new ConditionStatus(condition, statusSave.Timer));
+            }
+        }
+        CalculateStats();
+    }
+
+    /// <summary>
+    /// Initializes a new battler using the provided base and level.
+    /// </summary>
+    public void InitNewBattler()
+    {
+        InitMoves();
+        InitCommon();
+        Exp = Base.GetExpForLevel(Level);
+        CalculateStats();
+        Hp = MaxHp;
+    }
+
+    /// <summary>
+    /// Initializes common collections and default values.
+    /// </summary>
+    private void InitCommon()
+    {
+        Moves ??= new List<Move>();
+        StatusChanges = new Queue<StatusEvent>();
+        ResetStatBoosts();
+        Statuses = new Dictionary<ConditionID, ConditionStatus>();
+        VolatileStatuses = new Dictionary<ConditionID, ConditionStatus>();
+        AffinityLevel = 0;
+
+        // Initialize performance values for all stats with 0
+        StatPerformanceValues = new Dictionary<Stat, float>
+        {
+            { Stat.HP, 0 },
+            { Stat.Strength, 0 },
+            { Stat.Endurance, 0 },
+            { Stat.Intelligence, 0 },
+            { Stat.Fortitude, 0 },
+            { Stat.Agility, 0 }
+        };
+    }
+
+    /// <summary>
+    /// Adds moves available at or below the current level.
+    /// </summary>
+    private void InitMoves()
     {
         Moves = new List<Move>();
+        // Add moves starting from the highest learnable level
         for (int i = Base.LearnableMoves.Count - 1; i >= 0; i--)
         {
             LearnableMove move = Base.LearnableMoves[i];
@@ -57,102 +126,51 @@ public class Battler
                 break;
             }
         }
-
-        StatPerformanceValues = new Dictionary<Stat, float>()
-        {
-            { Stat.HP, 0 },
-            { Stat.Strength, 0 },
-            { Stat.Endurance, 0 },
-            { Stat.Intelligence, 0 },
-            { Stat.Fortitude, 0 },
-            { Stat.Agility, 0 }
-        };
-
-        Exp = Base.GetExpForLevel(Level);
-        CalculateStats();
-        Hp = MaxHp;
-
-        StatusChanges = new Queue<StatusEvent>();
-        ResetStatBoosts();
-        Statuses = new Dictionary<ConditionID, (Condition, int)>();
-        VolatileStatuses = new Dictionary<ConditionID, (Condition, int)>();
-        AffinityLevel = 0;
     }
 
-    public Battler(BattlerSaveData saveData)
-    {
-        _base = BattlerDB.GetObjectByName(saveData.Name);
-        Hp = saveData.Hp;
-        _level = saveData.Level;
-        Exp = saveData.Exp;
-
-        Statuses = new Dictionary<ConditionID, (Condition, int)>();
-        VolatileStatuses = new Dictionary<ConditionID, (Condition, int)>();
-
-        if (saveData.Statuses != null && saveData.Statuses.Count > 0)
-        {
-            foreach (ConditionSaveData statusSave in saveData.Statuses)
-            {
-                Condition condition = ConditionsDB.Conditions[statusSave.ConditionId];
-                Statuses.Add(statusSave.ConditionId, (condition, statusSave.Timer));
-            }
-        }
-
-        Moves = saveData.Moves.Select(static s => new Move(s)).ToList();
-        StatPerformanceValues = saveData.StatPerformanceValues.ToDictionary(static s => s.Stat, static s => s.Pv);
-
-        CalculateStats();
-        StatusChanges = new Queue<StatusEvent>();
-        ResetStatBoosts();
-    }
-
-    public BattlerSaveData GetSaveData()
-    {
-        BattlerSaveData saveData = new()
-        {
-            Name = Base.Name,
-            Hp = Hp,
-            Level = Level,
-            Exp = Exp,
-            Statuses = Statuses.Select(static s => new ConditionSaveData
-            {
-                ConditionId = s.Key,
-                Timer = s.Value.Item2
-            }).ToList(),
-            Moves = Moves.Select(static m => m.GetSaveData()).ToList(),
-            StatPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
-            {
-                Stat = s.Key,
-                Pv = s.Value
-            }).ToList()
-        };
-
-        return saveData;
-    }
-
-    private void CalculateStats()
+    /// <summary>
+    /// Calculates and updates the battler's stats.
+    /// </summary>
+    public void CalculateStats()
     {
         Stats = new Dictionary<Stat, int>
         {
-            { Stat.Strength, Mathf.FloorToInt((((2f * Base.Strength) + (StatPerformanceValues[Stat.Strength] / 4f)) * Level / 100f) + 5f) },
-            { Stat.Endurance, Mathf.FloorToInt((((2f * Base.Endurance) + (StatPerformanceValues[Stat.Endurance] / 4f)) * Level / 100f) + 5f) },
-            { Stat.Intelligence, Mathf.FloorToInt((((2f * Base.Intelligence) + (StatPerformanceValues[Stat.Intelligence] / 4f)) * Level / 100f) + 5f) },
-            { Stat.Fortitude, Mathf.FloorToInt((((2f * Base.Fortitude) + (StatPerformanceValues[Stat.Fortitude] / 4f)) * Level / 100f) + 5f) },
-            { Stat.Agility, Mathf.FloorToInt((((2f * Base.Agility) + (StatPerformanceValues[Stat.Agility] / 4f)) * Level / 100f) + 5f) }
+            { Stat.Strength, CalculateNonHpStat(Base.Strength, StatPerformanceValues[Stat.Strength]) },
+            { Stat.Endurance, CalculateNonHpStat(Base.Endurance, StatPerformanceValues[Stat.Endurance]) },
+            { Stat.Intelligence, CalculateNonHpStat(Base.Intelligence, StatPerformanceValues[Stat.Intelligence]) },
+            { Stat.Fortitude, CalculateNonHpStat(Base.Fortitude, StatPerformanceValues[Stat.Fortitude]) },
+            { Stat.Agility, CalculateNonHpStat(Base.Agility, StatPerformanceValues[Stat.Agility]) }
         };
 
-        int prevMaxHp = MaxHp;
-        MaxHp = Mathf.FloorToInt((((2f * Base.HP) + (StatPerformanceValues[Stat.HP] / 4f)) * Level / 100f) + Level + 10f);
-        Hp += MaxHp - prevMaxHp;
-        if (MaxHp > prevMaxHp)
+        int previousMaxHp = MaxHp;
+        MaxHp = CalculateMaxHp(Base.HP, StatPerformanceValues[Stat.HP]);
+        // Adjust current HP based on new max HP
+        Hp = Mathf.Clamp(Hp + (MaxHp - previousMaxHp), 0, MaxHp);
+        if (MaxHp > previousMaxHp)
         {
             OnHPChanged?.Invoke();
         }
     }
 
+    /// <summary>
+    /// Calculates non-HP stat values.
+    /// </summary>
+    private int CalculateNonHpStat(int baseStat, float performance)
+    {
+        return Mathf.FloorToInt((((2f * baseStat) + (performance / 4f)) * Level / 100f) + NON_HP_BASE_ADD);
+    }
+
+    /// <summary>
+    /// Calculates maximum HP.
+    /// </summary>
+    private int CalculateMaxHp(int baseHp, float performance)
+    {
+        return Mathf.FloorToInt((((2f * baseHp) + (performance / 4f)) * Level / 100f) + Level + HP_LEVEL_ADD);
+    }
+
     public void ResetStatBoosts()
     {
-        StatBoosts = new Dictionary<Stat, int>()
+        StatBoosts = new Dictionary<Stat, int>
         {
             { Stat.Strength, 0 },
             { Stat.Endurance, 0 },
@@ -164,57 +182,48 @@ public class Battler
         };
     }
 
+    /// <summary>
+    /// Retrieves a stat's effective value, taking into account any boosts.
+    /// </summary>
     private int GetStat(Stat stat)
     {
-        int statVal = Stats[stat];
-        int boost = StatBoosts[stat];
-        float[] boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+        int baseStat = Stats.ContainsKey(stat) ? Stats[stat] : 0;
+        int boost = StatBoosts.ContainsKey(stat) ? StatBoosts[stat] : 0;
+        float[] boostMultipliers = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
 
-        statVal = boost >= 0 ? Mathf.FloorToInt(statVal * boostValues[boost]) : Mathf.FloorToInt(statVal / boostValues[-boost]);
-
-        return statVal;
+        return boost >= 0 ? Mathf.FloorToInt(baseStat * boostMultipliers[boost]) : Mathf.FloorToInt(baseStat / boostMultipliers[-boost]);
     }
 
+    /// <summary>
+    /// Applies a list of stat boosts.
+    /// </summary>
     public void ApplyBoosts(List<StatBoost> statBoosts)
     {
         foreach (StatBoost statBoost in statBoosts)
         {
-            Stat stat = statBoost.Stat;
-            int boost = statBoost.Boost;
-            bool changeIsPositive = boost > 0;
-            string riseOrFall;
-
-            if ((changeIsPositive && StatBoosts[stat] == 6) || (!changeIsPositive && StatBoosts[stat] == -6))
-            {
-                riseOrFall = changeIsPositive ? "higher" : "lower";
-                AddStatusEvent($"'s {stat} won't go any {riseOrFall}!");
-                return;
-            }
-
-            StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
-            riseOrFall = changeIsPositive ? "rose" : "fell";
-
-            string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harshly " : " ";
-
-            AddStatusEvent(StatusEventType.StatBoost, $"{(Base.Name.EndsWith("s") ? "'" : "'s")} {stat}{bigChange}{riseOrFall}!", boost);
+            ApplySingleBoost(statBoost.Stat, statBoost.Boost);
         }
     }
 
-    public void GainPvs(Dictionary<Stat, float> pvGained)
+    /// <summary>
+    /// Applies a single stat boost and enqueues an appropriate status event.
+    /// </summary>
+    private void ApplySingleBoost(Stat stat, int boost)
     {
-        foreach (KeyValuePair<Stat, float> spv in StatPerformanceValues.ToArray())
+        int currentBoost = StatBoosts.ContainsKey(stat) ? StatBoosts[stat] : 0;
+        bool isPositiveChange = boost > 0;
+
+        if ((isPositiveChange && currentBoost == MAX_STAT_BOOST) || (!isPositiveChange && currentBoost == MIN_STAT_BOOST))
         {
-            if (spv.Value < GlobalSettings.Instance.MaxPvPerStat && GetTotalPvs() < GlobalSettings.Instance.MaxPvs)
-            {
-                pvGained[spv.Key] = Mathf.Clamp(pvGained[spv.Key], 0, GlobalSettings.Instance.MaxPvs - GetTotalPvs());
-                StatPerformanceValues[spv.Key] = Mathf.Clamp(StatPerformanceValues[spv.Key] += pvGained[spv.Key], 0, GlobalSettings.Instance.MaxPvPerStat);
-            }
+            string direction = isPositiveChange ? "higher" : "lower";
+            AddStatusEvent($"'{Base.Name}'s {stat} won't go any {direction}!");
+            return;
         }
-    }
 
-    public float GetTotalPvs()
-    {
-        return StatPerformanceValues.Values.Sum();
+        StatBoosts[stat] = Mathf.Clamp(currentBoost + boost, MIN_STAT_BOOST, MAX_STAT_BOOST);
+        string descriptor = (Mathf.Abs(boost) >= 3) ? "severely" : (Mathf.Abs(boost) == 2) ? "harshly" : "";
+        string result = isPositiveChange ? "rose" : "fell";
+        AddStatusEvent(StatusEventType.StatBoost, $"'{Base.Name}'s {stat} {descriptor} {result}!", boost);
     }
 
     public bool CheckForLevelUp()
@@ -226,11 +235,19 @@ public class Battler
 
         if (Exp >= Base.GetExpForLevel(Level + 1))
         {
-            ++_level;
+            _level++;
             CalculateStats();
             return true;
         }
         return false;
+    }
+
+    public float GetNormalizedExp()
+    {
+        int currExp = Base.GetExpForLevel(Level);
+        int nextExp = Base.GetExpForLevel(Level + 1);
+        float normalized = (float)(Exp - currExp) / (nextExp - currExp);
+        return Mathf.Clamp01(normalized);
     }
 
     public LearnableMove GetLearnableMoveAtCurrentLevel()
@@ -240,7 +257,7 @@ public class Battler
 
     public void LearnMove(MoveBase moveToLearn)
     {
-        if (Moves.Count > BattlerBase.MaxMoveCount)
+        if (Moves.Count >= BattlerBase.MaxMoveCount)
         {
             return;
         }
@@ -250,12 +267,19 @@ public class Battler
 
     public bool HasMove(MoveBase move)
     {
-        return Moves.Count(m => m.Base == move) > 0;
+        return Moves.Any(m => m.Base == move);
     }
 
-    public bool HasType(BattlerType type)
+    public Move GetRandomMove()
     {
-        return (_base.Type1 == type) || (_base.Type2 == type);
+        List<Move> movesWithSP = Moves.Where(static x => x.Sp > 0).ToList();
+        if (movesWithSP.Count == 0)
+        {
+            return null;
+        }
+
+        int index = UnityEngine.Random.Range(0, movesWithSP.Count);
+        return movesWithSP[index];
     }
 
     public Transformation CheckForTransformation()
@@ -287,86 +311,6 @@ public class Battler
         }
     }
 
-    public float GetNormalizedExp()
-    {
-        int currLevelExp = Base.GetExpForLevel(Level);
-        int nextLevelExp = Base.GetExpForLevel(Level + 1);
-        float normalizedExp = (float)(Exp - currLevelExp) / (nextLevelExp - currLevelExp);
-
-        return Mathf.Clamp01(normalizedExp);
-    }
-
-    public DamageDetails TakeDamage(Move move, Battler attacker, Condition weather)
-    {
-        if (move.Base.OneHitKO.IsOneHitKO)
-        {
-            int oneHitDamage = Hp;
-
-            DecreaseHP(oneHitDamage);
-            return new DamageDetails() { TypeEffectiveness = 1f, Critical = 1f, Defeated = false };
-        }
-
-        float critical = 1f;
-
-        if (!(move.Base.CritBehavior == CritBehavior.NeverCrits))
-        {
-            if (move.Base.CritBehavior == CritBehavior.AlwaysCrits)
-            {
-                critical = 1.5f;
-            }
-            else
-            {
-                int critChance = 0 + ((move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0);
-                float[] chances = new float[] { 4.167f, 12.5f, 50f, 100f };
-
-                if (UnityEngine.Random.value * 100f <= chances[Mathf.Clamp(critChance, 0, 3)])
-                {
-                    critical = 1.5f;
-                }
-            }
-        }
-
-        float type = TypeChart.GetEffectiveness(move.Base.Type, Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, Base.Type2);
-        float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
-        DamageDetails damageDetails = new()
-        {
-            TypeEffectiveness = type,
-            Critical = critical,
-            Defeated = false,
-            TotalDamageDealt = 0,
-            ActualDamageDealt = 0
-        };
-        float attack = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
-        float defense = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
-        float modifiers = UnityEngine.Random.Range(0.85f, 1f) * type * critical * weatherMod;
-        float a = ((2 * attacker.Level) + 10) / 250f;
-        float d = a * move.Base.Power * (((float)attack / defense) + 2);
-        int damage = Math.Max(1, !IsGuarding ? Mathf.FloorToInt(d * modifiers) : Mathf.FloorToInt(d * modifiers / 2f));
-
-        damageDetails.TotalDamageDealt = damage;
-        damageDetails.ActualDamageDealt = Mathf.Min(damage, Hp);
-        DecreaseHP(damage);
-        return damageDetails;
-    }
-
-    public void TakeRecoilDamage(int damage)
-    {
-        if (damage < 1)
-        {
-            damage = 1;
-        }
-        AddStatusEvent(StatusEventType.Damage, $" was damaged by the recoil!", damage);
-    }
-
-    public void DrainHealth(int heal, string targetName)
-    {
-        if (heal < 1)
-        {
-            heal = 1;
-        }
-        AddStatusEvent(StatusEventType.Heal, $" drained health from {targetName}!", heal);
-    }
-
     public void DecreaseHP(int damage)
     {
         Hp = Mathf.Clamp(Hp - damage, 0, MaxHp);
@@ -380,9 +324,141 @@ public class Battler
         AudioManager.Instance.PlaySFX(AudioID.Heal);
     }
 
-    public void UpdateAffinityLevel(int affinity)
+    /// <summary>
+    /// Processes incoming damage from an attack and returns detailed damage information.
+    /// </summary>
+    public DamageDetails TakeDamage(Move move, Battler attacker, Condition weather)
     {
-        AffinityLevel = Mathf.Clamp(AffinityLevel + affinity, 0, 6);
+        // One-hit KO move handling
+        if (move.Base.OneHitKO.IsOneHitKO)
+        {
+            int oneHitDamage = Hp;
+            DecreaseHP(oneHitDamage);
+            return new DamageDetails { TypeEffectiveness = 1f, Critical = 1f, Defeated = false };
+        }
+
+        float critMultiplier = CalculateCriticalMultiplier(move, attacker);
+        float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, Base.Type1) *
+                                  TypeChart.GetEffectiveness(move.Base.Type, Base.Type2);
+        float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
+        int damage = CalculateDamageOutput(move, attacker, critMultiplier, typeEffectiveness, weatherMod);
+
+        DamageDetails details = new()
+        {
+            TypeEffectiveness = typeEffectiveness,
+            Critical = critMultiplier,
+            TotalDamageDealt = damage,
+            ActualDamageDealt = Mathf.Min(damage, Hp),
+            Defeated = false
+        };
+
+        DecreaseHP(damage);
+        return details;
+    }
+
+    /// <summary>
+    /// Determines the critical damage multiplier.
+    /// </summary>
+    private float CalculateCriticalMultiplier(Move move, Battler attacker)
+    {
+        if (move.Base.CritBehavior == CritBehavior.NeverCrits)
+        {
+            return 1f;
+        }
+
+        if (move.Base.CritBehavior == CritBehavior.AlwaysCrits)
+        {
+            return 1.5f;
+        }
+
+        int critChance = (move.Base.CritBehavior == CritBehavior.HighCritRatio) ? 1 : 0;
+        float[] critChances = new float[] { 4.167f, 12.5f, 50f, 100f };
+
+        return UnityEngine.Random.value * 100f <= critChances[Mathf.Clamp(critChance, 0, 3)] ? 1.5f : 1f;
+    }
+
+    /// <summary>
+    /// Calculates the final damage output using the attacker's and defender's stats and modifiers.
+    /// </summary>
+    private int CalculateDamageOutput(Move move, Battler attacker, float crit, float typeEff, float weatherMod)
+    {
+        float attackStat = (move.Base.Category == MoveCategory.Magical) ? attacker.Intelligence : attacker.Strength;
+        float defenseStat = (move.Base.Category == MoveCategory.Magical) ? Fortitude : Endurance;
+        float randomMod = UnityEngine.Random.Range(0.85f, 1f);
+        float modifier = randomMod * typeEff * crit * weatherMod;
+        float baseDamage = ((2f * attacker.Level) + 10f) / 250f * move.Base.Power * ((attackStat / defenseStat) + 2f);
+        int damage = Mathf.Max(1, Mathf.FloorToInt(baseDamage * modifier));
+
+        if (IsGuarding)
+        {
+            damage = Mathf.FloorToInt(damage / 2f);
+        }
+
+        return damage;
+    }
+
+    public void TakeRecoilDamage(int damage)
+    {
+        damage = Mathf.Max(damage, 1);
+        AddStatusEvent(StatusEventType.Damage, " was damaged by recoil!", damage);
+    }
+
+    public void DrainHealth(int heal, string targetName)
+    {
+        heal = Mathf.Max(heal, 1);
+        AddStatusEvent(StatusEventType.Heal, $" drained health from {targetName}!", heal);
+    }
+
+    public bool OnStartOfTurn()
+    {
+        bool canAct = true;
+        foreach (ConditionID key in Statuses.Keys.ToList())
+        {
+            ConditionStatus status = Statuses[key];
+            Condition condition = status.Condition;
+            int timer = status.Timer;
+
+            if (condition.OnBeginningOfTurnTimed != null)
+            {
+                (bool canActResult, int newTimer) = condition.OnBeginningOfTurnTimed(this, timer);
+                if (newTimer <= 0)
+                {
+                    RemoveCondition(key);
+                }
+                else
+                {
+                    Statuses[key] = new ConditionStatus(condition, newTimer);
+                }
+
+                if (!canActResult)
+                {
+                    canAct = false;
+                }
+            }
+            else if (condition.OnBeginningofTurn != null)
+            {
+                if (!condition.OnBeginningofTurn(this))
+                {
+                    canAct = false;
+                }
+            }
+        }
+        return canAct;
+    }
+
+    public void OnEndOfTurn()
+    {
+        foreach (KeyValuePair<ConditionID, ConditionStatus> kvp in Statuses.ToList())
+        {
+            kvp.Value.Condition.OnEndOfTurn?.Invoke(this);
+        }
+    }
+
+    public void OnBattleOver()
+    {
+        VolatileStatuses.Clear();
+        ResetStatBoosts();
+        CalculateStats();
     }
 
     public void AddCondition(ConditionID conditionId, bool isVolatile = false)
@@ -392,21 +468,16 @@ public class Battler
             return;
         }
 
-        Dictionary<ConditionID, (Condition, int)> statuses = isVolatile ? VolatileStatuses : Statuses;
-
-        if (statuses.ContainsKey(conditionId))
+        Dictionary<ConditionID, ConditionStatus> targetStatuses = isVolatile ? VolatileStatuses : Statuses;
+        if (targetStatuses.ContainsKey(conditionId))
         {
             return;
         }
 
         Condition condition = ConditionsDB.Conditions[conditionId];
-        int timer = 0;
-        if (condition.OnStartTimed != null)
-        {
-            timer = condition.OnStartTimed(this);
-        }
+        int timer = condition.OnStartTimed != null ? condition.OnStartTimed(this) : 0;
+        targetStatuses.Add(conditionId, new ConditionStatus(condition, timer));
 
-        statuses.Add(conditionId, (condition, timer));
         if (!string.IsNullOrEmpty(condition.StartMessage))
         {
             AddStatusEvent(StatusEventType.SetCondition, condition.StartMessage);
@@ -452,69 +523,6 @@ public class Battler
         CureStatus();
     }
 
-    public Move GetRandomMove()
-    {
-        List<Move> movesWithSP = Moves.Where(static x => x.Sp > 0).ToList();
-
-        if (movesWithSP.Count == 0)
-        {
-            return null;
-        }
-
-        int randomIndex = UnityEngine.Random.Range(0, movesWithSP.Count);
-
-        return movesWithSP[randomIndex];
-    }
-
-    public bool OnStartOfTurn()
-    {
-        bool canPerformMove = true;
-        foreach (ConditionID key in Statuses.Keys.ToList())
-        {
-            (Condition condition, int timer) = Statuses[key];
-            if (condition.OnBeginningOfTurnTimed != null)
-            {
-                (bool canAct, int newTimer) = condition.OnBeginningOfTurnTimed(this, timer);
-                if (newTimer <= 0)
-                {
-                    RemoveCondition(key);
-                }
-                else
-                {
-                    Statuses[key] = (condition, newTimer);
-                }
-                if (!canAct)
-                {
-                    canPerformMove = false;
-                }
-            }
-            else if (condition.OnBeginningofTurn != null)
-            {
-                if (!condition.OnBeginningofTurn(this))
-                {
-                    canPerformMove = false;
-                }
-            }
-        }
-        return canPerformMove;
-    }
-
-    public void OnEndOfTurn()
-    {
-        foreach (KeyValuePair<ConditionID, (Condition, int)> kvp in Statuses.ToList())
-        {
-            Condition condition = kvp.Value.Item1;
-            condition.OnEndOfTurn?.Invoke(this);
-        }
-    }
-
-    public void OnBattleOver()
-    {
-        VolatileStatuses.Clear();
-        ResetStatBoosts();
-        CalculateStats();
-    }
-
     public void AddStatusEvent(StatusEventType type, string message, int? value = null)
     {
         StatusChanges.Enqueue(new StatusEvent(type, message, value));
@@ -523,6 +531,36 @@ public class Battler
     public void AddStatusEvent(string message)
     {
         AddStatusEvent(StatusEventType.Text, message, null);
+    }
+
+    public void UpdateAffinityLevel(int affinity)
+    {
+        AffinityLevel = Mathf.Clamp(AffinityLevel + affinity, 0, 6);
+    }
+
+    /// <summary>
+    /// Generates save data representing the current state of the battler.
+    /// </summary>
+    public BattlerSaveData GetSaveData()
+    {
+        return new BattlerSaveData
+        {
+            Name = Base.Name,
+            Hp = Hp,
+            Level = Level,
+            Exp = Exp,
+            Statuses = Statuses.Select(static s => new ConditionSaveData
+            {
+                ConditionId = s.Key,
+                Timer = s.Value.Timer
+            }).ToList(),
+            Moves = Moves.Select(static m => m.GetSaveData()).ToList(),
+            StatPerformanceValues = StatPerformanceValues.Select(static s => new StatPV
+            {
+                Stat = s.Key,
+                Pv = s.Value
+            }).ToList()
+        };
     }
 }
 
@@ -563,8 +601,8 @@ public class StatusEvent
     public StatusEvent(StatusEventType type, string message, int? value)
     {
         Type = type;
-        Value = value;
         Message = message;
+        Value = value;
     }
 }
 
@@ -576,4 +614,19 @@ public enum StatusEventType
     SetCondition,
     CureCondition,
     StatBoost
+}
+
+/// <summary>
+/// Encapsulates a condition and its remaining timer.
+/// </summary>
+public class ConditionStatus
+{
+    public Condition Condition { get; private set; }
+    public int Timer { get; set; }
+
+    public ConditionStatus(Condition condition, int timer)
+    {
+        Condition = condition;
+        Timer = timer;
+    }
 }

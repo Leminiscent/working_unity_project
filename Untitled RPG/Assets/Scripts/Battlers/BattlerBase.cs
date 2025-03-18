@@ -177,7 +177,6 @@ public class BattlerBase : ScriptableObject
 
 public static class StatCalculator
 {
-    // Named constants for clamping values.
     public const int MIN_STAT_VALUE = 5;
     public const int MAX_STAT_VALUE = 255;
 

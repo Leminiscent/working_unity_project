@@ -26,7 +26,7 @@ public class BattleParty : MonoBehaviour
         _storage = GetComponent<BattlerStorage>();
         foreach (Battler battler in _battlers)
         {
-            battler.Init();
+            battler.InitNewBattler();
         }
     }
 

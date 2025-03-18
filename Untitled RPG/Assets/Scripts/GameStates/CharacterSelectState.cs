@@ -26,7 +26,7 @@ public class CharacterSelectState : State<GameController>
 
         foreach (Battler battler in _availableBattlers)
         {
-            battler.Init();
+            battler.InitNewBattler();
         }
     }
 
