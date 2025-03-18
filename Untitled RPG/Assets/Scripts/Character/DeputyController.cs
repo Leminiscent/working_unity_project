@@ -7,6 +7,11 @@ using UnityEngine;
 
 public class DeputyController : MonoBehaviour, ISavable
 {
+    private const float LedgeCheckRadius = 0.15f;
+    private const float JumpPower = 1.42f;
+    private const int JumpNumJumps = 1;
+    private const float JumpDuration = 0.34f;
+
     private CharacterAnimator _animator;
     private bool _isMoving;
     private PlayerController _player;
@@ -42,22 +47,23 @@ public class DeputyController : MonoBehaviour, ISavable
         if (!_isMoving && _positionQueue.Count > 0)
         {
             Vector3 targetPosition = _positionQueue.Dequeue();
-            StartCoroutine(MoveToPosition(targetPosition));
+            _ = StartCoroutine(MoveToPosition(targetPosition));
         }
     }
 
-    private void UpdateDeputyBattler()
+    public void UpdateDeputyBattler()
     {
         if (_party.Battlers.Count < 2)
         {
-            _spriteRenderer.enabled = false;
+            SetSpriteVisibility(false);
             return;
         }
         else
         {
-            _spriteRenderer.enabled = true;
+            SetSpriteVisibility(true);
         }
 
+        // Get the first battler who is not the commander.
         Battler deputy = _party.Battlers.First(static battler => !battler.IsCommander);
 
         _animator.SetSprites(
@@ -69,7 +75,7 @@ public class DeputyController : MonoBehaviour, ISavable
         SetPosition();
     }
 
-    private void OnPlayerMoveStart(Vector3 playerPosition)
+    public void OnPlayerMoveStart(Vector3 playerPosition)
     {
         if (_party.Battlers.Count < 2)
         {
@@ -77,6 +83,40 @@ public class DeputyController : MonoBehaviour, ISavable
         }
 
         _positionQueue.Enqueue(playerPosition);
+    }
+
+    public void SetPosition()
+    {
+        if (_party.Battlers.Count < 2)
+        {
+            SetSpriteVisibility(false);
+            return;
+        }
+        else
+        {
+            SetSpriteVisibility(true);
+        }
+
+        transform.position = _player.transform.position;
+        _animator.IsMoving = false;
+        _isMoving = false;
+    }
+
+    public object CaptureState()
+    {
+        DeputySaveData saveData = new()
+        {
+            Position = new float[] { transform.position.x, transform.position.y },
+            FacingDirection = _animator.FacingDirection,
+        };
+        return saveData;
+    }
+
+    public void RestoreState(object state)
+    {
+        DeputySaveData saveData = (DeputySaveData)state;
+        transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
+        _animator.FacingDirection = saveData.FacingDirection;
     }
 
     private IEnumerator MoveToPosition(Vector3 targetPos)
@@ -127,7 +167,7 @@ public class DeputyController : MonoBehaviour, ISavable
 
     private Ledge CheckForLedge(Vector3 targetPos)
     {
-        Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.15f, GameLayers.Instance.LedgeLayer);
+        Collider2D collider = Physics2D.OverlapCircle(targetPos, LedgeCheckRadius, GameLayers.Instance.LedgeLayer);
         return collider != null ? collider.GetComponent<Ledge>() : null;
     }
 
@@ -135,42 +175,14 @@ public class DeputyController : MonoBehaviour, ISavable
     {
         _isMoving = true;
         _animator.IsJumping = true;
-        yield return transform.DOJump(jumpDest, 1.42f, 1, 0.34f).WaitForCompletion();
+        yield return transform.DOJump(jumpDest, JumpPower, JumpNumJumps, JumpDuration).WaitForCompletion();
         _animator.IsJumping = false;
         _isMoving = false;
     }
 
-    public void SetPosition()
+    private void SetSpriteVisibility(bool visible)
     {
-        if (_party.Battlers.Count < 2)
-        {
-            _spriteRenderer.enabled = false;
-            return;
-        }
-        else
-        {
-            _spriteRenderer.enabled = true;
-        }
-        transform.position = _player.transform.position;
-        _animator.IsMoving = false;
-        _isMoving = false;
-    }
-
-    public object CaptureState()
-    {
-        DeputySaveData saveData = new()
-        {
-            Position = new float[] { transform.position.x, transform.position.y },
-            FacingDirection = _animator.FacingDirection,
-        };
-        return saveData;
-    }
-
-    public void RestoreState(object state)
-    {
-        DeputySaveData saveData = (DeputySaveData)state;
-        transform.position = new Vector3(saveData.Position[0], saveData.Position[1]);
-        _animator.FacingDirection = saveData.FacingDirection;
+        _spriteRenderer.enabled = visible;
     }
 }
 
