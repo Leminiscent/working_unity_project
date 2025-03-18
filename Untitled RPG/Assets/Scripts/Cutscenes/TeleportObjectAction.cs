@@ -8,6 +8,18 @@ public class TeleportObjectAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (_objectToTeleport == null)
+        {
+            Debug.LogWarning("Object to teleport is not assigned in TeleportObjectAction.");
+            yield break;
+        }
+
+        if (_destination == null)
+        {
+            Debug.LogWarning("Destination is not assigned in TeleportObjectAction.");
+            yield break;
+        }
+
         _objectToTeleport.transform.position = _destination;
         yield break;
     }

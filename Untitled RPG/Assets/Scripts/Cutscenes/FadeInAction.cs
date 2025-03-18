@@ -7,6 +7,12 @@ public class FadeInAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (Fader.Instance == null)
+        {
+            Debug.LogWarning("Fader instance is not assigned.");
+            yield break;
+        }
+
         yield return Fader.Instance.FadeIn(_duration);
     }
 }

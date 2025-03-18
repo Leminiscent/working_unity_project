@@ -8,6 +8,12 @@ public class TurnActorAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (_actor == null)
+        {
+            Debug.LogWarning("Actor is not assigned in TurnActorAction.");
+            yield break;
+        }
+        
         _actor.GetCharacter().Animator.SetFacingDirection(_direction);
         yield break;
     }

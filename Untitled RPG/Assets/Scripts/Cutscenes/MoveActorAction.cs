@@ -10,7 +10,25 @@ public class MoveActorAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (_actor == null)
+        {
+            Debug.LogWarning("Actor is not assigned in MoveActorAction.");
+            yield break;
+        }
+
         Character character = _actor.GetCharacter();
+
+        if (character == null)
+        {
+            Debug.LogWarning("Character is not assigned in MoveActorAction.");
+            yield break;
+        }
+
+        if (_movePatterns == null || _movePatterns.Count == 0)
+        {
+            Debug.LogWarning("Move patterns are not assigned in MoveActorAction.");
+            yield break;
+        }
 
         foreach (Vector2 movePattern in _movePatterns)
         {

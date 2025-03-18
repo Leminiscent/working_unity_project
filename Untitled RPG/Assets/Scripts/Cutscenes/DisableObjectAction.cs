@@ -7,6 +7,12 @@ public class DisableObjectAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (_objectToDisable == null)
+        {
+            Debug.LogWarning("Object to disable is not assigned in DisableObjectAction.");
+            yield break;
+        }
+
         _objectToDisable.SetActive(false);
         yield break;
     }

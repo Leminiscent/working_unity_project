@@ -1,17 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[System.Serializable]
-public class CutsceneAction
+public abstract class CutsceneAction
 {
-    [SerializeField] private string _name;
-    [SerializeField] private bool _waitForCompletion = true;
+    [field: SerializeField, FormerlySerializedAs("_actionName")] public string ActionName { get; set; }
+    [field: SerializeField, FormerlySerializedAs("_waitForCompletion")] public bool WaitForCompletion { get; private set; } = true;
 
-    public string Name { get => _name; set => _name = value; }
-    public bool WaitForCompletion => _waitForCompletion;
-
-    public virtual IEnumerator Play()
-    {
-        yield break;
-    }
+    public abstract IEnumerator Play();
 }

@@ -6,9 +6,16 @@ public class CutsceneEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        // Cast the target to a Cutscene.
         Cutscene cutscene = target as Cutscene;
+        if (cutscene == null)
+        {
+            base.OnInspectorGUI();
+            return;
+        }
 
-        using (GUILayout.HorizontalScope scope = new())
+        // First row of action buttons.
+        using (new GUILayout.HorizontalScope())
         {
             if (GUILayout.Button("Dialogue"))
             {
@@ -24,7 +31,8 @@ public class CutsceneEditor : Editor
             }
         }
 
-        using (GUILayout.HorizontalScope scope = new())
+        // Second row of action buttons.
+        using (new GUILayout.HorizontalScope())
         {
             if (GUILayout.Button("Teleport Object"))
             {
@@ -40,7 +48,8 @@ public class CutsceneEditor : Editor
             }
         }
 
-        using (GUILayout.HorizontalScope scope = new())
+        // Third row of action buttons.
+        using (new GUILayout.HorizontalScope())
         {
             if (GUILayout.Button("NPC Interaction"))
             {
@@ -56,6 +65,7 @@ public class CutsceneEditor : Editor
             }
         }
 
+        // Draw the rest of the default inspector.
         base.OnInspectorGUI();
     }
 }

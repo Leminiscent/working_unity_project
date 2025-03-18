@@ -7,6 +7,12 @@ public class NPCInteractAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (_npc == null)
+        {
+            Debug.LogWarning("NPC is not assigned in NPCInteractAction.");
+            yield break;
+        }
+
         yield return _npc.Interact(PlayerController.Instance.transform);
     }
 }

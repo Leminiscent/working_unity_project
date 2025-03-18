@@ -7,6 +7,12 @@ public class EnableObjectAction : CutsceneAction
 
     public override IEnumerator Play()
     {
+        if (_objectToEnable == null)
+        {
+            Debug.LogWarning("Object to enable is not assigned in EnableObjectAction.");
+            yield break;
+        }
+
         _objectToEnable.SetActive(true);
         yield break;
     }
