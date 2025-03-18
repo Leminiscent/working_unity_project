@@ -1,66 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GlobalSettings : MonoBehaviour
 {
-    [Header("Game Colors")]
-    [SerializeField] private Color _activeColor;
-    [SerializeField] private Color _inactiveColor;
-    [SerializeField] private Color _emptyColor;
-    [SerializeField] private Color _bgHighlightColor;
+    [field: Header("Game Colors")]
+    [field: SerializeField, FormerlySerializedAs("_activeColor")] public Color ActiveColor { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_inactiveColor")] public Color InactiveColor { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_emptyColor")] public Color EmptyColor { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_bgHighlightColor")] public Color BgHighlightColor { get; private set; }
 
-    [Header("Battler Details")]
-    [SerializeField] private int _maxPvs;
-    [SerializeField] private int _maxPvPerStat;
-    [SerializeField] private int _maxLevel;
-    [SerializeField] private MoveBase _backupMove;
+    [field: Header("Battler Details")]
+    [field: SerializeField, FormerlySerializedAs("_maxPvs")] public int MaxPvs { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_maxPvPerStat")] public int MaxPvPerStat { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_maxLevel")] public int MaxLevel { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_backupMove")] public MoveBase BackupMove { get; private set; }
 
-    [Header("Battle Animations")]
-    [SerializeField] private List<Sprite> _healAnimationSprites;
-    [SerializeField] private List<Sprite> _expGainAnimationSprites;
-    [SerializeField] private List<Sprite> _levelUpAnimationSprites;
-    [SerializeField] private List<Sprite> _affinityGainAnimationSprites;
-    [SerializeField] private List<Sprite> _affinityLossAnimationSprites;
-    [SerializeField] private List<Sprite> _strengthGainAnimationSprites;
-    [SerializeField] private List<Sprite> _strengthLossAnimationSprites;
-    [SerializeField] private List<Sprite> _enduranceGainAnimationSprites;
-    [SerializeField] private List<Sprite> _enduranceLossAnimationSprites;
-    [SerializeField] private List<Sprite> _intelligenceGainAnimationSprites;
-    [SerializeField] private List<Sprite> _intelligenceLossAnimationSprites;
-    [SerializeField] private List<Sprite> _fortitudeGainAnimationSprites;
-    [SerializeField] private List<Sprite> _fortitudeLossAnimationSprites;
-    [SerializeField] private List<Sprite> _agilityGainAnimationSprites;
-    [SerializeField] private List<Sprite> _agilityLossAnimationSprites;
-    [SerializeField] private List<Sprite> _setStatusConditionAnimationSprites;
-    [SerializeField] private List<Sprite> _cureStatusConditionAnimationSprites;
-
-    public Color ActiveColor => _activeColor;
-    public Color InactiveColor => _inactiveColor;
-    public Color EmptyColor => _emptyColor;
-    public Color BgHighlightColor => _bgHighlightColor;
-
-    public int MaxPvs => _maxPvs;
-    public int MaxPvPerStat => _maxPvPerStat;
-    public int MaxLevel => _maxLevel;
-    public MoveBase BackupMove => _backupMove;
-
-    public List<Sprite> HealAnimationSprites => _healAnimationSprites;
-    public List<Sprite> ExpGainAnimationSprites => _expGainAnimationSprites;
-    public List<Sprite> LevelUpAnimationSprites => _levelUpAnimationSprites;
-    public List<Sprite> AffinityGainAnimationSprites => _affinityGainAnimationSprites;
-    public List<Sprite> AffinityLossAnimationSprites => _affinityLossAnimationSprites;
-    public List<Sprite> StrengthGainAnimationSprites => _strengthGainAnimationSprites;
-    public List<Sprite> StrengthLossAnimationSprites => _strengthLossAnimationSprites;
-    public List<Sprite> EnduranceGainAnimationSprites => _enduranceGainAnimationSprites;
-    public List<Sprite> EnduranceLossAnimationSprites => _enduranceLossAnimationSprites;
-    public List<Sprite> IntelligenceGainAnimationSprites => _intelligenceGainAnimationSprites;
-    public List<Sprite> IntelligenceLossAnimationSprites => _intelligenceLossAnimationSprites;
-    public List<Sprite> FortitudeGainAnimationSprites => _fortitudeGainAnimationSprites;
-    public List<Sprite> FortitudeLossAnimationSprites => _fortitudeLossAnimationSprites;
-    public List<Sprite> AgilityGainAnimationSprites => _agilityGainAnimationSprites;
-    public List<Sprite> AgilityLossAnimationSprites => _agilityLossAnimationSprites;
-    public List<Sprite> SetStatusConditionAnimationSprites => _setStatusConditionAnimationSprites;
-    public List<Sprite> CureStatusConditionAnimationSprites => _cureStatusConditionAnimationSprites;
+    [field: Header("Battle Animations")]
+    [field: SerializeField, FormerlySerializedAs("_healAnimationSprites")] public List<Sprite> HealAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_expGainAnimationSprites")] public List<Sprite> ExpGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_levelUpAnimationSprites")] public List<Sprite> LevelUpAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_affinityGainAnimationSprites")] public List<Sprite> AffinityGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_affinityLossAnimationSprites;")] public List<Sprite> AffinityLossAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_strengthGainAnimationSprites;")] public List<Sprite> StrengthGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_strengthLossAnimationSprites;")] public List<Sprite> StrengthLossAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_enduranceGainAnimationSprites;")] public List<Sprite> EnduranceGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_enduranceLossAnimationSprites;")] public List<Sprite> EnduranceLossAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_intelligenceGainAnimationSprites")] public List<Sprite> IntelligenceGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_intelligenceLossAnimationSprites")] public List<Sprite> IntelligenceLossAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_fortitudeGainAnimationSprites")] public List<Sprite> FortitudeGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_fortitudeLossAnimationSprites")] public List<Sprite> FortitudeLossAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_agilityGainAnimationSprites")] public List<Sprite> AgilityGainAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_agilityLossAnimationSprites")] public List<Sprite> AgilityLossAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_setStatusConditionAnimationSprites")] public List<Sprite> SetStatusConditionAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_cureStatusConditionAnimationSprites")] public List<Sprite> CureStatusConditionAnimationSprites { get; private set; }
 
     public static GlobalSettings Instance { get; private set; }
 

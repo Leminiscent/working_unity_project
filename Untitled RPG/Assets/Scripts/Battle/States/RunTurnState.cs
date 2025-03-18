@@ -543,7 +543,7 @@ public class RunTurnState : State<BattleSystem>
             if (gpDropped > 0)
             {
                 lootDescriptions.Add($"{gpDropped} GP");
-                Wallet.Instance.GetWallet().AddMoney(gpDropped);
+                Wallet.Instance.AddMoney(gpDropped);
             }
 
             DropTable dropTable = defeatedUnit.Battler.Base.DropTable;

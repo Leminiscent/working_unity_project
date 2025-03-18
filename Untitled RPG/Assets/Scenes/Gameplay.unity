@@ -268,16 +268,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rogueBattlers:
   - Battler: {fileID: 11400000, guid: 8828bdfbed71b3244b3bebcd6136437c, type: 2}
-    LevelRange: {x: 1, y: 5}
-    SpawnChance: 55
+    LevelRange: {x: 1, y: 2}
+    SpawnChance: 75
   - Battler: {fileID: 11400000, guid: 50210373159e0cc4d93016e48450780f, type: 2}
-    LevelRange: {x: 3, y: 7}
-    SpawnChance: 35
+    LevelRange: {x: 3, y: 4}
+    SpawnChance: 20
   - Battler: {fileID: 11400000, guid: 8423c3e6476d9074db97c442e74113f1, type: 2}
-    LevelRange: {x: 5, y: 9}
-    SpawnChance: 10
-  _terrain: 4
+    LevelRange: {x: 5, y: 6}
+    SpawnChance: 5
   _totalChance: 100
+  <Terrain>k__BackingField: 4
 --- !u!1001 &725205645
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -512,8 +512,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rogueBattlers: []
-  _terrain: 0
   _totalChance: -1
+  <Terrain>k__BackingField: 0
 --- !u!114 &1647700579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5659954142537702333, guid: 76eeca25b506ac64dbbc582b5d22afec, type: 3}
@@ -538,8 +538,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rogueBattlers: []
-  _terrain: 0
   _totalChance: -1
+  <Terrain>k__BackingField: 0
 --- !u!1001 &6201373029775887327
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,24 +1,19 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameLayers : MonoBehaviour
 {
-    [SerializeField] private LayerMask _solidObjectsLayer;
-    [SerializeField] private LayerMask _encountersLayer;
-    [SerializeField] private LayerMask _interactablesLayer;
-    [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private LayerMask _losLayer;
-    [SerializeField] private LayerMask _portalLayer;
-    [SerializeField] private LayerMask _triggersLayer;
-    [SerializeField] private LayerMask _ledgeLayer;
+    [field: SerializeField, FormerlySerializedAs("_solidObjectsLayer")] public LayerMask SolidObjectsLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_encountersLayer")] public LayerMask EncountersLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_interactablesLayer")] public LayerMask InteractablesLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_playerLayer")] public LayerMask PlayerLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_losLayer")] public LayerMask LOSLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_portalLayer")] public LayerMask PortalLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_triggersLayer")] public LayerMask TriggersLayer { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_ledgeLayer")] public LayerMask LedgeLayer { get; private set; }
 
-    public LayerMask SolidObjectsLayer => _solidObjectsLayer;
-    public LayerMask EncountersLayer => _encountersLayer;
-    public LayerMask InteractablesLayer => _interactablesLayer;
-    public LayerMask PlayerLayer => _playerLayer;
-    public LayerMask LOSLayer => _losLayer;
-    public LayerMask PortalLayer => _portalLayer;
-    public LayerMask LedgeLayer => _ledgeLayer;
-    public LayerMask TriggerableLayers => _encountersLayer | _losLayer | _portalLayer | _triggersLayer;
+    public LayerMask TriggerableLayers => EncountersLayer | LOSLayer | PortalLayer | TriggersLayer;
+
     public static GameLayers Instance { get; set; }
 
     private void Awake()

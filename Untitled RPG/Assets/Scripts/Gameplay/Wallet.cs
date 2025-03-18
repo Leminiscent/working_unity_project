@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Wallet : MonoBehaviour, ISavable
 {
-    [SerializeField] private float _money;
+    [field: SerializeField, FormerlySerializedAs("_money")] public float Money { get; private set; }
 
-    public float Money => _money;
     public event Action OnMoneyChanged;
     public static Wallet Instance { get; private set; }
 
@@ -23,33 +23,35 @@ public class Wallet : MonoBehaviour, ISavable
 
     public void AddMoney(float amount)
     {
-        _money += amount;
+        Money += amount;
         OnMoneyChanged?.Invoke();
     }
 
     public void SpendMoney(float amount)
     {
-        _money -= amount;
-        OnMoneyChanged?.Invoke();
+        if (HasEnoughMoney(amount))
+        {
+            Money -= amount;
+            OnMoneyChanged?.Invoke();
+        }
+        else
+        {
+            Debug.LogWarning("Not enough money to spend.");
+        }
     }
 
     public bool HasEnoughMoney(float amount)
     {
-        return _money >= amount;
-    }
-
-    public Wallet GetWallet()
-    {
-        return FindObjectOfType<PlayerController>().GetComponent<Wallet>();
+        return Money >= amount;
     }
 
     public object CaptureState()
     {
-        return _money;
+        return Money;
     }
 
     public void RestoreState(object state)
     {
-        _money = (float)state;
+        Money = (float)state;
     }
 }
