@@ -1,9 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Provides a battler to the player during gameplay by triggering dialogue and adding the battler to the player's party.
-/// </summary>
 public class BattlerGiver : MonoBehaviour, ISavable
 {
     [SerializeField] private Battler _battler;
@@ -11,12 +8,6 @@ public class BattlerGiver : MonoBehaviour, ISavable
 
     private bool _used = false;
 
-    /// <summary>
-    /// Gives the battler to the player. Shows dialogue, initializes the battler,
-    /// adds it to the player's party, and plays the appropriate sound effect.
-    /// </summary>
-    /// <param name="player">The player controller receiving the battler.</param>
-    /// <returns>An IEnumerator for coroutine execution.</returns>
     public IEnumerator GiveBattler(PlayerController player)
     {
         // Show initial dialogue.
@@ -36,28 +27,16 @@ public class BattlerGiver : MonoBehaviour, ISavable
         yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {_battler.Base.Name}!");
     }
 
-    /// <summary>
-    /// Determines whether the battler can be given.
-    /// </summary>
-    /// <returns>True if a battler is available and it hasn't been given already; otherwise, false.</returns>
     public bool CanBeGiven()
     {
         return _battler != null && !_used;
     }
 
-    /// <summary>
-    /// Captures the current state of the BattlerGiver.
-    /// </summary>
-    /// <returns>An object representing the current state (in this case, the _used flag).</returns>
     public object CaptureState()
     {
         return _used;
     }
 
-    /// <summary>
-    /// Restores the state of the BattlerGiver.
-    /// </summary>
-    /// <param name="state">The state to restore from.</param>
     public void RestoreState(object state)
     {
         _used = (bool)state;

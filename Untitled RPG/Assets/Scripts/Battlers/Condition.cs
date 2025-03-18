@@ -16,9 +16,6 @@ public class Condition
     public Func<Battler, Battler, Move, float> OnDamageModify { get; set; }
 }
 
-/// <summary>
-/// Encapsulates a condition and its remaining timer.
-/// </summary>
 public class ConditionStatus
 {
     public Condition Condition { get; private set; }
@@ -31,9 +28,6 @@ public class ConditionStatus
     }
 }
 
-/// <summary>
-/// Represents the save data for a condition applied to a battler.
-/// </summary>
 [Serializable]
 public class ConditionSaveData
 {
