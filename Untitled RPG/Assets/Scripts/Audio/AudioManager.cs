@@ -9,6 +9,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private List<AudioData> _sfxList;
+    [SerializeField] private AudioSource _musicPlayer;
+    [SerializeField] private AudioSource _sfxPlayer;
     [SerializeField] private float _fadeDuration = 0.75f;
 
     private AudioClip _currentMusic;
@@ -20,15 +22,11 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// Gets the AudioSource used for playing background music.
     /// </summary>
-    [field: SerializeField]
-    public AudioSource MusicPlayer { get; private set; }
-
+    public AudioSource MusicPlayer => _musicPlayer;
     /// <summary>
     /// Gets the AudioSource used for playing sound effects.
     /// </summary>
-    [field: SerializeField]
-    public AudioSource SfxPlayer { get; private set; }
-
+    public AudioSource SfxPlayer => _sfxPlayer;
     /// <summary>
     /// Gets the singleton instance of the AudioManager.
     /// </summary>
@@ -54,17 +52,17 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        if (MusicPlayer == null)
+        if (_musicPlayer == null)
         {
             Debug.LogError("MusicPlayer is not assigned in the inspector.");
         }
 
-        if (SfxPlayer == null)
+        if (_sfxPlayer == null)
         {
             Debug.LogError("SfxPlayer is not assigned in the inspector.");
         }
 
-        _originalMusicVolume = MusicPlayer.volume;
+        _originalMusicVolume = _musicPlayer.volume;
         InitializeSfxDictionary();
     }
 
@@ -131,7 +129,7 @@ public class AudioManager : MonoBehaviour
             HandleMusicPause(clip.length);
         }
 
-        SfxPlayer.PlayOneShot(clip);
+        _sfxPlayer.PlayOneShot(clip);
     }
 
     /// <summary>
@@ -155,7 +153,7 @@ public class AudioManager : MonoBehaviour
         }
 
         _currentMusic = clip;
-        _ = StartCoroutine(PlayMusicAsync(clip, loop, fade));
+        StartCoroutine(PlayMusicAsync(clip, loop, fade));
     }
 
     /// <summary>
@@ -176,19 +174,19 @@ public class AudioManager : MonoBehaviour
         if (fade)
         {
             // Fade out the current music.
-            _musicTween = MusicPlayer.DOFade(0, _fadeDuration);
+            _musicTween = _musicPlayer.DOFade(0, _fadeDuration);
             yield return _musicTween.WaitForCompletion();
         }
 
-        MusicPlayer.clip = clip;
-        MusicPlayer.loop = loop;
-        MusicPlayer.Play();
+        _musicPlayer.clip = clip;
+        _musicPlayer.loop = loop;
+        _musicPlayer.Play();
 
         if (fade)
         {
             // Fade in the new music.
-            MusicPlayer.volume = 0;
-            _musicTween = MusicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+            _musicPlayer.volume = 0;
+            _musicTween = _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
             yield return _musicTween.WaitForCompletion();
         }
     }
@@ -200,12 +198,12 @@ public class AudioManager : MonoBehaviour
     /// <param name="duration">The duration of the SFX, used to determine when to unpause the music.</param>
     private void HandleMusicPause(float duration)
     {
-        if (MusicPlayer.isPlaying && _pauseCount == 0)
+        if (_musicPlayer.isPlaying && _pauseCount == 0)
         {
-            MusicPlayer.Pause();
+            _musicPlayer.Pause();
         }
         _pauseCount++;
-        _ = StartCoroutine(UnpauseMusicAfterDelay(duration));
+        StartCoroutine(UnpauseMusicAfterDelay(duration));
     }
 
     /// <summary>
@@ -218,11 +216,11 @@ public class AudioManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         _pauseCount = Mathf.Max(0, _pauseCount - 1);
-        if (_pauseCount == 0 && !MusicPlayer.isPlaying)
+        if (_pauseCount == 0 && !_musicPlayer.isPlaying)
         {
-            MusicPlayer.volume = 0;
-            MusicPlayer.UnPause();
-            _musicTween = MusicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
+            _musicPlayer.volume = 0;
+            _musicPlayer.UnPause();
+            _musicTween = _musicPlayer.DOFade(_originalMusicVolume, _fadeDuration);
         }
     }
 }
