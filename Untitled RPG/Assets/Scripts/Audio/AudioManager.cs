@@ -153,7 +153,7 @@ public class AudioManager : MonoBehaviour
         }
 
         _currentMusic = clip;
-        StartCoroutine(PlayMusicAsync(clip, loop, fade));
+        _ = StartCoroutine(PlayMusicAsync(clip, loop, fade));
     }
 
     /// <summary>
@@ -203,7 +203,7 @@ public class AudioManager : MonoBehaviour
             _musicPlayer.Pause();
         }
         _pauseCount++;
-        StartCoroutine(UnpauseMusicAfterDelay(duration));
+        _ = StartCoroutine(UnpauseMusicAfterDelay(duration));
     }
 
     /// <summary>
