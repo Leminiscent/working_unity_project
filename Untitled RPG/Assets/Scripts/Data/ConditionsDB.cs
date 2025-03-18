@@ -200,7 +200,7 @@ public class ConditionsDB
         }
     };
 
-    public static float GetStatusBonus(Dictionary<ConditionID, (Condition, int)> statuses)
+    public static float GetStatusBonus(Dictionary<ConditionID, ConditionStatus> statuses)
     {
         if (statuses == null || statuses.Count == 0)
         {
@@ -208,9 +208,9 @@ public class ConditionsDB
         }
 
         float bonus = 1f;
-        foreach (KeyValuePair<ConditionID, (Condition, int)> entry in statuses)
+        foreach (KeyValuePair<ConditionID, ConditionStatus> entry in statuses)
         {
-            Condition condition = entry.Value.Item1;
+            Condition condition = entry.Value.Condition;
             if (condition.ID is ConditionID.Slp or ConditionID.Frz)
             {
                 bonus += 1f;

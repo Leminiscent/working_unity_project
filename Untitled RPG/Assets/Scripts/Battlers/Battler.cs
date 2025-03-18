@@ -195,6 +195,32 @@ public class Battler
     }
 
     /// <summary>
+    /// Increases stat performance values based on the provided gains.
+    /// Each stat is increased only if it hasn't reached its per-stat maximum and the overall total is below the global maximum.
+    /// </summary>
+    public void GainPvs(Dictionary<Stat, float> pvGained)
+    {
+        // Iterate over a copy to safely modify the dictionary during iteration.
+        foreach (KeyValuePair<Stat, float> kvp in StatPerformanceValues.ToArray())
+        {
+            // Only apply gain if this stat's performance is below the per-stat max and overall total is below global max.
+            if (kvp.Value < GlobalSettings.Instance.MaxPvPerStat && GetTotalPvs() < GlobalSettings.Instance.MaxPvs)
+            {
+                pvGained[kvp.Key] = Mathf.Clamp(pvGained[kvp.Key], 0, GlobalSettings.Instance.MaxPvs - GetTotalPvs());
+                StatPerformanceValues[kvp.Key] = Mathf.Clamp(StatPerformanceValues[kvp.Key] + pvGained[kvp.Key], 0, GlobalSettings.Instance.MaxPvPerStat);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns the sum of all stat performance values.
+    /// </summary>
+    public float GetTotalPvs()
+    {
+        return StatPerformanceValues.Values.Sum();
+    }
+
+    /// <summary>
     /// Applies a list of stat boosts.
     /// </summary>
     public void ApplyBoosts(List<StatBoost> statBoosts)
@@ -268,6 +294,11 @@ public class Battler
     public bool HasMove(MoveBase move)
     {
         return Moves.Any(m => m.Base == move);
+    }
+
+    public bool HasType(BattlerType type)
+    {
+        return Base.Type1 == type || Base.Type2 == type;
     }
 
     public Move GetRandomMove()
