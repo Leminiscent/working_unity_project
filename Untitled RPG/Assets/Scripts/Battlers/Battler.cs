@@ -646,18 +646,3 @@ public enum StatusEventType
     CureCondition,
     StatBoost
 }
-
-/// <summary>
-/// Encapsulates a condition and its remaining timer.
-/// </summary>
-public class ConditionStatus
-{
-    public Condition Condition { get; private set; }
-    public int Timer { get; set; }
-
-    public ConditionStatus(Condition condition, int timer)
-    {
-        Condition = condition;
-        Timer = timer;
-    }
-}

@@ -4,7 +4,6 @@ public class Condition
 {
     public ConditionID ID { get; set; }
     public string Name { get; set; }
-    public string Description { get; set; }
     public string StartMessage { get; set; }
     public string EffectMessage { get; set; }
     public string FailMessage { get; set; }
@@ -17,6 +16,24 @@ public class Condition
     public Func<Battler, Battler, Move, float> OnDamageModify { get; set; }
 }
 
+/// <summary>
+/// Encapsulates a condition and its remaining timer.
+/// </summary>
+public class ConditionStatus
+{
+    public Condition Condition { get; private set; }
+    public int Timer { get; set; }
+
+    public ConditionStatus(Condition condition, int timer)
+    {
+        Condition = condition;
+        Timer = timer;
+    }
+}
+
+/// <summary>
+/// Represents the save data for a condition applied to a battler.
+/// </summary>
 [Serializable]
 public class ConditionSaveData
 {
