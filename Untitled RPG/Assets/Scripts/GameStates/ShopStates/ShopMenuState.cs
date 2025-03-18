@@ -24,36 +24,40 @@ public class ShopMenuState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        StartCoroutine(StartMenu());
+        _ = StartCoroutine(ShowMenu());
     }
 
-    private IEnumerator StartMenu()
+    private IEnumerator ShowMenu()
     {
-        int selectedChoice = 0;
+        // Loop until the player leaves the shop.
+        while (true)
+        {
+            int menuChoice = -1;
 
-        yield return DialogueManager.Instance.ShowDialogueText("Welcome to my shop! How can I help you today?",
-            waitForInput: false,
-            choices: new List<string> { "Buy", "Sell", "Leave" },
-            onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);
+            // Display the shop menu dialogue and capture the player's choice.
+            yield return DialogueManager.Instance.ShowDialogueText(
+                "Welcome to my shop! How can I help you today?",
+                waitForInput: false,
+                choices: new List<string> { "Buy", "Sell", "Leave" },
+                onChoiceSelected: choiceIndex => menuChoice = choiceIndex
+            );
 
-        if (selectedChoice == 0)
-        {
-            // Buy
-            ShopBuyingState.Instance.AvailableItems = AvailableItems;
-            yield return _gameController.StateMachine.PushAndWait(ShopBuyingState.Instance);
-            StartCoroutine(StartMenu());
-        }
-        else if (selectedChoice == 1)
-        {
-            // Sell
-            yield return _gameController.StateMachine.PushAndWait(ShopSellingState.Instance);
-            StartCoroutine(StartMenu());
-        }
-        else
-        {
-            // Leave
-            yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!");
-            _gameController.StateMachine.Pop();
+            if (menuChoice == 0) // Buy
+            {
+                ShopBuyingState.Instance.AvailableItems = AvailableItems;
+                // Push the buying state and wait for it to complete before re-displaying the menu.
+                yield return _gameController.StateMachine.PushAndWait(ShopBuyingState.Instance);
+            }
+            else if (menuChoice == 1) // Sell
+            {
+                yield return _gameController.StateMachine.PushAndWait(ShopSellingState.Instance);
+            }
+            else if (menuChoice == 2) // Leave
+            {
+                yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!");
+                _gameController.StateMachine.Pop();
+                break;
+            }
         }
     }
 }

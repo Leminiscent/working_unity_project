@@ -12,8 +12,8 @@ public class ShopBuyingState : State<GameController>
 
     private GameController _gameController;
     private Inventory _playerInventory;
-    private bool _browseItems;
-    private bool _backInProgress;
+    private bool _isBrowsing;
+    private bool _isProcessingBack;
 
     public List<ItemBase> AvailableItems { get; set; }
     public static ShopBuyingState Instance { get; private set; }
@@ -38,14 +38,14 @@ public class ShopBuyingState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        _browseItems = false;
-        _backInProgress = false;
-        StartCoroutine(StartBuying());
+        _isBrowsing = false;
+        _isProcessingBack = false;
+        _ = StartCoroutine(StartBuying());
     }
 
     public override void Execute()
     {
-        if (_browseItems)
+        if (_isBrowsing)
         {
             _shopUI.HandleUpdate();
         }
@@ -53,51 +53,60 @@ public class ShopBuyingState : State<GameController>
 
     private IEnumerator StartBuying()
     {
-        yield return GameController.Instance.MoveCamera(_shopCameraOffset);
+        yield return _gameController.MoveCamera(_shopCameraOffset);
         _walletUI.Show();
         _shopUI.Show(AvailableItems,
-            (item) => StartCoroutine(BuyItem(item)),
-            () =>
-            {
-                if (!_backInProgress)
-                {
-                    _backInProgress = true;
-                    StartCoroutine(OnBackFromBuying());
-                }
-            });
-        _browseItems = true;
+            item => StartCoroutine(BuyItem(item)),
+            OnBackButtonPressed);
+        _isBrowsing = true;
+    }
+
+    private void OnBackButtonPressed()
+    {
+        if (!_isProcessingBack)
+        {
+            _isProcessingBack = true;
+            _ = StartCoroutine(HandleBackFromBuying());
+        }
     }
 
     private IEnumerator BuyItem(ItemBase item)
     {
-        _browseItems = false;
-        yield return DialogueManager.Instance.ShowDialogueText($"How many {item.Name}s would you like?",
-            waitForInput: false, autoClose: false);
+        _isBrowsing = false;
+
+        // Ask the player how many items they want to buy.
+        yield return DialogueManager.Instance.ShowDialogueText(
+            $"How many {item.Name}s would you like?",
+            waitForInput: false,
+            autoClose: false);
 
         int countToBuy = 1;
-
         yield return _countSelectorUI.ShowSelector(99, item.Price,
             selectedCount => countToBuy = selectedCount);
 
         DialogueManager.Instance.CloseDialogue();
 
+        // If the user cancels the purchase (selects 0), resume browsing.
         if (countToBuy == 0)
         {
-            _browseItems = true;
+            _isBrowsing = true;
             yield break;
         }
 
         float totalPrice = item.Price * countToBuy;
 
+        // Check if the wallet has enough money.
         if (Wallet.Instance.HasEnoughMoney(totalPrice))
         {
-            int selectedChoice = 0;
-
-            yield return DialogueManager.Instance.ShowDialogueText($"That will be {totalPrice} gold. Do we have a deal?",
+            // Confirm the purchase with the player.
+            int selectedChoice = -1;
+            yield return DialogueManager.Instance.ShowDialogueText(
+                $"That will be {totalPrice} gold. Do we have a deal?",
                 waitForInput: false,
                 choices: new List<string> { "Yes", "No" },
                 onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);
 
+            // If the player confirms the purchase.
             if (selectedChoice == 0)
             {
                 Wallet.Instance.SpendMoney(totalPrice);
@@ -109,13 +118,13 @@ public class ShopBuyingState : State<GameController>
         {
             yield return DialogueManager.Instance.ShowDialogueText("You don't have enough money for that.");
         }
-        _browseItems = true;
+        _isBrowsing = true;
     }
 
-    private IEnumerator OnBackFromBuying()
+    private IEnumerator HandleBackFromBuying()
     {
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-        yield return GameController.Instance.MoveCamera(-_shopCameraOffset);
+        yield return _gameController.MoveCamera(-_shopCameraOffset);
         _shopUI.Close();
         _walletUI.Close();
         _gameController.StateMachine.Pop();
