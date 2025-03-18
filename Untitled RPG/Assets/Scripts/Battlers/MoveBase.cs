@@ -1,51 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Move", menuName = "Battler/Create new move")]
 public class MoveBase : ScriptableObject
 {
-    [SerializeField] private string _name;
-    [TextArea, SerializeField] private string _description;
-    [SerializeField] private BattlerType _type;
-    [SerializeField] private MoveCategory _category;
-    [SerializeField] private MoveEffects _effects;
-    [SerializeField] private List<SecondaryEffects> _secondaryEffects;
-    [SerializeField] private CritBehavior _critBehavior;
-    [SerializeField] private RecoilMoveEffect _recoil = new();
-    [SerializeField] private int _drainPercentage = 0;
-    [SerializeField] private OneHitKOMoveEffect _oneHitKO = new();
-    [SerializeField] private MoveTarget _target;
-    [SerializeField] private Vector2Int _hitRange;
-    [SerializeField] private int _power;
-    [SerializeField] private int _accuracy;
-    [SerializeField] private bool _alwaysHits;
-    [SerializeField] private int _sP;
-    [SerializeField] private int _priority;
-    [SerializeField] private AudioClip _castSound;
-    [SerializeField] private AudioClip _effectSound;
-    [SerializeField] private List<Sprite> _castAnimationSprites;
-    [SerializeField] private List<Sprite> _effectAnimationSprites;
+    [field: Header("Basic Details")]
+    [field: SerializeField, FormerlySerializedAs("_name")] public string Name { get; private set; }
+    [field: TextArea, SerializeField, FormerlySerializedAs("_description")] public string Description { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_type")] public BattlerType Type { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_category")] public MoveCategory Category { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_target")] public MoveTarget Target { get; private set; }
 
-    public string Name => _name;
-    public string Description => _description;
-    public BattlerType Type => _type;
-    public CritBehavior CritBehavior => _critBehavior;
-    public RecoilMoveEffect Recoil => _recoil;
-    public int DrainPercentage => _drainPercentage;
-    public OneHitKOMoveEffect OneHitKO => _oneHitKO;
-    public int Power => _power;
-    public int Accuracy => _accuracy;
-    public bool AlwaysHits => _alwaysHits;
-    public int SP => _sP;
-    public int Priority => _priority;
-    public MoveCategory Category => _category;
-    public MoveEffects Effects => _effects;
-    public List<SecondaryEffects> SecondaryEffects => _secondaryEffects;
-    public MoveTarget Target => _target;
-    public AudioClip CastSound => _castSound;
-    public AudioClip EffectSound => _effectSound;
-    public List<Sprite> CastAnimationSprites => _castAnimationSprites;
-    public List<Sprite> EffectAnimationSprites => _effectAnimationSprites;
+    [field: Header("Effects")]
+    [field: SerializeField, FormerlySerializedAs("_effects")] public MoveEffects Effects { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_secondaryEffects")] public List<SecondaryEffects> SecondaryEffects { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_critBehavior")] public CritBehavior CritBehavior { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_recoil")] public RecoilMoveEffect Recoil { get; private set; } = new();
+    [field: SerializeField, FormerlySerializedAs("_drainPercentage")] public int DrainPercentage { get; private set; } = 0;
+    [field: SerializeField, FormerlySerializedAs("_oneHitKO")] public OneHitKOMoveEffect OneHitKO { get; private set; } = new();
+
+    [Header("Stats")]
+    [SerializeField] private Vector2Int _hitRange;
+    [field: SerializeField, FormerlySerializedAs("_power")] public int Power { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_accuracy")] public int Accuracy { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_alwaysHits")] public bool AlwaysHits { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_sp")] public int SP { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_priority")] public int Priority { get; private set; }
+
+    [field: Header("Animation & Sound")]
+    [field: SerializeField, FormerlySerializedAs("_castSound")] public AudioClip CastSound { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_effectSound")] public AudioClip EffectSound { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_castAnimationSprites")] public List<Sprite> CastAnimationSprites { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_effectAnimationSprites")] public List<Sprite> EffectAnimationSprites { get; private set; }
 
     public int GetHitCount()
     {
@@ -67,11 +54,8 @@ public class MoveEffects
     [SerializeField] private ConditionID _weather;
 
     public List<StatBoost> Boosts => _boosts;
-
     public ConditionID Status => _status;
-
     public ConditionID VolatileStatus => _volatileStatus;
-
     public ConditionID Weather => _weather;
 }
 
@@ -82,7 +66,6 @@ public class SecondaryEffects : MoveEffects
     [SerializeField] private MoveTarget _target;
 
     public int Chance => _chance;
-
     public MoveTarget Target => _target;
 }
 
