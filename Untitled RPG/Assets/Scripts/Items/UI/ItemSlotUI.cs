@@ -1,28 +1,30 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ItemSlotUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _nameText;
-    [SerializeField] private TextMeshProUGUI _countText;
+    [field: SerializeField, FormerlySerializedAs("_nameText")] public TextMeshProUGUI NameText { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("_countText")] public TextMeshProUGUI CountText { get; private set; }
 
     private RectTransform _rectTransform;
 
-    public TextMeshProUGUI NameText => _nameText;
-    public TextMeshProUGUI CountText => _countText;
     public float Height => _rectTransform.rect.height;
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
 
     public void SetData(ItemSlot itemSlot)
     {
-        _rectTransform = GetComponent<RectTransform>();
-        _nameText.text = itemSlot.Item.Name;
-        _countText.text = $"X {itemSlot.Count}";
+        NameText.text = itemSlot.Item.Name;
+        CountText.text = $"X {itemSlot.Count}";
     }
 
     public void SetNameAndPrice(ItemBase item)
     {
-        _rectTransform = GetComponent<RectTransform>();
-        _nameText.text = item.Name;
-        _countText.text = $"{item.Price} GP";
+        NameText.text = item.Name;
+        CountText.text = $"{item.Price} GP";
     }
 }
