@@ -55,14 +55,14 @@ public class StorageState : State<GameController>
     {
         if (!_isMovingBattler)
         {
-            StartCoroutine(HandleBattlerSelection(slotIndex));
+            _ = StartCoroutine(HandleBattlerSelection(slotIndex));
         }
         else
         {
             if (_selectedBattlerToMove.IsCommander && !_storageUI.IsPartySlot(slotIndex))
             {
                 _storageUI.PlaceBattlerIntoSlot(_selectedSlotToMove, _selectedBattlerToMove);
-                StartCoroutine(HandlePlayerMoveAttempt());
+                _ = StartCoroutine(HandlePlayerMoveAttempt());
                 return;
             }
 
@@ -97,7 +97,7 @@ public class StorageState : State<GameController>
             {
                 _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, secondBattler);
                 _storageUI.PlaceBattlerIntoSlot(firstSlotIndex, _selectedBattlerToMove);
-                StartCoroutine(HandlePlayerMoveAttempt());
+                _ = StartCoroutine(HandlePlayerMoveAttempt());
                 return;
             }
 
@@ -106,7 +106,7 @@ public class StorageState : State<GameController>
             {
                 _storageUI.PlaceBattlerIntoSlot(firstSlotIndex, secondBattler);
             }
-            _party.Battlers.RemoveAll(static b => b == null);
+            _ = _party.Battlers.RemoveAll(static b => b == null);
             _party.PartyUpdated();
             _storageUI.SetStorageData();
             _storageUI.SetPartyData();

@@ -28,7 +28,16 @@ public class InventoryState : State<GameController>
     {
         _gameController = owner;
         _prevState = _gameController.StateMachine.GetPrevState();
+
+        if (_inventoryUI == null)
+        {
+            Debug.LogError("InventoryUI reference is missing.");
+            return;
+        }
+
         _inventoryUI.gameObject.SetActive(true);
+
+        // Hide money text if coming from a battle state, otherwise show it.
         if (_prevState == BattleState.Instance)
         {
             _inventoryUI.HideMoneyText();
@@ -37,6 +46,7 @@ public class InventoryState : State<GameController>
         {
             _inventoryUI.ShowMoneyText();
         }
+
         SelectedItem = null;
         _inventoryUI.OnSelected += OnItemSelected;
         _inventoryUI.OnBack += OnBack;
@@ -44,24 +54,32 @@ public class InventoryState : State<GameController>
 
     public override void Execute()
     {
-        _inventoryUI.HandleUpdate();
+        if (_inventoryUI != null)
+        {
+            _inventoryUI.HandleUpdate();
+        }
     }
 
     public override void Exit()
     {
-        _inventoryUI.ResetInventoryScreen();
-        _inventoryUI.gameObject.SetActive(false);
-        _inventoryUI.OnSelected -= OnItemSelected;
-        _inventoryUI.OnBack -= OnBack;
+        if (_inventoryUI != null)
+        {
+            _inventoryUI.ResetInventoryScreen();
+            _inventoryUI.gameObject.SetActive(false);
+            _inventoryUI.OnSelected -= OnItemSelected;
+            _inventoryUI.OnBack -= OnBack;
+        }
     }
 
     private void OnItemSelected(int selection)
     {
         SelectedItem = _inventoryUI.SelectedItem;
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
+
+        // If the previous state is not ShopSelling, then proceed to item usage.
         if (_gameController.StateMachine.GetPrevState() != ShopSellingState.Instance)
         {
-            StartCoroutine(SelectBattlerAndUseItem());
+            _ = StartCoroutine(SelectBattlerAndUseItem());
         }
         else
         {
@@ -78,12 +96,14 @@ public class InventoryState : State<GameController>
 
     private IEnumerator SelectBattlerAndUseItem()
     {
+        // Check if the item is directly usable.
         if (!SelectedItem.DirectlyUsable)
         {
             yield return DialogueManager.Instance.ShowDialogueText("This item can't be used directly!");
             SelectedItem = null;
             yield break;
         }
+        // Check usability in battle.
         else if (_prevState == BattleState.Instance)
         {
             if (!SelectedItem.UsableInBattle)
@@ -93,6 +113,7 @@ public class InventoryState : State<GameController>
                 yield break;
             }
         }
+        // Check usability outside of battle.
         else
         {
             if (!SelectedItem.UsableOutsideBattle)
@@ -102,6 +123,8 @@ public class InventoryState : State<GameController>
                 yield break;
             }
         }
+
+        // If not coming from battle, push the PartyState to choose a battler for item use.
         if (_prevState != BattleState.Instance)
         {
             yield return _gameController.StateMachine.PushAndWait(PartyState.Instance);

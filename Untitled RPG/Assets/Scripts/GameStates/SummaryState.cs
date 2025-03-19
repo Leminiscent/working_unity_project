@@ -32,15 +32,20 @@ public class SummaryState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
+
+        // Use the provided battler list if available; otherwise, get from the player's BattleParty.
         _currentBattlerList = BattlersList ?? PlayerController.Instance.GetComponent<BattleParty>().Battlers;
         if (_currentBattlerList == null || _currentBattlerList.Count == 0)
         {
             _currentBattlerList = new List<Battler>();
         }
+
         if (SelectedBattlerIndex < 0 || SelectedBattlerIndex >= _currentBattlerList.Count)
         {
             SelectedBattlerIndex = 0;
         }
+
+        // Activate the summary UI and show initial details.
         _summaryScreenUI.gameObject.SetActive(true);
         if (_currentBattlerList.Count > 0)
         {
@@ -48,49 +53,21 @@ public class SummaryState : State<GameController>
         }
         _summaryScreenUI.ShowPage(_selectedPage);
 
-        // Initialize battler selection UI.
-        _battlerSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
-        _battlerSelectionUI.SetSelectionSettings(SelectionType.List, 1);
-        _battlerSelectionUI.IgnoreHorizontalInput = true;
-        List<DummySelectable> battlerItems = new();
-        for (int i = 0; i < _currentBattlerList.Count; i++)
-        {
-            battlerItems.Add(new DummySelectable());
-        }
-        _battlerSelectionUI.SetItems(battlerItems);
-        _battlerSelectionUI.SetSelectedIndex(SelectedBattlerIndex);
-        _battlerSelectionUI.OnIndexChanged += (index) =>
-        {
-            SelectedBattlerIndex = index;
-            if (_currentBattlerList.Count > 0)
-            {
-                _summaryScreenUI.SetBasicDetails(_currentBattlerList[SelectedBattlerIndex]);
-                _summaryScreenUI.ShowPage(_selectedPage);
-            }
-        };
-
-        // Initialize page selection UI.
-        _pageSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
-        _pageSelectionUI.SetSelectionSettings(SelectionType.Grid, 2);
-        _pageSelectionUI.IgnoreVerticalInput = true;
-        List<DummySelectable> pageItems = new() { new(), new() };
-        _pageSelectionUI.SetItems(pageItems);
-        _pageSelectionUI.SetSelectedIndex(_selectedPage);
-        _pageSelectionUI.OnIndexChanged += (index) =>
-        {
-            _selectedPage = index;
-            _summaryScreenUI.ShowPage(_selectedPage);
-        };
+        // Initialize the selection UIs.
+        InitializeBattlerSelectionUI();
+        InitializePageSelectionUI();
     }
 
     public override void Execute()
     {
+        // Only update the selection UIs if the summary UI isn't in move selection mode.
         if (!_summaryScreenUI.InMoveSelection)
         {
             if (_battlerSelectionUI != null)
             {
                 _battlerSelectionUI.HandleUpdate();
             }
+
             if (_pageSelectionUI != null)
             {
                 _pageSelectionUI.HandleUpdate();
@@ -99,6 +76,7 @@ public class SummaryState : State<GameController>
 
         if (Input.GetButtonDown("Action"))
         {
+            // If on page 1 and not already in move selection, enter move selection mode.
             if (_selectedPage == 1 && !_summaryScreenUI.InMoveSelection)
             {
                 _summaryScreenUI.InMoveSelection = true;
@@ -120,6 +98,7 @@ public class SummaryState : State<GameController>
             }
         }
 
+        // Update the summary UI itself.
         _summaryScreenUI.HandleUpdate();
     }
 
@@ -139,5 +118,49 @@ public class SummaryState : State<GameController>
             Destroy(_pageSelectionUI);
             _pageSelectionUI = null;
         }
+    }
+
+    private void InitializeBattlerSelectionUI()
+    {
+        _battlerSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _battlerSelectionUI.SetSelectionSettings(SelectionType.List, 1);
+        _battlerSelectionUI.IgnoreHorizontalInput = true;
+
+        List<DummySelectable> battlerItems = new();
+        for (int i = 0; i < _currentBattlerList.Count; i++)
+        {
+            battlerItems.Add(new DummySelectable());
+        }
+        _battlerSelectionUI.SetItems(battlerItems);
+        _battlerSelectionUI.SetSelectedIndex(SelectedBattlerIndex);
+        _battlerSelectionUI.OnIndexChanged += OnBattlerIndexChanged;
+    }
+
+    private void OnBattlerIndexChanged(int index)
+    {
+        SelectedBattlerIndex = index;
+        if (_currentBattlerList.Count > 0)
+        {
+            _summaryScreenUI.SetBasicDetails(_currentBattlerList[SelectedBattlerIndex]);
+            _summaryScreenUI.ShowPage(_selectedPage);
+        }
+    }
+
+    private void InitializePageSelectionUI()
+    {
+        _pageSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
+        _pageSelectionUI.SetSelectionSettings(SelectionType.Grid, 2);
+        _pageSelectionUI.IgnoreVerticalInput = true;
+
+        List<DummySelectable> pageItems = new() { new DummySelectable(), new DummySelectable() };
+        _pageSelectionUI.SetItems(pageItems);
+        _pageSelectionUI.SetSelectedIndex(_selectedPage);
+        _pageSelectionUI.OnIndexChanged += OnPageIndexChanged;
+    }
+
+    private void OnPageIndexChanged(int index)
+    {
+        _selectedPage = index;
+        _summaryScreenUI.ShowPage(_selectedPage);
     }
 }
