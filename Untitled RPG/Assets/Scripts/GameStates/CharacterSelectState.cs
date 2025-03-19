@@ -24,48 +24,75 @@ public class CharacterSelectState : State<GameController>
             Instance = this;
         }
 
-        foreach (Battler battler in _availableBattlers)
+        // Initialize all available battlers.
+        if (_availableBattlers != null)
         {
-            battler.InitBattler();
+            foreach (Battler battler in _availableBattlers)
+            {
+                battler.InitBattler();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Available battlers list is null.");
         }
     }
 
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        _characterSelectScreen.gameObject.SetActive(true);
-        _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
-        _characterSelectScreen.OnSelected += OnCharacterSelected;
+
+        if (_characterSelectScreen != null)
+        {
+            _characterSelectScreen.gameObject.SetActive(true);
+            _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
+            _characterSelectScreen.OnSelected += OnCharacterSelected;
+        }
+        else
+        {
+            Debug.LogError("CharacterSelectScreen reference is missing.");
+        }
     }
 
     public override void Execute()
     {
-        _characterSelectScreen.HandleUpdate();
+        if (_characterSelectScreen != null)
+        {
+            _characterSelectScreen.HandleUpdate();
+        }
     }
 
     public override void Exit()
     {
-        _characterSelectScreen.OnSelected -= OnCharacterSelected;
-        _characterSelectScreen.gameObject.SetActive(false);
+        if (_characterSelectScreen != null)
+        {
+            _characterSelectScreen.OnSelected -= OnCharacterSelected;
+            _characterSelectScreen.gameObject.SetActive(false);
+        }
     }
 
     private void OnCharacterSelected(int selectionIndex)
     {
+        if (selectionIndex < 0 || selectionIndex >= _availableBattlers.Count)
+        {
+            Debug.LogError("Invalid character selection index.");
+            return;
+        }
+
         Battler selectedBattler = _availableBattlers[selectionIndex];
         PlayerController.Instance.SetPlayerBattler(selectedBattler);
-
-        StartCoroutine(StartGame());
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
+
+        // Start the transition to the next game state.
+        _ = StartCoroutine(StartGame());
     }
 
     private IEnumerator StartGame()
     {
         yield return Fader.Instance.FadeIn(0.1f);
-
         _gameController.StateMachine.ChangeState(FreeRoamState.Instance);
         SavingSystem.Instance.Delete("saveSlot1");
         SceneManager.LoadScene(1);
-
         yield return Fader.Instance.FadeOut(0.75f);
     }
 }

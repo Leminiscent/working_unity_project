@@ -25,58 +25,65 @@ public class GameMenuState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-        _menuController.gameObject.SetActive(true);
-        _menuController.OnSelected += OnMenuItemSelected;
-        _menuController.OnBack += OnBack;
+        if (_menuController != null)
+        {
+            _menuController.gameObject.SetActive(true);
+            _menuController.OnSelected += OnMenuItemSelected;
+            _menuController.OnBack += OnBack;
+        }
+        else
+        {
+            Debug.LogError("MenuController reference is missing in GameMenuState.");
+        }
     }
 
     public override void Execute()
     {
-        _menuController.HandleUpdate();
+        if (_menuController != null)
+        {
+            _menuController.HandleUpdate();
+        }
     }
 
     public override void Exit()
     {
-        _menuController.gameObject.SetActive(false);
-        _menuController.OnSelected -= OnMenuItemSelected;
-        _menuController.OnBack -= OnBack;
+        if (_menuController != null)
+        {
+            _menuController.gameObject.SetActive(false);
+            _menuController.OnSelected -= OnMenuItemSelected;
+            _menuController.OnBack -= OnBack;
+        }
     }
 
     private void OnMenuItemSelected(int selection)
     {
-        if (selection == 0)
+        switch (selection)
         {
-            // Party
-            _gameController.StateMachine.Push(PartyState.Instance);
-        }
-        else if (selection == 1)
-        {
-            // Inventory
-            _gameController.StateMachine.Push(InventoryState.Instance);
-        }
-        else if (selection == 2)
-        {
-            // Storage
-            _gameController.StateMachine.Push(StorageState.Instance);
-        }
-        else if (selection == 3)
-        {
-            // Save
-            StartCoroutine(SaveSelected());
-        }
-        else if (selection == 4)
-        {
-            // Load
-            StartCoroutine(LoadSelected());
-        }
-        else if (selection == 5)
-        {
-            // Quit
+            case 0: // Party
+                _gameController.StateMachine.Push(PartyState.Instance);
+                break;
+            case 1: // Inventory
+                _gameController.StateMachine.Push(InventoryState.Instance);
+                break;
+            case 2: // Storage
+                _gameController.StateMachine.Push(StorageState.Instance);
+                break;
+            case 3: // Save
+                StartCoroutine(SaveSelected());
+                break;
+            case 4: // Load
+                StartCoroutine(LoadSelected());
+                break;
+            case 5: // Quit
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+                Application.Quit();
 #endif
+                break;
+            default:
+                Debug.LogWarning($"Invalid menu selection: {selection}");
+                break;
         }
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
@@ -97,7 +104,10 @@ public class GameMenuState : State<GameController>
 
     private void OnBack()
     {
-        _menuController.ResetSelection();
+        if (_menuController != null)
+        {
+            _menuController.ResetSelection();
+        }
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         _gameController.StateMachine.Pop();
     }

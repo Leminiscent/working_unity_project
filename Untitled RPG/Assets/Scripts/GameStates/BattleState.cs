@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils.StateMachine;
 
 public class BattleState : State<GameController>
 {
-    [SerializeField] private BattleSystem _battleSystem;
+    [field: SerializeField, FormerlySerializedAs("_battleSystem")] public BattleSystem BattleSystem { get; private set; }
+
     private GameController _gameController;
 
     public BattleTrigger Trigger { get; set; }
     public CommanderController Commander { get; set; }
-    public BattleSystem BattleSystem => _battleSystem;
     public static BattleState Instance { get; private set; }
 
     private void Awake()
@@ -28,42 +29,76 @@ public class BattleState : State<GameController>
     {
         _gameController = owner;
 
-        _battleSystem.gameObject.SetActive(true);
-        _gameController.WorldCamera.gameObject.SetActive(false);
+        // Activate the battle system and disable the world camera.
+        if (BattleSystem != null)
+        {
+            BattleSystem.gameObject.SetActive(true);
+        }
+        if (_gameController.WorldCamera != null)
+        {
+            _gameController.WorldCamera.gameObject.SetActive(false);
+        }
 
-        BattleParty playerParty = _gameController.PlayerController.GetComponent<BattleParty>();
+        // Retrieve the player's battle party from the PlayerController.
+        if (!_gameController.PlayerController.TryGetComponent(out BattleParty playerParty))
+        {
+            Debug.LogError("PlayerController is missing a BattleParty component.");
+            return;
+        }
 
+        // Start either a rogue battle or a commander battle based on whether Commander is set.
         if (Commander == null)
         {
-            List<Battler> rogueBattlers = _gameController.CurrentScene.GetComponent<MapArea>().GetRandomRogueBattlers(Random.Range(1, 4));
-            List<Battler> rogueBattlerCopies = new();
-
-            for (int i = 0; i < rogueBattlers.Count; i++)
+            // Get a list of random rogue battlers from the current scene.
+            if (!_gameController.CurrentScene.TryGetComponent(out MapArea mapArea))
             {
-                rogueBattlerCopies.Add(new(rogueBattlers[i].Base, rogueBattlers[i].Level));
+                Debug.LogError("CurrentScene is missing a MapArea component.");
+                return;
             }
 
-            _battleSystem.StartRogueBattle(playerParty, rogueBattlerCopies, Trigger, rogueBattlers.Count);
+            List<Battler> rogueBattlers = mapArea.GetRandomRogueBattlers(Random.Range(1, 4));
+            List<Battler> rogueBattlerCopies = new();
+
+            // Create copies of the rogue battlers.
+            foreach (Battler battler in rogueBattlers)
+            {
+                rogueBattlerCopies.Add(new Battler(battler.Base, battler.Level));
+            }
+
+            BattleSystem.StartRogueBattle(playerParty, rogueBattlerCopies, Trigger, rogueBattlers.Count);
         }
         else
         {
-            BattleParty enemyParty = Commander.GetComponent<BattleParty>();
-            _battleSystem.StartCommanderBattle(playerParty, enemyParty, Trigger, Mathf.Min(enemyParty.Battlers.Count, 3));
+            // Get the enemy party from the commander.
+            if (!Commander.TryGetComponent(out BattleParty enemyParty))
+            {
+                Debug.LogError("Commander is missing a BattleParty component.");
+                return;
+            }
+            int maxBattlers = Mathf.Min(enemyParty.Battlers.Count, 3);
+            BattleSystem.StartCommanderBattle(playerParty, enemyParty, Trigger, maxBattlers);
         }
 
-        _battleSystem.OnBattleOver += EndBattle;
+        // Subscribe to the battle over event.
+        BattleSystem.OnBattleOver += EndBattle;
     }
 
     public override void Execute()
     {
-        _battleSystem.HandleUpdate();
+        BattleSystem.HandleUpdate();
     }
 
     public override void Exit()
     {
-        _battleSystem.gameObject.SetActive(false);
-        _gameController.WorldCamera.gameObject.SetActive(true);
-        _battleSystem.OnBattleOver -= EndBattle;
+        if (BattleSystem != null)
+        {
+            BattleSystem.gameObject.SetActive(false);
+        }
+        if (_gameController.WorldCamera != null)
+        {
+            _gameController.WorldCamera.gameObject.SetActive(true);
+        }
+        BattleSystem.OnBattleOver -= EndBattle;
     }
 
     private void EndBattle(bool won)

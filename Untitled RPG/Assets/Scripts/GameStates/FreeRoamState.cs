@@ -27,17 +27,35 @@ public class FreeRoamState : State<GameController>
 
     public override void Execute()
     {
-        PlayerController.Instance.HandleUpdate();
+        if (PlayerController.Instance != null)
+        {
+            PlayerController.Instance.HandleUpdate();
+        }
+        else
+        {
+            Debug.LogError("PlayerController instance is missing in FreeRoamState.");
+        }
 
         if (Input.GetButtonDown("Submit"))
         {
-            StartCoroutine(OpenMenu());
+            // Initiate the transition to the game menu.
+            _ = StartCoroutine(OpenMenu());
         }
     }
 
     public IEnumerator OpenMenu()
     {
-        PlayerController.Instance.Character.Animator.IsMoving = false;
+        if (PlayerController.Instance != null &&
+            PlayerController.Instance.Character != null &&
+            PlayerController.Instance.Character.Animator != null)
+        {
+            PlayerController.Instance.Character.Animator.IsMoving = false;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerController, Character, or Animator reference is missing.");
+        }
+
         yield return _gameController.StateMachine.PushAndWait(GameMenuState.Instance);
     }
 }

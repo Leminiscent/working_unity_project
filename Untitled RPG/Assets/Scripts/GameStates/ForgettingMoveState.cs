@@ -29,22 +29,37 @@ public class ForgettingMoveState : State<GameController>
     {
         _gameController = owner;
         Selection = 0;
-        _moveForgettingUI.gameObject.SetActive(true);
-        _moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
-        _moveForgettingUI.OnSelected += OnMoveSelected;
-        _moveForgettingUI.OnBack += OnBack;
+
+        // Activate and initialize the UI.
+        if (_moveForgettingUI != null)
+        {
+            _moveForgettingUI.gameObject.SetActive(true);
+            _moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
+            _moveForgettingUI.OnSelected += OnMoveSelected;
+            _moveForgettingUI.OnBack += OnBack;
+        }
+        else
+        {
+            Debug.LogError("MoveForgettingUI reference is missing.");
+        }
     }
 
     public override void Execute()
     {
-        _moveForgettingUI.HandleUpdate();
+        if (_moveForgettingUI != null)
+        {
+            _moveForgettingUI.HandleUpdate();
+        }
     }
 
     public override void Exit()
     {
-        _moveForgettingUI.gameObject.SetActive(false);
-        _moveForgettingUI.OnSelected -= OnMoveSelected;
-        _moveForgettingUI.OnBack -= OnBack;
+        if (_moveForgettingUI != null)
+        {
+            _moveForgettingUI.gameObject.SetActive(false);
+            _moveForgettingUI.OnSelected -= OnMoveSelected;
+            _moveForgettingUI.OnBack -= OnBack;
+        }
     }
 
     private void OnMoveSelected(int selection)
