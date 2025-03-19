@@ -60,7 +60,7 @@ public class SavableEntity : MonoBehaviour
         if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
         {
             property.stringValue = Guid.NewGuid().ToString();
-            serializedObject.ApplyModifiedProperties();
+            _ = serializedObject.ApplyModifiedProperties();
         }
 
         _globalLookup[property.stringValue] = this;
@@ -82,14 +82,14 @@ public class SavableEntity : MonoBehaviour
         // Handle scene unloading cases
         if (_globalLookup[candidate] == null)
         {
-            _globalLookup.Remove(candidate);
+            _ = _globalLookup.Remove(candidate);
             return true;
         }
 
         // Handle edge cases like designer manually changing the UUID
         if (_globalLookup[candidate].UniqueId != candidate)
         {
-            _globalLookup.Remove(candidate);
+            _ = _globalLookup.Remove(candidate);
             return true;
         }
 
