@@ -11,31 +11,44 @@ public class QuestList : MonoBehaviour, ISavable
 
     public void AddQuest(Quest quest)
     {
+        if (quest == null)
+        {
+            Debug.LogWarning("Attempted to add a null quest to the quest list.");
+            return;
+        }
+
         if (!_quests.Contains(quest))
         {
             _quests.Add(quest);
+            OnUpdated?.Invoke();
         }
-
-        OnUpdated?.Invoke();
     }
 
     public bool IsStarted(string questName)
     {
         QuestStatus? questStatus = _quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
-
         return questStatus is QuestStatus.Started or QuestStatus.Completed;
     }
 
     public bool IsCompleted(string questName)
     {
         QuestStatus? questStatus = _quests.FirstOrDefault(q => q.Base.Name == questName)?.Status;
-
         return questStatus == QuestStatus.Completed;
     }
 
     public static QuestList GetQuestList()
     {
-        return FindObjectOfType<PlayerController>().GetComponent<QuestList>();
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player == null)
+        {
+            Debug.LogError("PlayerController not found in the scene.");
+            return null;
+        }
+        if (!player.TryGetComponent(out QuestList questList))
+        {
+            Debug.LogError("QuestList component not found on the PlayerController GameObject.");
+        }
+        return questList;
     }
 
     public object CaptureState()

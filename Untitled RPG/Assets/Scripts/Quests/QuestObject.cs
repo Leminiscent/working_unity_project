@@ -10,56 +10,66 @@ public class QuestObject : MonoBehaviour
 
     private void Start()
     {
-        _questList = QuestList.GetQuestList();
-        _questList.OnUpdated += UpdateObjectStatus;
+        if (_questToCheck == null)
+        {
+            Debug.LogWarning("QuestObject: QuestToCheck is not assigned.", this);
+            return;
+        }
 
+        _questList = QuestList.GetQuestList();
+        if (_questList == null)
+        {
+            Debug.LogError("QuestObject: QuestList not found in the scene.", this);
+            return;
+        }
+
+        _questList.OnUpdated += UpdateObjectStatus;
         UpdateObjectStatus();
     }
 
     private void OnDestroy()
     {
-        _questList.OnUpdated -= UpdateObjectStatus;
+        if (_questList != null)
+        {
+            _questList.OnUpdated -= UpdateObjectStatus;
+        }
     }
 
     public void UpdateObjectStatus()
     {
-        if (_onStart != ObjectActions.DoNothing && _questList.IsStarted(_questToCheck.Name))
-        {
-            foreach (Transform child in transform)
-            {
-                if (_onStart == ObjectActions.Enable)
-                {
-                    child.gameObject.SetActive(true);
+        ObjectActions actionToApply = ObjectActions.DoNothing;
 
-                    if (child.TryGetComponent(out SavableEntity savable))
-                    {
-                        SavingSystem.Instance.RestoreEntity(savable);
-                    }
-                }
-                else if (_onStart == ObjectActions.Disable)
-                {
-                    child.gameObject.SetActive(false);
-                }
-            }
+        // Check quest status: completed takes precedence over started.
+        if (_questList.IsCompleted(_questToCheck.Name) && _onComplete != ObjectActions.DoNothing)
+        {
+            actionToApply = _onComplete;
+        }
+        else if (_questList.IsStarted(_questToCheck.Name) && _onStart != ObjectActions.DoNothing)
+        {
+            actionToApply = _onStart;
         }
 
-        if (_onComplete != ObjectActions.DoNothing && _questList.IsCompleted(_questToCheck.Name))
+        // Apply the determined action to all child objects.
+        if (actionToApply != ObjectActions.DoNothing)
         {
             foreach (Transform child in transform)
             {
-                if (_onComplete == ObjectActions.Enable)
+                switch (actionToApply)
                 {
-                    child.gameObject.SetActive(true);
-
-
-                    if (child.TryGetComponent(out SavableEntity savable))
-                    {
-                        SavingSystem.Instance.RestoreEntity(savable);
-                    }
-                }
-                else if (_onComplete == ObjectActions.Disable)
-                {
-                    child.gameObject.SetActive(false);
+                    case ObjectActions.Enable:
+                        child.gameObject.SetActive(true);
+                        if (child.TryGetComponent(out SavableEntity savable))
+                        {
+                            SavingSystem.Instance.RestoreEntity(savable);
+                        }
+                        break;
+                    case ObjectActions.Disable:
+                        child.gameObject.SetActive(false);
+                        break;
+                    case ObjectActions.DoNothing:
+                        break;
+                    default:
+                        break;
                 }
             }
         }

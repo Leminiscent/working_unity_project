@@ -7,9 +7,15 @@ public class Quest
     public QuestBase Base { get; private set; }
     public QuestStatus Status { get; private set; }
 
-    public Quest(QuestBase _base)
+    public Quest(QuestBase questBase)
     {
-        Base = _base;
+        Base = questBase;
+    }
+
+    public Quest(QuestSaveData saveData)
+    {
+        Base = QuestDB.GetObjectByName(saveData.Name);
+        Status = saveData.Status;
     }
 
     public QuestSaveData GetSaveData()
@@ -23,19 +29,12 @@ public class Quest
         return saveData;
     }
 
-    public Quest(QuestSaveData saveData)
-    {
-        Base = QuestDB.GetObjectByName(saveData.Name);
-        Status = saveData.Status;
-    }
-
     public IEnumerator StartQuest()
     {
         Status = QuestStatus.Started;
         yield return DialogueManager.Instance.ShowDialogue(Base.StartDialogue);
 
         QuestList questList = QuestList.GetQuestList();
-
         questList.AddQuest(this);
     }
 
@@ -53,29 +52,18 @@ public class Quest
         if (Base.RewardItem != null)
         {
             inventory.AddItem(Base.RewardItem);
-
             string playerName = player.GetComponent<PlayerController>().Name;
-
             yield return DialogueManager.Instance.ShowDialogueText($"{playerName} received {Base.RewardItem.Name}!");
         }
 
         QuestList questList = QuestList.GetQuestList();
-
         questList.AddQuest(this);
     }
 
     public bool CanBeCompleted()
     {
         Inventory inventory = Inventory.GetInventory();
-
-        if (Base.RequiredItem != null)
-        {
-            if (!inventory.HasItem(Base.RequiredItem))
-            {
-                return false;
-            }
-        }
-        return true;
+        return Base.RequiredItem == null || inventory.HasItem(Base.RequiredItem);
     }
 }
 
