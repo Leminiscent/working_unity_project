@@ -174,7 +174,7 @@ namespace Utils.GenericSelectionUI
             }
         }
 
-        public void ResetSelection()
+        public virtual void ResetSelection()
         {
             _selectedItem = 0;
             UpdateSelectionInUI();

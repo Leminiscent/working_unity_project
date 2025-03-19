@@ -16,7 +16,6 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] private Image _upArrow;
     [SerializeField] private Image _downArrow;
 
-    private int _selectedCategory;
     private const int ITEMS_IN_VIEWPORT = 10;
     private List<ItemSlotUI> _slotUIList;
     private Inventory _inventory;
@@ -24,8 +23,8 @@ public class InventoryUI : SelectionUI<TextSlot>
     private DummySelectionUI _categorySelectionUI;
     private List<int> _availableCategoryIndices;
 
-    public ItemBase SelectedItem => _inventory.GetItem(_selectedItem, _selectedCategory);
-    public int SelectedCategory => _selectedCategory;
+    public ItemBase SelectedItem => _inventory.GetItem(_selectedItem, SelectedCategory);
+    public int SelectedCategory { get; private set; }
 
     private void Awake()
     {
@@ -36,7 +35,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     private void Start()
     {
         _moneyText.text = $"{Wallet.Instance.Money} GP";
-        _selectedCategory = GetFirstNonEmptyCategory();
+        SelectedCategory = GetFirstNonEmptyCategory();
         UpdateCategoriesAndItemList();
         _inventory.OnUpdated += UpdateCategoriesAndItemList;
         Wallet.Instance.OnMoneyChanged += UpdateMoneyText;
@@ -54,11 +53,11 @@ public class InventoryUI : SelectionUI<TextSlot>
         }
         _availableCategoryIndices = updatedCategories;
 
-        if (!_availableCategoryIndices.Contains(_selectedCategory))
+        if (!_availableCategoryIndices.Contains(SelectedCategory))
         {
-            _selectedCategory = _availableCategoryIndices.Count > 0 ? _availableCategoryIndices[0] : 0;
+            SelectedCategory = _availableCategoryIndices.Count > 0 ? _availableCategoryIndices[0] : 0;
         }
-        _categoryText.text = Inventory.ItemCategories[_selectedCategory];
+        _categoryText.text = Inventory.ItemCategories[SelectedCategory];
 
         if (_categorySelectionUI == null)
         {
@@ -66,9 +65,9 @@ public class InventoryUI : SelectionUI<TextSlot>
             _categorySelectionUI.IgnoreVerticalInput = true;
             _categorySelectionUI.OnIndexChanged += (index) =>
             {
-                _selectedCategory = _availableCategoryIndices[index];
-                _categoryText.text = Inventory.ItemCategories[_selectedCategory];
-                ResetSelction();
+                SelectedCategory = _availableCategoryIndices[index];
+                _categoryText.text = Inventory.ItemCategories[SelectedCategory];
+                ResetSelection();
                 UpdateCategoriesAndItemList();
             };
         }
@@ -79,7 +78,7 @@ public class InventoryUI : SelectionUI<TextSlot>
             categoryItems.Add(new DummySelectable());
         }
         _categorySelectionUI.SetItems(categoryItems);
-        int selIndex = _availableCategoryIndices.IndexOf(_selectedCategory);
+        int selIndex = _availableCategoryIndices.IndexOf(SelectedCategory);
         _categorySelectionUI.SetSelectedIndex(selIndex);
 
         foreach (Transform child in _itemList.transform)
@@ -87,7 +86,7 @@ public class InventoryUI : SelectionUI<TextSlot>
             Destroy(child.gameObject);
         }
         _slotUIList = new List<ItemSlotUI>();
-        foreach (ItemSlot itemSlot in _inventory.GetSlotsByCategory(_selectedCategory))
+        foreach (ItemSlot itemSlot in _inventory.GetSlotsByCategory(SelectedCategory))
         {
             ItemSlotUI slotUIObj = Instantiate(_itemSlotUI, _itemList.transform);
             slotUIObj.SetData(itemSlot);
@@ -112,13 +111,14 @@ public class InventoryUI : SelectionUI<TextSlot>
         _downArrow.gameObject.SetActive(showDownArrow);
     }
 
-    private void ResetSelction()
+    public override void ResetSelection()
     {
-        _selectedItem = 0;
         _upArrow.gameObject.SetActive(false);
         _downArrow.gameObject.SetActive(false);
         _itemIcon.sprite = null;
         _itemDescription.text = "";
+
+        base.ResetSelection();
     }
 
     private int GetFirstNonEmptyCategory()
@@ -159,7 +159,7 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     public override void UpdateSelectionInUI()
     {
-        List<ItemSlot> slots = _inventory.GetSlotsByCategory(_selectedCategory);
+        List<ItemSlot> slots = _inventory.GetSlotsByCategory(SelectedCategory);
         if (slots.Count > 0)
         {
             ItemBase item = slots[_selectedItem].Item;
@@ -172,8 +172,8 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     public void ResetInventoryScreen()
     {
-        _selectedCategory = GetFirstNonEmptyCategory();
-        ResetSelction();
+        SelectedCategory = GetFirstNonEmptyCategory();
+        ResetSelection();
         UpdateCategoriesAndItemList();
     }
 }
