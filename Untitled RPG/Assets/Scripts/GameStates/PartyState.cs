@@ -31,7 +31,18 @@ public class PartyState : State<GameController>
 
     private void Start()
     {
-        _playerParty = PlayerController.Instance.GetComponent<BattleParty>();
+        if (PlayerController.Instance != null)
+        {
+            _playerParty = PlayerController.Instance.GetComponent<BattleParty>();
+            if (_playerParty == null)
+            {
+                Debug.LogError("BattleParty component missing on PlayerController.");
+            }
+        }
+        else
+        {
+            Debug.LogError("PlayerController instance is missing.");
+        }
     }
 
     public override void Enter(GameController owner)
@@ -40,8 +51,15 @@ public class PartyState : State<GameController>
         _prevState = _gameController.StateMachine.GetPrevState();
         SelectedMember = null;
 
+        if (_partyScreen == null)
+        {
+            Debug.LogError("PartyScreen reference is missing.");
+            return;
+        }
+
         _partyScreen.SetPartyData();
 
+        // Display context-sensitive information based on the previous state.
         if (_prevState == InventoryState.Instance && InventoryState.Instance.SelectedItem is SkillBook)
         {
             _partyScreen.ShowSkillBookUsability(InventoryState.Instance.SelectedItem as SkillBook);
@@ -60,30 +78,38 @@ public class PartyState : State<GameController>
 
     public override void Execute()
     {
-        _partyScreen.HandleUpdate();
+        if (_partyScreen != null)
+        {
+            _partyScreen.HandleUpdate();
+        }
     }
 
     public override void Exit()
     {
-        _partyScreen.gameObject.SetActive(false);
-        _partyScreen.ClearMessageText();
-        _partyScreen.OnSelected -= OnBattlerSelected;
-        _partyScreen.OnBack -= OnBack;
+        if (_partyScreen != null)
+        {
+            _partyScreen.gameObject.SetActive(false);
+            _partyScreen.ClearMessageText();
+            _partyScreen.OnSelected -= OnBattlerSelected;
+            _partyScreen.OnBack -= OnBack;
+        }
     }
 
     private void OnBattlerSelected(int selection)
     {
         SelectedMember = _partyScreen.SelectedMember;
-        StartCoroutine(BattlerSelectedAction(selection));
+        _ = StartCoroutine(BattlerSelectedAction(selection));
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
     private IEnumerator BattlerSelectedAction(int selectedBattlerIndex)
     {
+        // If coming from InventoryState, transition to UseItemState.
         if (_prevState == InventoryState.Instance)
         {
-            StartCoroutine(GoToUseItemState());
+            _ = StartCoroutine(GoToUseItemState());
         }
+        // If coming from BattleState, show a dynamic menu with options.
         else if (_prevState == BattleState.Instance)
         {
             BattleState battleState = _prevState as BattleState;
@@ -98,7 +124,7 @@ public class PartyState : State<GameController>
 
             switch (DynamicMenuState.Instance.SelectedItem)
             {
-                case 0:
+                case 0: // Switch option
                     if (SelectedMember.Hp <= 0)
                     {
                         _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is unable to fight!");
@@ -117,15 +143,18 @@ public class PartyState : State<GameController>
                     _partyScreen.ResetSelection();
                     _gameController.StateMachine.Pop();
                     break;
-                case 1:
+
+                case 1: // Summary option
                     SummaryState.Instance.SelectedBattlerIndex = selectedBattlerIndex;
                     yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
                     _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedBattlerIndex);
                     break;
+
                 default:
                     yield break;
             }
         }
+        // If coming from other states, handle switching or showing summary.
         else
         {
             if (_isSwitchingPosition)
@@ -136,12 +165,15 @@ public class PartyState : State<GameController>
                     yield break;
                 }
 
+                // Perform the position switch.
                 _isSwitchingPosition = false;
-                (_playerParty.Battlers[selectedBattlerIndex], _playerParty.Battlers[_selectedSwitchToIndex]) = (_playerParty.Battlers[_selectedSwitchToIndex], _playerParty.Battlers[selectedBattlerIndex]);
+                (_playerParty.Battlers[selectedBattlerIndex], _playerParty.Battlers[_selectedSwitchToIndex]) =
+                    (_playerParty.Battlers[_selectedSwitchToIndex], _playerParty.Battlers[selectedBattlerIndex]);
                 _playerParty.PartyUpdated();
                 yield break;
             }
 
+            // Show a dynamic menu for Summary, Switch, or Back.
             DynamicMenuState.Instance.MenuItems = new List<string>
             {
                 "Summary",
@@ -152,12 +184,13 @@ public class PartyState : State<GameController>
 
             switch (DynamicMenuState.Instance.SelectedItem)
             {
-                case 0:
+                case 0: // Summary option
                     SummaryState.Instance.SelectedBattlerIndex = selectedBattlerIndex;
                     yield return _gameController.StateMachine.PushAndWait(SummaryState.Instance);
                     _partyScreen.SetSelectedIndex(SummaryState.Instance.SelectedBattlerIndex);
                     break;
-                case 1:
+
+                case 1: // Switch option
                     if (_playerParty.Battlers.Count == 1)
                     {
                         _partyScreen.SetMessageText("There are no other party members to switch with!");
@@ -168,6 +201,7 @@ public class PartyState : State<GameController>
                     _partyScreen.SaveSelection();
                     _partyScreen.SetMessageText($"Choose a party member to switch with {_playerParty.Battlers[selectedBattlerIndex].Base.Name}.");
                     break;
+
                 default:
                     yield break;
             }
@@ -192,7 +226,6 @@ public class PartyState : State<GameController>
         }
 
         SelectedMember = null;
-
         State<GameController> prevState = _gameController.StateMachine.GetPrevState();
 
         if (prevState == BattleState.Instance)

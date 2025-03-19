@@ -53,7 +53,7 @@ public class UseItemState : State<GameController>
 
                 if (transformation != null)
                 {
-                    yield return TransformationState.Instance.Transform(battler, transformation);
+                    yield return TransformationState.Instance.PerformTransformation(battler, transformation);
                 }
                 else
                 {

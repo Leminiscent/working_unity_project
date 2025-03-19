@@ -86,7 +86,7 @@ public class BattleParty : MonoBehaviour
                 if (transformation != null)
                 {
                     // Wait for the transformation process to complete.
-                    yield return TransformationState.Instance.Transform(battler, transformation);
+                    yield return TransformationState.Instance.PerformTransformation(battler, transformation);
                 }
             }
         }
