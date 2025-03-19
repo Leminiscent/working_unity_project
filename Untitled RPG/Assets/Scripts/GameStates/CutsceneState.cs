@@ -18,6 +18,9 @@ public class CutsceneState : State<GameController>
 
     public override void Execute()
     {
-        PlayerController.Instance.Character.UpdateAnimator();
+        if (PlayerController.Instance != null && PlayerController.Instance.Character != null)
+        {
+            PlayerController.Instance.Character.UpdateAnimator();
+        }
     }
 }
