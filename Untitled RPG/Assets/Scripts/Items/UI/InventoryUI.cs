@@ -17,6 +17,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] private Image _downArrow;
 
     private const int ITEMS_IN_VIEWPORT = 10;
+
     private List<ItemSlotUI> _slotUIList;
     private Inventory _inventory;
     private RectTransform _itemListRect;
@@ -113,12 +114,11 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     public override void ResetSelection()
     {
+        _selectedItem = 0;
         _upArrow.gameObject.SetActive(false);
         _downArrow.gameObject.SetActive(false);
         _itemIcon.sprite = null;
         _itemDescription.text = "";
-
-        base.ResetSelection();
     }
 
     private int GetFirstNonEmptyCategory()
