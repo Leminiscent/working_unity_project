@@ -29,22 +29,12 @@ public class DynamicMenuState : State<GameController>
     {
         _gameController = owner;
 
-        foreach (Transform child in _dynamicMenuUI.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        // Clear existing UI elements from the menu container.
+        ClearMenuUI();
 
-        List<TextSlot> itemTextSlots = new();
+        // Build the menu items from the provided list.
+        BuildMenuUI();
 
-        foreach (string item in MenuItems)
-        {
-            TextSlot itemTextSlot = Instantiate(_itemTextPrefab, _dynamicMenuUI.transform);
-
-            itemTextSlot.SetText(item);
-            itemTextSlots.Add(itemTextSlot);
-        }
-
-        _dynamicMenuUI.SetItems(itemTextSlots);
         _dynamicMenuUI.gameObject.SetActive(true);
         _dynamicMenuUI.OnSelected += OnItemSelected;
         _dynamicMenuUI.OnBack += OnBack;
@@ -61,6 +51,34 @@ public class DynamicMenuState : State<GameController>
         _dynamicMenuUI.gameObject.SetActive(false);
         _dynamicMenuUI.OnSelected -= OnItemSelected;
         _dynamicMenuUI.OnBack -= OnBack;
+    }
+
+    private void ClearMenuUI()
+    {
+        foreach (Transform child in _dynamicMenuUI.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private void BuildMenuUI()
+    {
+        if (MenuItems == null)
+        {
+            Debug.LogWarning("MenuItems is null. No menu items to display.");
+            return;
+        }
+
+        List<TextSlot> itemTextSlots = new();
+
+        foreach (string item in MenuItems)
+        {
+            TextSlot itemTextSlot = Instantiate(_itemTextPrefab, _dynamicMenuUI.transform);
+            itemTextSlot.SetText(item);
+            itemTextSlots.Add(itemTextSlot);
+        }
+
+        _dynamicMenuUI.SetItems(itemTextSlots);
     }
 
     private void OnItemSelected(int selection)
