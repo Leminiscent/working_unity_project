@@ -17,7 +17,6 @@ public class InventoryUI : SelectionUI<TextSlot>
     [SerializeField] private Image _downArrow;
 
     private const int ITEMS_IN_VIEWPORT = 10;
-
     private List<ItemSlotUI> _slotUIList;
     private Inventory _inventory;
     private RectTransform _itemListRect;
@@ -44,57 +43,92 @@ public class InventoryUI : SelectionUI<TextSlot>
 
     private void UpdateCategoriesAndItemList()
     {
-        List<int> updatedCategories = new();
+        UpdateAvailableCategories();
+        UpdateSelectedCategory();
+        UpdateCategoryText();
+        SetupCategorySelectionUI();
+        BuildItemList();
+        SetItems(_slotUIList.Select(static s => s.GetComponent<TextSlot>()).ToList());
+        UpdateSelectionInUI();
+    }
+
+    private void UpdateAvailableCategories()
+    {
+        _availableCategoryIndices = new List<int>();
         for (int i = 0; i < Inventory.ItemCategories.Count; i++)
         {
             if (_inventory.GetSlotsByCategory(i).Count > 0)
             {
-                updatedCategories.Add(i);
+                _availableCategoryIndices.Add(i);
             }
         }
-        _availableCategoryIndices = updatedCategories;
+    }
 
+    private void UpdateSelectedCategory()
+    {
         if (!_availableCategoryIndices.Contains(SelectedCategory))
         {
             SelectedCategory = _availableCategoryIndices.Count > 0 ? _availableCategoryIndices[0] : 0;
         }
-        _categoryText.text = Inventory.ItemCategories[SelectedCategory];
+    }
 
+    private void UpdateCategoryText()
+    {
+        _categoryText.text = Inventory.ItemCategories[SelectedCategory];
+    }
+
+    private void SetupCategorySelectionUI()
+    {
         if (_categorySelectionUI == null)
         {
             _categorySelectionUI = gameObject.AddComponent<DummySelectionUI>();
             _categorySelectionUI.IgnoreVerticalInput = true;
-            _categorySelectionUI.OnIndexChanged += (index) =>
-            {
-                SelectedCategory = _availableCategoryIndices[index];
-                _categoryText.text = Inventory.ItemCategories[SelectedCategory];
-                ResetSelection();
-                UpdateCategoriesAndItemList();
-            };
+            _categorySelectionUI.OnIndexChanged += OnCategoryChanged;
         }
         _categorySelectionUI.SetSelectionSettings(SelectionType.Grid, _availableCategoryIndices.Count);
+
+        // Create dummy selectable items for each available category
         List<DummySelectable> categoryItems = new();
         for (int i = 0; i < _availableCategoryIndices.Count; i++)
         {
             categoryItems.Add(new DummySelectable());
         }
         _categorySelectionUI.SetItems(categoryItems);
+
+        // Set the selected index based on current category
         int selIndex = _availableCategoryIndices.IndexOf(SelectedCategory);
         _categorySelectionUI.SetSelectedIndex(selIndex);
+    }
 
+    private void BuildItemList()
+    {
+        // Clear previous item slots
         foreach (Transform child in _itemList.transform)
         {
             Destroy(child.gameObject);
         }
         _slotUIList = new List<ItemSlotUI>();
+
+        // Instantiate new item slot UI for each item in the selected category
         foreach (ItemSlot itemSlot in _inventory.GetSlotsByCategory(SelectedCategory))
         {
             ItemSlotUI slotUIObj = Instantiate(_itemSlotUI, _itemList.transform);
             slotUIObj.SetData(itemSlot);
             _slotUIList.Add(slotUIObj);
         }
-        SetItems(_slotUIList.Select(s => s.GetComponent<TextSlot>()).ToList());
-        UpdateSelectionInUI();
+    }
+
+    public override void UpdateSelectionInUI()
+    {
+        List<ItemSlot> slots = _inventory.GetSlotsByCategory(SelectedCategory);
+        if (slots.Count > 0)
+        {
+            ItemBase item = slots[_selectedItem].Item;
+            _itemIcon.sprite = item.Icon;
+            _itemDescription.text = item.Description;
+        }
+        HandleScrolling();
+        base.UpdateSelectionInUI();
     }
 
     private void HandleScrolling()
@@ -157,17 +191,13 @@ public class InventoryUI : SelectionUI<TextSlot>
         base.HandleUpdate();
     }
 
-    public override void UpdateSelectionInUI()
+    private void OnCategoryChanged(int index)
     {
-        List<ItemSlot> slots = _inventory.GetSlotsByCategory(SelectedCategory);
-        if (slots.Count > 0)
-        {
-            ItemBase item = slots[_selectedItem].Item;
-            _itemIcon.sprite = item.Icon;
-            _itemDescription.text = item.Description;
-        }
-        HandleScrolling();
-        base.UpdateSelectionInUI();
+        // Update the current category based on the selection UI index
+        SelectedCategory = _availableCategoryIndices[index];
+        _categoryText.text = Inventory.ItemCategories[SelectedCategory];
+        ResetSelection();
+        UpdateCategoriesAndItemList();
     }
 
     public void ResetInventoryScreen()
