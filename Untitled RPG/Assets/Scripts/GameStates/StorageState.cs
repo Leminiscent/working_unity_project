@@ -55,10 +55,14 @@ public class StorageState : State<GameController>
     {
         if (!_isMovingBattler)
         {
+            // No battler is currently being moved; handle battler selection from the chosen slot.
             _ = StartCoroutine(HandleBattlerSelection(slotIndex));
         }
         else
         {
+            // A battler is currently selected to move.
+            // Special case: if the battler is a Commander and the target slot is not in the party,
+            // cancel the move and show a message.
             if (_selectedBattlerToMove.IsCommander && !_storageUI.IsPartySlot(slotIndex))
             {
                 _storageUI.PlaceBattlerIntoSlot(_selectedSlotToMove, _selectedBattlerToMove);
@@ -66,6 +70,7 @@ public class StorageState : State<GameController>
                 return;
             }
 
+            // If the player re-selects the original slot, cancel the move.
             if (slotIndex == _selectedSlotToMove)
             {
                 _isMovingBattler = false;
@@ -76,11 +81,13 @@ public class StorageState : State<GameController>
                 return;
             }
 
+            // Otherwise, attempt to swap battlers.
             _isMovingBattler = false;
             int firstSlotIndex = _selectedSlotToMove;
             int secondSlotIndex = slotIndex;
             Battler secondBattler = _storageUI.TakeBattlerFromSlot(secondSlotIndex);
 
+            // If the target slot is empty and both slots are party slots, remove the battler from the party.
             if (secondBattler == null && _storageUI.IsPartySlot(firstSlotIndex) && _storageUI.IsPartySlot(secondSlotIndex))
             {
                 int partyIndex = firstSlotIndex / _storageUI.TotalColumns;
@@ -93,6 +100,7 @@ public class StorageState : State<GameController>
                 return;
             }
 
+            // Special case: if the target battler is a Commander and the original slot is not a party slot, cancel the move.
             if (secondBattler != null && secondBattler.IsCommander && !_storageUI.IsPartySlot(firstSlotIndex))
             {
                 _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, secondBattler);
@@ -101,11 +109,13 @@ public class StorageState : State<GameController>
                 return;
             }
 
+            // Default case: swap battlers.
             _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, _selectedBattlerToMove);
             if (secondBattler != null)
             {
                 _storageUI.PlaceBattlerIntoSlot(firstSlotIndex, secondBattler);
             }
+            // Clean up any null entries in the party list.
             _ = _party.Battlers.RemoveAll(static b => b == null);
             _party.PartyUpdated();
             _storageUI.SetStorageData();
@@ -131,8 +141,10 @@ public class StorageState : State<GameController>
         {
             yield break;
         }
+
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
 
+        // Display a menu with options: Move, Summary, or Back.
         DynamicMenuState.Instance.MenuItems = new List<string>
         {
             "Move",
@@ -140,9 +152,10 @@ public class StorageState : State<GameController>
             "Back"
         };
         yield return _gameController.StateMachine.PushAndWait(DynamicMenuState.Instance);
+
         switch (DynamicMenuState.Instance.SelectedItem)
         {
-            case 0:
+            case 0: // Move option
                 Battler removedBattler = _storageUI.TakeBattlerFromSlot(slotIndex);
                 if (removedBattler != null)
                 {
@@ -152,7 +165,8 @@ public class StorageState : State<GameController>
                     _storageUI.SaveSelection();
                 }
                 break;
-            case 1:
+
+            case 1: // Summary option
                 List<Battler> battlers = _storageUI.GetAllBattlers();
                 SummaryState.Instance.BattlersList = battlers;
                 int index = battlers.IndexOf(battler);
@@ -167,12 +181,11 @@ public class StorageState : State<GameController>
                 }
                 SummaryState.Instance.BattlersList = null;
                 break;
+
             default:
                 break;
         }
     }
-
-
 
     private void OnBack()
     {
