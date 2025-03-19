@@ -23,24 +23,19 @@ public class RecoveryItem : ItemBase
     {
         if (_revive || _maxRevive)
         {
+            // Cannot revive if the battler is not fainted.
             if (battler.Hp > 0)
             {
                 return false;
             }
 
-            if (_revive)
-            {
-                battler.IncreaseHP(battler.MaxHp / 2);
-            }
-            else
-            {
-                battler.IncreaseHP(battler.MaxHp);
-            }
-
+            // Apply revive: use half max HP for standard revive, full HP for max revive.
+            battler.IncreaseHP(_revive ? battler.MaxHp / 2 : battler.MaxHp);
             battler.CureStatus();
             return true;
         }
 
+        // If not a revive item, the battler must not be fainted.
         if (battler.Hp == 0)
         {
             return false;
@@ -48,24 +43,21 @@ public class RecoveryItem : ItemBase
 
         if (_restoreMaxHP || _hpAmount > 0)
         {
+            // Cannot heal if HP is already full.
             if (battler.Hp == battler.MaxHp)
             {
                 return false;
             }
 
-            if (_restoreMaxHP)
-            {
-                battler.IncreaseHP(battler.MaxHp);
-            }
-            else
-            {
-                battler.IncreaseHP(_hpAmount);
-            }
+            battler.IncreaseHP(_restoreMaxHP ? battler.MaxHp : _hpAmount);
         }
 
         if (_recoverAllStatus || _status != ConditionID.None)
         {
-            if ((battler.Statuses == null && battler.VolatileStatuses == null) || (battler.Statuses.Count == 0 && battler.VolatileStatuses.Count == 0))
+            // Cannot cure status if the battler has no statuses.
+            bool hasStatuses = (battler.Statuses != null && battler.Statuses.Count > 0) ||
+                               (battler.VolatileStatuses != null && battler.VolatileStatuses.Count > 0);
+            if (!hasStatuses)
             {
                 return false;
             }
@@ -91,6 +83,7 @@ public class RecoveryItem : ItemBase
             }
         }
 
+        // Restore either full or a fixed amount of SP on each move.
         if (_restoreMaxSP)
         {
             battler.Moves.ForEach(m => m.RestoreSP(m.Base.SP));

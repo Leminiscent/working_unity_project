@@ -12,16 +12,17 @@ public class ItemGiver : MonoBehaviour, ISavable
     public IEnumerator GiveItem(PlayerController player)
     {
         yield return DialogueManager.Instance.ShowDialogue(_dialogue);
+
         player.GetComponent<Inventory>().AddItem(_item, _count);
+
         _used = true;
         AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
 
-        string dialogueText = $"{player.Name} received {_item.Name}!";
+        // Build the dialogue text based on the count of items given.
+        string dialogueText = _count > 1
+            ? $"{player.Name} received {_count} {_item.Name}s!"
+            : $"{player.Name} received {_item.Name}!";
 
-        if (_count > 1)
-        {
-            dialogueText = $"{player.Name} received {_count} {_item.Name}s!";
-        }
         yield return DialogueManager.Instance.ShowDialogueText(dialogueText);
     }
 

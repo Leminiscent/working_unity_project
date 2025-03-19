@@ -15,6 +15,15 @@ public class Inventory : MonoBehaviour, ISavable
 
     public event Action OnUpdated;
 
+    public static List<string> ItemCategories { get; set; } = new List<string>()
+    {
+        "RECOVERY ITEMS",
+        "MATERIALS",
+        "TRANSFORMATION ITEMS",
+        "SKILL BOOKS",
+        "KEY ITEMS"
+    };
+
     public void Awake()
     {
         _allSlots = new List<List<ItemSlot>>()
@@ -27,15 +36,6 @@ public class Inventory : MonoBehaviour, ISavable
         };
     }
 
-    public static List<string> ItemCategories { get; set; } = new List<string>()
-    {
-        "RECOVERY ITEMS",
-        "MATERIALS",
-        "TRANSFORMATION ITEMS",
-        "SKILL BOOKS",
-        "KEY ITEMS"
-    };
-
     public List<ItemSlot> GetSlotsByCategory(int categoryIndex)
     {
         return _allSlots[categoryIndex];
@@ -44,21 +44,18 @@ public class Inventory : MonoBehaviour, ISavable
     public ItemBase GetItem(int itemIndex, int categoryIndex)
     {
         List<ItemSlot> currentSlots = GetSlotsByCategory(categoryIndex);
-
         return currentSlots[itemIndex].Item;
     }
 
     public ItemBase UseItem(int itemIndex, Battler selectedBattler, int selectedCategory)
     {
         ItemBase item = GetItem(itemIndex, selectedCategory);
-
         return UseItem(item, selectedBattler);
     }
 
     public ItemBase UseItem(ItemBase item, Battler selectedBattler)
     {
         bool itemUsed = item.Use(selectedBattler);
-
         if (itemUsed)
         {
             if (!item.IsReusable)
@@ -67,10 +64,7 @@ public class Inventory : MonoBehaviour, ISavable
             }
             return item;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     public void AddItem(ItemBase item, int count = 1)
@@ -87,7 +81,6 @@ public class Inventory : MonoBehaviour, ISavable
         {
             currentSlots.Add(new ItemSlot { Item = item, Count = count });
         }
-
         OnUpdated?.Invoke();
     }
 
@@ -96,7 +89,6 @@ public class Inventory : MonoBehaviour, ISavable
         int category = (int)GetCategoryFromItem(item);
         List<ItemSlot> currentSlots = GetSlotsByCategory(category);
         ItemSlot itemSlot = currentSlots.FirstOrDefault(slot => slot.Item == item);
-
         return itemSlot != null ? itemSlot.Count : 0;
     }
 
@@ -105,11 +97,10 @@ public class Inventory : MonoBehaviour, ISavable
         int category = (int)GetCategoryFromItem(item);
         List<ItemSlot> currentSlots = GetSlotsByCategory(category);
         ItemSlot itemSlot = currentSlots.First(slot => slot.Item == item);
-
         itemSlot.Count -= count;
         if (itemSlot.Count == 0)
         {
-            currentSlots.Remove(itemSlot);
+            _ = currentSlots.Remove(itemSlot);
         }
         OnUpdated?.Invoke();
     }
@@ -118,19 +109,19 @@ public class Inventory : MonoBehaviour, ISavable
     {
         int category = (int)GetCategoryFromItem(item);
         List<ItemSlot> currentSlots = GetSlotsByCategory(category);
-
         return currentSlots.Exists(slot => slot.Item == item);
     }
 
     private ItemCategory GetCategoryFromItem(ItemBase item)
     {
-        return item is RecoveryItem
-            ? ItemCategory.RecoveryItems
-            : item is Material
-                ? ItemCategory.Materials
-                : item is TransformationItem
-                            ? ItemCategory.TransformationItems
-                            : item is SkillBook ? ItemCategory.SkillBooks : ItemCategory.KeyItems;
+        return item switch
+        {
+            RecoveryItem => ItemCategory.RecoveryItems,
+            Material => ItemCategory.Materials,
+            TransformationItem => ItemCategory.TransformationItems,
+            SkillBook => ItemCategory.SkillBooks,
+            _ => ItemCategory.KeyItems,
+        };
     }
 
     public static Inventory GetInventory()
@@ -148,7 +139,6 @@ public class Inventory : MonoBehaviour, ISavable
             SkillBooks = _skillBookSlots.Select(static slot => slot.GetSaveData()).ToList(),
             KeyItems = _keyItemSlots.Select(static slot => slot.GetSaveData()).ToList()
         };
-
         return saveData;
     }
 
@@ -181,6 +171,9 @@ public class ItemSlot
     [SerializeField] private ItemBase _item;
     [SerializeField] private int _count;
 
+    public ItemBase Item { get => _item; set => _item = value; }
+    public int Count { get => _count; set => _count = value; }
+
     public ItemSlot() { }
 
     public ItemSlot(ItemSaveData saveData)
@@ -191,17 +184,12 @@ public class ItemSlot
 
     public ItemSaveData GetSaveData()
     {
-        ItemSaveData saveData = new()
+        return new ItemSaveData
         {
             Name = _item.name,
             Count = _count
         };
-
-        return saveData;
     }
-
-    public ItemBase Item { get => _item; set => _item = value; }
-    public int Count { get => _count; set => _count = value; }
 }
 
 public enum ItemCategory

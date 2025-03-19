@@ -6,17 +6,32 @@ public class Chest : MonoBehaviour, IInteractable, ISavable
     [SerializeField] private ItemBase _item;
     [SerializeField] private Sprite _usedSprite;
 
+    private SpriteRenderer _spriteRenderer;
+
     public bool Used { get; set; } = false;
+
+    private void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public IEnumerator Interact(Transform initiator)
     {
-        if (!Used)
+        if (Used)
         {
-            initiator.GetComponent<Inventory>().AddItem(_item);
-            Used = true;
-            GetComponent<SpriteRenderer>().sprite = _usedSprite;
+            yield break;
+        }
 
-            string playerName = initiator.GetComponent<PlayerController>().Name;
+        Inventory inventory = initiator.GetComponent<Inventory>();
+        PlayerController playerController = initiator.GetComponent<PlayerController>();
+
+        if (inventory != null && playerController != null)
+        {
+            inventory.AddItem(_item);
+            Used = true;
+            _spriteRenderer.sprite = _usedSprite;
+
+            string playerName = playerController.Name;
 
             AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
             yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {_item.Name}!");
@@ -33,7 +48,7 @@ public class Chest : MonoBehaviour, IInteractable, ISavable
         Used = (bool)state;
         if (Used)
         {
-            GetComponent<SpriteRenderer>().sprite = _usedSprite;
+            _spriteRenderer.sprite = _usedSprite;
         }
     }
 }
