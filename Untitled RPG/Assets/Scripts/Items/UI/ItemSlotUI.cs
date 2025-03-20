@@ -11,20 +11,25 @@ public class ItemSlotUI : MonoBehaviour
 
     public float Height => _rectTransform.rect.height;
 
-    private void Awake()
+    public void SetData(object data)
     {
         _rectTransform = GetComponent<RectTransform>();
-    }
 
-    public void SetData(ItemSlot itemSlot)
-    {
-        NameText.text = itemSlot.Item.Name;
-        CountText.text = $"X {itemSlot.Count}";
-    }
-
-    public void SetNameAndPrice(ItemBase item)
-    {
-        NameText.text = item.Name;
-        CountText.text = $"{item.Price} GP";
+        // Inventory item slot
+        if (data is ItemSlot itemSlot)
+        {
+            NameText.text = itemSlot.Item.Name;
+            CountText.text = $"X {itemSlot.Count}";
+        }
+        // Shop item slot
+        else if (data is ItemBase item)
+        {
+            NameText.text = item.Name;
+            CountText.text = $"{item.Price} GP";
+        }
+        else
+        {
+            Debug.LogError("SetData received an unsupported type.");
+        }
     }
 }

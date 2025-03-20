@@ -58,7 +58,7 @@ public class ShopUI : SelectionUI<TextSlot>
         foreach (ItemBase item in _availableItems)
         {
             ItemSlotUI slotUIObj = Instantiate(_itemSlotUI, _itemList.transform);
-            slotUIObj.SetNameAndPrice(item);
+            slotUIObj.SetData(item);
             _slotUIList.Add(slotUIObj);
         }
 
