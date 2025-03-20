@@ -53,12 +53,13 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
             if (_inMoveSelection)
             {
                 _moveEffectsUI.SetActive(true);
+                // Only set as many move slots as there are moves.
                 SetItems(_moveSlots.Take(_battler.Moves.Count).ToList());
             }
             else
             {
                 _moveEffectsUI.SetActive(false);
-                _moveDescriptionText.text = "";
+                _moveDescriptionText.text = string.Empty;
                 ClearItems();
             }
         }
@@ -66,24 +67,26 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     private void Start()
     {
+        // Cache the TextSlot components from the move names.
         _moveSlots = _moveNames.Select(static m => m.GetComponent<TextSlot>()).ToList();
         _moveEffectsUI.SetActive(false);
-        _moveDescriptionText.text = "";
+        _moveDescriptionText.text = string.Empty;
     }
 
     public void SetBasicDetails(Battler battler)
     {
         _battler = battler;
+        BattlerBase battlerBase = battler.Base;
 
-        _nameText.text = battler.Base.Name;
-        _levelText.text = "Lvl " + battler.Level;
-        _image.sprite = battler.Base.Sprite;
+        _nameText.text = battlerBase.Name;
+        _levelText.text = $"Lvl {battler.Level}";
+        _image.sprite = battlerBase.Sprite;
 
-        _battlerType1.text = battler.Base.Type1.ToString().ToUpper();
-        if (battler.Base.Type2 != BattlerType.None)
+        _battlerType1.text = battlerBase.Type1.ToString().ToUpper();
+        if (battlerBase.Type2 != BattlerType.None)
         {
             _battlerType2.transform.parent.gameObject.SetActive(true);
-            _battlerType2.text = battler.Base.Type2.ToString().ToUpper();
+            _battlerType2.text = battlerBase.Type2.ToString().ToUpper();
         }
         else
         {
@@ -93,34 +96,38 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     public void ShowPage(int index)
     {
-        if (index == 0)
+        switch (index)
         {
-            _pageNameText.text = "Battler Details";
-            _detailsPage.SetActive(true);
-            _battlerTypeUI.SetActive(true);
-            _movesPage.SetActive(false);
-            SetStatsAndExp();
-        }
-        else if (index == 1)
-        {
-            _pageNameText.text = "Battler Moves";
-            _movesPage.SetActive(true);
-            _detailsPage.SetActive(false);
-            _battlerTypeUI.SetActive(false);
-            SetMoves();
+            case 0:
+                _pageNameText.text = "Battler Details";
+                _detailsPage.SetActive(true);
+                _movesPage.SetActive(false);
+                _battlerTypeUI.SetActive(true);
+                SetStatsAndExp();
+                break;
+            case 1:
+                _pageNameText.text = "Battler Moves";
+                _movesPage.SetActive(true);
+                _detailsPage.SetActive(false);
+                _battlerTypeUI.SetActive(false);
+                SetMoves();
+                break;
+            default:
+                Debug.LogWarning("Invalid page index.");
+                break;
         }
     }
 
     public void SetStatsAndExp()
     {
         _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
-        _strengthText.text = "" + _battler.Strength;
-        _enduranceText.text = "" + _battler.Endurance;
-        _intelligenceText.text = "" + _battler.Intelligence;
-        _fortitudeText.text = "" + _battler.Fortitude;
-        _agilityText.text = "" + _battler.Agility;
+        _strengthText.text = _battler.Strength.ToString();
+        _enduranceText.text = _battler.Endurance.ToString();
+        _intelligenceText.text = _battler.Intelligence.ToString();
+        _fortitudeText.text = _battler.Fortitude.ToString();
+        _agilityText.text = _battler.Agility.ToString();
 
-        _expText.text = "" + _battler.Exp;
+        _expText.text = _battler.Exp.ToString();
 
         if (_battler.Level == GlobalSettings.Instance.MaxLevel)
         {
@@ -129,11 +136,10 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         else
         {
             int expToNextLevel = _battler.Base.GetExpForLevel(_battler.Level + 1) - _battler.Exp;
-
-            _expToNextLevelText.text = "" + expToNextLevel;
+            _expToNextLevelText.text = expToNextLevel.ToString();
         }
 
-        _expBar.transform.localScale = new Vector3(_battler.GetNormalizedExp(), 1, 1);
+        _expBar.transform.localScale = new Vector3(_battler.GetNormalizedExp(), 1f, 1f);
     }
 
     public void SetMoves()
@@ -143,7 +149,6 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
             if (i < _battler.Moves.Count)
             {
                 Move move = _battler.Moves[i];
-
                 _moveTypes[i].text = move.Base.Type.ToString().ToUpper();
                 _moveNames[i].text = move.Base.Name;
                 _moveSP[i].text = $"SP {move.Sp}/{move.Base.SP}";
@@ -169,8 +174,19 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         base.UpdateSelectionInUI();
 
-        Move move = _battler.Moves[_selectedItem];
+        if (_battler.Moves.Count == 0 || _selectedItem < 0 || _selectedItem >= _battler.Moves.Count)
+        {
+            _moveDescriptionText.text = string.Empty;
+            _movePowerText.text = "-";
+            _moveAccuracyText.text = "-";
+            return;
+        }
 
+        UpdateMoveDetails(_battler.Moves[_selectedItem]);
+    }
+
+    private void UpdateMoveDetails(Move move)
+    {
         _moveDescriptionText.text = move.Base.Description;
         _movePowerText.text = move.Base.Power > 0 ? move.Base.Power.ToString() : "-";
         _moveAccuracyText.text = move.Base.Accuracy > 0 ? move.Base.Accuracy.ToString() : "-";

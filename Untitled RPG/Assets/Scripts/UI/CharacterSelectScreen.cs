@@ -40,28 +40,43 @@ public class CharacterSelectScreen : DummySelectionUI
 
     public void UpdateDetails()
     {
-        Battler selectedBattler = _availableBattlers[SelectedIndex];
+        if (_availableBattlers == null || _availableBattlers.Count == 0)
+        {
+            Debug.LogWarning("No battlers available for selection.");
+            return;
+        }
 
-        _battlerNameText.text = selectedBattler.Base.Name;
-        _battlerImage.sprite = selectedBattler.Base.Sprite;
-        _battlerType1.text = selectedBattler.Base.Type1.ToString();
-        if (selectedBattler.Base.Type2 != BattlerType.None)
+        if (SelectedIndex < 0 || SelectedIndex >= _availableBattlers.Count)
+        {
+            Debug.LogWarning("SelectedIndex is out of range.");
+            return;
+        }
+
+        Battler selectedBattler = _availableBattlers[SelectedIndex];
+        BattlerBase battlerBase = selectedBattler.Base;
+
+        _battlerNameText.text = battlerBase.Name;
+        _battlerImage.sprite = battlerBase.Sprite;
+        _battlerType1.text = battlerBase.Type1.ToString();
+
+        if (battlerBase.Type2 != BattlerType.None)
         {
             _battlerType2.transform.parent.gameObject.SetActive(true);
-            _battlerType2.text = selectedBattler.Base.Type2.ToString();
+            _battlerType2.text = battlerBase.Type2.ToString();
         }
         else
         {
             _battlerType2.transform.parent.gameObject.SetActive(false);
         }
-        _descriptionText.text = selectedBattler.Base.Description;
 
-        _hpText.text = selectedBattler.Base.HP.ToString();
-        _strengthText.text = selectedBattler.Base.Strength.ToString();
-        _enduranceText.text = selectedBattler.Base.Endurance.ToString();
-        _intelligenceText.text = selectedBattler.Base.Intelligence.ToString();
-        _fortitudeText.text = selectedBattler.Base.Fortitude.ToString();
-        _agilityText.text = selectedBattler.Base.Agility.ToString();
+        _descriptionText.text = battlerBase.Description;
+
+        _hpText.text = battlerBase.HP.ToString();
+        _strengthText.text = battlerBase.Strength.ToString();
+        _enduranceText.text = battlerBase.Endurance.ToString();
+        _intelligenceText.text = battlerBase.Intelligence.ToString();
+        _fortitudeText.text = battlerBase.Fortitude.ToString();
+        _agilityText.text = battlerBase.Agility.ToString();
     }
 
     public override void UpdateSelectionInUI()

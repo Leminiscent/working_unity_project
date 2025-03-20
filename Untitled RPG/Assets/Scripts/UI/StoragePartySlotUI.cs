@@ -11,10 +11,17 @@ public class StoragePartySlotUI : MonoBehaviour
 
     public void SetData(Battler battler)
     {
-        _nameText.text = battler.Base.Name;
-        _levelText.text = "Lvl " + battler.Level;
-        _roleText.text = battler.IsCommander ? "Commander" : "";
-        _image.sprite = battler.Base.Sprite;
+        if (battler == null)
+        {
+            ClearData();
+            return;
+        }
+
+        BattlerBase battlerBase = battler.Base;
+        _nameText.text = battlerBase.Name;
+        _levelText.text = $"Lvl {battler.Level}";
+        _roleText.text = battler.IsCommander ? "Commander" : string.Empty;
+        _image.sprite = battlerBase.Sprite;
         _image.color = new Color(1, 1, 1, 1);
     }
 

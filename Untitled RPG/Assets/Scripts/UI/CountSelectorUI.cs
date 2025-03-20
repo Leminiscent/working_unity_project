@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Utils.GenericSelectionUI;
@@ -22,7 +23,7 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         _currentCount = 1;
         _selectionTimer = 0f;
 
-        System.Collections.Generic.List<TextSlot> items = new();
+        List<TextSlot> items = new();
         if (!TryGetComponent(out TextSlot ts))
         {
             ts = gameObject.AddComponent<TextSlot>();
@@ -51,34 +52,45 @@ public class CountSelectorUI : SelectionUI<TextSlot>
 
     public override void UpdateSelectionInUI()
     {
-        // No UI update required; display is managed via _countText and _priceText.
+        // No additional UI update required; display is managed via _countText and _priceText.
     }
 
     public override void HandleUpdate()
     {
-        float v = Input.GetAxisRaw("Vertical");
-        float h = Input.GetAxisRaw("Horizontal");
+        ProcessCountInput();
+        ProcessSelectionInput();
+    }
 
-        if (_selectionTimer <= 0f)
+    private void ProcessCountInput()
+    {
+        if (_selectionTimer > 0f)
         {
-            if (v > 0.2f)
-            {
-                ChangeCount(1);
-            }
-            else if (v < -0.2f)
-            {
-                ChangeCount(-1);
-            }
-            else if (h > 0.2f)
-            {
-                ChangeCount(10);
-            }
-            else if (h < -0.2f)
-            {
-                ChangeCount(-10);
-            }
+            return;
         }
 
+        float verticalInput = Input.GetAxisRaw("Vertical");
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        if (verticalInput > 0.2f)
+        {
+            ChangeCount(1);
+        }
+        else if (verticalInput < -0.2f)
+        {
+            ChangeCount(-1);
+        }
+        else if (horizontalInput > 0.2f)
+        {
+            ChangeCount(10);
+        }
+        else if (horizontalInput < -0.2f)
+        {
+            ChangeCount(-10);
+        }
+    }
+
+    private void ProcessSelectionInput()
+    {
         if (Input.GetButtonDown("Action"))
         {
             _selected = true;
@@ -101,8 +113,8 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         }
         else if (Mathf.Abs(delta) == 10)
         {
-            // Horizontal input: if _maxCount is less than 10, jump between 1 and _maxCount;
-            // if _maxCount is 10 or greater, increment/decrement by 10 and clamp.
+            // Horizontal input: if max is less than 10, jump directly to the end values;
+            // otherwise, increment/decrement by 10 with clamping.
             _currentCount = _maxCount < 10 ? delta > 0 ? _maxCount : 1 : Mathf.Clamp(_currentCount + delta, 1, _maxCount);
         }
         UpdateDisplay();
@@ -110,7 +122,7 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         _selectionTimer = 1f / SELECTION_SPEED;
     }
 
-    private int Mod(int a, int m)
+    private static int Mod(int a, int m)
     {
         return ((a % m) + m) % m;
     }

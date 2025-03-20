@@ -15,11 +15,12 @@ public class ShopUI : SelectionUI<TextSlot>
     [SerializeField] private Image _upArrow;
     [SerializeField] private Image _downArrow;
 
+    private const int ITEMS_IN_VIEWPORT = 8;
+
     private List<ItemBase> _availableItems;
     private Action<ItemBase> _onItemSelected;
     private Action _onBack;
     private List<ItemSlotUI> _slotUIList;
-    private const int ITEMS_IN_VIEWPORT = 8;
     private RectTransform _itemListRect;
 
     private void Awake()
@@ -51,10 +52,7 @@ public class ShopUI : SelectionUI<TextSlot>
 
     private void UpdateItemList()
     {
-        foreach (Transform child in _itemList.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        ClearItemList();
 
         _slotUIList = new List<ItemSlotUI>();
         foreach (ItemBase item in _availableItems)
@@ -64,12 +62,27 @@ public class ShopUI : SelectionUI<TextSlot>
             _slotUIList.Add(slotUIObj);
         }
 
-        SetItems(_slotUIList.Select(static s => s.GetComponent<TextSlot>()).ToList());
+        // Get the TextSlot components from each ItemSlotUI.
+        List<TextSlot> textSlots = _slotUIList.Select(static s => s.GetComponent<TextSlot>()).ToList();
+        SetItems(textSlots);
         UpdateSelectionInUI();
+    }
+
+    private void ClearItemList()
+    {
+        foreach (Transform child in _itemList.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     private void HandleItemSelected(int selection)
     {
+        if (selection < 0 || selection >= _availableItems.Count)
+        {
+            return;
+        }
+
         _onItemSelected?.Invoke(_availableItems[selection]);
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
@@ -82,31 +95,37 @@ public class ShopUI : SelectionUI<TextSlot>
     public override void UpdateSelectionInUI()
     {
         int sel = Mathf.Clamp(_selectedItem, 0, _availableItems.Count - 1);
-
-        if (_availableItems.Count > 0)
-        {
-            ItemBase item = _availableItems[sel];
-            _itemIcon.sprite = item.Icon;
-            _itemDescription.text = item.Description;
-        }
-        
+        UpdateSelectedItemDisplay(sel);
         HandleScrolling();
         base.UpdateSelectionInUI();
     }
 
+    private void UpdateSelectedItemDisplay(int index)
+    {
+        if (_availableItems.Count > 0)
+        {
+            ItemBase item = _availableItems[index];
+            _itemIcon.sprite = item.Icon;
+            _itemDescription.text = item.Description;
+        }
+    }
+
     private void HandleScrolling()
     {
-        if (_slotUIList.Count <= ITEMS_IN_VIEWPORT)
+        if (_slotUIList == null || _slotUIList.Count <= ITEMS_IN_VIEWPORT)
         {
+            _upArrow.gameObject.SetActive(false);
+            _downArrow.gameObject.SetActive(false);
             return;
         }
 
         int maxScrollIndex = _slotUIList.Count - ITEMS_IN_VIEWPORT;
-        float scrollPos = Mathf.Clamp(_selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex) * _slotUIList[0].Height;
+        float scrollOffset = Mathf.Clamp(_selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex);
+        float scrollPos = scrollOffset * _slotUIList[0].Height;
+        _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
+
         bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
         bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
-
-        _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
         _upArrow.gameObject.SetActive(showUpArrow);
         _downArrow.gameObject.SetActive(showDownArrow);
     }

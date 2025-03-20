@@ -7,21 +7,29 @@ using Utils.GenericSelectionUI;
 
 public class MainMenuController : SelectionUI<TextSlot>
 {
+    private bool _hasSave;
+
     private void Start()
+    {
+        _hasSave = SavingSystem.Instance.CheckForExistingSave("saveSlot1");
+        InitializeMenuItems();
+        OnSelected += OnItemSelected;
+    }
+
+    private void InitializeMenuItems()
     {
         List<TextSlot> textSlots = GetComponentsInChildren<TextSlot>().ToList();
 
-        if (SavingSystem.Instance.CheckForExistingSave("saveSlot1"))
+        if (_hasSave)
         {
             SetItems(textSlots);
         }
         else
         {
             SetItems(textSlots.TakeLast(2).ToList());
+            // Disable the "Continue" option by setting its color to the empty color.
             textSlots.First().GetComponent<TextMeshProUGUI>().color = GlobalSettings.Instance.EmptyColor;
         }
-
-        OnSelected += OnItemSelected;
     }
 
     private void Update()
@@ -31,57 +39,64 @@ public class MainMenuController : SelectionUI<TextSlot>
 
     private void OnItemSelected(int selection)
     {
-        if (!SavingSystem.Instance.CheckForExistingSave("saveSlot1"))
+        // Adjust selection index if no save exists.
+        if (!_hasSave)
         {
             selection++;
         }
 
-        if (selection == 0)
+        switch (selection)
         {
-            // Continue
-            StartCoroutine(ContinueSelected());
-        }
-        else if (selection == 1)
-        {
-            // New Game
-            StartCoroutine(NewGameSelected());
-        }
-        else if (selection == 2)
-        {
-            // Quit
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            case 0:
+                _ = StartCoroutine(ContinueSelected());
+                break;
+            case 1:
+                _ = StartCoroutine(NewGameSelected());
+                break;
+            case 2:
+                QuitGame();
+                break;
+            default:
+                break;
         }
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
+    private void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     private IEnumerator ContinueSelected()
     {
-        yield return Fader.Instance.FadeIn(0.1f);
-
-        transform.SetParent(null);
-        DontDestroyOnLoad(gameObject);
-
-        GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
-        SceneManager.LoadScene(1);
-        SavingSystem.Instance.Load("saveSlot1");
-
-        Destroy(gameObject);
-
-        yield return Fader.Instance.FadeOut(0.75f);
+        yield return PerformTransition(static () =>
+        {
+            GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
+            SceneManager.LoadScene(1);
+            SavingSystem.Instance.Load("saveSlot1");
+        });
     }
 
     private IEnumerator NewGameSelected()
     {
+        yield return PerformTransition(static () =>
+        {
+            GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
+        });
+    }
+
+    private IEnumerator PerformTransition(System.Action transitionAction)
+    {
         yield return Fader.Instance.FadeIn(0.1f);
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
-        GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
+        transitionAction?.Invoke();
 
         Destroy(gameObject);
 
