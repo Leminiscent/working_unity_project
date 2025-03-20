@@ -11,15 +11,17 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
     [SerializeField] private TextMeshProUGUI _depotNameText;
     [SerializeField] private Image _transferImage;
 
+    private const int TOTAL_COLUMNS = 9;
+    private const float TRANSFER_IMAGE_VERTICAL_OFFSET = 50f;
+
     private List<StoragePartySlotUI> _partySlots = new();
     private List<StorageSlotUI> _depotSlots = new();
     private List<Image> _storageSlotImages = new();
     private BattleParty _party;
     private BattlerStorage _storage;
-    private int _totalColumns = 9;
 
     public int SelectedDepot { get; private set; } = 0;
-    public int TotalColumns => _totalColumns;
+    public int TotalColumns => TOTAL_COLUMNS;
 
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
     private void Start()
     {
         SetItems(_storageSlots);
-        SetSelectionSettings(SelectionType.Grid, _totalColumns);
+        SetSelectionSettings(SelectionType.Grid, TOTAL_COLUMNS);
     }
 
     public void SetStorageData()
@@ -81,6 +83,47 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
 
     public override void HandleUpdate()
     {
+        if (HandleDepotInput())
+        {
+            SetStorageData();
+            UpdateSelectionInUI();
+        }
+
+        base.HandleUpdate();
+    }
+
+    public override void UpdateSelectionInUI()
+    {
+        base.UpdateSelectionInUI();
+        _depotNameText.text = "Depot " + (SelectedDepot + 1);
+
+        if (_transferImage.gameObject.activeSelf)
+        {
+            _transferImage.transform.position = _storageSlotImages[_selectedItem].transform.position +
+                                                (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
+        }
+    }
+
+    public bool IsPartySlot(int slotIndex)
+    {
+        return slotIndex % TOTAL_COLUMNS == 0;
+    }
+
+    // Helper to calculate the party index from a given slot index.
+    private int GetPartySlotIndex(int slotIndex)
+    {
+        return slotIndex / TOTAL_COLUMNS;
+    }
+
+    // Helper to calculate the depot slot index from a given slot index.
+    private int GetDepotSlotIndex(int slotIndex)
+    {
+        return slotIndex - ((slotIndex / TOTAL_COLUMNS) + 1);
+    }
+
+    // Handles input for depot paging and returns whether a change occurred.
+    private bool HandleDepotInput()
+    {
         int prevSelectedDepot = SelectedDepot;
 
         if (Input.GetButtonDown("Page Left"))
@@ -94,59 +137,36 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
             AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
 
-        if (prevSelectedDepot != SelectedDepot || Input.GetButtonDown("Back"))
+        if (Input.GetButtonDown("Back"))
         {
-            if (Input.GetButtonDown("Back"))
-            {
-                SelectedDepot = 0;
-            }
-
-            SetStorageData();
-            UpdateSelectionInUI();
+            SelectedDepot = 0;
         }
 
-        base.HandleUpdate();
+        return prevSelectedDepot != SelectedDepot || Input.GetButtonDown("Back");
     }
 
-    public override void UpdateSelectionInUI()
+    // Updates the transfer image's sprite, position, and visibility.
+    private void ShowTransferImage(int slotIndex)
     {
-        base.UpdateSelectionInUI();
-
-        _depotNameText.text = "Depot " + (SelectedDepot + 1);
-
-        if (_transferImage.gameObject.activeSelf)
-        {
-            _transferImage.transform.position = _storageSlotImages[_selectedItem].transform.position + (Vector3.up * 50f);
-        }
-    }
-
-    public bool IsPartySlot(int slotIndex)
-    {
-        return slotIndex % _totalColumns == 0;
+        _transferImage.sprite = _storageSlotImages[slotIndex].sprite;
+        _transferImage.transform.position = _storageSlotImages[slotIndex].transform.position +
+                                            (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
+        _storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
+        _transferImage.gameObject.SetActive(true);
     }
 
     public Battler PeekBattlerInSlot(int slotIndex)
     {
-        Battler battler;
-
         if (IsPartySlot(slotIndex))
         {
-            int partyIndex = slotIndex / _totalColumns;
+            int partyIndex = GetPartySlotIndex(slotIndex);
 
-            if (partyIndex >= _party.Battlers.Count)
-            {
-                return null;
-            }
-
-            battler = _party.Battlers[partyIndex];
-            return battler;
+            return partyIndex >= _party.Battlers.Count ? null : _party.Battlers[partyIndex];
         }
         else
         {
-            int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
-
-            battler = _storage.GetBattler(SelectedDepot, depotSlotIndex);
-            return battler;
+            int depotSlotIndex = GetDepotSlotIndex(slotIndex);
+            return _storage.GetBattler(SelectedDepot, depotSlotIndex);
         }
     }
 
@@ -166,10 +186,9 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
     public Battler TakeBattlerFromSlot(int slotIndex)
     {
         Battler battler;
-
         if (IsPartySlot(slotIndex))
         {
-            int partyIndex = slotIndex / _totalColumns;
+            int partyIndex = GetPartySlotIndex(slotIndex);
 
             if (partyIndex >= _party.Battlers.Count)
             {
@@ -186,22 +205,16 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
         }
         else
         {
-            int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
-
+            int depotSlotIndex = GetDepotSlotIndex(slotIndex);
             battler = _storage.GetBattler(SelectedDepot, depotSlotIndex);
             if (battler == null)
             {
                 return null;
             }
-
             _storage.RemoveBattler(SelectedDepot, depotSlotIndex);
         }
 
-        _transferImage.sprite = _storageSlotImages[slotIndex].sprite;
-        _transferImage.transform.position = _storageSlotImages[slotIndex].transform.position + (Vector3.up * 50f);
-        _storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
-        _transferImage.gameObject.SetActive(true);
-
+        ShowTransferImage(slotIndex);
         return battler;
     }
 
@@ -209,8 +222,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
     {
         if (IsPartySlot(slotIndex))
         {
-            int partyIndex = slotIndex / _totalColumns;
-
+            int partyIndex = GetPartySlotIndex(slotIndex);
             if (partyIndex >= _party.Battlers.Count)
             {
                 _party.Battlers.Add(battler);
@@ -222,8 +234,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
         }
         else
         {
-            int depotSlotIndex = slotIndex - ((slotIndex / _totalColumns) + 1);
-
+            int depotSlotIndex = GetDepotSlotIndex(slotIndex);
             _storage.AddBattler(battler, SelectedDepot, depotSlotIndex);
         }
 
