@@ -35,6 +35,7 @@ public class ShopUI : SelectionUI<TextSlot>
         _onBack = onBack;
 
         gameObject.SetActive(true);
+        ResetSelection();
         UpdateItemList();
 
         SetSelectionSettings(SelectionType.List, 1);
