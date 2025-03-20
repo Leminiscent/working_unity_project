@@ -10,8 +10,9 @@ namespace Utils.GenericSelectionUI
         private SelectionType _selectionType;
         private int _gridWidth = 2;
 
-        protected float _selectionTimer = 0;
         protected const float SELECTION_SPEED = 5f;
+
+        protected float _selectionTimer = 0;
         protected int _selectedItem = 0;
         protected int? _savedSelection;
 
@@ -44,6 +45,11 @@ namespace Utils.GenericSelectionUI
 
         public virtual void HandleUpdate()
         {
+            if (_items == null || _items.Count == 0)
+            {
+                return;
+            }
+
             UpdateSelectionTimer();
 
             int prevSelection = _selectedItem;
@@ -80,7 +86,6 @@ namespace Utils.GenericSelectionUI
             if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
             {
                 _selectedItem += -(int)Mathf.Sign(v);
-
                 if (_selectedItem < 0)
                 {
                     _selectedItem = _items.Count - 1;
@@ -107,52 +112,61 @@ namespace Utils.GenericSelectionUI
                 int totalRows = Mathf.CeilToInt((float)_items.Count / _gridWidth);
                 int lastRow = totalRows - 1;
 
-                if (Mathf.Abs(h) > Mathf.Abs(v))
-                {
-                    int rowItemCount = (row == lastRow && _items.Count % _gridWidth != 0) ? _items.Count % _gridWidth : _gridWidth;
-                    int newCol = col + (int)Mathf.Sign(h);
+                _selectedItem = Mathf.Abs(h) > Mathf.Abs(v)
+                    ? GetNewGridIndexHorizontal(row, col, h)
+                    : GetNewGridIndexVertical(row, col, v, lastRow, totalRows);
 
-                    if (newCol < 0)
-                    {
-                        newCol = rowItemCount - 1;
-                    }
-                    else if (newCol >= rowItemCount)
-                    {
-                        newCol = 0;
-                    }
-
-                    _selectedItem = (row * _gridWidth) + newCol;
-                }
-                else
-                {
-                    int newRow = row - (int)Mathf.Sign(v);
-
-                    if (newRow < 0)
-                    {
-                        newRow = lastRow;
-                    }
-                    else if (newRow >= totalRows)
-                    {
-                        newRow = 0;
-                    }
-
-                    int newRowItemCount = (newRow == lastRow && _items.Count % _gridWidth != 0) ? _items.Count % _gridWidth : _gridWidth;
-                    int newCol = col;
-
-                    if (newCol >= newRowItemCount)
-                    {
-                        newCol = newRowItemCount - 1;
-                    }
-
-                    _selectedItem = (newRow * _gridWidth) + newCol;
-                }
-
-                _selectionTimer = 1 / SELECTION_SPEED;
+                _selectionTimer = 1f / SELECTION_SPEED;
             }
+        }
+
+        private int GetNewGridIndexHorizontal(int row, int col, float horizontalInput)
+        {
+            int rowItemCount = (row == Mathf.CeilToInt((float)_items.Count / _gridWidth) - 1 && _items.Count % _gridWidth != 0)
+                ? _items.Count % _gridWidth : _gridWidth;
+
+            int newCol = col + (int)Mathf.Sign(horizontalInput);
+            if (newCol < 0)
+            {
+                newCol = rowItemCount - 1;
+            }
+            else if (newCol >= rowItemCount)
+            {
+                newCol = 0;
+            }
+
+            return (row * _gridWidth) + newCol;
+        }
+
+        private int GetNewGridIndexVertical(int row, int col, float verticalInput, int lastRow, int totalRows)
+        {
+            int newRow = row - (int)Mathf.Sign(verticalInput);
+            if (newRow < 0)
+            {
+                newRow = lastRow;
+            }
+            else if (newRow >= totalRows)
+            {
+                newRow = 0;
+            }
+
+            int newRowItemCount = (newRow == lastRow && _items.Count % _gridWidth != 0)
+                ? _items.Count % _gridWidth : _gridWidth;
+            int newCol = col;
+            if (newCol >= newRowItemCount)
+            {
+                newCol = newRowItemCount - 1;
+            }
+
+            return (newRow * _gridWidth) + newCol;
         }
 
         public virtual void UpdateSelectionInUI()
         {
+            if (_items == null || _items.Count == 0)
+            {
+                return;
+            }
             for (int i = 0; i < _items.Count; i++)
             {
                 _items[i].OnSelectionChanged(i == _selectedItem);
@@ -182,7 +196,7 @@ namespace Utils.GenericSelectionUI
 
         public void SetSelectedIndex(int index)
         {
-            if (_items != null)
+            if (_items != null && _items.Count > 0)
             {
                 _selectedItem = Mathf.Clamp(index, 0, _items.Count - 1);
                 UpdateSelectionInUI();

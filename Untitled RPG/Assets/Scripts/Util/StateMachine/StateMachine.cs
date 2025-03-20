@@ -15,7 +15,6 @@ namespace Utils.StateMachine
         public StateMachine(T owner)
         {
             _owner = owner;
-
             StateStack = new Stack<State<T>>();
         }
 
@@ -29,6 +28,12 @@ namespace Utils.StateMachine
 
         public void Push(State<T> newState)
         {
+            if (newState == null)
+            {
+                Debug.LogWarning("Push() called with null state.");
+                return;
+            }
+
             StateStack.Push(newState);
             CurrentState = newState;
             CurrentState.Enter(_owner);
@@ -36,16 +41,28 @@ namespace Utils.StateMachine
 
         public void Pop()
         {
-            StateStack.Pop();
+            if (StateStack.Count == 0)
+            {
+                Debug.LogWarning("Pop() called on empty stack.");
+                return;
+            }
+
+            _ = StateStack.Pop();
             CurrentState.Exit();
             CurrentState = StateStack.Peek();
         }
 
         public void ChangeState(State<T> newState)
         {
+            if (newState == null)
+            {
+                Debug.LogWarning("ChangeState() called with null state.");
+                return;
+            }
+
             if (CurrentState != null)
             {
-                StateStack.Pop();
+                _ = StateStack.Pop();
                 CurrentState.Exit();
             }
             StateStack.Push(newState);
@@ -55,14 +72,25 @@ namespace Utils.StateMachine
 
         public IEnumerator PushAndWait(State<T> newState)
         {
-            State<T> prevState = CurrentState;
+            if (newState == null)
+            {
+                Debug.LogWarning("PushAndWait() called with null state.");
+                yield break;
+            }
 
+            State<T> prevState = CurrentState;
             Push(newState);
             yield return new WaitUntil(() => CurrentState == prevState);
         }
 
         public State<T> GetPrevState()
         {
+            if (StateStack.Count < 2)
+            {
+                Debug.LogWarning("GetPrevState() called with empty or single state stack.");
+                return null;
+            }
+
             return StateStack.ElementAt(1);
         }
     }

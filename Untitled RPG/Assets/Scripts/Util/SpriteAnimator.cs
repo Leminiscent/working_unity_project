@@ -3,17 +3,27 @@ using UnityEngine;
 
 public class SpriteAnimator
 {
+    public List<Sprite> Frames { get; private set; }
+
     private SpriteRenderer _renderer;
-    private List<Sprite> _frames;
     private float _frameRate;
     private int _currentFrame;
     private float _timer;
 
-    public List<Sprite> Frames => _frames;
-
     public SpriteAnimator(List<Sprite> frames, SpriteRenderer renderer, float frameRate = 0.16f)
     {
-        _frames = frames;
+        if (frames == null || frames.Count == 0)
+        {
+            Debug.LogError("SpriteAnimator requires a non-null, non-empty frames list.");
+            return;
+        }
+        if (renderer == null)
+        {
+            Debug.LogError("SpriteAnimator requires a valid SpriteRenderer.");
+            return;
+        }
+
+        Frames = frames;
         _renderer = renderer;
         _frameRate = frameRate;
     }
@@ -22,16 +32,16 @@ public class SpriteAnimator
     {
         _currentFrame = 1;
         _timer = 0f;
-        _renderer.sprite = _frames[_currentFrame];
+        _renderer.sprite = Frames[_currentFrame];
     }
 
     public void HandleUpdate()
     {
         _timer += Time.deltaTime;
-        if (_timer > _frameRate)
+        while (_timer >= _frameRate)
         {
-            _currentFrame = (_currentFrame + 1) % _frames.Count;
-            _renderer.sprite = _frames[_currentFrame];
+            _currentFrame = (_currentFrame + 1) % Frames.Count;
+            _renderer.sprite = Frames[_currentFrame];
             _timer -= _frameRate;
         }
     }
