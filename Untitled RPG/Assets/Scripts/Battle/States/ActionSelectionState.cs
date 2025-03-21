@@ -8,8 +8,9 @@ using Utils.StateMachine;
 public class ActionSelectionState : State<BattleSystem>
 {
     [field: SerializeField] public ActionSelectionUI SelectionUI { get; private set; }
-    
+
     private BattleSystem _battleSystem;
+    private BattleUnit _activeUnit;
     private int _prevSelectionIndex = 0;
     private TextMeshProUGUI _talkText;
 
@@ -25,11 +26,15 @@ public class ActionSelectionState : State<BattleSystem>
         {
             Instance = this;
         }
+
+        // Initialize the talk text component from the UI.
+        InitializeTalkText();
     }
 
     public override void Enter(BattleSystem owner)
     {
         _battleSystem = owner;
+        _activeUnit = _battleSystem.SelectingUnit;
 
         if (SelectionUI == null)
         {
@@ -37,26 +42,33 @@ public class ActionSelectionState : State<BattleSystem>
             return;
         }
 
+        // Set Talk text color based on whether the unit is a commander.
+        _talkText.color = !_activeUnit.Battler.IsCommander ? GlobalSettings.Instance.EmptyColor : Color.white;
+
+        // Restore saved selection if it exists; otherwise, default to 0.
+        if (_battleSystem.UnitSelectionIndices.TryGetValue(_activeUnit, out int savedSelection))
+        {
+            SelectionUI.SetSelectedIndex(savedSelection);
+        }
+        else
+        {
+            SelectionUI.ResetSelection();
+        }
+
         SelectionUI.gameObject.SetActive(true);
         SelectionUI.OnSelected += OnActionSelected;
         SelectionUI.OnBack += OnBack;
 
         // Display dialogue and set the selecting unit as active.
-        _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_battleSystem.SelectingUnit.Battler.Base.Name}!");
-        _battleSystem.SelectingUnit.SetSelected(true);
-
-        // Initialize the talk text component from the UI.
-        InitializeTalkText();
-
-        // Set text color based on whether the unit is a commander.
-        _talkText.color = !_battleSystem.SelectingUnit.Battler.IsCommander ? GlobalSettings.Instance.EmptyColor : Color.white;
+        _battleSystem.DialogueBox.SetDialogue($"Choose an action for {_activeUnit.Battler.Base.Name}!");
+        _activeUnit.SetSelected(true);
     }
 
     public override void Execute()
     {
         SelectionUI.HandleUpdate();
 
-        if (!_battleSystem.SelectingUnit.Battler.IsCommander)
+        if (!_activeUnit.Battler.IsCommander)
         {
             // If the unit is not the commander, ignore the talk option.
             if (SelectionUI.SelectedIndex == 1)
@@ -74,6 +86,9 @@ public class ActionSelectionState : State<BattleSystem>
 
     public override void Exit()
     {
+        // Save the current selection index for the active unit.
+        _battleSystem.UnitSelectionIndices[_activeUnit] = SelectionUI.SelectedIndex;
+
         SelectionUI.gameObject.SetActive(false);
         SelectionUI.OnSelected -= OnActionSelected;
         SelectionUI.OnBack -= OnBack;
@@ -127,7 +142,7 @@ public class ActionSelectionState : State<BattleSystem>
 
     private void HandleMoveSelection()
     {
-        MoveSelectionState.Instance.Moves = _battleSystem.SelectingUnit.Battler.Moves;
+        MoveSelectionState.Instance.Moves = _activeUnit.Battler.Moves;
         _battleSystem.StateMachine.ChangeState(MoveSelectionState.Instance);
     }
 
@@ -165,10 +180,10 @@ public class ActionSelectionState : State<BattleSystem>
                 {
                     ActionType = BattleActionType.UseItem,
                     SelectedItem = selectedItem,
-                    TargetUnits = selectedItem.Target is MoveTarget.Self ? new List<BattleUnit> { _battleSystem.SelectingUnit }
+                    TargetUnits = selectedItem.Target is MoveTarget.Self ? new List<BattleUnit> { _activeUnit }
                         : selectedItem.Target is MoveTarget.AllAllies ? _battleSystem.PlayerUnits
                         : selectedItem.Target is MoveTarget.AllEnemies ? _battleSystem.EnemyUnits
-                        : _battleSystem.PlayerUnits.Where(u => u != _battleSystem.SelectingUnit).Concat(_battleSystem.EnemyUnits).ToList()
+                        : _battleSystem.PlayerUnits.Where(u => u != _activeUnit).Concat(_battleSystem.EnemyUnits).ToList()
                 });
                 yield break;
             }

@@ -72,6 +72,7 @@ public class BattleSystem : MonoBehaviour
     public PlayerController Player { get; private set; }
     public List<BattleUnit> PlayerUnits { get; private set; }
     public List<BattleUnit> EnemyUnits { get; private set; }
+    public Dictionary<BattleUnit, int> UnitSelectionIndices { get; private set; }
     public BattleUnit SelectingUnit => PlayerUnits[_selectingUnitIndex];
 
     private void Awake()
@@ -117,6 +118,7 @@ public class BattleSystem : MonoBehaviour
     {
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
+        UnitSelectionIndices = new Dictionary<BattleUnit, int>();
 
         // Determine number of player units (up to 3 healthy battlers)
         _playerUnitCount = Mathf.Min(PlayerParty.Battlers.Count(static b => b.Hp > 0), 3);
