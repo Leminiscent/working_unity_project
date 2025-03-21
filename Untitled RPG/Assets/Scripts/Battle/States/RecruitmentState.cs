@@ -179,7 +179,7 @@ public class RecruitmentState : State<BattleSystem>
 
         if (canRecruit)
         {
-            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} wants to join your party! Will you accept?");
+            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} wants to join your cause! Will you accept?");
 
             // Present choice to accept or reject.
             _dialogueBox.EnableDialogueText(false);
@@ -237,7 +237,7 @@ public class RecruitmentState : State<BattleSystem>
             if (_battleSystem.EnemyUnits.Count == 0)
             {
                 AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
-                yield return _dialogueBox.TypeDialogue("There are no more enemies remaining!");
+                yield return _dialogueBox.TypeDialogue("There are no enemies remaining!");
                 yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
                 while (AudioManager.Instance.MusicPlayer.isPlaying)
                 {

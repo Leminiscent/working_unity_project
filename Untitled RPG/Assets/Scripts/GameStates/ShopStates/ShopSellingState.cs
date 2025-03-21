@@ -79,7 +79,7 @@ public class ShopSellingState : State<GameController>
         if (availableCount > 1)
         {
             yield return DialogueManager.Instance.ShowDialogueText(
-                $"How many {TextUtil.GetPluralizedNoun(item.Name)} would you like to sell?",
+                $"How many {TextUtil.GetPlural(item.Name)} would you like to sell?",
                 waitForInput: false,
                 autoClose: false);
 
@@ -101,7 +101,7 @@ public class ShopSellingState : State<GameController>
 
         int selectedChoice = -1;
         yield return DialogueManager.Instance.ShowDialogueText(
-            $"I can buy {TextUtil.ConvertNumToText(countToSell)} {TextUtil.GetPluralizedNoun(item.Name, countToSell)} from you for {TextUtil.ConvertNumToText(totalSellingPrice)} gold. Do we have a deal?",
+            $"I can buy {TextUtil.GetNumText(countToSell)} {TextUtil.GetPlural(item.Name, countToSell)} from you for {TextUtil.GetNumText(totalSellingPrice)} gold. Do we have a deal?",
             waitForInput: false,
             choices: new List<string> { "Yes", "No" },
             onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);

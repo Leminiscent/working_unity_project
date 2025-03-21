@@ -76,7 +76,7 @@ public class ShopBuyingState : State<GameController>
 
         // Ask the player how many items they want to buy.
         yield return DialogueManager.Instance.ShowDialogueText(
-            $"How many {TextUtil.GetPluralizedNoun(item.Name)} would you like?",
+            $"How many {TextUtil.GetPlural(item.Name)} would you like?",
             waitForInput: false,
             autoClose: false);
 
@@ -101,7 +101,7 @@ public class ShopBuyingState : State<GameController>
             // Confirm the purchase with the player.
             int selectedChoice = -1;
             yield return DialogueManager.Instance.ShowDialogueText(
-                $"That will be {TextUtil.ConvertNumToText(totalPrice)} gold. Do we have a deal?",
+                $"That will be {TextUtil.GetNumText(totalPrice)} gold. Do we have a deal?",
                 waitForInput: false,
                 choices: new List<string> { "Yes", "No" },
                 onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);

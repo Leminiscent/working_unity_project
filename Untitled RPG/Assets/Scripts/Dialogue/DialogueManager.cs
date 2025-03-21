@@ -126,7 +126,7 @@ public class DialogueManager : MonoBehaviour
 
 public static class TextUtil
 {
-    public static string ConvertNumToText(int num)
+    public static string GetNumText(int num)
     {
         // If the number is less than 10, return the text representation of the number.
         if (num < 10)
@@ -149,7 +149,7 @@ public static class TextUtil
         return num.ToString();
     }
 
-    public static string GetPluralizedNoun(string noun, int? count = null)
+    public static string GetPlural(string noun, int? count = null)
     {
         // If count is provided and is 1, return the singular form of the noun.
         return count.HasValue && count.Value == 1
@@ -163,6 +163,16 @@ public static class TextUtil
                                                 n.EndsWith("uy")) => n[..^1] + "ies",
                 _ => noun + "s"
             };
+    }
+
+    public static string GetPossessive(string noun)
+    {
+        // If the noun ends with "s", return the possessive form with just an apostrophe.
+        return noun switch
+        {
+            string n when n.EndsWith("s") => n + "'",
+            _ => noun + "'s"
+        };
     }
 
     public static string GetArticle(string noun)

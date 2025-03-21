@@ -302,9 +302,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 1
-  _hud: {fileID: 3558521804730360931}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 1
+  <Hud>k__BackingField: {fileID: 3558521804730360931}
 --- !u!1 &513425325906328295
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,10 +1071,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1aa1392b7923540bf95436e272f0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerController: {fileID: 7671359215571875078}
+  <PlayerController>k__BackingField: {fileID: 7671359215571875078}
   _battleSystem: {fileID: 3647196001181277108}
-  _worldCamera: {fileID: 7064429769284499524}
-  _partyScreen: {fileID: 3629330035077405325}
+  <WorldCamera>k__BackingField: {fileID: 7064429769284499524}
+  <PartyScreen>k__BackingField: {fileID: 3629330035077405325}
   _inventoryUI: {fileID: 8920337114689361008}
 --- !u!114 &5198859637509064487
 MonoBehaviour:
@@ -1104,28 +1104,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a660a0bc8c918af478986eef64a9655c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _solidObjectsLayer:
+  <SolidObjectsLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 256
-  _encountersLayer:
+  <EncountersLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 512
-  _interactablesLayer:
+  <InteractablesLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 1024
-  _playerLayer:
+  <PlayerLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 2048
-  _losLayer:
+  <LOSLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 4096
-  _portalLayer:
+  <PortalLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 8192
-  _triggersLayer:
+  <TriggersLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 16384
-  _ledgeLayer:
+  <LedgeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 32768
 --- !u!114 &7428171737727562100
@@ -1152,15 +1152,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed3dbc7ac89e5f49b8e1abd3bae6778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activeColor: {r: 0.98132557, g: 1, b: 0.08962262, a: 1}
-  _inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-  _emptyColor: {r: 0.48235297, g: 0.48235297, b: 0.48235297, a: 1}
-  _bgHighlightColor: {r: 0, g: 0.4454546, b: 1, a: 1}
-  _maxPvs: 510
-  _maxPvPerStat: 252
-  _maxLevel: 100
-  _backupMove: {fileID: 11400000, guid: 95d86495440e4f949b33535b79771b8f, type: 2}
-  _healAnimationSprites:
+  <ActiveColor>k__BackingField: {r: 0.98132557, g: 1, b: 0.08962262, a: 1}
+  <InactiveColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  <EmptyColor>k__BackingField: {r: 0.48235297, g: 0.48235297, b: 0.48235297, a: 1}
+  <BgHighlightColor>k__BackingField: {r: 0, g: 0.4454546, b: 1, a: 1}
+  <MaxPvs>k__BackingField: 510
+  <MaxPvPerStat>k__BackingField: 252
+  <MaxLevel>k__BackingField: 100
+  <BackupMove>k__BackingField: {fileID: 11400000, guid: 95d86495440e4f949b33535b79771b8f, type: 2}
+  <HealAnimationSprites>k__BackingField:
   - {fileID: -1660954626, guid: e96501189c1e8bb43a4bb82e2cdb05b1, type: 3}
   - {fileID: 1597800879, guid: e96501189c1e8bb43a4bb82e2cdb05b1, type: 3}
   - {fileID: 337177822, guid: e96501189c1e8bb43a4bb82e2cdb05b1, type: 3}
@@ -1186,7 +1186,7 @@ MonoBehaviour:
   - {fileID: 2112836870, guid: e96501189c1e8bb43a4bb82e2cdb05b1, type: 3}
   - {fileID: 123505071, guid: e96501189c1e8bb43a4bb82e2cdb05b1, type: 3}
   - {fileID: 1901044441, guid: e96501189c1e8bb43a4bb82e2cdb05b1, type: 3}
-  _expGainAnimationSprites:
+  <ExpGainAnimationSprites>k__BackingField:
   - {fileID: -1062073878, guid: e3805eff609ff104899324bcea494fa6, type: 3}
   - {fileID: -698807011, guid: e3805eff609ff104899324bcea494fa6, type: 3}
   - {fileID: 802483888, guid: e3805eff609ff104899324bcea494fa6, type: 3}
@@ -1212,7 +1212,7 @@ MonoBehaviour:
   - {fileID: -1300613664, guid: e3805eff609ff104899324bcea494fa6, type: 3}
   - {fileID: -907450494, guid: e3805eff609ff104899324bcea494fa6, type: 3}
   - {fileID: -7195189, guid: e3805eff609ff104899324bcea494fa6, type: 3}
-  _levelUpAnimationSprites:
+  <LevelUpAnimationSprites>k__BackingField:
   - {fileID: 279857301, guid: eba6f9964517a864b8cca2300db1f4f4, type: 3}
   - {fileID: 2057914853, guid: eba6f9964517a864b8cca2300db1f4f4, type: 3}
   - {fileID: -1848099446, guid: eba6f9964517a864b8cca2300db1f4f4, type: 3}
@@ -1243,7 +1243,7 @@ MonoBehaviour:
   - {fileID: -1785159992, guid: eba6f9964517a864b8cca2300db1f4f4, type: 3}
   - {fileID: 1780031033, guid: eba6f9964517a864b8cca2300db1f4f4, type: 3}
   - {fileID: -389669883, guid: eba6f9964517a864b8cca2300db1f4f4, type: 3}
-  _affinityGainAnimationSprites:
+  <AffinityGainAnimationSprites>k__BackingField:
   - {fileID: -2136363760, guid: f55e71288e54a174eb6ec795bacdf22b, type: 3}
   - {fileID: -343029632, guid: f55e71288e54a174eb6ec795bacdf22b, type: 3}
   - {fileID: -1822418064, guid: f55e71288e54a174eb6ec795bacdf22b, type: 3}
@@ -1264,7 +1264,7 @@ MonoBehaviour:
   - {fileID: -1716590275, guid: f55e71288e54a174eb6ec795bacdf22b, type: 3}
   - {fileID: 1110972710, guid: f55e71288e54a174eb6ec795bacdf22b, type: 3}
   - {fileID: -140968987, guid: f55e71288e54a174eb6ec795bacdf22b, type: 3}
-  _affinityLossAnimationSprites:
+  <AffinityLossAnimationSprites>k__BackingField:
   - {fileID: 461021129, guid: fe3ea1685df5d15438db8184e845acca, type: 3}
   - {fileID: 756432839, guid: fe3ea1685df5d15438db8184e845acca, type: 3}
   - {fileID: -400199053, guid: fe3ea1685df5d15438db8184e845acca, type: 3}
@@ -1285,7 +1285,7 @@ MonoBehaviour:
   - {fileID: 531782745, guid: fe3ea1685df5d15438db8184e845acca, type: 3}
   - {fileID: -65276226, guid: fe3ea1685df5d15438db8184e845acca, type: 3}
   - {fileID: 1981450439, guid: fe3ea1685df5d15438db8184e845acca, type: 3}
-  _strengthGainAnimationSprites:
+  <StrengthGainAnimationSprites>k__BackingField:
   - {fileID: 1429840898, guid: 7decd1140e322594eaef558d48f2f585, type: 3}
   - {fileID: -612562377, guid: 7decd1140e322594eaef558d48f2f585, type: 3}
   - {fileID: 1397927180, guid: 7decd1140e322594eaef558d48f2f585, type: 3}
@@ -1306,7 +1306,7 @@ MonoBehaviour:
   - {fileID: 1989023003, guid: 7decd1140e322594eaef558d48f2f585, type: 3}
   - {fileID: -2044624464, guid: 7decd1140e322594eaef558d48f2f585, type: 3}
   - {fileID: 384416322, guid: 7decd1140e322594eaef558d48f2f585, type: 3}
-  _strengthLossAnimationSprites:
+  <StrengthLossAnimationSprites>k__BackingField:
   - {fileID: -1805364713, guid: 16d1dde2ea3da9b4ead87b409d904d35, type: 3}
   - {fileID: 1960403956, guid: 16d1dde2ea3da9b4ead87b409d904d35, type: 3}
   - {fileID: -1149909202, guid: 16d1dde2ea3da9b4ead87b409d904d35, type: 3}
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   - {fileID: -150534196, guid: 16d1dde2ea3da9b4ead87b409d904d35, type: 3}
   - {fileID: -1539775109, guid: 16d1dde2ea3da9b4ead87b409d904d35, type: 3}
   - {fileID: 1893232842, guid: 16d1dde2ea3da9b4ead87b409d904d35, type: 3}
-  _enduranceGainAnimationSprites:
+  <EnduranceGainAnimationSprites>k__BackingField:
   - {fileID: 2077903306, guid: 71d516f2e8a36d94791b06596e821745, type: 3}
   - {fileID: -1151443434, guid: 71d516f2e8a36d94791b06596e821745, type: 3}
   - {fileID: 1252353953, guid: 71d516f2e8a36d94791b06596e821745, type: 3}
@@ -1348,7 +1348,7 @@ MonoBehaviour:
   - {fileID: 1034768263, guid: 71d516f2e8a36d94791b06596e821745, type: 3}
   - {fileID: 332022370, guid: 71d516f2e8a36d94791b06596e821745, type: 3}
   - {fileID: 2071271259, guid: 71d516f2e8a36d94791b06596e821745, type: 3}
-  _enduranceLossAnimationSprites:
+  <EnduranceLossAnimationSprites>k__BackingField:
   - {fileID: -216979790, guid: 6256aac59d3770c40a062901fb52377b, type: 3}
   - {fileID: -733141696, guid: 6256aac59d3770c40a062901fb52377b, type: 3}
   - {fileID: -1334705033, guid: 6256aac59d3770c40a062901fb52377b, type: 3}
@@ -1369,7 +1369,7 @@ MonoBehaviour:
   - {fileID: -1521483831, guid: 6256aac59d3770c40a062901fb52377b, type: 3}
   - {fileID: 95340283, guid: 6256aac59d3770c40a062901fb52377b, type: 3}
   - {fileID: -2121711548, guid: 6256aac59d3770c40a062901fb52377b, type: 3}
-  _intelligenceGainAnimationSprites:
+  <IntelligenceGainAnimationSprites>k__BackingField:
   - {fileID: 1633861804, guid: 767deef1a8140e145b9f2b4a01e3d680, type: 3}
   - {fileID: -1715355730, guid: 767deef1a8140e145b9f2b4a01e3d680, type: 3}
   - {fileID: 2086433332, guid: 767deef1a8140e145b9f2b4a01e3d680, type: 3}
@@ -1390,7 +1390,7 @@ MonoBehaviour:
   - {fileID: -909112246, guid: 767deef1a8140e145b9f2b4a01e3d680, type: 3}
   - {fileID: 1287152274, guid: 767deef1a8140e145b9f2b4a01e3d680, type: 3}
   - {fileID: 554653751, guid: 767deef1a8140e145b9f2b4a01e3d680, type: 3}
-  _intelligenceLossAnimationSprites:
+  <IntelligenceLossAnimationSprites>k__BackingField:
   - {fileID: -1814509225, guid: 0c3d412e7b093a3499b307c8b3db2eef, type: 3}
   - {fileID: 1109145379, guid: 0c3d412e7b093a3499b307c8b3db2eef, type: 3}
   - {fileID: 1194874065, guid: 0c3d412e7b093a3499b307c8b3db2eef, type: 3}
@@ -1411,7 +1411,7 @@ MonoBehaviour:
   - {fileID: -1717514810, guid: 0c3d412e7b093a3499b307c8b3db2eef, type: 3}
   - {fileID: -299815120, guid: 0c3d412e7b093a3499b307c8b3db2eef, type: 3}
   - {fileID: -1401306272, guid: 0c3d412e7b093a3499b307c8b3db2eef, type: 3}
-  _fortitudeGainAnimationSprites:
+  <FortitudeGainAnimationSprites>k__BackingField:
   - {fileID: -1187911979, guid: 37e788ed13b267d41b44574c2e962ee4, type: 3}
   - {fileID: 2028546529, guid: 37e788ed13b267d41b44574c2e962ee4, type: 3}
   - {fileID: 2095523957, guid: 37e788ed13b267d41b44574c2e962ee4, type: 3}
@@ -1432,7 +1432,7 @@ MonoBehaviour:
   - {fileID: 1804477152, guid: 37e788ed13b267d41b44574c2e962ee4, type: 3}
   - {fileID: -1798887168, guid: 37e788ed13b267d41b44574c2e962ee4, type: 3}
   - {fileID: 1288657162, guid: 37e788ed13b267d41b44574c2e962ee4, type: 3}
-  _fortitudeLossAnimationSprites:
+  <FortitudeLossAnimationSprites>k__BackingField:
   - {fileID: 683492463, guid: 821b164d93bd0d34fbeab24bfddc22d4, type: 3}
   - {fileID: 1766562293, guid: 821b164d93bd0d34fbeab24bfddc22d4, type: 3}
   - {fileID: -1893469274, guid: 821b164d93bd0d34fbeab24bfddc22d4, type: 3}
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   - {fileID: -237721882, guid: 821b164d93bd0d34fbeab24bfddc22d4, type: 3}
   - {fileID: 1965863190, guid: 821b164d93bd0d34fbeab24bfddc22d4, type: 3}
   - {fileID: -2039940520, guid: 821b164d93bd0d34fbeab24bfddc22d4, type: 3}
-  _agilityGainAnimationSprites:
+  <AgilityGainAnimationSprites>k__BackingField:
   - {fileID: -169908414, guid: 060598594ae1e8643b4d5b05a51c6ed5, type: 3}
   - {fileID: 1712146335, guid: 060598594ae1e8643b4d5b05a51c6ed5, type: 3}
   - {fileID: 2030101850, guid: 060598594ae1e8643b4d5b05a51c6ed5, type: 3}
@@ -1474,7 +1474,7 @@ MonoBehaviour:
   - {fileID: -1254627642, guid: 060598594ae1e8643b4d5b05a51c6ed5, type: 3}
   - {fileID: -1921993564, guid: 060598594ae1e8643b4d5b05a51c6ed5, type: 3}
   - {fileID: 1881450445, guid: 060598594ae1e8643b4d5b05a51c6ed5, type: 3}
-  _agilityLossAnimationSprites:
+  <AgilityLossAnimationSprites>k__BackingField:
   - {fileID: -1804706260, guid: 7071847d9234dde4ca4103aacb22a23a, type: 3}
   - {fileID: -1611798287, guid: 7071847d9234dde4ca4103aacb22a23a, type: 3}
   - {fileID: 690784449, guid: 7071847d9234dde4ca4103aacb22a23a, type: 3}
@@ -1495,7 +1495,7 @@ MonoBehaviour:
   - {fileID: -1247098544, guid: 7071847d9234dde4ca4103aacb22a23a, type: 3}
   - {fileID: -169302780, guid: 7071847d9234dde4ca4103aacb22a23a, type: 3}
   - {fileID: 125516688, guid: 7071847d9234dde4ca4103aacb22a23a, type: 3}
-  _setStatusConditionAnimationSprites:
+  <SetStatusConditionAnimationSprites>k__BackingField:
   - {fileID: -1261994239, guid: 856f9c8ab2debb24d96a6d3b1d26979e, type: 3}
   - {fileID: 97611738, guid: 856f9c8ab2debb24d96a6d3b1d26979e, type: 3}
   - {fileID: -621904810, guid: 856f9c8ab2debb24d96a6d3b1d26979e, type: 3}
@@ -1521,7 +1521,7 @@ MonoBehaviour:
   - {fileID: -637951109, guid: 856f9c8ab2debb24d96a6d3b1d26979e, type: 3}
   - {fileID: -2094628672, guid: 856f9c8ab2debb24d96a6d3b1d26979e, type: 3}
   - {fileID: 576497503, guid: 856f9c8ab2debb24d96a6d3b1d26979e, type: 3}
-  _cureStatusConditionAnimationSprites:
+  <CureStatusConditionAnimationSprites>k__BackingField:
   - {fileID: 283616499, guid: cf07f0ae5f683e646a1da068d74efcc6, type: 3}
   - {fileID: 1836869782, guid: cf07f0ae5f683e646a1da068d74efcc6, type: 3}
   - {fileID: 967709465, guid: cf07f0ae5f683e646a1da068d74efcc6, type: 3}
@@ -1657,7 +1657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c719548311f99fd4a8a9dd32cf1c1cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleSystem: {fileID: 3647196001181277108}
+  <BattleSystem>k__BackingField: {fileID: 3647196001181277108}
 --- !u!114 &5812762495182597729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,7 +1706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17ddd7bc3ecc37844ba413d1dde0fd00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shopCameraOffest: {x: 0, y: 0}
+  _shopCameraOffset: {x: 0, y: 0}
   _shopUI: {fileID: 3733087014307689605}
   _walletUI: {fileID: 5434258711064702850}
   _countSelectorUI: {fileID: 1406905409416753165}
@@ -1895,9 +1895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 1
-  _hud: {fileID: 5070390950746114499}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 1
+  <Hud>k__BackingField: {fileID: 5070390950746114499}
 --- !u!1 &2659241168516428937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,9 +2709,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 0
-  _hud: {fileID: 4338011494901453523}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 0
+  <Hud>k__BackingField: {fileID: 4338011494901453523}
 --- !u!1 &3660950591260091723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2800,9 +2800,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 1
-  _hud: {fileID: 1808590972902152181}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 1
+  <Hud>k__BackingField: {fileID: 1808590972902152181}
 --- !u!1 &3737499783551881093
 GameObject:
   m_ObjectHideFlags: 0
@@ -3039,9 +3039,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 0
-  _hud: {fileID: 4315060615792524231}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 0
+  <Hud>k__BackingField: {fileID: 4315060615792524231}
 --- !u!1 &3962554909534527848
 GameObject:
   m_ObjectHideFlags: 0
@@ -3547,9 +3547,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 0
-  _hud: {fileID: 3260565168963006981}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 0
+  <Hud>k__BackingField: {fileID: 3260565168963006981}
 --- !u!1 &5112710587257551499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3713,9 +3713,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 0
-  _hud: {fileID: 2962487937598844918}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 0
+  <Hud>k__BackingField: {fileID: 2962487937598844918}
 --- !u!1 &5169831673198131331
 GameObject:
   m_ObjectHideFlags: 0
@@ -4019,9 +4019,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 0
-  _hud: {fileID: 6339543836500930770}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 0
+  <Hud>k__BackingField: {fileID: 6339543836500930770}
 --- !u!1 &5382994221044687206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4552,9 +4552,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 1
-  _hud: {fileID: 917135252318249299}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 1
+  <Hud>k__BackingField: {fileID: 917135252318249299}
 --- !u!1 &5713972096608423203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,7 +4804,6 @@ MonoBehaviour:
   - {fileID: 1002776376797544074}
   - {fileID: 8355224647124606273}
   - {fileID: 3271943229655111804}
-  _dialogueBox: {fileID: 8601976446643643740}
   _partyScreen: {fileID: 4704021497474526686}
   _playerElementsSingle: {fileID: 513425325906328295}
   _playerElementsDouble: {fileID: 5665930626517847060}
@@ -4812,11 +4811,12 @@ MonoBehaviour:
   _enemyElementsSingle: {fileID: 3460740178512778363}
   _enemyElementsDouble: {fileID: 2056498122724433266}
   _enemyElementsTriple: {fileID: 2838529396690110136}
+  <DialogueBox>k__BackingField: {fileID: 8601976446643643740}
   _rogueBattleMusic: {fileID: 8300000, guid: 4f8df6cf450ae9b40a45198aad25f030, type: 3}
   _commanderBattleMusic: {fileID: 8300000, guid: 2180e7588a9449b4eb2e7e9f2c22b669, type: 3}
-  _battleWonMusic: {fileID: 8300000, guid: bbce56e537f089349a7d92a209589616, type: 3}
-  _battleLostMusic: {fileID: 8300000, guid: c55e3af48f17cc049b520b198b089179, type: 3}
-  _battleFledMusic: {fileID: 8300000, guid: 2f6d8596808c7ee4e84ded2cd929c881, type: 3}
+  <BattleWonMusic>k__BackingField: {fileID: 8300000, guid: bbce56e537f089349a7d92a209589616, type: 3}
+  <BattleLostMusic>k__BackingField: {fileID: 8300000, guid: c55e3af48f17cc049b520b198b089179, type: 3}
+  <BattleFledMusic>k__BackingField: {fileID: 8300000, guid: 2f6d8596808c7ee4e84ded2cd929c881, type: 3}
   _backgroundImage: {fileID: 4026935577351587265}
   _desertBackground: {fileID: 21300000, guid: 6575118da86c5be439c06f0d87d99caf, type: 3}
   _desertOasisBackground: {fileID: 21300000, guid: 84ac8c07f14f5914c987660170f65495, type: 3}
@@ -5543,9 +5543,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 1
-  _hud: {fileID: 3570548590896085345}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 1
+  <Hud>k__BackingField: {fileID: 3570548590896085345}
 --- !u!1 &7448404288875098405
 GameObject:
   m_ObjectHideFlags: 0
@@ -6041,9 +6041,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 1
-  _hud: {fileID: 8449509141277130769}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 1
+  <Hud>k__BackingField: {fileID: 8449509141277130769}
 --- !u!1 &8486635763484497480
 GameObject:
   m_ObjectHideFlags: 0
@@ -6132,9 +6132,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde04d13282b6544fa5b4024ed801ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlayerUnit: 0
-  _hud: {fileID: 2231983956932440492}
   _moveAnimationPrefab: {fileID: 4113680713032449276, guid: f6cd1a0ea8a3c064f90ba7dc72b0126c, type: 3}
+  <IsPlayerUnit>k__BackingField: 0
+  <Hud>k__BackingField: {fileID: 2231983956932440492}
 --- !u!1 &8915851500584744233
 GameObject:
   m_ObjectHideFlags: 0
@@ -15282,6 +15282,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 986390993288586152, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: _money
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 986390993288586152, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: <Money>k__BackingField
       value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 2578888366133796218, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}

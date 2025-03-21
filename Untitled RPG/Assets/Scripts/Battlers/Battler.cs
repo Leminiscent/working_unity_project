@@ -214,9 +214,9 @@ public class Battler
         }
 
         StatBoosts[stat] = Mathf.Clamp(currentBoost + boost, MIN_STAT_BOOST, MAX_STAT_BOOST);
-        string descriptor = (Mathf.Abs(boost) >= 3) ? "severely" : (Mathf.Abs(boost) == 2) ? "harshly" : "";
+        string descriptor = (Mathf.Abs(boost) >= 3) ? "severely " : (Mathf.Abs(boost) == 2) ? "harshly " : "";
         string result = isPositiveChange ? "rose" : "fell";
-        AddStatusEvent(StatusEventType.StatBoost, $"{suffix} {stat} {descriptor} {result}!", boost);
+        AddStatusEvent(StatusEventType.StatBoost, $"{suffix} {stat} {descriptor}{result}!", boost);
     }
 
     public bool CheckForLevelUp()

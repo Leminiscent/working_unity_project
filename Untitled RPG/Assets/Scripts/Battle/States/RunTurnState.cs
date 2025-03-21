@@ -344,7 +344,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                yield return _dialogueBox.TypeDialogue($"{(sourceUnitName.EndsWith("s") ? $"{sourceUnitName}'" : $"{sourceUnitName}'s")} attack missed!");
+                yield return _dialogueBox.TypeDialogue($"{TextUtil.GetPossessive(sourceUnitName)} attack missed!");
             }
         }
     }
@@ -495,11 +495,11 @@ public class RunTurnState : State<BattleSystem>
         Inventory inventory = Inventory.GetInventory();
         if (inventory.GetItemCount(item) == 0)
         {
-            yield return _dialogueBox.TypeDialogue($"There are no {item.Name}s remaining to use!");
+            yield return _dialogueBox.TypeDialogue($"There are no {TextUtil.GetPlural(item.Name)} remaining to use!");
             yield break;
         }
         _ = StartCoroutine(sourceUnit.PlayMoveCastAnimation()); // TODO: Decouple move and item casting animations
-        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {item.Name}!");
+        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {TextUtil.GetArticle(item.Name)} {item.Name}!");
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -542,7 +542,7 @@ public class RunTurnState : State<BattleSystem>
             int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * commanderBonus / 7);
             if (gpDropped > 0)
             {
-                lootDescriptions.Add($"{gpDropped} GP");
+                lootDescriptions.Add($"{TextUtil.GetNumText(gpDropped)} GP");
                 Wallet.Instance.AddMoney(gpDropped);
             }
 
@@ -556,8 +556,9 @@ public class RunTurnState : State<BattleSystem>
                         int quantity = Random.Range(itemDrop.QuantityRange.x, itemDrop.QuantityRange.y + 1);
                         if (quantity > 0)
                         {
-                            lootDescriptions.Add($"{quantity}x {itemDrop.Item.Name}");
-                            Inventory.GetInventory().AddItem(itemDrop.Item, quantity);
+                            ItemBase item = itemDrop.Item;
+                            lootDescriptions.Add($"{TextUtil.GetNumText(quantity)} {TextUtil.GetPlural(item.Name, quantity)}");
+                            Inventory.GetInventory().AddItem(item, quantity);
                         }
                     }
                 }
@@ -566,9 +567,9 @@ public class RunTurnState : State<BattleSystem>
             if (lootDescriptions.Count > 0)
             {
                 string initialMessage = $"{defeatedUnit.Battler.Base.Name} dropped";
-                AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                 foreach (string loot in lootDescriptions)
                 {
+                    AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                     // Adjust dialogue formatting based on position in list.
                     yield return loot == lootDescriptions.First()
                         ? _dialogueBox.TypeDialogue($"{initialMessage} {loot}", clearDialogue: false)
@@ -595,14 +596,14 @@ public class RunTurnState : State<BattleSystem>
                     playerUnit.Battler.Exp += expGain;
                     _ = StartCoroutine(playerUnit.PlayExpGainAnimation());
                     yield return playerUnit.Hud.SetExpSmooth();
-                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} experience!");
+                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} XP!");
 
                     while (playerUnit.Battler.CheckForLevelUp())
                     {
                         playerUnit.Battler.HasJustLeveledUp = true;
                         playerUnit.Hud.SetLevel();
                         _ = StartCoroutine(playerUnit.PlayLevelUpAnimation());
-                        yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} grew to level {playerUnit.Battler.Level}!");
+                        yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} grew to Level {playerUnit.Battler.Level}!");
 
                         LearnableMove newMove = playerUnit.Battler.GetLearnableMoveAtCurrentLevel();
                         if (newMove != null)
@@ -610,14 +611,14 @@ public class RunTurnState : State<BattleSystem>
                             if (playerUnit.Battler.Moves.Count < BattlerBase.MaxMoveCount)
                             {
                                 playerUnit.Battler.LearnMove(newMove.Base);
-                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} learned {newMove.Base.Name}!");
+                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} has learned {newMove.Base.Name}!");
                                 _dialogueBox.SetMoveNames(playerUnit.Battler.Moves);
                             }
                             else
                             {
                                 yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} is trying to learn {newMove.Base.Name}!");
                                 yield return _dialogueBox.TypeDialogue($"But {playerUnit.Battler.Base.Name} already knows {BattlerBase.MaxMoveCount} moves!");
-                                yield return _dialogueBox.TypeDialogue("Choose a move to forget.");
+                                yield return _dialogueBox.TypeDialogue($"Choose a move for {playerUnit.Battler.Base.Name} to forget.");
 
                                 ForgettingMoveState.Instance.CurrentMoves = playerUnit.Battler.Moves.Select(static m => m.Base).ToList();
                                 ForgettingMoveState.Instance.NewMove = newMove.Base;
@@ -662,15 +663,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (nextBattler == null && activeBattlers.Count == 0)
             {
-                yield return new WaitForSeconds(0.5f);
-                AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
-                yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
-                yield return _dialogueBox.TypeDialogue("The battle is lost...", clearDialogue: false);
-                while (AudioManager.Instance.MusicPlayer.isPlaying)
-                {
-                    yield return null;
-                }
-                _battleSystem.BattleOver(false);
+                _ = StartCoroutine(BattleLost());
             }
             else if (nextBattler == null && activeBattlers.Count > 0)
             {
@@ -692,15 +685,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 if (activeBattlers.Count == 0)
                 {
-                    yield return new WaitForSeconds(0.5f);
-                    AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
-                    yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
-                    yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
-                    while (AudioManager.Instance.MusicPlayer.isPlaying)
-                    {
-                        yield return null;
-                    }
-                    _battleSystem.BattleOver(true);
+                    _ = StartCoroutine(BattleWon());
                 }
                 else
                 {
@@ -714,15 +699,7 @@ public class RunTurnState : State<BattleSystem>
                 Battler nextBattler = _enemyParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
                 if (nextBattler == null && activeBattlers.Count == 0)
                 {
-                    yield return new WaitForSeconds(0.5f);
-                    AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
-                    yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
-                    yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
-                    while (AudioManager.Instance.MusicPlayer.isPlaying)
-                    {
-                        yield return null;
-                    }
-                    _battleSystem.BattleOver(true);
+                    _ = StartCoroutine(BattleWon());
                 }
                 else if (nextBattler == null && activeBattlers.Count > 0)
                 {
@@ -736,6 +713,32 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
         }
+    }
+
+    private IEnumerator BattleWon()
+    {
+        yield return new WaitForSeconds(0.5f);
+        AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
+        yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
+        yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
+        while (AudioManager.Instance.MusicPlayer.isPlaying)
+        {
+            yield return null;
+        }
+        _battleSystem.BattleOver(true);
+    }
+
+    private IEnumerator BattleLost()
+    {
+        yield return new WaitForSeconds(0.5f);
+        AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
+        yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
+        yield return _dialogueBox.TypeDialogue("The battle is lost...", clearDialogue: false);
+        while (AudioManager.Instance.MusicPlayer.isPlaying)
+        {
+            yield return null;
+        }
+        _battleSystem.BattleOver(false);
     }
 
     private void AdjustBattleActionsForDefeatedUnit(BattleUnit defeatedUnit, List<BattleUnit> fallbackUnits)
