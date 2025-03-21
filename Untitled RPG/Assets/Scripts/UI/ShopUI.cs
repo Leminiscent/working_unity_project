@@ -42,6 +42,8 @@ public class ShopUI : SelectionUI<TextSlot>
 
         OnSelected += HandleItemSelected;
         OnBack += HandleBack;
+
+        EnableInput(true);
     }
 
     public void Close()

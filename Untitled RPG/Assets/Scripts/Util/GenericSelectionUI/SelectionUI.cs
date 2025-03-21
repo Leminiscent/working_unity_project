@@ -9,6 +9,7 @@ namespace Utils.GenericSelectionUI
         private List<T> _items;
         private SelectionType _selectionType;
         private int _gridWidth = 2;
+        private bool _inputEnabled = true;
 
         protected const float SELECTION_SPEED = 5f;
 
@@ -43,9 +44,14 @@ namespace Utils.GenericSelectionUI
             _items = null;
         }
 
+        public void EnableInput(bool enable)
+        {
+            _inputEnabled = enable;
+        }
+
         public virtual void HandleUpdate()
         {
-            if (_items == null || _items.Count == 0)
+            if (!_inputEnabled || _items == null || _items.Count == 0)
             {
                 return;
             }

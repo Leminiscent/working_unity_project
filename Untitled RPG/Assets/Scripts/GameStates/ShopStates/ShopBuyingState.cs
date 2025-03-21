@@ -123,6 +123,7 @@ public class ShopBuyingState : State<GameController>
 
     private IEnumerator HandleBackFromBuying()
     {
+        _shopUI.EnableInput(false);
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
         yield return _gameController.MoveCamera(-_shopCameraOffset);
         _shopUI.Close();
