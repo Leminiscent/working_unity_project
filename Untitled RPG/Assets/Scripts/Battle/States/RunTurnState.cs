@@ -542,7 +542,7 @@ public class RunTurnState : State<BattleSystem>
             int gpDropped = Mathf.FloorToInt(gpYield * enemyLevel * commanderBonus / 7);
             if (gpDropped > 0)
             {
-                lootDescriptions.Add($"{TextUtil.GetNumText(gpDropped)} GP");
+                lootDescriptions.Add($"{gpDropped} GP");
                 Wallet.Instance.AddMoney(gpDropped);
             }
 

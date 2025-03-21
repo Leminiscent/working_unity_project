@@ -101,7 +101,7 @@ public class ShopSellingState : State<GameController>
 
         int selectedChoice = -1;
         yield return DialogueManager.Instance.ShowDialogueText(
-            $"I can buy {TextUtil.GetNumText(countToSell)} {TextUtil.GetPlural(item.Name, countToSell)} from you for {TextUtil.GetNumText(totalSellingPrice)} gold. Do we have a deal?",
+            $"I can buy {TextUtil.GetNumText(countToSell)} {TextUtil.GetPlural(item.Name, countToSell)} from you for {totalSellingPrice} GP. Do we have a deal?",
             waitForInput: false,
             choices: new List<string> { "Yes", "No" },
             onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);

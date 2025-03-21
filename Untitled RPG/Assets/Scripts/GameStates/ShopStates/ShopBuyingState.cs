@@ -101,7 +101,7 @@ public class ShopBuyingState : State<GameController>
             // Confirm the purchase with the player.
             int selectedChoice = -1;
             yield return DialogueManager.Instance.ShowDialogueText(
-                $"That will be {TextUtil.GetNumText(totalPrice)} gold. Do we have a deal?",
+                $"That will be {totalPrice} GP. Do we have a deal?",
                 waitForInput: false,
                 choices: new List<string> { "Yes", "No" },
                 onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);
