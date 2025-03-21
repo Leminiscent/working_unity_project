@@ -124,7 +124,7 @@ public class DialogueManager : MonoBehaviour
     }
 }
 
-public static class DialogueUtility
+public static class TextUtil
 {
     public static string ConvertNumToText(int num)
     {

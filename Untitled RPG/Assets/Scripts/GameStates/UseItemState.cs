@@ -94,7 +94,7 @@ public class UseItemState : State<GameController>
                 // For RecoveryItems, display a message if the item has no effect.
                 if (_inventoryUI.SelectedCategory == (int)ItemCategory.RecoveryItems)
                 {
-                    yield return DialogueManager.Instance.ShowDialogueText($"This item won't have any effect on {battler.Base.Name}!");
+                    yield return DialogueManager.Instance.ShowDialogueText($"The {usedItem.Name} won't have any effect on {battler.Base.Name}!");
                 }
             }
         }
@@ -136,13 +136,13 @@ public class UseItemState : State<GameController>
         if (battler.Moves.Count < BattlerBase.MaxMoveCount)
         {
             battler.LearnMove(skillBook.Move);
-            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} learned {skillBook.Move.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} has learned {skillBook.Move.Name}!");
         }
         else
         {
             // When the battler already knows the maximum number of moves, prompt for a move to forget.
             yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} is trying to learn {skillBook.Move.Name}!");
-            yield return DialogueManager.Instance.ShowDialogueText($"But {battler.Base.Name} already knows {BattlerBase.MaxMoveCount} moves!");
+            yield return DialogueManager.Instance.ShowDialogueText($"But {battler.Base.Name} already knows {TextUtil.ConvertNumToText(BattlerBase.MaxMoveCount)} moves!");
             yield return DialogueManager.Instance.ShowDialogueText($"Choose a move for {battler.Base.Name} to forget.", autoClose: false);
 
             // Set up the ForgettingMoveState.
@@ -161,7 +161,7 @@ public class UseItemState : State<GameController>
             else
             {
                 Move selectedMove = battler.Moves[moveIndex];
-                yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} forgot {selectedMove.Base.Name} and learned {skillBook.Move.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} forgot {selectedMove.Base.Name} and has learned {skillBook.Move.Name}!");
                 battler.Moves[moveIndex] = new Move(skillBook.Move);
             }
         }

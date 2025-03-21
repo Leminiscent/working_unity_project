@@ -131,7 +131,7 @@ public class StorageState : State<GameController>
         _storageUI.SetStorageData();
         _storageUI.SetPartyData();
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-        yield return DialogueManager.Instance.ShowDialogueText($"{PlayerController.Instance.Name} cannot be moved to storage.");
+        yield return DialogueManager.Instance.ShowDialogueText($"{PlayerController.Instance.Name} cannot be moved to the barracks.");
     }
 
     private IEnumerator HandleBattlerSelection(int slotIndex)
