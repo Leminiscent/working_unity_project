@@ -376,14 +376,14 @@ public class Battler
         float randomMod = UnityEngine.Random.Range(0.85f, 1f);
         float modifier = randomMod * typeEff * crit * weatherMod;
         float baseDamage = ((2f * attacker.Level) + 10f) / 250f * move.Base.Power * ((attackStat / defenseStat) + 2f);
-        int damage = Mathf.Max(1, Mathf.FloorToInt(baseDamage * modifier));
+        int damage = Mathf.FloorToInt(baseDamage * modifier);
 
         if (IsGuarding)
         {
             damage = Mathf.FloorToInt(damage / 2f);
         }
 
-        return damage;
+        return Mathf.Max(damage, 1);
     }
 
     public void TakeRecoilDamage(int damage)
