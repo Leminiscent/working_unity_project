@@ -126,6 +126,7 @@ public class DialogueManager : MonoBehaviour
 
 public static class TextUtil
 {
+    // Convert a number to its text representation.
     public static string ConvertNumToText(int num)
     {
         if (num < 10)
@@ -148,16 +149,30 @@ public static class TextUtil
         return num.ToString();
     }
 
-    public static string GetPluralizedNoun(string noun)
+    // Pluralize a noun with an optional count.
+    public static string GetPluralizedNoun(string noun, int? count = null)
+    {
+        return count.HasValue && count.Value == 1
+            ? noun
+            : noun switch
+            {
+                string n when n.EndsWith("s") || n.EndsWith("x") || n.EndsWith("ch") ||
+                            n.EndsWith("sh") || n.EndsWith("z") => n + "es",
+                string n when n.EndsWith("y") && !(n.EndsWith("ay") || n.EndsWith("ey") ||
+                                                n.EndsWith("iy") || n.EndsWith("oy") ||
+                                                n.EndsWith("uy")) => n[..^1] + "ies",
+                _ => noun + "s"
+            };
+    }
+
+    // Get the appropriate article for a noun.
+    public static string GetArticle(string noun)
     {
         return noun switch
         {
-            string n when n.EndsWith("s") || n.EndsWith("x") || n.EndsWith("ch") ||
-                        n.EndsWith("sh") || n.EndsWith("z") => n + "es",
-            string n when n.EndsWith("y") && !(n.EndsWith("ay") || n.EndsWith("ey") ||
-                                            n.EndsWith("iy") || n.EndsWith("oy") ||
-                                            n.EndsWith("uy")) => n[..^1] + "ies",
-            _ => noun + "s"
+            string n when n.StartsWith("a") || n.StartsWith("e") || n.StartsWith("i") ||
+                        n.StartsWith("o") || n.StartsWith("u") => "an",
+            _ => "a"
         };
     }
 }

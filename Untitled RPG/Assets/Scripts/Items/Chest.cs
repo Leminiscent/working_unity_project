@@ -31,10 +31,8 @@ public class Chest : MonoBehaviour, IInteractable, ISavable
             Used = true;
             _spriteRenderer.sprite = _usedSprite;
 
-            string playerName = playerController.Name;
-
             AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
-            yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {_item.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{playerController.Name} found {TextUtil.GetArticle(_item.Name)} {_item.Name}!");
         }
     }
 

@@ -44,16 +44,16 @@ public class Quest
         yield return DialogueManager.Instance.ShowDialogue(Base.CompletedDialogue);
 
         Inventory inventory = Inventory.GetInventory();
-
         if (Base.RequiredItem != null)
         {
             inventory.RemoveItem(Base.RequiredItem);
         }
-        if (Base.RewardItem != null)
+
+        ItemBase reward = Base.RewardItem;
+        if (reward != null)
         {
-            inventory.AddItem(Base.RewardItem);
-            string playerName = player.GetComponent<PlayerController>().Name;
-            yield return DialogueManager.Instance.ShowDialogueText($"{playerName} received {Base.RewardItem.Name}!");
+            inventory.AddItem(reward);
+            yield return DialogueManager.Instance.ShowDialogueText($"{player.GetComponent<PlayerController>().Name} has received {TextUtil.GetArticle(reward.Name)} {reward.Name}!");
         }
 
         QuestList questList = QuestList.GetQuestList();

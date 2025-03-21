@@ -18,9 +18,7 @@ public class ItemGiver : MonoBehaviour, ISavable
         AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
 
         string countText = TextUtil.ConvertNumToText(_count);
-        yield return _count > 1
-            ? DialogueManager.Instance.ShowDialogueText($"{player.Name} received {countText} {TextUtil.GetPluralizedNoun(_item.Name)}!")
-            : DialogueManager.Instance.ShowDialogueText($"{player.Name} received {countText} {_item.Name}!");
+        yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {countText} {TextUtil.GetPluralizedNoun(_item.Name, _count)}!");
     }
 
     public bool CanBeGiven()
