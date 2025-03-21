@@ -24,7 +24,7 @@ public class BattlerGiver : MonoBehaviour, ISavable
         AudioManager.Instance.PlaySFX(AudioID.BattlerObtained, pauseMusic: true);
 
         // Display the notification dialogue.
-        yield return DialogueManager.Instance.ShowDialogueText($"{player.Name} received {_battler.Base.Name}!");
+        yield return DialogueManager.Instance.ShowDialogueText($"{_battler.Base.Name} was recruited!");
     }
 
     public bool CanBeGiven()

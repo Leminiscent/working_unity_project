@@ -123,3 +123,36 @@ public class DialogueManager : MonoBehaviour
         }
     }
 }
+
+public static class DialogueUtility
+{
+    public static string ConvertCountToText(int count)
+    {
+        if (count < 10)
+        {
+            switch (count)
+            {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                case 4: return "four";
+                case 5: return "five";
+                case 6: return "six";
+                case 7: return "seven";
+                case 8: return "eight";
+                case 9: return "nine";
+                default:
+                    break;
+            }
+        }
+        return count.ToString();
+    }
+
+    public static string GetPluralizedName(string name)
+    {
+        return name.EndsWith("s") || name.EndsWith("x") || name.EndsWith("ch") ||
+            name.EndsWith("sh") || name.EndsWith("z")
+            ? name + "es"
+            : name + "s";
+    }
+}

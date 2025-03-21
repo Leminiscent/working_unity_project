@@ -14,16 +14,13 @@ public class ItemGiver : MonoBehaviour, ISavable
         yield return DialogueManager.Instance.ShowDialogue(_dialogue);
 
         player.GetComponent<Inventory>().AddItem(_item, _count);
-
         _used = true;
         AudioManager.Instance.PlaySFX(AudioID.ItemObtained, pauseMusic: true);
 
-        // Build the dialogue text based on the count of items given.
-        string dialogueText = _count > 1
-            ? $"{player.Name} received {_count} {_item.Name}s!"
-            : $"{player.Name} received {_item.Name}!";
-
-        yield return DialogueManager.Instance.ShowDialogueText(dialogueText);
+        string countText = DialogueUtility.ConvertCountToText(_count);
+        yield return _count > 1
+            ? DialogueManager.Instance.ShowDialogueText($"{player.Name} received {countText} {DialogueUtility.GetPluralizedName(_item.Name)}!")
+            : DialogueManager.Instance.ShowDialogueText($"{player.Name} received {countText} {_item.Name}!");
     }
 
     public bool CanBeGiven()
