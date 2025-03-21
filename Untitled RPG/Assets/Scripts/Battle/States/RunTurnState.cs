@@ -557,7 +557,7 @@ public class RunTurnState : State<BattleSystem>
                         if (quantity > 0)
                         {
                             ItemBase item = itemDrop.Item;
-                            lootDescriptions.Add($"{TextUtil.GetNumText(quantity)} {TextUtil.GetPlural(item.Name, quantity)}");
+                            lootDescriptions.Add($"{quantity}x {TextUtil.GetPlural(item.Name, quantity)}");
                             Inventory.GetInventory().AddItem(item, quantity);
                         }
                     }
@@ -663,7 +663,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (nextBattler == null && activeBattlers.Count == 0)
             {
-                _ = StartCoroutine(BattleLost());
+                yield return BattleLost();
             }
             else if (nextBattler == null && activeBattlers.Count > 0)
             {
@@ -685,7 +685,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 if (activeBattlers.Count == 0)
                 {
-                    _ = StartCoroutine(BattleWon());
+                    yield return BattleWon();
                 }
                 else
                 {
@@ -699,7 +699,7 @@ public class RunTurnState : State<BattleSystem>
                 Battler nextBattler = _enemyParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
                 if (nextBattler == null && activeBattlers.Count == 0)
                 {
-                    _ = StartCoroutine(BattleWon());
+                    yield return BattleWon();
                 }
                 else if (nextBattler == null && activeBattlers.Count > 0)
                 {
