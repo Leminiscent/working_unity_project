@@ -126,9 +126,9 @@ public class DialogueManager : MonoBehaviour
 
 public static class TextUtil
 {
-    // Convert a number to its text representation.
     public static string ConvertNumToText(int num)
     {
+        // If the number is less than 10, return the text representation of the number.
         if (num < 10)
         {
             switch (num)
@@ -149,12 +149,12 @@ public static class TextUtil
         return num.ToString();
     }
 
-    // Pluralize a noun with an optional count.
     public static string GetPluralizedNoun(string noun, int? count = null)
     {
+        // If count is provided and is 1, return the singular form of the noun.
         return count.HasValue && count.Value == 1
             ? noun
-            : noun switch
+            : noun switch // Otherwise, return the plural form of the noun.
             {
                 string n when n.EndsWith("s") || n.EndsWith("x") || n.EndsWith("ch") ||
                             n.EndsWith("sh") || n.EndsWith("z") => n + "es",
@@ -165,9 +165,9 @@ public static class TextUtil
             };
     }
 
-    // Get the appropriate article for a noun.
     public static string GetArticle(string noun)
     {
+        // Return "an" if the noun starts with a vowel, otherwise return "a".
         return noun switch
         {
             string n when n.StartsWith("a") || n.StartsWith("e") || n.StartsWith("i") ||
