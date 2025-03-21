@@ -126,11 +126,11 @@ public class DialogueManager : MonoBehaviour
 
 public static class DialogueUtility
 {
-    public static string ConvertCountToText(int count)
+    public static string ConvertNumToText(int num)
     {
-        if (count < 10)
+        if (num < 10)
         {
-            switch (count)
+            switch (num)
             {
                 case 1: return "one";
                 case 2: return "two";
@@ -145,14 +145,19 @@ public static class DialogueUtility
                     break;
             }
         }
-        return count.ToString();
+        return num.ToString();
     }
 
-    public static string GetPluralizedName(string name)
+    public static string GetPluralizedNoun(string noun)
     {
-        return name.EndsWith("s") || name.EndsWith("x") || name.EndsWith("ch") ||
-            name.EndsWith("sh") || name.EndsWith("z")
-            ? name + "es"
-            : name + "s";
+        return noun switch
+        {
+            string n when n.EndsWith("s") || n.EndsWith("x") || n.EndsWith("ch") ||
+                        n.EndsWith("sh") || n.EndsWith("z") => n + "es",
+            string n when n.EndsWith("y") && !(n.EndsWith("ay") || n.EndsWith("ey") ||
+                                            n.EndsWith("iy") || n.EndsWith("oy") ||
+                                            n.EndsWith("uy")) => n[..^1] + "ies",
+            _ => noun + "s"
+        };
     }
 }

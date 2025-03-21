@@ -76,7 +76,7 @@ public class ShopBuyingState : State<GameController>
 
         // Ask the player how many items they want to buy.
         yield return DialogueManager.Instance.ShowDialogueText(
-            $"How many {item.Name}s would you like?",
+            $"How many {DialogueUtility.GetPluralizedNoun(item.Name)} would you like?",
             waitForInput: false,
             autoClose: false);
 
@@ -93,7 +93,7 @@ public class ShopBuyingState : State<GameController>
             yield break;
         }
 
-        float totalPrice = item.Price * countToBuy;
+        int totalPrice = item.Price * countToBuy;
 
         // Check if the wallet has enough money.
         if (Wallet.Instance.HasEnoughMoney(totalPrice))
@@ -101,7 +101,7 @@ public class ShopBuyingState : State<GameController>
             // Confirm the purchase with the player.
             int selectedChoice = -1;
             yield return DialogueManager.Instance.ShowDialogueText(
-                $"That will be {totalPrice} gold. Do we have a deal?",
+                $"That will be {DialogueUtility.ConvertNumToText(totalPrice)} gold. Do we have a deal?",
                 waitForInput: false,
                 choices: new List<string> { "Yes", "No" },
                 onChoiceSelected: choiceIndex => selectedChoice = choiceIndex);

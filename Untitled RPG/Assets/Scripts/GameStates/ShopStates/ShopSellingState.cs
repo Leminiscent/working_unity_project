@@ -71,7 +71,7 @@ public class ShopSellingState : State<GameController>
         _walletUI.Show();
 
         // Calculate the base selling price (50% of original price, rounded).
-        float sellingPrice = Mathf.Round(item.Price * 0.5f);
+        int sellingPrice = (int)Mathf.Round(item.Price * 0.5f);
         int countToSell = 1;
         int availableCount = _playerInventory.GetItemCount(item);
 

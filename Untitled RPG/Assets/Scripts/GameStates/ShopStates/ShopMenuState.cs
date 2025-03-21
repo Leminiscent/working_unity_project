@@ -29,14 +29,20 @@ public class ShopMenuState : State<GameController>
 
     private IEnumerator ShowMenu()
     {
-        // Loop until the player leaves the shop.
+        // Display the shop menu and wait for the player to make a choice.
+        bool isFirstIteration = true;
         while (true)
         {
             int menuChoice = -1;
 
+            string promptText = isFirstIteration
+                ? "Welcome to my shop! How can I help you today?"
+                : "Is there anything else I can help you with?";
+            isFirstIteration = false;
+
             // Display the shop menu dialogue and capture the player's choice.
             yield return DialogueManager.Instance.ShowDialogueText(
-                "Welcome to my shop! How can I help you today?",
+                promptText,
                 waitForInput: false,
                 choices: new List<string> { "Buy", "Sell", "Leave" },
                 onChoiceSelected: choiceIndex => menuChoice = choiceIndex
