@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Artemis
   m_EditorClassIdentifier: 
-  _name: Artemis
-  _description: A nimble ranged combatant specializing in swift, precise attacks
-    from a distance.
-  _sprite: {fileID: 21300000, guid: 00183b7a485f711439536809743cac75, type: 3}
-  _type1: 9
-  _type2: 0
-  _rarity: 2
+  <Name>k__BackingField: Artemis
+  <Description>k__BackingField: A nimble ranged combatant specializing in swift,
+    precise attacks from a distance.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 00183b7a485f711439536809743cac75, type: 3}
+  <Type1>k__BackingField: 9
+  <Type2>k__BackingField: 0
+  <Rarity>k__BackingField: 2
   _totalStatsWeight: 0.5
   _hpWeight: 0.13
   _strengthWeight: 0.17
@@ -26,18 +26,51 @@ MonoBehaviour:
   _intelligenceWeight: 0.18
   _fortitudeWeight: 0.13
   _agilityWeight: 0.25
-  _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 0805b9ccffa779247951b72aae1f299d, type: 2}
+  <LearnableMoves>k__BackingField:
+  - _moveBase: {fileID: 11400000, guid: 3d3659213e1ce5e4980d4bd2e79d63bd, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 62a918c9d63336b468eb926ec188bab8, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 646343f08fd559146b9d527e0ecbfe05, type: 2}
     _level: 1
+  - _moveBase: {fileID: 11400000, guid: d6cc505e716751640b515ed76aa8003a, type: 2}
+    _level: 7
+  - _moveBase: {fileID: 11400000, guid: 9ffc6384340d39e4e897f95968ffdd5c, type: 2}
+    _level: 13
+  - _moveBase: {fileID: 11400000, guid: 1334e70c93e3586408cdd60965add41f, type: 2}
+    _level: 20
   - _moveBase: {fileID: 11400000, guid: 0ec4245acbec5ce43859b1f7e5d250e6, type: 2}
-    _level: 1
+    _level: 26
+  - _moveBase: {fileID: 11400000, guid: 30ce39c2fa097974ab3efb3e69d1d0f9, type: 2}
+    _level: 32
+  - _moveBase: {fileID: 11400000, guid: c8578fbab3d0b064aaf3bbc034b8eac8, type: 2}
+    _level: 38
+  - _moveBase: {fileID: 11400000, guid: ce4a75b868dad40419bcd4fa3c427357, type: 2}
+    _level: 44
+  - _moveBase: {fileID: 11400000, guid: 6e36e32f9dbd32848b6d80981724bbea, type: 2}
+    _level: 51
+  - _moveBase: {fileID: 11400000, guid: 7a84bf1c1594fbb49b117821127962c9, type: 2}
+    _level: 57
+  - _moveBase: {fileID: 11400000, guid: 0dd1d4e4ccf1a644b89c8cefb7a7286d, type: 2}
+    _level: 63
+  - _moveBase: {fileID: 11400000, guid: 0805b9ccffa779247951b72aae1f299d, type: 2}
+    _level: 69
   - _moveBase: {fileID: 11400000, guid: c8ff17488dc315840b4d2f759fe1079d, type: 2}
-    _level: 1
-  _learnableBySkillBook: []
-  _transformations: []
-  _recruitmentQuestions:
+    _level: 75
+  - _moveBase: {fileID: 11400000, guid: 475e7af426ca8b1489946c43d9878451, type: 2}
+    _level: 81
+  - _moveBase: {fileID: 11400000, guid: 62a918c9d63336b468eb926ec188bab8, type: 2}
+    _level: 88
+  - _moveBase: {fileID: 11400000, guid: 0d26c261add2edb499a9016f4069bcc9, type: 2}
+    _level: 94
+  - _moveBase: {fileID: 11400000, guid: ac82a0af385b46a44b21315c435686c1, type: 2}
+    _level: 100
+  <LearnableBySkillBook>k__BackingField:
+  - {fileID: 11400000, guid: 683cebbce0e97eb48a1cb35e2f9df13e, type: 2}
+  - {fileID: 11400000, guid: fa1a86de87170dc40a78cd45312aa9f9, type: 2}
+  - {fileID: 11400000, guid: 0b71744056bfeee448fa753eba5fe534, type: 2}
+  - {fileID: 11400000, guid: bc53b96c7ccf3234c9a45ced86bce63e, type: 2}
+  - {fileID: 11400000, guid: 4a3281f1d8d71664db900bbaa15824b4, type: 2}
+  <Transformations>k__BackingField: []
+  <RecruitmentQuestions>k__BackingField:
   - _questionText: Question 1
     _answers:
     - _answerText: Answer 1
@@ -108,27 +141,27 @@ MonoBehaviour:
       _affinityScore: -1
     - _answerText: Answer 4
       _affinityScore: -2
-  _dropTable:
+  <DropTable>k__BackingField:
     _itemDrops:
     - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
-  _walkDownSprites:
+  <WalkDownSprites>k__BackingField:
   - {fileID: -813453478, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -512963522, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -813453478, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: 1333701900, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  _walkUpSprites:
+  <WalkUpSprites>k__BackingField:
   - {fileID: -522881067, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: 1677871391, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -522881067, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: 586911588, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  _walkRightSprites:
+  <WalkRightSprites>k__BackingField:
   - {fileID: -1975491363, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -1027927445, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -1975491363, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -2048051302, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
-  _walkLeftSprites:
+  <WalkLeftSprites>k__BackingField:
   - {fileID: 624039127, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: -538064205, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}
   - {fileID: 624039127, guid: b82cfef5059f66a4e994557f3cdc0b7c, type: 3}

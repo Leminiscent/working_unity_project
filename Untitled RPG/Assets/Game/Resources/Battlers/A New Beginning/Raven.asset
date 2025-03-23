@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Raven
   m_EditorClassIdentifier: 
-  _name: Raven
-  _description: A cunning rogue who relies on speed and stealth to outmaneuver opponents
-    and pilfer treasures.
-  _sprite: {fileID: 21300000, guid: d7d65994b7049d14b936ba185a26c89f, type: 3}
-  _type1: 11
-  _type2: 0
-  _rarity: 2
+  <Name>k__BackingField: Raven
+  <Description>k__BackingField: A cunning rogue who relies on speed and stealth to
+    outmaneuver opponents and pilfer treasures.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: d7d65994b7049d14b936ba185a26c89f, type: 3}
+  <Type1>k__BackingField: 11
+  <Type2>k__BackingField: 0
+  <Rarity>k__BackingField: 2
   _totalStatsWeight: 0.5
   _hpWeight: 0.14
   _strengthWeight: 0.15
@@ -26,18 +26,51 @@ MonoBehaviour:
   _intelligenceWeight: 0.17
   _fortitudeWeight: 0.13
   _agilityWeight: 0.28
-  _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 937d89c18c1896d4a96dcd41cc2e584f, type: 2}
+  <LearnableMoves>k__BackingField:
+  - _moveBase: {fileID: 11400000, guid: 93d0ccbd53461a540a571204d6e758a1, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: f1b928d16010a904995a4582b6e0b1c5, type: 2}
+  - _moveBase: {fileID: 11400000, guid: 6a76bdf988664be40b06a1b74edbee9e, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 841c3063fb2342541bf9df05f12bc5c7, type: 2}
-    _level: 1
-  - _moveBase: {fileID: 11400000, guid: aefc6cc71ce97624ca0a1b00e2dcca3d, type: 2}
-    _level: 1
-  _learnableBySkillBook: []
-  _transformations: []
-  _recruitmentQuestions:
+  - _moveBase: {fileID: 11400000, guid: 64d4a2891f53761458ec7fa52473390c, type: 2}
+    _level: 7
+  - _moveBase: {fileID: 11400000, guid: 2c9ff72aeed6ef347a29d9e473dbb0e6, type: 2}
+    _level: 13
+  - _moveBase: {fileID: 11400000, guid: 159a4c9f7988bd04ba3ed95492a3b4f7, type: 2}
+    _level: 20
+  - _moveBase: {fileID: 11400000, guid: 111c6626e45c1da49888ae03ddc2e583, type: 2}
+    _level: 26
+  - _moveBase: {fileID: 11400000, guid: 08519bb63ddb3554b8c0c36d092ff06c, type: 2}
+    _level: 32
+  - _moveBase: {fileID: 11400000, guid: 2390e5331c0afd840adbf1172135d007, type: 2}
+    _level: 38
+  - _moveBase: {fileID: 11400000, guid: 0dd1d4e4ccf1a644b89c8cefb7a7286d, type: 2}
+    _level: 44
+  - _moveBase: {fileID: 11400000, guid: 0d26c261add2edb499a9016f4069bcc9, type: 2}
+    _level: 51
+  - _moveBase: {fileID: 11400000, guid: ce4a75b868dad40419bcd4fa3c427357, type: 2}
+    _level: 57
+  - _moveBase: {fileID: 11400000, guid: 30ce39c2fa097974ab3efb3e69d1d0f9, type: 2}
+    _level: 63
+  - _moveBase: {fileID: 11400000, guid: 0805b9ccffa779247951b72aae1f299d, type: 2}
+    _level: 69
+  - _moveBase: {fileID: 11400000, guid: c8ff17488dc315840b4d2f759fe1079d, type: 2}
+    _level: 75
+  - _moveBase: {fileID: 11400000, guid: 7a84bf1c1594fbb49b117821127962c9, type: 2}
+    _level: 81
+  - _moveBase: {fileID: 11400000, guid: 6e36e32f9dbd32848b6d80981724bbea, type: 2}
+    _level: 88
+  - _moveBase: {fileID: 11400000, guid: 62a918c9d63336b468eb926ec188bab8, type: 2}
+    _level: 94
+  - _moveBase: {fileID: 11400000, guid: ac82a0af385b46a44b21315c435686c1, type: 2}
+    _level: 100
+  <LearnableBySkillBook>k__BackingField:
+  - {fileID: 11400000, guid: 70e1f8e6486157a4f9dc254e0afe72dd, type: 2}
+  - {fileID: 11400000, guid: 40f29e6180783f3469d30d197d28b239, type: 2}
+  - {fileID: 11400000, guid: bc186d75109847146b6de281ad2ea666, type: 2}
+  - {fileID: 11400000, guid: b59cb9e50252b3247a33911123a68cc0, type: 2}
+  - {fileID: 11400000, guid: aefc6cc71ce97624ca0a1b00e2dcca3d, type: 2}
+  <Transformations>k__BackingField: []
+  <RecruitmentQuestions>k__BackingField:
   - _questionText: Question 1
     _answers:
     - _answerText: Answer 1
@@ -108,29 +141,28 @@ MonoBehaviour:
       _affinityScore: -1
     - _answerText: Answer 4
       _affinityScore: -2
-  _dropTable:
+  <DropTable>k__BackingField:
     _itemDrops:
     - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
-  _walkDownSprites:
+  <WalkDownSprites>k__BackingField:
   - {fileID: 1672825402, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: 527874185, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: 1672825402, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: -1881120203, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  _walkUpSprites:
+  <WalkUpSprites>k__BackingField:
   - {fileID: 1231864256, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: -1394729810, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: 1231864256, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: -784383565, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  _walkRightSprites:
+  <WalkRightSprites>k__BackingField:
   - {fileID: 1871258223, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: -501170376, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: 1871258223, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: -1289659527, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  _walkLeftSprites:
+  <WalkLeftSprites>k__BackingField:
   - {fileID: 1474058458, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: 1634632330, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: 1474058458, guid: a99c6c60101f54545a69012b87318772, type: 3}
   - {fileID: -703375496, guid: a99c6c60101f54545a69012b87318772, type: 3}
-  _sumOfWeights: 1
