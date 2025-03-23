@@ -12,22 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Tempest
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Type1>k__BackingField: 0
+  <Name>k__BackingField: Tempest
+  <Description>k__BackingField: A swirling embodiment of storm and chaos, brimming
+    with dynamic intensity.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: ee504f6c825e8c343a9e0c150716247a, type: 3}
+  <Type1>k__BackingField: 4
   <Type2>k__BackingField: 0
-  <Rarity>k__BackingField: 0
-  _totalStatsWeight: 0
-  _hpWeight: 0
-  _strengthWeight: 0
-  _enduranceWeight: 0
-  _intelligenceWeight: 0
-  _fortitudeWeight: 0
-  _agilityWeight: 0
+  <Rarity>k__BackingField: 1
+  _totalStatsWeight: 0.43
+  _hpWeight: 0.1
+  _strengthWeight: 0.2
+  _enduranceWeight: 0.1
+  _intelligenceWeight: 0.25
+  _fortitudeWeight: 0.15
+  _agilityWeight: 0.2
   <LearnableMoves>k__BackingField: []
   <LearnableBySkillBook>k__BackingField: []
-  <Transformations>k__BackingField: []
+  <Transformations>k__BackingField:
+  - _transformsInto: {fileID: 11400000, guid: 73331009dde300b4a8c6fe2872c2d18d, type: 2}
+    _requiredLevel: 16
+    _requiredItem: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
   <RecruitmentQuestions>k__BackingField:
   - _questionText: Question 1
     _answers:
@@ -107,7 +111,23 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
       _quantityRange: {x: 1, y: 2}
       _dropChance: 25
-  <WalkDownSprites>k__BackingField: []
-  <WalkUpSprites>k__BackingField: []
-  <WalkRightSprites>k__BackingField: []
-  <WalkLeftSprites>k__BackingField: []
+  <WalkDownSprites>k__BackingField:
+  - {fileID: 425394101, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -980344849, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: 425394101, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: 736749456, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  <WalkUpSprites>k__BackingField:
+  - {fileID: -1324226107, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -585770879, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -1324226107, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -39711910, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  <WalkRightSprites>k__BackingField:
+  - {fileID: -1441328610, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: 826734638, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -1441328610, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -883414477, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  <WalkLeftSprites>k__BackingField:
+  - {fileID: -891875037, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -989572223, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -891875037, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}
+  - {fileID: -1485723492, guid: b0a93aec4148e5b47afe8e0e865b6bd0, type: 3}

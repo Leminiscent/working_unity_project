@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Tempest Prime
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Type1>k__BackingField: 0
+  <Name>k__BackingField: Tempest Prime
+  <Description>k__BackingField: A refined storm entity, channeling chaos into a focused
+    and formidable force.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 73ff429a1a1b767489e2d52022d8b6d7, type: 3}
+  <Type1>k__BackingField: 4
   <Type2>k__BackingField: 0
-  <Rarity>k__BackingField: 0
-  _totalStatsWeight: 0
-  _hpWeight: 0
-  _strengthWeight: 0
-  _enduranceWeight: 0
-  _intelligenceWeight: 0
-  _fortitudeWeight: 0
-  _agilityWeight: 0
+  <Rarity>k__BackingField: 2
+  _totalStatsWeight: 0.63
+  _hpWeight: 0.1
+  _strengthWeight: 0.23
+  _enduranceWeight: 0.1
+  _intelligenceWeight: 0.3
+  _fortitudeWeight: 0.15
+  _agilityWeight: 0.12
   <LearnableMoves>k__BackingField: []
   <LearnableBySkillBook>k__BackingField: []
   <Transformations>k__BackingField: []
@@ -107,7 +108,23 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
       _quantityRange: {x: 1, y: 2}
       _dropChance: 25
-  <WalkDownSprites>k__BackingField: []
-  <WalkUpSprites>k__BackingField: []
-  <WalkRightSprites>k__BackingField: []
-  <WalkLeftSprites>k__BackingField: []
+  <WalkDownSprites>k__BackingField:
+  - {fileID: -13488143, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 645078216, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: -13488143, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 2059438705, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  <WalkUpSprites>k__BackingField:
+  - {fileID: 700667564, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: -1325854737, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 700667564, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 425326399, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  <WalkRightSprites>k__BackingField:
+  - {fileID: 686643342, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 1154876370, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 686643342, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 1542415244, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  <WalkLeftSprites>k__BackingField:
+  - {fileID: -2108550171, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 399319665, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: -2108550171, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}
+  - {fileID: 991915354, guid: a7803bbcc8c07194caf4c6e1842a7a04, type: 3}

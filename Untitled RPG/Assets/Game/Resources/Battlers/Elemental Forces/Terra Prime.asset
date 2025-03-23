@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Terra Prime
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Type1>k__BackingField: 0
+  <Name>k__BackingField: Terra Prime
+  <Description>k__BackingField: A refined incarnation of earth's enduring might,
+    grounded in timeless resilience.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: c40b5e6204acd6446971efd18901b5bf, type: 3}
+  <Type1>k__BackingField: 8
   <Type2>k__BackingField: 0
-  <Rarity>k__BackingField: 0
-  _totalStatsWeight: 0
-  _hpWeight: 0
-  _strengthWeight: 0
-  _enduranceWeight: 0
-  _intelligenceWeight: 0
-  _fortitudeWeight: 0
-  _agilityWeight: 0
+  <Rarity>k__BackingField: 2
+  _totalStatsWeight: 0.62
+  _hpWeight: 0.22
+  _strengthWeight: 0.15
+  _enduranceWeight: 0.22
+  _intelligenceWeight: 0.1
+  _fortitudeWeight: 0.2
+  _agilityWeight: 0.11
   <LearnableMoves>k__BackingField: []
   <LearnableBySkillBook>k__BackingField: []
   <Transformations>k__BackingField: []
@@ -107,7 +108,23 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
       _quantityRange: {x: 1, y: 2}
       _dropChance: 25
-  <WalkDownSprites>k__BackingField: []
-  <WalkUpSprites>k__BackingField: []
-  <WalkRightSprites>k__BackingField: []
-  <WalkLeftSprites>k__BackingField: []
+  <WalkDownSprites>k__BackingField:
+  - {fileID: -1045825318, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 1836562467, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: -1045825318, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: -1615232388, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  <WalkUpSprites>k__BackingField:
+  - {fileID: 411998180, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 1849010488, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 411998180, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: -1463181628, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  <WalkRightSprites>k__BackingField:
+  - {fileID: 2045316338, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 1045312844, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 2045316338, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 1868212906, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  <WalkLeftSprites>k__BackingField:
+  - {fileID: 930953112, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: -688011474, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 930953112, guid: ce456c461d180234793083ef9ad57844, type: 3}
+  - {fileID: 1656438936, guid: ce456c461d180234793083ef9ad57844, type: 3}

@@ -12,22 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Ignis
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Type1>k__BackingField: 0
+  <Name>k__BackingField: Ignis
+  <Description>k__BackingField: A vibrant manifestation of flame, radiating warmth
+    and unpredictable energy.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 44c9935d0af031145a74a3b00af4fc01, type: 3}
+  <Type1>k__BackingField: 2
   <Type2>k__BackingField: 0
-  <Rarity>k__BackingField: 0
-  _totalStatsWeight: 0
-  _hpWeight: 0
-  _strengthWeight: 0
-  _enduranceWeight: 0
-  _intelligenceWeight: 0
-  _fortitudeWeight: 0
-  _agilityWeight: 0
+  <Rarity>k__BackingField: 1
+  _totalStatsWeight: 0.4
+  _hpWeight: 0.15
+  _strengthWeight: 0.25
+  _enduranceWeight: 0.15
+  _intelligenceWeight: 0.15
+  _fortitudeWeight: 0.15
+  _agilityWeight: 0.15
   <LearnableMoves>k__BackingField: []
   <LearnableBySkillBook>k__BackingField: []
-  <Transformations>k__BackingField: []
+  <Transformations>k__BackingField:
+  - _transformsInto: {fileID: 11400000, guid: b24a3014d69706e41a91ee5df4e5e3f5, type: 2}
+    _requiredLevel: 16
+    _requiredItem: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
   <RecruitmentQuestions>k__BackingField:
   - _questionText: Question 1
     _answers:
@@ -107,7 +111,23 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
       _quantityRange: {x: 1, y: 2}
       _dropChance: 25
-  <WalkDownSprites>k__BackingField: []
-  <WalkUpSprites>k__BackingField: []
-  <WalkRightSprites>k__BackingField: []
-  <WalkLeftSprites>k__BackingField: []
+  <WalkDownSprites>k__BackingField:
+  - {fileID: 1422921716, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 181101280, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 1422921716, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 601784506, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  <WalkUpSprites>k__BackingField:
+  - {fileID: -1149164466, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 724045564, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: -1149164466, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: -2694552, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  <WalkRightSprites>k__BackingField:
+  - {fileID: -347800918, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: -95250254, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: -347800918, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 1610693200, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  <WalkLeftSprites>k__BackingField:
+  - {fileID: 1652033836, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 245415855, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: 1652033836, guid: f039b35a2da814c47b665775d7b949c9, type: 3}
+  - {fileID: -1023084271, guid: f039b35a2da814c47b665775d7b949c9, type: 3}

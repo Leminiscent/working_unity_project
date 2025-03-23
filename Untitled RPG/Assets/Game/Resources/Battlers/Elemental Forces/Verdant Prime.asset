@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Verdant Prime
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Type1>k__BackingField: 0
+  <Name>k__BackingField: Verdant Prime
+  <Description>k__BackingField: "A flourishing evolution of nature\u2019s spirit,
+    vibrant with renewed life and vigor."
+  <Sprite>k__BackingField: {fileID: 21300000, guid: a21ac7419617dcb478f2739c1e3ba4bb, type: 3}
+  <Type1>k__BackingField: 5
   <Type2>k__BackingField: 0
-  <Rarity>k__BackingField: 0
-  _totalStatsWeight: 0
-  _hpWeight: 0
-  _strengthWeight: 0
-  _enduranceWeight: 0
-  _intelligenceWeight: 0
-  _fortitudeWeight: 0
-  _agilityWeight: 0
+  <Rarity>k__BackingField: 2
+  _totalStatsWeight: 0.6
+  _hpWeight: 0.15
+  _strengthWeight: 0.1
+  _enduranceWeight: 0.22
+  _intelligenceWeight: 0.15
+  _fortitudeWeight: 0.23
+  _agilityWeight: 0.15
   <LearnableMoves>k__BackingField: []
   <LearnableBySkillBook>k__BackingField: []
   <Transformations>k__BackingField: []
@@ -107,7 +108,23 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
       _quantityRange: {x: 1, y: 2}
       _dropChance: 25
-  <WalkDownSprites>k__BackingField: []
-  <WalkUpSprites>k__BackingField: []
-  <WalkRightSprites>k__BackingField: []
-  <WalkLeftSprites>k__BackingField: []
+  <WalkDownSprites>k__BackingField:
+  - {fileID: 1666420005, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 1118921121, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 1666420005, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 1100979964, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  <WalkUpSprites>k__BackingField:
+  - {fileID: 1994566669, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 1099008602, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 1994566669, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: -1595318070, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  <WalkRightSprites>k__BackingField:
+  - {fileID: 972456557, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: -1169859304, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 972456557, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: -808237009, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  <WalkLeftSprites>k__BackingField:
+  - {fileID: 920960591, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: -307127078, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 920960591, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}
+  - {fileID: 188770886, guid: 5dbbafeb85d40a74093d8380a7146325, type: 3}

@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Zephyr Prime
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Type1>k__BackingField: 0
+  <Name>k__BackingField: Zephyr Prime
+  <Description>k__BackingField: An elevated spirit of wind, moving with ethereal
+    grace and commanding influence.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: edeedb4330d462547929c4391a7ab727, type: 3}
+  <Type1>k__BackingField: 9
   <Type2>k__BackingField: 0
-  <Rarity>k__BackingField: 0
-  _totalStatsWeight: 0
-  _hpWeight: 0
-  _strengthWeight: 0
-  _enduranceWeight: 0
-  _intelligenceWeight: 0
-  _fortitudeWeight: 0
-  _agilityWeight: 0
+  <Rarity>k__BackingField: 2
+  _totalStatsWeight: 0.6
+  _hpWeight: 0.1
+  _strengthWeight: 0.1
+  _enduranceWeight: 0.1
+  _intelligenceWeight: 0.23
+  _fortitudeWeight: 0.15
+  _agilityWeight: 0.32
   <LearnableMoves>k__BackingField: []
   <LearnableBySkillBook>k__BackingField: []
   <Transformations>k__BackingField: []
@@ -107,7 +108,23 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
       _quantityRange: {x: 1, y: 2}
       _dropChance: 25
-  <WalkDownSprites>k__BackingField: []
-  <WalkUpSprites>k__BackingField: []
-  <WalkRightSprites>k__BackingField: []
-  <WalkLeftSprites>k__BackingField: []
+  <WalkDownSprites>k__BackingField:
+  - {fileID: -1316167096, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -1381393558, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -1316167096, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: 866076328, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  <WalkUpSprites>k__BackingField:
+  - {fileID: -1072665628, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -1385229950, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -1072665628, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -904004085, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  <WalkRightSprites>k__BackingField:
+  - {fileID: -1156923187, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: 1863119022, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -1156923187, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -546076696, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  <WalkLeftSprites>k__BackingField:
+  - {fileID: 614438117, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: -739255535, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: 614438117, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
+  - {fileID: 988005535, guid: 1def1d4923d6bf74a83fcec6a3b31c11, type: 3}
