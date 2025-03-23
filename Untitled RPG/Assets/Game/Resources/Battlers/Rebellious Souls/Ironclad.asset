@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6f822c8f68934bb53d4f15c7c4bc7, type: 3}
   m_Name: Ironclad
   m_EditorClassIdentifier: 
-  _name: Ironclad
-  _description: A sentient construct built for battle, merging technological ingenuity
-    with relentless efficiency.
-  _sprite: {fileID: 21300000, guid: f7cdb26bf6b99ef4599d22dce98e9714, type: 3}
-  _type1: 4
-  _type2: 8
-  _rarity: 3
+  <Name>k__BackingField: Ironclad
+  <Description>k__BackingField: A sentient construct built for battle, merging technological
+    ingenuity with relentless efficiency.
+  <Sprite>k__BackingField: {fileID: 21300000, guid: f7cdb26bf6b99ef4599d22dce98e9714, type: 3}
+  <Type1>k__BackingField: 4
+  <Type2>k__BackingField: 8
+  <Rarity>k__BackingField: 3
   _totalStatsWeight: 0.75
   _hpWeight: 0.17
   _strengthWeight: 0.21
@@ -26,18 +26,51 @@ MonoBehaviour:
   _intelligenceWeight: 0.13
   _fortitudeWeight: 0.15
   _agilityWeight: 0.14
-  _learnableMoves:
-  - _moveBase: {fileID: 11400000, guid: 9b64ed0638efdcc498b3196ac7f80d48, type: 2}
+  <LearnableMoves>k__BackingField:
+  - _moveBase: {fileID: 11400000, guid: 683cebbce0e97eb48a1cb35e2f9df13e, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 1650749f4b3168746a13de18eb42c575, type: 2}
+  - _moveBase: {fileID: 11400000, guid: efa3ea8abfaf825499af71fb7c0ef2da, type: 2}
     _level: 1
-  - _moveBase: {fileID: 11400000, guid: 71ce6d62e516805418b3ed27e5ea7b97, type: 2}
-    _level: 1
+  - _moveBase: {fileID: 11400000, guid: fa1a86de87170dc40a78cd45312aa9f9, type: 2}
+    _level: 7
+  - _moveBase: {fileID: 11400000, guid: a66a441400d46ef4385ec0a0b702af48, type: 2}
+    _level: 13
+  - _moveBase: {fileID: 11400000, guid: 0b71744056bfeee448fa753eba5fe534, type: 2}
+    _level: 20
+  - _moveBase: {fileID: 11400000, guid: bfb80fa74b9ec8f448b5b78032d685d8, type: 2}
+    _level: 26
   - _moveBase: {fileID: 11400000, guid: bc53b96c7ccf3234c9a45ced86bce63e, type: 2}
-    _level: 1
-  _learnableBySkillBook: []
-  _transformations: []
-  _recruitmentQuestions:
+    _level: 32
+  - _moveBase: {fileID: 11400000, guid: bb4576e6f28a24a47bcd2fbb09f0caa2, type: 2}
+    _level: 38
+  - _moveBase: {fileID: 11400000, guid: 7ef5e1fac0802fb4883bbef206293c48, type: 2}
+    _level: 44
+  - _moveBase: {fileID: 11400000, guid: 71ce6d62e516805418b3ed27e5ea7b97, type: 2}
+    _level: 51
+  - _moveBase: {fileID: 11400000, guid: 4a3281f1d8d71664db900bbaa15824b4, type: 2}
+    _level: 57
+  - _moveBase: {fileID: 11400000, guid: 3dc16307bebc9c54d801a7b09d02cde1, type: 2}
+    _level: 63
+  - _moveBase: {fileID: 11400000, guid: ac82a0af385b46a44b21315c435686c1, type: 2}
+    _level: 69
+  - _moveBase: {fileID: 11400000, guid: 0d26c261add2edb499a9016f4069bcc9, type: 2}
+    _level: 75
+  - _moveBase: {fileID: 11400000, guid: 62a918c9d63336b468eb926ec188bab8, type: 2}
+    _level: 81
+  - _moveBase: {fileID: 11400000, guid: 475e7af426ca8b1489946c43d9878451, type: 2}
+    _level: 88
+  - _moveBase: {fileID: 11400000, guid: c8ff17488dc315840b4d2f759fe1079d, type: 2}
+    _level: 94
+  - _moveBase: {fileID: 11400000, guid: 0805b9ccffa779247951b72aae1f299d, type: 2}
+    _level: 100
+  <LearnableBySkillBook>k__BackingField:
+  - {fileID: 11400000, guid: 0dd1d4e4ccf1a644b89c8cefb7a7286d, type: 2}
+  - {fileID: 11400000, guid: 7a84bf1c1594fbb49b117821127962c9, type: 2}
+  - {fileID: 11400000, guid: 6e36e32f9dbd32848b6d80981724bbea, type: 2}
+  - {fileID: 11400000, guid: ce4a75b868dad40419bcd4fa3c427357, type: 2}
+  - {fileID: 11400000, guid: c8578fbab3d0b064aaf3bbc034b8eac8, type: 2}
+  <Transformations>k__BackingField: []
+  <RecruitmentQuestions>k__BackingField:
   - _questionText: Question 1
     _answers:
     - _answerText: Answer 1
@@ -108,29 +141,28 @@ MonoBehaviour:
       _affinityScore: -1
     - _answerText: Answer 4
       _affinityScore: -2
-  _dropTable:
+  <DropTable>k__BackingField:
     _itemDrops:
     - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
       _quantityRange: {x: 1, y: 1}
       _dropChance: 100
-  _walkDownSprites:
+  <WalkDownSprites>k__BackingField:
   - {fileID: -573180683, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -1900419123, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -573180683, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: 385767590, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
-  _walkUpSprites:
+  <WalkUpSprites>k__BackingField:
   - {fileID: 1588292379, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -134264812, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: 1588292379, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -1570307426, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
-  _walkRightSprites:
+  <WalkRightSprites>k__BackingField:
   - {fileID: 1609625461, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: 1546759207, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: 1609625461, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: 809535714, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
-  _walkLeftSprites:
+  <WalkLeftSprites>k__BackingField:
   - {fileID: -982149384, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -2088200274, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -982149384, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
   - {fileID: -749473729, guid: 0877f9d72e073ef45b5f803b8ef2c787, type: 3}
-  _sumOfWeights: 1
