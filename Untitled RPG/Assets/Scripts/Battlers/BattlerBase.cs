@@ -82,7 +82,7 @@ public class BattlerBase : ScriptableObject
         { Stat.Fortitude, Fortitude * 0.01f },
         { Stat.Agility, Agility * 0.01f }
     };
-    
+
     public Vector2Int BaseGp { get; private set; }
 
     public int HP { get; private set; }
@@ -167,16 +167,6 @@ public static class StatCalculator
         foreach (float weight in weights)
         {
             weightSum += weight;
-        }
-
-        if (weightSum <= 0)
-        {
-            Debug.LogWarning("Sum of stat weights is zero or negative. Defaulting to equal distribution.");
-            weightSum = weights.Length;
-            for (int i = 0; i < weights.Length; i++)
-            {
-                weights[i] = 1f;
-            }
         }
 
         Dictionary<string, int> stats = new()
