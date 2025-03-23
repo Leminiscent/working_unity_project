@@ -663,7 +663,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (nextBattler == null && activeBattlers.Count == 0)
             {
-                yield return BattleLost();
+                yield return ConcludeBattle(false);
             }
             else if (nextBattler == null && activeBattlers.Count > 0)
             {
@@ -685,7 +685,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 if (activeBattlers.Count == 0)
                 {
-                    yield return BattleWon();
+                    yield return ConcludeBattle(true);
                 }
                 else
                 {
@@ -699,7 +699,7 @@ public class RunTurnState : State<BattleSystem>
                 Battler nextBattler = _enemyParty.GetHealthyBattlers(excludedBattlers: activeBattlers);
                 if (nextBattler == null && activeBattlers.Count == 0)
                 {
-                    yield return BattleWon();
+                    yield return ConcludeBattle(true);
                 }
                 else if (nextBattler == null && activeBattlers.Count > 0)
                 {
@@ -715,30 +715,17 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    private IEnumerator BattleWon()
+    private IEnumerator ConcludeBattle(bool won)
     {
         yield return new WaitForSeconds(0.5f);
-        AudioManager.Instance.PlayMusic(_battleSystem.BattleWonMusic, loop: false);
-        yield return _dialogueBox.TypeDialogue("All enemies have been defeated!");
-        yield return _dialogueBox.TypeDialogue("You are victorious!", clearDialogue: false);
+        AudioManager.Instance.PlayMusic(won ? _battleSystem.BattleWonMusic : _battleSystem.BattleLostMusic, loop: false);
+        yield return _dialogueBox.TypeDialogue(won ? "All enemies have been defeated!" : "All allies have been defeated!");
+        yield return _dialogueBox.TypeDialogue(won ? "You are victorious!" : "The battle is lost...", clearDialogue: false);
         while (AudioManager.Instance.MusicPlayer.isPlaying)
         {
             yield return null;
         }
         _battleSystem.BattleOver(true);
-    }
-
-    private IEnumerator BattleLost()
-    {
-        yield return new WaitForSeconds(0.5f);
-        AudioManager.Instance.PlayMusic(_battleSystem.BattleLostMusic, loop: false);
-        yield return _dialogueBox.TypeDialogue("All allies have been defeated!");
-        yield return _dialogueBox.TypeDialogue("The battle is lost...", clearDialogue: false);
-        while (AudioManager.Instance.MusicPlayer.isPlaying)
-        {
-            yield return null;
-        }
-        _battleSystem.BattleOver(false);
     }
 
     private void AdjustBattleActionsForDefeatedUnit(BattleUnit defeatedUnit, List<BattleUnit> fallbackUnits)
