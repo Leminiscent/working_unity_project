@@ -9,8 +9,7 @@ public class CharacterSelectScreen : DummySelectionUI
     [Header("Basic Details")]
     [SerializeField] private TextMeshProUGUI _battlerNameText;
     [SerializeField] private Image _battlerImage;
-    [SerializeField] private TextMeshProUGUI _battlerType1;
-    [SerializeField] private TextMeshProUGUI _battlerType2;
+    [SerializeField] private TextMeshProUGUI _battlerType;
     [SerializeField] private TextMeshProUGUI _descriptionText;
 
     [Header("Stats")]
@@ -57,18 +56,7 @@ public class CharacterSelectScreen : DummySelectionUI
 
         _battlerNameText.text = battlerBase.Name;
         _battlerImage.sprite = battlerBase.Sprite;
-        _battlerType1.text = battlerBase.Type1.ToString();
-
-        if (battlerBase.Type2 != BattlerType.None)
-        {
-            _battlerType2.transform.parent.gameObject.SetActive(true);
-            _battlerType2.text = battlerBase.Type2.ToString();
-        }
-        else
-        {
-            _battlerType2.transform.parent.gameObject.SetActive(false);
-        }
-
+        _battlerType.text = $"{battlerBase.Type1}{(battlerBase.Type2 != BattlerType.None ? $" / {battlerBase.Type2}" : "")}";
         _descriptionText.text = battlerBase.Description;
 
         _hpText.text = battlerBase.HP.ToString();
