@@ -13,6 +13,7 @@ public class BattlerBase : ScriptableObject
     [field: SerializeField, FormerlySerializedAs("_type1")] public BattlerType Type1 { get; private set; }
     [field: SerializeField, FormerlySerializedAs("_type2")] public BattlerType Type2 { get; private set; }
     [field: SerializeField, FormerlySerializedAs("_rarity")] public Rarity Rarity { get; private set; }
+    [field: SerializeField] public Sprite Portrait { get; private set; } = null;
 
     [Header("Stat Weights")]
     [SerializeField] private float _totalStatsWeight;

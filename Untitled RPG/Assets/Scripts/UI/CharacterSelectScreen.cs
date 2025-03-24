@@ -20,7 +20,12 @@ public class CharacterSelectScreen : DummySelectionUI
     [SerializeField] private TextMeshProUGUI _fortitudeText;
     [SerializeField] private TextMeshProUGUI _agilityText;
 
+    [Header("Character Selection")]
+    [SerializeField] private GameObject _selectionBar;
+    [SerializeField] private GameObject _selectionBarItemPrefab;
+
     private List<Battler> _availableBattlers;
+    private List<GameObject> _selectionBarItems = new();
 
     public void SetAvailableBattlers(List<Battler> battlers)
     {
@@ -34,7 +39,33 @@ public class CharacterSelectScreen : DummySelectionUI
         SetItems(dummyItems);
         SetSelectionSettings(SelectionType.Grid, _availableBattlers.Count);
         IgnoreVerticalInput = true;
+
+        // Remove any existing items from the selection bar.
+        foreach (Transform child in _selectionBar.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        _selectionBarItems.Clear();
+
+        // Instantiate a selection bar item for each battler.
+        for (int i = 0; i < _availableBattlers.Count; i++)
+        {
+            GameObject prefab = Instantiate(_selectionBarItemPrefab, _selectionBar.transform);
+            Image[] images = prefab.GetComponentsInChildren<Image>();
+            if (images != null && images.Length > 1)
+            {
+                // Set the sprite of the image to the battler's portrait.
+                Image portraitImage = images[1];
+                if (_availableBattlers[i].Base.Portrait != null)
+                {
+                    portraitImage.sprite = _availableBattlers[i].Base.Portrait;
+                }
+            }
+            _selectionBarItems.Add(prefab);
+        }
+
         UpdateDetails();
+        UpdateSelectionBar();
     }
 
     public void UpdateDetails()
@@ -67,9 +98,29 @@ public class CharacterSelectScreen : DummySelectionUI
         _agilityText.text = battlerBase.Agility.ToString();
     }
 
+    private void UpdateSelectionBar()
+    {
+        for (int i = 0; i < _selectionBarItems.Count; i++)
+        {
+            // Get the border and portrait images of the selection bar item.
+            Image[] images = _selectionBarItems[i].GetComponentsInChildren<Image>();
+            Image borderImage = (images != null && images.Length > 0) ? images[0] : null;
+            Image portraitImage = (images != null && images.Length > 1) ? images[1] : null;
+
+            // Set the color of the border and portrait images based on the selected index.
+            Color newColor = (i == SelectedIndex) ? Color.white : Color.grey;
+            borderImage.color = newColor;
+            if (portraitImage != null)
+            {
+                portraitImage.color = newColor;
+            }
+        }
+    }
+
     public override void UpdateSelectionInUI()
     {
         base.UpdateSelectionInUI();
         UpdateDetails();
+        UpdateSelectionBar();
     }
 }
