@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils.GenericSelectionUI;
 
 public class MainMenuController : SelectionUI<TextSlot>
 {
+    [SerializeField] private GameObject _selections;
+
     private bool _hasSave;
 
     private void Start()
@@ -18,7 +21,7 @@ public class MainMenuController : SelectionUI<TextSlot>
 
     private void InitializeMenuItems()
     {
-        List<TextSlot> textSlots = GetComponentsInChildren<TextSlot>().ToList();
+        List<TextSlot> textSlots = _selections.GetComponentsInChildren<TextSlot>().ToList();
 
         if (_hasSave)
         {
