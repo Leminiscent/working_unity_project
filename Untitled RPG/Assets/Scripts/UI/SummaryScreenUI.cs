@@ -34,10 +34,11 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] private List<TextMeshProUGUI> _moveTypes;
     [SerializeField] private List<TextMeshProUGUI> _moveNames;
     [SerializeField] private List<TextMeshProUGUI> _moveSP;
+    [SerializeField] private GameObject _moveDescriptionUI;
     [SerializeField] private TextMeshProUGUI _moveDescriptionText;
+    [SerializeField] private GameObject _moveEffectsUI;
     [SerializeField] private TextMeshProUGUI _movePowerText;
     [SerializeField] private TextMeshProUGUI _moveAccuracyText;
-    [SerializeField] private GameObject _moveEffectsUI;
 
     private List<TextSlot> _moveSlots;
     private Battler _battler;
@@ -51,12 +52,14 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
             _inMoveSelection = value;
             if (_inMoveSelection)
             {
+                _moveDescriptionUI.SetActive(true);
                 _moveEffectsUI.SetActive(true);
                 // Only set as many move slots as there are moves.
                 SetItems(_moveSlots.Take(_battler.Moves.Count).ToList());
             }
             else
             {
+                _moveDescriptionUI.SetActive(false);
                 _moveEffectsUI.SetActive(false);
                 _moveDescriptionText.text = string.Empty;
                 ClearItems();
@@ -68,6 +71,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         // Cache the TextSlot components from the move names.
         _moveSlots = _moveNames.Select(static m => m.GetComponent<TextSlot>()).ToList();
+        _moveDescriptionUI.SetActive(false);
         _moveEffectsUI.SetActive(false);
         _moveDescriptionText.text = string.Empty;
     }
