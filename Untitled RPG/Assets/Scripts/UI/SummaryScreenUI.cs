@@ -12,8 +12,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private Image _image;
     [SerializeField] private GameObject _battlerTypeUI;
-    [SerializeField] private TextMeshProUGUI _battlerType1;
-    [SerializeField] private TextMeshProUGUI _battlerType2;
+    [SerializeField] private TextMeshProUGUI _battlerType;
 
     [Header("Pages")]
     [SerializeField] private TextMeshProUGUI _pageNameText;
@@ -82,16 +81,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         _levelText.text = $"Lvl {battler.Level}";
         _image.sprite = battlerBase.Sprite;
 
-        _battlerType1.text = battlerBase.Type1.ToString().ToUpper();
-        if (battlerBase.Type2 != BattlerType.None)
-        {
-            _battlerType2.transform.parent.gameObject.SetActive(true);
-            _battlerType2.text = battlerBase.Type2.ToString().ToUpper();
-        }
-        else
-        {
-            _battlerType2.transform.parent.gameObject.SetActive(false);
-        }
+        _battlerType.text = $"{battlerBase.Type1}{(battlerBase.Type2 != BattlerType.None ? $" / {battlerBase.Type2}" : "")}";
     }
 
     public void ShowPage(int index)
