@@ -417,7 +417,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1054946477
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1014627686, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -441,8 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f653b01bdb48e2e48b8c7257b117c3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Lemmy
-  _sprite: {fileID: 1089214349, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
+  <Name>k__BackingField: Lemmy
 --- !u!114 &1401619852097729857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,13 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c610d9942153048930ee23f51158ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monsters:
-  - _base: {fileID: 11400000, guid: f42ce4ed36dd5c44ca2bc721e3ea5616, type: 2}
-    _level: 100
-  - _base: {fileID: 11400000, guid: 5f5d2f3aeebe5254593447b41fbce625, type: 2}
-    _level: 100
-  - _base: {fileID: 11400000, guid: 55cfc96493cf4b048886d7fa38f32a8e, type: 2}
-    _level: 100
+  _battlers: []
 --- !u!114 &5331987254580021616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,7 +487,7 @@ MonoBehaviour:
   - {fileID: -168758418, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -1999465375, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
   - {fileID: -2002545065, guid: 3bd1c2d2b6231ea4e93ef64d50793d23, type: 3}
-  _defaultDirection: 1
+  <DefaultDirection>k__BackingField: 1
 --- !u!114 &4648141534900121505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7394a34419024c45be59680b9314737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _exclamation: {fileID: 3843477804429466279}
+  <Exclamation>k__BackingField: {fileID: 3843477804429466279}
   MoveSpeed: 5
 --- !u!50 &5998477997217165119
 Rigidbody2D:
@@ -595,26 +588,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _recoveryItemSlots:
   - _item: {fileID: 11400000, guid: 884b671c5c5620741b6bcdf368c0d84f, type: 2}
-    _count: 9
+    _count: 99
+  - _item: {fileID: 11400000, guid: d33535136f1f17d4d9556eca30640912, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 2c31d3db53bc65c4c84ad808005321f8, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 79ece6696f6e7a148b93e9ef52589920, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: b47157d6530fc1a42831668c7de4cba3, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 0231d220fddee34498ee9c90b594dca2, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: f06793836a45e11468701d9d08a30fea, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 3e8cd0f6e8ef3c944ac28b397d9eceb8, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: eb62f16ea64001640860ccbd6664a920, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 3ecab9629a4e8694fb4e3be80866520d, type: 2}
+    _count: 99
   - _item: {fileID: 11400000, guid: 1de614676394da84bba22ea8d1218710, type: 2}
-    _count: 2
-  - _item: {fileID: 11400000, guid: 9e286084795dcde44ade52d881dda668, type: 2}
-    _count: 5
+    _count: 99
+  - _item: {fileID: 11400000, guid: 8e9e03bb0267f3a41b43cc47bfc9a344, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 475ce6216cf47034eb3e203af4de18f7, type: 2}
+    _count: 99
   - _item: {fileID: 11400000, guid: 70c2a977dc3d97f45b3b022a7584555d, type: 2}
-    _count: 12
+    _count: 99
+  - _item: {fileID: 11400000, guid: 790539ffd392009429741e432800b3ec, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 9e286084795dcde44ade52d881dda668, type: 2}
+    _count: 99
   _materialSlots:
-  - _item: {fileID: 11400000, guid: 30bcd45a212d8c54b81564d5c13e9155, type: 2}
-    _count: 4
-  - _item: {fileID: 11400000, guid: 68a33e7c81800154e8825f35d183d28c, type: 2}
-    _count: 10
+  - _item: {fileID: 11400000, guid: 640212c8f28a56a47ab89db24a1d7af7, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 32355cbcb26c47040b34932215d3d9d4, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: ac6f0e2b1640bd1448bce78ea758cd4f, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 0e60505f33477934e9aa03c283028f14, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: bf84b7b5c5625514a9262427ccde9fbb, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: bc2fd82949d2f264290c1ce0275d829c, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 9066addf7a2200b41bfb2978706e3be1, type: 2}
+    _count: 99
+  - _item: {fileID: 11400000, guid: 1aee5d7eea4cefd49b0badba2a59724c, type: 2}
+    _count: 99
   _transformationItemSlots:
   - _item: {fileID: 11400000, guid: b01e30cf650689e419bb79e7a10fa5f2, type: 2}
-    _count: 4
+    _count: 99
   _skillBookSlots:
   - _item: {fileID: 11400000, guid: ce1d2d3f951622340bff0a8dd5dc9d4d, type: 2}
-    _count: 1
+    _count: 9
   - _item: {fileID: 11400000, guid: 3ed66893df7881140b17a03d869ba509, type: 2}
-    _count: 1
+    _count: 9
+  - _item: {fileID: 11400000, guid: 0c322c3ef930a87458e0f981ce6d3d0e, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 2a0c02883ea42c448a9116b89d8dcfa5, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 94e684ca8dc9f0842a369a411dbe8a0d, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 1162b746c87053149ba2a215416869f2, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 327fce498aa2a164f89a34e4e8d6b586, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 9539194c3adfa794ea839fa657305038, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 11363460bcaaa0d4e9a87e9493cf41c1, type: 2}
+    _count: 9
+  - _item: {fileID: 11400000, guid: 9e01a827507d2ca4d93fb6282ed69c8b, type: 2}
+    _count: 9
   _keyItemSlots:
   - _item: {fileID: 11400000, guid: 3ee5d74a31b6b874c963563aef648d1b, type: 2}
     _count: 1
@@ -642,7 +687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adb2e9c68f8f954c821ef8b45371810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _money: 1000
+  <Money>k__BackingField: 100000
 --- !u!114 &6913715058660160187
 MonoBehaviour:
   m_ObjectHideFlags: 0
