@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,9 +93,9 @@ public class MainMenuController : SelectionUI<TextSlot>
         });
     }
 
-    private IEnumerator PerformTransition(System.Action transitionAction)
+    private IEnumerator PerformTransition(Action transitionAction)
     {
-        yield return Fader.Instance.FadeIn(0.1f);
+        yield return Fader.Instance.FadeIn(0.75f);
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
@@ -103,6 +104,7 @@ public class MainMenuController : SelectionUI<TextSlot>
 
         Destroy(gameObject);
 
-        yield return Fader.Instance.FadeOut(0.75f);
+        yield return new WaitForSeconds(0.5f);
+        yield return Fader.Instance.FadeOut(1.25f);
     }
 }
