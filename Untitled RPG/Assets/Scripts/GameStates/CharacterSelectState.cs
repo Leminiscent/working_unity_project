@@ -89,11 +89,10 @@ public class CharacterSelectState : State<GameController>
 
     private IEnumerator StartGame()
     {
-        yield return Fader.Instance.FadeIn(0.75f);
+        yield return Fader.Instance.FadeIn(0.1f);
         _gameController.StateMachine.ChangeState(FreeRoamState.Instance);
         SavingSystem.Instance.Delete("saveSlot1");
         SceneManager.LoadScene(1);
-        yield return new WaitForSeconds(0.5f);
-        yield return Fader.Instance.FadeOut(1.25f);
+        yield return Fader.Instance.FadeOut(0.75f);
     }
 }
