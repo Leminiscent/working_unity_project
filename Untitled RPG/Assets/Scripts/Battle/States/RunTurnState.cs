@@ -725,7 +725,7 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return null;
         }
-        _battleSystem.BattleOver(true);
+        _battleSystem.BattleOver(won);
     }
 
     private void AdjustBattleActionsForDefeatedUnit(BattleUnit defeatedUnit, List<BattleUnit> fallbackUnits)
