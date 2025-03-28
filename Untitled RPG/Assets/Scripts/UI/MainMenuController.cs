@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,30 +76,29 @@ public class MainMenuController : SelectionUI<TextSlot>
 
     private IEnumerator ContinueSelected()
     {
-        yield return PerformTransition(static () =>
-        {
-            GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
-            SceneManager.LoadScene(1);
-            SavingSystem.Instance.Load("saveSlot1");
-        });
+        yield return Fader.Instance.FadeIn(0.75f);
+
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
+
+        GameController.Instance.StateMachine.ChangeState(FreeRoamState.Instance);
+        SceneManager.LoadScene(1);
+        SavingSystem.Instance.Load("saveSlot1");
+
+        Destroy(gameObject);
+
+        yield return new WaitForSeconds(0.5f);
+        yield return Fader.Instance.FadeOut(1.25f);
     }
 
     private IEnumerator NewGameSelected()
-    {
-        yield return PerformTransition(static () =>
-        {
-            GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
-        });
-    }
-
-    private IEnumerator PerformTransition(Action transitionAction)
     {
         yield return Fader.Instance.FadeIn(0.1f);
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
-        transitionAction?.Invoke();
+        GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
 
         Destroy(gameObject);
 

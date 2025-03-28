@@ -128,16 +128,28 @@ public class PartyState : State<GameController>
                     if (SelectedMember.Hp <= 0)
                     {
                         _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is unable to fight!");
+                        _partyScreen.EnableInput(false);
+                        yield return new WaitForSeconds(1.25f);
+                        _partyScreen.SetMessageText("Choose a party member!");
+                        _partyScreen.EnableInput(true);
                         yield break;
                     }
                     if (battleState.BattleSystem.PlayerUnits.Any(u => u.Battler == SelectedMember))
                     {
                         _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is already in battle!");
+                        _partyScreen.EnableInput(false);
+                        yield return new WaitForSeconds(1.25f);
+                        _partyScreen.SetMessageText("Choose a party member!");
+                        _partyScreen.EnableInput(true);
                         yield break;
                     }
                     if (battleState.BattleSystem.UnableToSwitch(SelectedMember))
                     {
                         _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is already preparing for battle!");
+                        _partyScreen.EnableInput(false);
+                        yield return new WaitForSeconds(1.25f);
+                        _partyScreen.SetMessageText("Choose a party member!");
+                        _partyScreen.EnableInput(true);
                         yield break;
                     }
                     _partyScreen.ResetSelection();
@@ -162,6 +174,10 @@ public class PartyState : State<GameController>
                 if (_selectedSwitchToIndex == selectedBattlerIndex)
                 {
                     _partyScreen.SetMessageText("You can't switch with the same party member!");
+                    _partyScreen.EnableInput(false);
+                    yield return new WaitForSeconds(1.25f);
+                    _partyScreen.SetMessageText($"Choose a party member to switch with {_playerParty.Battlers[selectedBattlerIndex].Base.Name}.");
+                    _partyScreen.EnableInput(true);
                     yield break;
                 }
 
@@ -194,6 +210,10 @@ public class PartyState : State<GameController>
                     if (_playerParty.Battlers.Count == 1)
                     {
                         _partyScreen.SetMessageText("There are no other party members to switch with!");
+                        _partyScreen.EnableInput(false);
+                        yield return new WaitForSeconds(1.25f);
+                        _partyScreen.SetMessageText("Choose a party member!");
+                        _partyScreen.EnableInput(true);
                         yield break;
                     }
                     _isSwitchingPosition = true;
