@@ -75,7 +75,6 @@ public class PartyState : State<GameController>
         _partyScreen.OnBack += OnBack;
     }
 
-
     public override void Execute()
     {
         if (_partyScreen != null)
@@ -107,7 +106,7 @@ public class PartyState : State<GameController>
         // If coming from InventoryState, transition to UseItemState.
         if (_prevState == InventoryState.Instance)
         {
-            _ = StartCoroutine(GoToUseItemState());
+            yield return GoToUseItemState();
         }
         // If coming from BattleState, show a dynamic menu with options.
         else if (_prevState == BattleState.Instance)
@@ -127,29 +126,17 @@ public class PartyState : State<GameController>
                 case 0: // Switch option
                     if (SelectedMember.Hp <= 0)
                     {
-                        _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is unable to fight!");
-                        _partyScreen.EnableInput(false);
-                        yield return new WaitForSeconds(1.25f);
-                        _partyScreen.SetMessageText("Choose a party member!");
-                        _partyScreen.EnableInput(true);
+                        yield return DisplayTemporaryMessage($"{SelectedMember.Base.Name} is unable to fight!", "Choose a party member!");
                         yield break;
                     }
                     if (battleState.BattleSystem.PlayerUnits.Any(u => u.Battler == SelectedMember))
                     {
-                        _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is already in battle!");
-                        _partyScreen.EnableInput(false);
-                        yield return new WaitForSeconds(1.25f);
-                        _partyScreen.SetMessageText("Choose a party member!");
-                        _partyScreen.EnableInput(true);
+                        yield return DisplayTemporaryMessage($"{SelectedMember.Base.Name} is already in battle!", "Choose a party member!");
                         yield break;
                     }
                     if (battleState.BattleSystem.UnableToSwitch(SelectedMember))
                     {
-                        _partyScreen.SetMessageText($"{SelectedMember.Base.Name} is already preparing for battle!");
-                        _partyScreen.EnableInput(false);
-                        yield return new WaitForSeconds(1.25f);
-                        _partyScreen.SetMessageText("Choose a party member!");
-                        _partyScreen.EnableInput(true);
+                        yield return DisplayTemporaryMessage($"{SelectedMember.Base.Name} is already preparing for battle!", "Choose a party member!");
                         yield break;
                     }
                     _partyScreen.ResetSelection();
@@ -173,11 +160,8 @@ public class PartyState : State<GameController>
             {
                 if (_selectedSwitchToIndex == selectedBattlerIndex)
                 {
-                    _partyScreen.SetMessageText("You can't switch with the same party member!");
-                    _partyScreen.EnableInput(false);
-                    yield return new WaitForSeconds(1.25f);
-                    _partyScreen.SetMessageText($"Choose a party member to switch with {_playerParty.Battlers[selectedBattlerIndex].Base.Name}.");
-                    _partyScreen.EnableInput(true);
+                    yield return DisplayTemporaryMessage("You can't switch with the same party member!",
+                        $"Choose a party member to switch with {_playerParty.Battlers[selectedBattlerIndex].Base.Name}.");
                     yield break;
                 }
 
@@ -189,7 +173,6 @@ public class PartyState : State<GameController>
                 yield break;
             }
 
-            // Show a dynamic menu for Summary, Switch, or Back.
             DynamicMenuState.Instance.MenuItems = new List<string>
             {
                 "Summary",
@@ -209,11 +192,7 @@ public class PartyState : State<GameController>
                 case 1: // Switch option
                     if (_playerParty.Battlers.Count == 1)
                     {
-                        _partyScreen.SetMessageText("There are no other party members to switch with!");
-                        _partyScreen.EnableInput(false);
-                        yield return new WaitForSeconds(1.25f);
-                        _partyScreen.SetMessageText("Choose a party member!");
-                        _partyScreen.EnableInput(true);
+                        yield return DisplayTemporaryMessage("There are no other party members to switch with!", "Choose a party member!");
                         yield break;
                     }
                     _isSwitchingPosition = true;
@@ -234,6 +213,15 @@ public class PartyState : State<GameController>
         _gameController.StateMachine.Pop();
     }
 
+    private IEnumerator DisplayTemporaryMessage(string initialMessage, string followUpMessage)
+    {
+        _partyScreen.SetMessageText(initialMessage);
+        _partyScreen.EnableInput(false);
+        yield return new WaitForSeconds(1.25f);
+        _partyScreen.SetMessageText(followUpMessage);
+        _partyScreen.EnableInput(true);
+    }
+
     private void OnBack()
     {
         if (_isSwitchingPosition)
@@ -251,7 +239,6 @@ public class PartyState : State<GameController>
         if (prevState == BattleState.Instance)
         {
             BattleState battleState = prevState as BattleState;
-
             if (battleState.BattleSystem.PlayerUnits.Any(static u => u.Battler.Hp <= 0))
             {
                 _partyScreen.SetMessageText("You have to choose a party member!");
