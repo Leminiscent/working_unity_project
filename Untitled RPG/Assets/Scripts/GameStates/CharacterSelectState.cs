@@ -12,6 +12,7 @@ public class CharacterSelectState : State<GameController>
     private GameController _gameController;
 
     public static CharacterSelectState Instance { get; private set; }
+    public CharacterSelectScreen CharacterSelectScreen => _characterSelectScreen;
 
     private void Awake()
     {
@@ -89,13 +90,16 @@ public class CharacterSelectState : State<GameController>
 
     private IEnumerator StartGame()
     {
-        yield return Fader.Instance.FadeIn(0.75f);
+        _characterSelectScreen.EnableInput(false);
+        yield return Fader.Instance.FadeIn(0.5f);
 
-        _gameController.StateMachine.ChangeState(FreeRoamState.Instance);
+        _gameController.StateMachine.ChangeState(CutsceneState.Instance);
         SavingSystem.Instance.Delete("saveSlot1");
         SceneManager.LoadScene(1);
-        
-        yield return new WaitForSeconds(0.5f);
-        yield return Fader.Instance.FadeOut(1.25f);
+
+        yield return new WaitForSeconds(0.25f);
+        yield return Fader.Instance.FadeOut(0.5f);
+
+        _gameController.StateMachine.ChangeState(FreeRoamState.Instance);
     }
 }
