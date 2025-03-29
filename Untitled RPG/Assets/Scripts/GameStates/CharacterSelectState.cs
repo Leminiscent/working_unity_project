@@ -67,7 +67,6 @@ public class CharacterSelectState : State<GameController>
         {
             _characterSelectScreen.EnableInput(false);
             _characterSelectScreen.gameObject.SetActive(true);
-            
             _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
             _characterSelectScreen.OnSelected += OnCharacterSelected;
 
