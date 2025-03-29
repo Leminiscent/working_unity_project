@@ -63,15 +63,9 @@ public class DialogueManager : MonoBehaviour
         {
             yield return TypeDialogue(line);
 
-            if (waitForInput)
-            {
-                yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
-                yield return new WaitUntil(static () => !Input.GetButton("Action") && !Input.GetButton("Back"));
-            }
-            else
-            {
-                yield return new WaitForSeconds(waitTime);
-            }
+            yield return waitForInput
+                ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+                : new WaitForSeconds(waitTime);
         }
 
         // Handle choice selection if provided
@@ -101,34 +95,46 @@ public class DialogueManager : MonoBehaviour
 
     public IEnumerator TypeDialogue(string line)
     {
-        _dialogueText.text = "";
-        float normalDelay = 1f / _lettersPerSecond;
+        yield return TextUtil.TypeText(_dialogueText, line, "", _lettersPerSecond, ACCELERATED_DELAY);
+    }
+}
+
+public static class TextUtil
+{
+    public static IEnumerator TypeText(TextMeshProUGUI target, string textToType, string prefix, float lettersPerSecond, float acceleratedDelay)
+    {
+        yield return new WaitForEndOfFrame();
+        
+        if (target == null)
+        {
+            yield break;
+        }
+
+        target.text = prefix;
+        float normalDelay = 1f / lettersPerSecond;
         float currentDelay = normalDelay;
         float accumulatedTime = 0f;
         int letterIndex = 0;
         bool isAccelerated = false;
 
-        while (letterIndex < line.Length)
+        while (letterIndex < textToType.Length)
         {
             if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
             {
                 isAccelerated = true;
-                currentDelay = ACCELERATED_DELAY;
+                currentDelay = acceleratedDelay;
             }
             accumulatedTime += Time.deltaTime;
-            while (letterIndex < line.Length && accumulatedTime >= currentDelay)
+            while (letterIndex < textToType.Length && accumulatedTime >= currentDelay)
             {
-                _dialogueText.text += line[letterIndex];
+                target.text += textToType[letterIndex];
                 letterIndex++;
                 accumulatedTime -= currentDelay;
             }
             yield return null;
         }
     }
-}
 
-public static class TextUtil
-{
     public static string GetNumText(int num)
     {
         // If the number is less than 10, return the text representation of the number.

@@ -34,29 +34,8 @@ public class BattleDialogueBox : MonoBehaviour
             yield break;
         }
 
-        _dialogueText.text = !string.IsNullOrEmpty(setDialogue) ? $"{setDialogue} " : "";
-        float normalDelay = 1f / _lettersPerSecond;
-        float currentDelay = normalDelay;
-        float accumulatedTime = 0f;
-        int letterIndex = 0;
-        bool isAccelerated = false;
-
-        while (letterIndex < dialogueToType.Length)
-        {
-            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
-            {
-                isAccelerated = true;
-                currentDelay = ACCELERATED_DELAY;
-            }
-            accumulatedTime += Time.deltaTime;
-            while (letterIndex < dialogueToType.Length && accumulatedTime >= currentDelay)
-            {
-                _dialogueText.text += dialogueToType[letterIndex];
-                letterIndex++;
-                accumulatedTime -= currentDelay;
-            }
-            yield return null;
-        }
+        string prefix = !string.IsNullOrEmpty(setDialogue) ? $"{setDialogue} " : "";
+        yield return TextUtil.TypeText(_dialogueText, dialogueToType, prefix, _lettersPerSecond, ACCELERATED_DELAY);
 
         if (waitForInput)
         {
