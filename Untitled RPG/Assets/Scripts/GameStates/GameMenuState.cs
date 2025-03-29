@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Utils.StateMachine;
@@ -69,10 +70,10 @@ public class GameMenuState : State<GameController>
                 _gameController.StateMachine.Push(StorageState.Instance);
                 break;
             case 3: // Save
-                StartCoroutine(SaveSelected());
+                StartCoroutine(ProcessSaveLoad(static () => SavingSystem.Instance.Save("saveSlot1")));
                 break;
             case 4: // Load
-                StartCoroutine(LoadSelected());
+                StartCoroutine(ProcessSaveLoad(static () => SavingSystem.Instance.Load("saveSlot1")));
                 break;
             case 5: // Quit
 #if UNITY_EDITOR
@@ -88,20 +89,11 @@ public class GameMenuState : State<GameController>
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
-    private IEnumerator SaveSelected()
+    private IEnumerator ProcessSaveLoad(Action action)
     {
         _menuController.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
-        SavingSystem.Instance.Save("saveSlot1");
-        yield return Fader.Instance.FadeOut(0.5f);
-        _menuController.EnableInput(true);
-    }
-
-    private IEnumerator LoadSelected()
-    {
-        _menuController.EnableInput(false);
-        yield return Fader.Instance.FadeIn(0.5f);
-        SavingSystem.Instance.Load("saveSlot1");
+        action?.Invoke();
         yield return Fader.Instance.FadeOut(0.5f);
         _menuController.EnableInput(true);
     }
