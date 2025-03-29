@@ -12,7 +12,7 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _yesText;
     [SerializeField] private TextMeshProUGUI _noText;
 
-    private const float ACCELERATION_FACTOR = 100f;
+    private const float ACCELERATED_DELAY = 0.005f;
     private const float POST_DIALOGUE_WAIT_TIME = 0.75f;
 
     public bool IsChoiceBoxEnabled => _choiceBox != null && _choiceBox.activeSelf;
@@ -27,7 +27,6 @@ public class BattleDialogueBox : MonoBehaviour
 
     public IEnumerator TypeDialogue(string dialogueToType, bool waitForInput = false, string setDialogue = null, bool clearDialogue = true)
     {
-        // Wait for the end of the frame to ensure UI updates are ready.
         yield return new WaitForEndOfFrame();
 
         if (_dialogueText == null)
@@ -36,32 +35,27 @@ public class BattleDialogueBox : MonoBehaviour
         }
 
         _dialogueText.text = !string.IsNullOrEmpty(setDialogue) ? $"{setDialogue} " : "";
-
-        // Ensure _lettersPerSecond is positive to avoid division errors.
-        float effectiveLettersPerSecond = (_lettersPerSecond > 0) ? _lettersPerSecond : 1;
-        float baseDelay = 1f / effectiveLettersPerSecond;
+        float normalDelay = 1f / _lettersPerSecond;
+        float currentDelay = normalDelay;
+        float accumulatedTime = 0f;
+        int letterIndex = 0;
         bool isAccelerated = false;
 
-        foreach (char letter in dialogueToType)
+        while (letterIndex < dialogueToType.Length)
         {
-            _dialogueText.text += letter;
-            float delay = isAccelerated ? baseDelay / ACCELERATION_FACTOR : baseDelay;
-            float elapsed = 0f;
-
-            while (elapsed < delay)
+            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
             {
-                if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
-                {
-                    isAccelerated = true;
-                    delay = baseDelay / ACCELERATION_FACTOR;
-                    if (elapsed >= delay)
-                    {
-                        break;
-                    }
-                }
-                elapsed += Time.deltaTime;
-                yield return null;
+                isAccelerated = true;
+                currentDelay = ACCELERATED_DELAY;
             }
+            accumulatedTime += Time.deltaTime;
+            while (letterIndex < dialogueToType.Length && accumulatedTime >= currentDelay)
+            {
+                _dialogueText.text += dialogueToType[letterIndex];
+                letterIndex++;
+                accumulatedTime -= currentDelay;
+            }
+            yield return null;
         }
 
         if (waitForInput)

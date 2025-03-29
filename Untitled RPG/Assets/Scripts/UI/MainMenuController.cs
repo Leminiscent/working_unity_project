@@ -97,16 +97,12 @@ public class MainMenuController : SelectionUI<TextSlot>
     private IEnumerator NewGameSelected()
     {
         EnableInput(false);
-        CharacterSelectState.Instance.CharacterSelectScreen.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
-
-        yield return Fader.Instance.FadeOut(0.5f);
-        CharacterSelectState.Instance.CharacterSelectScreen.EnableInput(true);
 
         Destroy(gameObject);
     }

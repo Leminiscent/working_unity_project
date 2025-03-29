@@ -12,7 +12,6 @@ public class CharacterSelectState : State<GameController>
     private GameController _gameController;
 
     public static CharacterSelectState Instance { get; private set; }
-    public CharacterSelectScreen CharacterSelectScreen => _characterSelectScreen;
 
     private void Awake()
     {
@@ -42,17 +41,7 @@ public class CharacterSelectState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
-
-        if (_characterSelectScreen != null)
-        {
-            _characterSelectScreen.gameObject.SetActive(true);
-            _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
-            _characterSelectScreen.OnSelected += OnCharacterSelected;
-        }
-        else
-        {
-            Debug.LogError("CharacterSelectScreen reference is missing.");
-        }
+        _ = StartCoroutine(EnterFromMainMenu());
     }
 
     public override void Execute()
@@ -69,6 +58,25 @@ public class CharacterSelectState : State<GameController>
         {
             _characterSelectScreen.OnSelected -= OnCharacterSelected;
             _characterSelectScreen.gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator EnterFromMainMenu()
+    {
+        if (_characterSelectScreen != null)
+        {
+            _characterSelectScreen.EnableInput(false);
+            _characterSelectScreen.gameObject.SetActive(true);
+            
+            _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
+            _characterSelectScreen.OnSelected += OnCharacterSelected;
+
+            yield return Fader.Instance.FadeOut(0.5f);
+            _characterSelectScreen.EnableInput(true);
+        }
+        else
+        {
+            Debug.LogError("CharacterSelectScreen reference is missing.");
         }
     }
 

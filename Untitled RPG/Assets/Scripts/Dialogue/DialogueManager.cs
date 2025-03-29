@@ -11,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private float _lettersPerSecond = 45f;
 
-    private const float ACCELERATION_FACTOR = 100f;
+    private const float ACCELERATED_DELAY = 0.005f;
     private const float POST_DIALOGUE_WAIT_TIME = 0.5f;
 
     public event Action OnShowDialogue;
@@ -63,9 +63,15 @@ public class DialogueManager : MonoBehaviour
         {
             yield return TypeDialogue(line);
 
-            yield return waitForInput
-                ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
-                : new WaitForSeconds(waitTime);
+            if (waitForInput)
+            {
+                yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
+                yield return new WaitUntil(static () => !Input.GetButton("Action") && !Input.GetButton("Back"));
+            }
+            else
+            {
+                yield return new WaitForSeconds(waitTime);
+            }
         }
 
         // Handle choice selection if provided
@@ -96,30 +102,27 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator TypeDialogue(string line)
     {
         _dialogueText.text = "";
+        float normalDelay = 1f / _lettersPerSecond;
+        float currentDelay = normalDelay;
+        float accumulatedTime = 0f;
+        int letterIndex = 0;
         bool isAccelerated = false;
-        float accelerationFactor = ACCELERATION_FACTOR;
-        float baseDelay = 1f / _lettersPerSecond;
 
-        foreach (char letter in line)
+        while (letterIndex < line.Length)
         {
-            _dialogueText.text += letter;
-            float delay = isAccelerated ? baseDelay / accelerationFactor : baseDelay;
-            float elapsed = 0f;
-            while (elapsed < delay)
+            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
             {
-                // Check for acceleration input
-                if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
-                {
-                    isAccelerated = true;
-                    delay = baseDelay / accelerationFactor;
-                    if (elapsed >= delay)
-                    {
-                        break;
-                    }
-                }
-                elapsed += Time.deltaTime;
-                yield return null;
+                isAccelerated = true;
+                currentDelay = ACCELERATED_DELAY;
             }
+            accumulatedTime += Time.deltaTime;
+            while (letterIndex < line.Length && accumulatedTime >= currentDelay)
+            {
+                _dialogueText.text += line[letterIndex];
+                letterIndex++;
+                accumulatedTime -= currentDelay;
+            }
+            yield return null;
         }
     }
 }
