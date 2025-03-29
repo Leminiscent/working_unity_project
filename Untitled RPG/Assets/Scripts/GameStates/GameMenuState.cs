@@ -90,16 +90,20 @@ public class GameMenuState : State<GameController>
 
     private IEnumerator SaveSelected()
     {
+        _menuController.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
         SavingSystem.Instance.Save("saveSlot1");
         yield return Fader.Instance.FadeOut(0.5f);
+        _menuController.EnableInput(true);
     }
 
     private IEnumerator LoadSelected()
     {
+        _menuController.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
         SavingSystem.Instance.Load("saveSlot1");
         yield return Fader.Instance.FadeOut(0.5f);
+        _menuController.EnableInput(true);
     }
 
     private void OnBack()
