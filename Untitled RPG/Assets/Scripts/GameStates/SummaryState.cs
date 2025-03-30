@@ -110,11 +110,13 @@ public class SummaryState : State<GameController>
 
         if (_battlerSelectionUI != null)
         {
+            _battlerSelectionUI.OnIndexChanged -= OnBattlerIndexChanged;
             Destroy(_battlerSelectionUI);
             _battlerSelectionUI = null;
         }
         if (_pageSelectionUI != null)
         {
+            _pageSelectionUI.OnIndexChanged -= OnPageIndexChanged;
             Destroy(_pageSelectionUI);
             _pageSelectionUI = null;
         }

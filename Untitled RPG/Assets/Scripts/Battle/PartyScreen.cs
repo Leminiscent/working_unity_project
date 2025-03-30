@@ -14,6 +14,14 @@ public class PartyScreen : SelectionUI<TextSlot>
 
     public Battler SelectedMember => _battlers[_selectedItem];
 
+    private void OnDestroy()
+    {
+        if (_party != null)
+        {
+            _party.OnUpdated -= SetPartyData;
+        }
+    }
+
     public void Init()
     {
         _memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
@@ -43,6 +51,7 @@ public class PartyScreen : SelectionUI<TextSlot>
 
         for (int i = 0; i < _memberSlots.Length; i++)
         {
+            _memberSlots[i].ClearData();
             if (i < _battlers.Count)
             {
                 _memberSlots[i].gameObject.SetActive(true);

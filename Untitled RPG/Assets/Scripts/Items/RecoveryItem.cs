@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Items/Create new recovery item")]
@@ -83,7 +84,13 @@ public class RecoveryItem : ItemBase
             }
         }
 
-        // Restore either full or a fixed amount of SP on each move.
+        // Cannot restore SP if all moves are already full.
+        if (battler.Moves.All(m => m.Sp == m.Base.SP))
+        {
+            return false;
+        }
+
+        // If _restoreMaxSP is true, restore to max SP; otherwise, restore by _spAmount.
         if (_restoreMaxSP)
         {
             battler.Moves.ForEach(m => m.RestoreSP(m.Base.SP));

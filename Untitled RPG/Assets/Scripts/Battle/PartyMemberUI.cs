@@ -27,6 +27,11 @@ public class PartyMemberUI : MonoBehaviour
 
     private Battler _battler;
 
+    private void Oestroy()
+    {
+        ClearData();
+    }
+
     public void Init(Battler battler)
     {
         _battler = battler;
@@ -51,6 +56,15 @@ public class PartyMemberUI : MonoBehaviour
         SetHP();
         SetExp();
         SetStatusText();
+    }
+
+    public void ClearData()
+    {
+        if (_battler != null)
+        {
+            _battler.OnHPChanged -= SetHP;
+            _battler.OnStatusChanged -= SetStatusText;
+        }
     }
 
     private void SetBasicInfo()

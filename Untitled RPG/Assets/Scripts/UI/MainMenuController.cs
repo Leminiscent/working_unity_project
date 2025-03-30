@@ -19,6 +19,11 @@ public class MainMenuController : SelectionUI<TextSlot>
         OnSelected += OnItemSelected;
     }
 
+    private void OnDestroy()
+    {
+        OnSelected -= OnItemSelected;
+    }
+
     private void InitializeMenuItems()
     {
         List<TextSlot> textSlots = _selections.GetComponentsInChildren<TextSlot>().ToList();

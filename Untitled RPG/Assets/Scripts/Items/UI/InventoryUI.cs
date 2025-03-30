@@ -41,6 +41,13 @@ public class InventoryUI : SelectionUI<TextSlot>
         Wallet.Instance.OnMoneyChanged += UpdateMoneyText;
     }
 
+    private void OnDestroy()
+    {
+        _inventory.OnUpdated -= UpdateCategoriesAndItemList;
+        Wallet.Instance.OnMoneyChanged -= UpdateMoneyText;
+        _categorySelectionUI.OnIndexChanged -= OnCategoryChanged;
+    }
+
     private void UpdateCategoriesAndItemList()
     {
         UpdateAvailableCategories();

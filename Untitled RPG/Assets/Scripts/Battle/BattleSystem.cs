@@ -22,7 +22,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private List<BattleUnit> _enemyUnitsTriple;
 
     [Header("UI Elements")]
-    [SerializeField] private PartyScreen _partyScreen;
     [SerializeField] private GameObject _playerElementsSingle;
     [SerializeField] private GameObject _playerElementsDouble;
     [SerializeField] private GameObject _playerElementsTriple;
@@ -189,7 +188,6 @@ public class BattleSystem : MonoBehaviour
         Field = new Field();
         BattleIsOver = false;
         EscapeAttempts = 0;
-        _partyScreen.Init();
         _selectingUnitIndex = 0;
         StateMachine.ChangeState(ActionSelectionState.Instance);
     }

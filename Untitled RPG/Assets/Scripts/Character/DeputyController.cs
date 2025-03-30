@@ -37,6 +37,12 @@ public class DeputyController : MonoBehaviour, ISavable
         UpdateDeputyBattler();
     }
 
+    private void OnDestroy()
+    {
+        _player.Character.OnMoveStart -= OnPlayerMoveStart;
+        _party.OnUpdated -= UpdateDeputyBattler;
+    }
+
     private void Update()
     {
         if (_party.Battlers.Count < 2)

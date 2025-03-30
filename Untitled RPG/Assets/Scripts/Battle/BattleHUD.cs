@@ -45,6 +45,11 @@ public class BattleHUD : MonoBehaviour
 
     private Battler _battler;
 
+    private void Oestroy()
+    {
+        ClearData();
+    }
+
     public void SetData(Battler battler)
     {
         // Clear previous event subscriptions if any.

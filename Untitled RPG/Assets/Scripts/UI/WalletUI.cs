@@ -10,6 +10,11 @@ public class WalletUI : MonoBehaviour
         Wallet.Instance.OnMoneyChanged += SetMoneyText;
     }
 
+    private void OnDestroy()
+    {
+        Wallet.Instance.OnMoneyChanged -= SetMoneyText;
+    }
+
     public void Show()
     {
         gameObject.SetActive(true);
