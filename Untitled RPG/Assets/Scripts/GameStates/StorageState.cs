@@ -70,14 +70,12 @@ public class StorageState : State<GameController>
                 return;
             }
 
-            // If the player re-selects the original slot, cancel the move.
+            // If the selected slot is the same as the one being moved, place the battler back in its original slot.
             if (slotIndex == _selectedSlotToMove)
             {
                 _isMovingBattler = false;
                 _storageUI.PlaceBattlerIntoSlot(slotIndex, _selectedBattlerToMove);
-                _storageUI.SetStorageData();
-                _storageUI.SetPartyData();
-                AudioManager.Instance.PlaySFX(AudioID.UISelect);
+                RefreshUI(AudioID.UISelect);
                 return;
             }
 
@@ -94,10 +92,7 @@ public class StorageState : State<GameController>
                 _party.Battlers.RemoveAt(partyIndex);
                 _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, _selectedBattlerToMove);
                 _party.PartyUpdated();
-                _storageUI.SetStorageData();
-                _storageUI.SetPartyData();
-                _storageUI.SetSelectedIndex(_storageUI.GetSlotIndexForBattler(_selectedBattlerToMove));
-                AudioManager.Instance.PlaySFX(AudioID.UISelect);
+                RefreshUI(AudioID.UISelect, true);
                 return;
             }
 
@@ -110,7 +105,7 @@ public class StorageState : State<GameController>
                 return;
             }
 
-            // Default case: swap battlers.
+            // Otherwise, swap the battlers between the two slots.
             _storageUI.PlaceBattlerIntoSlot(secondSlotIndex, _selectedBattlerToMove);
             if (secondBattler != null)
             {
@@ -119,10 +114,7 @@ public class StorageState : State<GameController>
             // Clean up any null entries in the party list.
             _ = _party.Battlers.RemoveAll(static b => b == null);
             _party.PartyUpdated();
-            _storageUI.SetStorageData();
-            _storageUI.SetPartyData();
-            _storageUI.SetSelectedIndex(_storageUI.GetSlotIndexForBattler(_selectedBattlerToMove));
-            AudioManager.Instance.PlaySFX(AudioID.UISelect);
+            RefreshUI(AudioID.UISelect, true);
         }
     }
 
@@ -130,9 +122,7 @@ public class StorageState : State<GameController>
     {
         _isMovingBattler = false;
         _storageUI.RestoreSelection();
-        _storageUI.SetStorageData();
-        _storageUI.SetPartyData();
-        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+        RefreshUI(AudioID.UIReturn);
         yield return DialogueManager.Instance.ShowDialogueText($"{PlayerController.Instance.Name} cannot be moved to the barracks.");
     }
 
@@ -146,7 +136,6 @@ public class StorageState : State<GameController>
 
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
 
-        // Display a menu with options: Move, Summary, or Back.
         DynamicMenuState.Instance.MenuItems = new List<string>
         {
             "Move",
@@ -196,9 +185,7 @@ public class StorageState : State<GameController>
             _isMovingBattler = false;
             _storageUI.RestoreSelection();
             _storageUI.PlaceBattlerIntoSlot(_selectedSlotToMove, _selectedBattlerToMove);
-            _storageUI.SetStorageData();
-            _storageUI.SetPartyData();
-            AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+            RefreshUI(AudioID.UIReturn);
         }
         else
         {
@@ -206,5 +193,17 @@ public class StorageState : State<GameController>
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             _gameController.StateMachine.Pop();
         }
+    }
+
+    private void RefreshUI(AudioID sfx, bool updateSelection = false)
+    {
+        _storageUI.SetStorageData();
+        _storageUI.SetPartyData();
+        if (updateSelection)
+        {
+            // If the selection is updated, set the selected index to the battler being moved.
+            _storageUI.SetSelectedIndex(_storageUI.GetSlotIndexForBattler(_selectedBattlerToMove));
+        }
+        AudioManager.Instance.PlaySFX(sfx);
     }
 }
