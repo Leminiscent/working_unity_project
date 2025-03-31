@@ -144,12 +144,13 @@ public class InventoryUI : SelectionUI<TextSlot>
         {
             return;
         }
-        
+
         int maxScrollIndex = _slotUIList.Count - ITEMS_IN_VIEWPORT;
         float scrollPos = Mathf.Clamp(_selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex) * _slotUIList[0].Height;
+        _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
+
         bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
         bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
-        _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
 
         if (_upArrow.gameObject.activeSelf != showUpArrow)
         {
