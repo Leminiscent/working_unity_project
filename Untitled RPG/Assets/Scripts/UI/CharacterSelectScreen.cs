@@ -68,7 +68,7 @@ public class CharacterSelectScreen : DummySelectionUI
         UpdateSelectionBar();
     }
 
-    public void UpdateDetails() // TODO: Tween details left and right.
+    public void UpdateDetails()
     {
         if (_availableBattlers == null || _availableBattlers.Count == 0)
         {
