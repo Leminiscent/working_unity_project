@@ -33,12 +33,13 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         SetSelectionSettings(SelectionType.List, 1);
         SetItems(items);
 
-        gameObject.SetActive(true); // TODO: Tween in the selector.
+        yield return ObjectUtil.ScaleIn(gameObject);
         UpdateDisplay();
 
         yield return new WaitUntil(() => _selected);
         onCountSelected?.Invoke(_currentCount);
-        gameObject.SetActive(false); // TODO: Tween out the selector.
+        
+        yield return ObjectUtil.ScaleOut(gameObject);
     }
 
     private void Update()
