@@ -26,6 +26,6 @@ public class SkillBook : ItemBase
 
     public bool CanBeLearned(Battler battler)
     {
-        return battler.Base.LearnableBySkillBook.Contains(Move);
+        return !battler.HasMove(Move) && battler.Base.LearnableBySkillBook.Contains(Move);
     }
 }

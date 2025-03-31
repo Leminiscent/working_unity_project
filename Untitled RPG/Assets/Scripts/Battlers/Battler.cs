@@ -256,6 +256,7 @@ public class Battler
         }
 
         Moves.Add(new Move(moveToLearn));
+        AudioManager.Instance.PlaySFX(AudioID.MoveLearned);
     }
 
     public bool HasMove(MoveBase move)
