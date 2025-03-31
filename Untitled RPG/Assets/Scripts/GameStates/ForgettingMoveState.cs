@@ -33,7 +33,7 @@ public class ForgettingMoveState : State<GameController>
         // Activate and initialize the UI.
         if (_moveForgettingUI != null)
         {
-            StartCoroutine(ObjectUtil.ScaleIn(_moveForgettingUI.gameObject));
+            _ = StartCoroutine(ObjectUtil.ScaleIn(_moveForgettingUI.gameObject));
             _moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
             _moveForgettingUI.OnSelected += OnMoveSelected;
             _moveForgettingUI.OnBack += OnBack;
@@ -56,7 +56,7 @@ public class ForgettingMoveState : State<GameController>
     {
         if (_moveForgettingUI != null)
         {
-            StartCoroutine(ObjectUtil.ScaleOut(_moveForgettingUI.gameObject));
+            _ = StartCoroutine(ObjectUtil.ScaleOut(_moveForgettingUI.gameObject));
             _moveForgettingUI.OnSelected -= OnMoveSelected;
             _moveForgettingUI.OnBack -= OnBack;
         }
