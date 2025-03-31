@@ -98,7 +98,7 @@ public class BattleHUD : MonoBehaviour
         _battler.OnHPChanged += UpdateHP;
     }
 
-    private void SetStatusText()
+    private void SetStatusText() // TODO: Tween in and out the status texts.
     {
         if (_battler == null)
         {
@@ -203,16 +203,6 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
-    public void ToggleExpBar(bool toggle)
-    {
-        if (_expBar == null)
-        {
-            return;
-        }
-
-        _expBar.transform.parent.gameObject.SetActive(toggle);
-    }
-
     public void ToggleAffinityBar(bool toggle)
     {
         if (_affinityBar == null)
@@ -220,7 +210,7 @@ public class BattleHUD : MonoBehaviour
             return;
         }
 
-        _affinityBar.transform.parent.gameObject.SetActive(toggle);
+        _affinityBar.transform.parent.gameObject.SetActive(toggle); // TODO: Tween in and out the bar.
     }
 
     public void SetAffinity()
@@ -349,7 +339,7 @@ public class BattleHUD : MonoBehaviour
         {
             if (arrowPrefab != null && arrowContainer != null)
             {
-                _ = Instantiate(arrowPrefab, arrowContainer);
+                _ = Instantiate(arrowPrefab, arrowContainer); // TODO: Tween in the arrows.
             }
         }
     }
@@ -358,7 +348,7 @@ public class BattleHUD : MonoBehaviour
     {
         for (int i = arrowContainer.childCount - 1; i >= 0; i--)
         {
-            Destroy(arrowContainer.GetChild(i).gameObject);
+            Destroy(arrowContainer.GetChild(i).gameObject); // TODO: Tween out the arrows.
         }
     }
 

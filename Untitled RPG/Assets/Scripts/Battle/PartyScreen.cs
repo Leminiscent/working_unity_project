@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class PartyScreen : SelectionUI<TextSlot>
 {

@@ -39,6 +39,8 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
             AudioManager.Instance.PlaySFX(AudioID.Spotted, pauseMusic: true);
             yield return ShowExclamationIcon(0.5f);
             yield return DialogueManager.Instance.ShowDialogue(_dialogue, false, 0.75f);
+
+            yield return Fader.Instance.FadeIn(0.5f);
             GameController.Instance.StartCommanderBattle(this);
         }
         else
@@ -62,6 +64,7 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
 
         // Pop the cutscene state.
         GameController.Instance.StateMachine.Pop();
+        yield return Fader.Instance.FadeIn(0.5f);
         GameController.Instance.StartCommanderBattle(this);
     }
 
@@ -114,9 +117,9 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
 
     private IEnumerator ShowExclamationIcon(float duration)
     {
-        Character.Exclamation.SetActive(true);
+        Character.Exclamation.SetActive(true); // TODO: Tween in the exclamation icon.
         yield return new WaitForSeconds(duration);
-        Character.Exclamation.SetActive(false);
+        Character.Exclamation.SetActive(false); // TODO: Tween out the exclamation icon.
     }
 
     private Vector3 CalculateMoveVectorTowards(Vector3 targetPosition)

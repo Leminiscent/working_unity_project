@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class UseItemState : State<GameController>
 {

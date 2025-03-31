@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class ForgettingMoveState : State<GameController>
 {
@@ -33,7 +33,7 @@ public class ForgettingMoveState : State<GameController>
         // Activate and initialize the UI.
         if (_moveForgettingUI != null)
         {
-            _moveForgettingUI.gameObject.SetActive(true);
+            StartCoroutine(ObjectUtil.ScaleIn(_moveForgettingUI.gameObject));
             _moveForgettingUI.SetMoveData(CurrentMoves, NewMove);
             _moveForgettingUI.OnSelected += OnMoveSelected;
             _moveForgettingUI.OnBack += OnBack;
@@ -56,7 +56,7 @@ public class ForgettingMoveState : State<GameController>
     {
         if (_moveForgettingUI != null)
         {
-            _moveForgettingUI.gameObject.SetActive(false);
+            StartCoroutine(ObjectUtil.ScaleOut(_moveForgettingUI.gameObject));
             _moveForgettingUI.OnSelected -= OnMoveSelected;
             _moveForgettingUI.OnBack -= OnBack;
         }

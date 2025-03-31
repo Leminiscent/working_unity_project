@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class InventoryUI : SelectionUI<TextSlot>
 {
@@ -48,7 +48,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         _categorySelectionUI.OnIndexChanged -= OnCategoryChanged;
     }
 
-    private void UpdateCategoriesAndItemList()
+    private void UpdateCategoriesAndItemList() // TODO: Tween categories left and right.
     {
         UpdateAvailableCategories();
         UpdateSelectedCategory();
@@ -149,8 +149,8 @@ public class InventoryUI : SelectionUI<TextSlot>
         bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
         bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
         _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
-        _upArrow.gameObject.SetActive(showUpArrow);
-        _downArrow.gameObject.SetActive(showDownArrow);
+        _upArrow.gameObject.SetActive(showUpArrow); // TODO: Tween in and out the arrow.
+        _downArrow.gameObject.SetActive(showDownArrow); // TODO: Tween in and out the arrow.
     }
 
     public override void ResetSelection()
@@ -160,6 +160,16 @@ public class InventoryUI : SelectionUI<TextSlot>
         _downArrow.gameObject.SetActive(false);
         _itemIcon.sprite = null;
         _itemDescription.text = "";
+    }
+
+    public override void EnableInput(bool enable)
+    {
+        base.EnableInput(enable);
+        
+        if (_categorySelectionUI != null)
+        {
+            _categorySelectionUI.EnableInput(enable);
+        }
     }
 
     private int GetFirstNonEmptyCategory()

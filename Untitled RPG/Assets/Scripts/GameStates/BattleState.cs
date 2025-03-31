@@ -1,7 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class BattleState : State<GameController>
 {
@@ -90,15 +91,7 @@ public class BattleState : State<GameController>
 
     public override void Exit()
     {
-        if (BattleSystem != null)
-        {
-            BattleSystem.gameObject.SetActive(false);
-        }
-        if (_gameController.WorldCamera != null)
-        {
-            _gameController.WorldCamera.gameObject.SetActive(true);
-        }
-        BattleSystem.OnBattleOver -= EndBattle;
+        _ = StartCoroutine(ExitBattleState());
     }
 
     private void EndBattle(bool won)
@@ -112,5 +105,20 @@ public class BattleState : State<GameController>
             }
             _gameController.StateMachine.Pop();
         }
+    }
+
+    private IEnumerator ExitBattleState()
+    {
+        if (BattleSystem != null)
+        {
+            BattleSystem.gameObject.SetActive(false);
+        }
+        if (_gameController.WorldCamera != null)
+        {
+            _gameController.WorldCamera.gameObject.SetActive(true);
+        }
+        BattleSystem.OnBattleOver -= EndBattle;
+
+        yield return Fader.Instance.FadeOut(0.5f);
     }
 }

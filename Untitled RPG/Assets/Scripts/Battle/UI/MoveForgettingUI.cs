@@ -2,7 +2,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class MoveForgettingUI : SelectionUI<TextSlot>
 {

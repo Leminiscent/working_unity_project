@@ -1,5 +1,5 @@
 using System.Linq;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class ActionSelectionUI : SelectionUI<TextSlot>
 {

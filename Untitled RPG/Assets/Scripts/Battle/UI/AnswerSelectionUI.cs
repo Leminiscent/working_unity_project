@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class AnswerSelectionUI : SelectionUI<TextSlot>
 {

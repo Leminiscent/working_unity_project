@@ -17,13 +17,13 @@ public class WalletUI : MonoBehaviour
 
     public void Show()
     {
-        gameObject.SetActive(true);
+        gameObject.SetActive(true); // TODO: Tween in the UI.
         SetMoneyText();
     }
 
     public void Close()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO: Tween out the UI.
     }
 
     private void SetMoneyText()

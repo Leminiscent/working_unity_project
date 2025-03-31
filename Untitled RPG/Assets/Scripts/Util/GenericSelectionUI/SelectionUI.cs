@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utils.GenericSelectionUI
+namespace Util.GenericSelectionUI
 {
     public class SelectionUI<T> : MonoBehaviour where T : ISelectableItem
     {
@@ -44,7 +44,7 @@ namespace Utils.GenericSelectionUI
             _items = null;
         }
 
-        public void EnableInput(bool enable)
+        public virtual void EnableInput(bool enable)
         {
             _inputEnabled = enable;
         }

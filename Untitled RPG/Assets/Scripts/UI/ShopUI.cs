@@ -4,7 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class ShopUI : SelectionUI<TextSlot>
 {
@@ -129,7 +129,7 @@ public class ShopUI : SelectionUI<TextSlot>
 
         bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
         bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
-        _upArrow.gameObject.SetActive(showUpArrow);
-        _downArrow.gameObject.SetActive(showDownArrow);
+        _upArrow.gameObject.SetActive(showUpArrow); // TODO: Tween the arrows in and out.
+        _downArrow.gameObject.SetActive(showDownArrow); // TODO: Tween the arrows in and out.
     }
 }

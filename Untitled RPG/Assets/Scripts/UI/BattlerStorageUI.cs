@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class BattlerStorageUI : SelectionUI<ImageSlot>
 {
@@ -152,7 +152,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
         _transferImage.transform.position = _storageSlotImages[slotIndex].transform.position +
                                             (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
         _storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
-        _transferImage.gameObject.SetActive(true);
+        _transferImage.gameObject.SetActive(true); // TODO: Tween in the image.
     }
 
     public Battler PeekBattlerInSlot(int slotIndex)
@@ -238,7 +238,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
             _storage.AddBattler(battler, SelectedDepot, depotSlotIndex);
         }
 
-        _transferImage.gameObject.SetActive(false);
+        _transferImage.gameObject.SetActive(false); // TODO: Tween out the image.
     }
 
     public List<Battler> GetAllBattlers()

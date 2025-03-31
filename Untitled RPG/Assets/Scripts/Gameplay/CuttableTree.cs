@@ -24,7 +24,7 @@ public class CuttableTree : MonoBehaviour, IInteractable
 
             if (selectedChoice == 0)
             {
-                gameObject.SetActive(false);
+                yield return ObjectUtil.ScaleOut(gameObject, 0.05f);
                 yield return DialogueManager.Instance.ShowDialogueText($"{playerName} cut down the tree! The path forward has been cleared!");
             }
         }

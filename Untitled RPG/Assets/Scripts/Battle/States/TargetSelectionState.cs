@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class TargetSelectionState : State<BattleSystem>
 {

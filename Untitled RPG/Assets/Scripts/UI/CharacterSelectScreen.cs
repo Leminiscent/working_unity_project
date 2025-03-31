@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class CharacterSelectScreen : DummySelectionUI
 {
@@ -68,7 +68,7 @@ public class CharacterSelectScreen : DummySelectionUI
         UpdateSelectionBar();
     }
 
-    public void UpdateDetails()
+    public void UpdateDetails() // TODO: Tween details left and right.
     {
         if (_availableBattlers == null || _availableBattlers.Count == 0)
         {

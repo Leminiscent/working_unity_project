@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class SummaryScreenUI : SelectionUI<TextSlot>
 {
@@ -90,7 +90,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     public void ShowPage(int index)
     {
-        switch (index)
+        switch (index) // TODO: Tween pages left and right.
         {
             case 0:
                 _pageNameText.text = "Battler Details";

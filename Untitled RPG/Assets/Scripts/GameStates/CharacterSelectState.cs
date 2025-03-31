@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class CharacterSelectState : State<GameController>
 {

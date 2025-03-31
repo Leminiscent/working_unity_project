@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class RunTurnState : State<BattleSystem>
 {
@@ -725,7 +725,8 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return null;
         }
-        _battleSystem.BattleOver(won);
+
+        _ = StartCoroutine(_battleSystem.BattleOver(won));
     }
 
     private void AdjustBattleActionsForDefeatedUnit(BattleUnit defeatedUnit, List<BattleUnit> fallbackUnits)
@@ -787,7 +788,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return null;
             }
 
-            _battleSystem.BattleOver(true);
+            _ = StartCoroutine(_battleSystem.BattleOver(true));
         }
         else
         {
@@ -801,7 +802,7 @@ public class RunTurnState : State<BattleSystem>
                     yield return null;
                 }
 
-                _battleSystem.BattleOver(true);
+                _ = StartCoroutine(_battleSystem.BattleOver(true));
             }
             else
             {

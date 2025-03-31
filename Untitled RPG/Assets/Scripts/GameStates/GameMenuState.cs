@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class GameMenuState : State<GameController>
 {
@@ -28,7 +28,7 @@ public class GameMenuState : State<GameController>
         _gameController = owner;
         if (_menuController != null)
         {
-            _menuController.gameObject.SetActive(true);
+            _ = StartCoroutine(ObjectUtil.ScaleIn(_menuController.gameObject));
             _menuController.OnSelected += OnMenuItemSelected;
             _menuController.OnBack += OnBack;
         }
@@ -50,7 +50,7 @@ public class GameMenuState : State<GameController>
     {
         if (_menuController != null)
         {
-            _menuController.gameObject.SetActive(false);
+            _ = StartCoroutine(ObjectUtil.ScaleOut(_menuController.gameObject));
             _menuController.OnSelected -= OnMenuItemSelected;
             _menuController.OnBack -= OnBack;
         }
@@ -61,19 +61,19 @@ public class GameMenuState : State<GameController>
         switch (selection)
         {
             case 0: // Party
-                _gameController.StateMachine.Push(PartyState.Instance);
+                StartCoroutine(ProcessSelection(() => _gameController.StateMachine.Push(PartyState.Instance)));
                 break;
             case 1: // Inventory
-                _gameController.StateMachine.Push(InventoryState.Instance);
+                StartCoroutine(ProcessSelection(() => _gameController.StateMachine.Push(InventoryState.Instance)));
                 break;
             case 2: // Storage
-                _gameController.StateMachine.Push(StorageState.Instance);
+                StartCoroutine(ProcessSelection(() => _gameController.StateMachine.Push(StorageState.Instance)));
                 break;
             case 3: // Save
-                StartCoroutine(ProcessSaveLoad(static () => SavingSystem.Instance.Save("saveSlot1")));
+                StartCoroutine(ProcessSelection(static () => SavingSystem.Instance.Save("saveSlot1")));
                 break;
             case 4: // Load
-                StartCoroutine(ProcessSaveLoad(static () => SavingSystem.Instance.Load("saveSlot1")));
+                StartCoroutine(ProcessSelection(static () => SavingSystem.Instance.Load("saveSlot1")));
                 break;
             case 5: // Quit
 #if UNITY_EDITOR
@@ -89,12 +89,17 @@ public class GameMenuState : State<GameController>
         AudioManager.Instance.PlaySFX(AudioID.UISelect);
     }
 
-    private IEnumerator ProcessSaveLoad(Action action)
+    private IEnumerator ProcessSelection(Action action)
     {
         _menuController.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
+
         action?.Invoke();
+
+        _gameController.StateMachine.Push(CutsceneState.Instance);
         yield return Fader.Instance.FadeOut(0.5f);
+        
+        _gameController.StateMachine.Pop();
         _menuController.EnableInput(true);
     }
 

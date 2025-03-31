@@ -4,7 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class MainMenuController : SelectionUI<TextSlot>
 {

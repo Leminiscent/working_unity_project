@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class ShopSellingState : State<GameController>
 {
-    [SerializeField] private InventoryUI _playerInventoryUI;
     [SerializeField] private WalletUI _walletUI;
     [SerializeField] private CountSelectorUI _countSelectorUI;
 
     private GameController _gameController;
     private Inventory _playerInventory;
 
-    public List<ItemBase> AvailableItems { get; set; }
     public static ShopSellingState Instance { get; private set; }
 
     private void Awake()
@@ -86,7 +84,7 @@ public class ShopSellingState : State<GameController>
             yield return _countSelectorUI.ShowSelector(availableCount, sellingPrice,
                 selectedCount => countToSell = selectedCount);
 
-            DialogueManager.Instance.CloseDialogue();
+            yield return DialogueManager.Instance.CloseDialogue();
         }
 
         // If the player cancels the sale, close the wallet UI and exit.

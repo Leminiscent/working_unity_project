@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class RecruitmentState : State<BattleSystem>
 {
@@ -243,7 +243,7 @@ public class RecruitmentState : State<BattleSystem>
                 {
                     yield return null;
                 }
-                _battleSystem.BattleOver(true);
+                _ = StartCoroutine(_battleSystem.BattleOver(true));
             }
             else
             {

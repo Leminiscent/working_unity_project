@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class CountSelectorUI : SelectionUI<TextSlot>
 {
@@ -33,12 +33,12 @@ public class CountSelectorUI : SelectionUI<TextSlot>
         SetSelectionSettings(SelectionType.List, 1);
         SetItems(items);
 
-        gameObject.SetActive(true);
+        gameObject.SetActive(true); // TODO: Tween in the selector.
         UpdateDisplay();
 
         yield return new WaitUntil(() => _selected);
         onCountSelected?.Invoke(_currentCount);
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO: Tween out the selector.
     }
 
     private void Update()

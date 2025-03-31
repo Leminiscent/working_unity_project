@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class ShopMenuState : State<GameController>
 {

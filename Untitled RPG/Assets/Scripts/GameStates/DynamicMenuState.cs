@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class DynamicMenuState : State<GameController>
 {
@@ -35,7 +35,7 @@ public class DynamicMenuState : State<GameController>
         // Build the menu items from the provided list.
         BuildMenuUI();
 
-        _dynamicMenuUI.gameObject.SetActive(true);
+        _ = StartCoroutine(ObjectUtil.ScaleIn(_dynamicMenuUI.gameObject));
         _dynamicMenuUI.OnSelected += OnItemSelected;
         _dynamicMenuUI.OnBack += OnBack;
     }
@@ -48,7 +48,7 @@ public class DynamicMenuState : State<GameController>
     public override void Exit()
     {
         _dynamicMenuUI.ClearItems();
-        _dynamicMenuUI.gameObject.SetActive(false);
+        _ = StartCoroutine(ObjectUtil.ScaleOut(_dynamicMenuUI.gameObject));
         _dynamicMenuUI.OnSelected -= OnItemSelected;
         _dynamicMenuUI.OnBack -= OnBack;
     }

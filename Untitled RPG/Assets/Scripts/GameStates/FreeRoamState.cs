@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class FreeRoamState : State<GameController>
 {

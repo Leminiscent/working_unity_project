@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class ShopBuyingState : State<GameController>
 {
@@ -84,7 +84,7 @@ public class ShopBuyingState : State<GameController>
         yield return _countSelectorUI.ShowSelector(99, item.Price,
             selectedCount => countToBuy = selectedCount);
 
-        DialogueManager.Instance.CloseDialogue();
+        yield return DialogueManager.Instance.CloseDialogue();
 
         // If the user cancels the purchase (selects 0), resume browsing.
         if (countToBuy == 0)

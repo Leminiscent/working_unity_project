@@ -100,7 +100,10 @@ public class NPCController : MonoBehaviour, IInteractable, ISavable
             }
             else
             {
-                yield return DialogueManager.Instance.ShowDialogue(_activeQuest.Base.InProgressDialogue);
+                if (_activeQuest.Base.InProgressDialogue != null && _activeQuest.Base.InProgressDialogue.Lines.Count > 0)
+                {
+                    yield return DialogueManager.Instance.ShowDialogue(_activeQuest.Base.InProgressDialogue);
+                }
             }
         }
         // Fallback dialogue or service interaction (Healer or Merchant).

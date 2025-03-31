@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class ChoiceBox : SelectionUI<TextSlot>
 {
@@ -29,7 +29,7 @@ public class ChoiceBox : SelectionUI<TextSlot>
         SetSelectionSettings(SelectionType.List, 1);
         SetItems(items);
 
-        gameObject.SetActive(true);
+        gameObject.SetActive(true); // TODO: Tween in the choice box.
 
         bool choiceMade = false;
         int selectedIndex = -1;
@@ -65,7 +65,7 @@ public class ChoiceBox : SelectionUI<TextSlot>
         OnBack -= onBackHandler;
 
         onChoiceSelected?.Invoke(selectedIndex);
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO: Tween out the choice box.
         ResetSelection();
     }
 

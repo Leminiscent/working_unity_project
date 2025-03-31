@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
-using Utils.GenericSelectionUI;
+using Util.StateMachine;
+using Util.GenericSelectionUI;
+using System.Collections;
 
 public class SummaryState : State<GameController>
 {
@@ -45,17 +46,29 @@ public class SummaryState : State<GameController>
             SelectedBattlerIndex = 0;
         }
 
+        _ = StartCoroutine(EnterState());
+
+        // Initialize the selection UIs.
+        InitializeBattlerSelectionUI();
+        InitializePageSelectionUI();
+    }
+
+    private IEnumerator EnterState()
+    {
+        _gameController.StateMachine.Push(CutsceneState.Instance);
+        yield return Fader.Instance.FadeIn(0.5f);
+
         // Activate the summary UI and show initial details.
         _summaryScreenUI.gameObject.SetActive(true);
+        _summaryScreenUI.EnableInput(true);
         if (_currentBattlerList.Count > 0)
         {
             _summaryScreenUI.SetBasicDetails(_currentBattlerList[SelectedBattlerIndex]);
         }
         _summaryScreenUI.ShowPage(_selectedPage);
 
-        // Initialize the selection UIs.
-        InitializeBattlerSelectionUI();
-        InitializePageSelectionUI();
+        yield return Fader.Instance.FadeOut(0.5f);
+        _gameController.StateMachine.Pop();
     }
 
     public override void Execute()
@@ -93,7 +106,7 @@ public class SummaryState : State<GameController>
             }
             else
             {
-                _gameController.StateMachine.Pop();
+                _ = StartCoroutine(LeaveState());
                 return;
             }
         }
@@ -122,6 +135,19 @@ public class SummaryState : State<GameController>
         }
     }
 
+    private IEnumerator LeaveState()
+    {
+        _summaryScreenUI.EnableInput(false);
+        _battlerSelectionUI.EnableInput(false);
+        _pageSelectionUI.EnableInput(false);
+        yield return Fader.Instance.FadeIn(0.5f);
+
+        _gameController.StateMachine.ChangeState(CutsceneState.Instance);
+        yield return Fader.Instance.FadeOut(0.5f);
+
+        _gameController.StateMachine.Pop();
+    }
+
     private void InitializeBattlerSelectionUI()
     {
         _battlerSelectionUI = _gameController.gameObject.AddComponent<DummySelectionUI>();
@@ -135,6 +161,7 @@ public class SummaryState : State<GameController>
         }
         _battlerSelectionUI.SetItems(battlerItems);
         _battlerSelectionUI.SetSelectedIndex(SelectedBattlerIndex);
+        _battlerSelectionUI.EnableInput(true);
         _battlerSelectionUI.OnIndexChanged += OnBattlerIndexChanged;
     }
 
@@ -157,6 +184,7 @@ public class SummaryState : State<GameController>
         List<DummySelectable> pageItems = new() { new DummySelectable(), new DummySelectable() };
         _pageSelectionUI.SetItems(pageItems);
         _pageSelectionUI.SetSelectedIndex(_selectedPage);
+        _pageSelectionUI.EnableInput(true);
         _pageSelectionUI.OnIndexChanged += OnPageIndexChanged;
     }
 

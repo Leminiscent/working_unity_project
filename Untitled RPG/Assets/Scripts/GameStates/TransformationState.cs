@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class TransformationState : State<GameController>
 {
@@ -40,7 +40,9 @@ public class TransformationState : State<GameController>
 
         if (_transformationUI != null)
         {
+            yield return Fader.Instance.FadeIn(0.5f);
             _transformationUI.SetActive(true);
+            yield return Fader.Instance.FadeOut(0.5f);
         }
         else
         {
@@ -84,6 +86,7 @@ public class TransformationState : State<GameController>
 
         if (_transformationUI != null)
         {
+            yield return Fader.Instance.FadeIn(0.5f);
             _transformationUI.SetActive(false);
         }
 
@@ -101,5 +104,6 @@ public class TransformationState : State<GameController>
         }
 
         GameController.Instance.StateMachine.Pop();
+        yield return Fader.Instance.FadeOut(0.5f);
     }
 }

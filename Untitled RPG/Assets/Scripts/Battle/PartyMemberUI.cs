@@ -120,7 +120,7 @@ public class PartyMemberUI : MonoBehaviour
         }
     }
 
-    private void SetStatusText()
+    private void SetStatusText() // TODO: Tween in and out the status texts.
     {
         if (_brnText != null)
         {

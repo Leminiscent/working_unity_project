@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class BattleSystem : MonoBehaviour
 {
@@ -115,6 +115,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SetupBattle()
     {
+        _ = StartCoroutine(Fader.Instance.FadeOut(0.5f));
         StateMachine = new StateMachine<BattleSystem>(this);
         _battleActions = new List<BattleAction>();
         UnitSelectionIndices = new Dictionary<BattleUnit, int>();
@@ -192,14 +193,15 @@ public class BattleSystem : MonoBehaviour
         StateMachine.ChangeState(ActionSelectionState.Instance);
     }
 
-    public void BattleOver(bool won)
+    public IEnumerator BattleOver(bool won)
     {
         BattleIsOver = true;
         PlayerParty.Battlers.ForEach(static b => b.OnBattleOver());
         PlayerUnits.ForEach(static u => u.ClearData());
         EnemyUnits.ForEach(static u => u.ClearData());
-
         ActionSelectionState.Instance.SelectionUI.ResetSelection();
+
+        yield return Fader.Instance.FadeIn(0.5f);
         OnBattleOver?.Invoke(won);
     }
 

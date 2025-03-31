@@ -66,7 +66,7 @@ public class BattleUnit : MonoBehaviour
         }
         if (Hud != null)
         {
-            Hud.gameObject.SetActive(true);
+            Hud.gameObject.SetActive(true); // TODO: Tween in the HUD.
             Hud.SetData(battler);
         }
         _currentColor = _originalColor;
@@ -82,7 +82,7 @@ public class BattleUnit : MonoBehaviour
         }
         if (Hud != null)
         {
-            Hud.gameObject.SetActive(false);
+            Hud.gameObject.SetActive(false); // TODO: Tween out the HUD.
         }
     }
 

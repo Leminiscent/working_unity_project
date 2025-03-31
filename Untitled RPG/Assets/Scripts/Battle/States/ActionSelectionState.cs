@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class ActionSelectionState : State<BattleSystem>
 {

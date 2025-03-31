@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class GameController : MonoBehaviour
 {
@@ -161,8 +161,6 @@ public class GameController : MonoBehaviour
             {
                 PartyScreen.SetPartyData();
             }
-            _battleSystem.gameObject.SetActive(false);
-            WorldCamera.gameObject.SetActive(true);
 
             BattleParty playerParty = PlayerController.GetComponent<BattleParty>();
             bool hasTransformations = playerParty.CheckForTransformations();

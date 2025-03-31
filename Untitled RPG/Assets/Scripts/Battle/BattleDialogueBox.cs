@@ -66,7 +66,7 @@ public class BattleDialogueBox : MonoBehaviour
     {
         if (_choiceBox != null)
         {
-            _choiceBox.SetActive(enabled);
+            StartCoroutine(ObjectUtil.ScaleInOut(_choiceBox, enabled));
         }
     }
 

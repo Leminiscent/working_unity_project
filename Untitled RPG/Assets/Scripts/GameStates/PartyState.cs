@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class PartyState : State<GameController>
 {
@@ -71,6 +71,7 @@ public class PartyState : State<GameController>
         }
 
         _partyScreen.gameObject.SetActive(true);
+        _partyScreen.EnableInput(true);
         _partyScreen.OnSelected += OnBattlerSelected;
         _partyScreen.OnBack += OnBack;
     }
@@ -244,10 +245,20 @@ public class PartyState : State<GameController>
                 _partyScreen.SetMessageText("You have to choose a party member!");
                 return;
             }
-            _partyScreen.gameObject.SetActive(false);
         }
         _partyScreen.ResetSelection();
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+        _ = StartCoroutine(LeaveState());
+    }
+
+    private IEnumerator LeaveState()
+    {
+        _partyScreen.EnableInput(false);
+        yield return Fader.Instance.FadeIn(0.5f);
+
+        _gameController.StateMachine.ChangeState(CutsceneState.Instance);
+        yield return Fader.Instance.FadeOut(0.5f);
+
         _gameController.StateMachine.Pop();
     }
 }

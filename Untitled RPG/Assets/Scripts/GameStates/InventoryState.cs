@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class InventoryState : State<GameController>
 {
@@ -48,6 +48,7 @@ public class InventoryState : State<GameController>
         }
 
         SelectedItem = null;
+        _inventoryUI.EnableInput(true);
         _inventoryUI.OnSelected += OnItemSelected;
         _inventoryUI.OnBack += OnBack;
     }
@@ -91,6 +92,17 @@ public class InventoryState : State<GameController>
     {
         SelectedItem = null;
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+        StartCoroutine(LeaveState());
+    }
+
+    private IEnumerator LeaveState()
+    {
+        _inventoryUI.EnableInput(false);
+        yield return Fader.Instance.FadeIn(0.5f);
+
+        _gameController.StateMachine.ChangeState(CutsceneState.Instance);
+        yield return Fader.Instance.FadeOut(0.5f);
+
         _gameController.StateMachine.Pop();
     }
 

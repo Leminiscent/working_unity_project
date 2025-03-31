@@ -1,4 +1,4 @@
-using Utils.GenericSelectionUI;
+using Util.GenericSelectionUI;
 
 public class DynamicMenuUI : SelectionUI<TextSlot>
 {

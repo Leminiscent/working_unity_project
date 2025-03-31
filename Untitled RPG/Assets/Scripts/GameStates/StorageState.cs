@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils.StateMachine;
+using Util.StateMachine;
 
 public class StorageState : State<GameController>
 {
@@ -33,6 +33,7 @@ public class StorageState : State<GameController>
     {
         _gameController = owner;
         _storageUI.gameObject.SetActive(true);
+        _storageUI.EnableInput(true);
         _storageUI.SetPartyData();
         _storageUI.SetStorageData();
         _storageUI.OnSelected += OnSlotSelected;
@@ -191,8 +192,19 @@ public class StorageState : State<GameController>
         {
             _storageUI.ResetSelection();
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-            _gameController.StateMachine.Pop();
+            _ = StartCoroutine(LeaveState());
         }
+    }
+
+    private IEnumerator LeaveState()
+    {
+        _storageUI.EnableInput(false);
+        yield return Fader.Instance.FadeIn(0.5f);
+
+        _gameController.StateMachine.ChangeState(CutsceneState.Instance);
+        yield return Fader.Instance.FadeOut(0.5f);
+        
+        _gameController.StateMachine.Pop();
     }
 
     private void RefreshUI(AudioID sfx, bool updateSelection = false)
