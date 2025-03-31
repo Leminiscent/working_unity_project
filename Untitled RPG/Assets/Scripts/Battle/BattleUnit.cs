@@ -66,23 +66,23 @@ public class BattleUnit : MonoBehaviour
         }
         if (Hud != null)
         {
-            Hud.gameObject.SetActive(true); // TODO: Tween in the HUD.
             Hud.SetData(battler);
+            _ = StartCoroutine(ObjectUtil.ScaleIn(Hud.gameObject));
         }
         _currentColor = _originalColor;
         _currentPos = _originalPos;
         _ = StartCoroutine(PlayEnterAnimation());
     }
 
-    public void ClearData()
+    public void ClearData(bool scaleHUD = true)
     {
         if (Battler != null && Hud != null)
         {
             Hud.ClearData();
         }
-        if (Hud != null)
+        if (scaleHUD && Hud != null)
         {
-            Hud.gameObject.SetActive(false); // TODO: Tween out the HUD.
+            _ = StartCoroutine(ObjectUtil.ScaleOut(Hud.gameObject));
         }
     }
 
@@ -339,7 +339,7 @@ public class BattleUnit : MonoBehaviour
         _currentPos = IsPlayerUnit
             ? new Vector3(_currentPos.x - GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z)
             : new Vector3(_currentPos.x + GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z);
-            
+
         AudioManager.Instance.PlaySFX(AudioID.Guard);
         _ = sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
         _ = sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));

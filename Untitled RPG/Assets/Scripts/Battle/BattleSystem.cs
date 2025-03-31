@@ -344,7 +344,7 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (BattleUnit unit in units)
         {
-            unit.ClearData();
+            unit.ClearData(false);
         }
     }
 }

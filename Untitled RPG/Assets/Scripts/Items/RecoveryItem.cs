@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Items/Create new recovery item")]
@@ -36,70 +35,77 @@ public class RecoveryItem : ItemBase
             return true;
         }
 
-        // If not a revive item, the battler must not be fainted.
+        // For non-revive items, ensure the battler is not fainted.
         if (battler.Hp == 0)
         {
             return false;
         }
 
+        bool effectApplied = false;
+
+        // Attempt HP restoration if applicable.
         if (_restoreMaxHP || _hpAmount > 0)
         {
-            // Cannot heal if HP is already full.
-            if (battler.Hp == battler.MaxHp)
+            if (battler.Hp < battler.MaxHp)
             {
-                return false;
+                battler.IncreaseHP(_restoreMaxHP ? battler.MaxHp : _hpAmount);
+                effectApplied = true;
             }
-
-            battler.IncreaseHP(_restoreMaxHP ? battler.MaxHp : _hpAmount);
         }
 
+        // Attempt status condition recovery if applicable.
         if (_recoverAllStatus || _status != ConditionID.None)
         {
-            // Cannot cure status if the battler has no statuses.
             bool hasStatuses = (battler.Statuses != null && battler.Statuses.Count > 0) ||
                                (battler.VolatileStatuses != null && battler.VolatileStatuses.Count > 0);
-            if (!hasStatuses)
+            if (hasStatuses)
             {
-                return false;
-            }
-
-            if (_recoverAllStatus)
-            {
-                battler.CureAllStatus();
-            }
-            else
-            {
-                if (battler.Statuses != null && battler.Statuses.ContainsKey(_status))
+                if (_recoverAllStatus)
                 {
-                    battler.CureStatus();
-                }
-                else if (battler.VolatileStatuses != null && battler.VolatileStatuses.ContainsKey(_status))
-                {
-                    battler.CureVolatileStatus();
+                    battler.CureAllStatus();
+                    effectApplied = true;
                 }
                 else
                 {
-                    return false;
+                    if (battler.Statuses != null && battler.Statuses.ContainsKey(_status))
+                    {
+                        battler.CureStatus();
+                        effectApplied = true;
+                    }
+                    else if (battler.VolatileStatuses != null && battler.VolatileStatuses.ContainsKey(_status))
+                    {
+                        battler.CureVolatileStatus();
+                        effectApplied = true;
+                    }
                 }
             }
         }
 
-        // Cannot restore SP if all moves are already full.
-        if (battler.Moves.All(m => m.Sp == m.Base.SP))
+        // Attempt SP restoration if applicable.
+        if (_restoreMaxSP || _spAmount > 0)
         {
-            return false;
+            bool spRestored = false;
+            foreach (Move move in battler.Moves)
+            {
+                if (move.Sp < move.Base.SP)
+                {
+                    if (_restoreMaxSP)
+                    {
+                        move.RestoreSP(move.Base.SP);
+                    }
+                    else
+                    {
+                        move.RestoreSP(_spAmount);
+                    }
+                    spRestored = true;
+                }
+            }
+            if (spRestored)
+            {
+                effectApplied = true;
+            }
         }
 
-        // If _restoreMaxSP is true, restore to max SP; otherwise, restore by _spAmount.
-        if (_restoreMaxSP)
-        {
-            battler.Moves.ForEach(m => m.RestoreSP(m.Base.SP));
-        }
-        else if (_spAmount > 0)
-        {
-            battler.Moves.ForEach(m => m.RestoreSP(_spAmount));
-        }
-
-        return true;
+        return effectApplied;
     }
 }

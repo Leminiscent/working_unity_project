@@ -123,7 +123,9 @@ public class BattleHUD : MonoBehaviour
                 continue;
             }
 
-            bool hasStatus = _battler.Statuses.ContainsKey(condition);
+            bool hasStatus = condition == ConditionID.Con
+                ? _battler.VolatileStatuses.ContainsKey(condition)
+                : _battler.Statuses.ContainsKey(condition);
 
             if (gameObject.activeInHierarchy)
             {

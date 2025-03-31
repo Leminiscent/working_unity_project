@@ -22,6 +22,9 @@ public static class ObjectUtil
             yield break;
         }
 
+        // Cancel any active tweens on the target's transform.
+        _ = target.transform.DOKill();
+
         if (active)
         {
             // Cache original scale and animate from 0 to the original scale.
