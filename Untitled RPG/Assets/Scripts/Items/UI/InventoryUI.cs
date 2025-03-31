@@ -48,7 +48,7 @@ public class InventoryUI : SelectionUI<TextSlot>
         _categorySelectionUI.OnIndexChanged -= OnCategoryChanged;
     }
 
-    private void UpdateCategoriesAndItemList() // TODO: Tween categories left and right.
+    private void UpdateCategoriesAndItemList()
     {
         UpdateAvailableCategories();
         UpdateSelectedCategory();
@@ -144,13 +144,21 @@ public class InventoryUI : SelectionUI<TextSlot>
         {
             return;
         }
+        
         int maxScrollIndex = _slotUIList.Count - ITEMS_IN_VIEWPORT;
         float scrollPos = Mathf.Clamp(_selectedItem - (ITEMS_IN_VIEWPORT / 2), 0, maxScrollIndex) * _slotUIList[0].Height;
         bool showUpArrow = _selectedItem > ITEMS_IN_VIEWPORT / 2;
         bool showDownArrow = _selectedItem < maxScrollIndex + (ITEMS_IN_VIEWPORT / 2);
         _itemListRect.localPosition = new Vector2(_itemListRect.localPosition.x, scrollPos);
-        _upArrow.gameObject.SetActive(showUpArrow); // TODO: Tween in and out the arrow.
-        _downArrow.gameObject.SetActive(showDownArrow); // TODO: Tween in and out the arrow.
+
+        if (_upArrow.gameObject.activeSelf != showUpArrow)
+        {
+            _ = StartCoroutine(ObjectUtil.ScaleInOut(_upArrow.gameObject, showUpArrow));
+        }
+        if (_downArrow.gameObject.activeSelf != showDownArrow)
+        {
+            _ = StartCoroutine(ObjectUtil.ScaleInOut(_downArrow.gameObject, showDownArrow));
+        }
     }
 
     public override void ResetSelection()
@@ -165,7 +173,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     public override void EnableInput(bool enable)
     {
         base.EnableInput(enable);
-        
+
         if (_categorySelectionUI != null)
         {
             _categorySelectionUI.EnableInput(enable);
