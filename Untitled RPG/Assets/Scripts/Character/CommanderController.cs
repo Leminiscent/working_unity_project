@@ -117,9 +117,9 @@ public class CommanderController : MonoBehaviour, IInteractable, ISavable
 
     private IEnumerator ShowExclamationIcon(float duration)
     {
-        Character.Exclamation.SetActive(true); // TODO: Tween in the exclamation icon.
+        yield return ObjectUtil.ScaleIn(Character.Exclamation);
         yield return new WaitForSeconds(duration);
-        Character.Exclamation.SetActive(false); // TODO: Tween out the exclamation icon.
+        yield return ObjectUtil.ScaleOut(Character.Exclamation);
     }
 
     private Vector3 CalculateMoveVectorTowards(Vector3 targetPosition)

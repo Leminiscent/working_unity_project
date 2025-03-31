@@ -24,22 +24,33 @@ public static class ObjectUtil
 
         if (active)
         {
+            // Cache original scale and animate from 0 to the original scale.
+            Vector3 originalScale = target.transform.localScale;
             target.transform.localScale = Vector3.zero;
             target.SetActive(true);
-            yield return target.transform.DOScale(Vector3.one, duration).SetDelay(delay).SetEase(Ease.Flash).WaitForCompletion();
+            yield return target.transform.DOScale(originalScale, duration).SetDelay(delay).SetEase(Ease.Flash).WaitForCompletion();
         }
         else
         {
-            yield return target.transform.DOScale(Vector3.zero, duration).SetDelay(delay).SetEase(Ease.Flash).OnComplete(() => target.SetActive(false)).WaitForCompletion();
+            // Cache the current (original) scale before animating to 0.
+            Vector3 originalScale = target.transform.localScale;
+            yield return target.transform.DOScale(Vector3.zero, duration).SetDelay(delay).SetEase(Ease.Flash)
+                .OnComplete(() =>
+                {
+                    target.SetActive(false);
+                    // Restore the original scale for future use.
+                    target.transform.localScale = originalScale;
+                })
+                .WaitForCompletion();
         }
     }
 
-    public static IEnumerator TweenOutwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
+    public static IEnumerator ShiftOutwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
     {
         yield return TweenPosition(target, startPosition, endPosition, true, duration, delay);
     }
 
-    public static IEnumerator TweenInwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
+    public static IEnumerator ShiftInwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
     {
         yield return TweenPosition(target, startPosition, endPosition, false, duration, delay);
     }

@@ -45,7 +45,7 @@ public class BattleHUD : MonoBehaviour
 
     private Battler _battler;
 
-    private void Oestroy()
+    private void OnDestroy()
     {
         ClearData();
     }
@@ -69,9 +69,6 @@ public class BattleHUD : MonoBehaviour
         {
             _nameText.text = _battler.Base.Name;
         }
-
-        SetLevel();
-
         if (_image != null)
         {
             _image.sprite = _battler.Base.Sprite;
@@ -81,14 +78,18 @@ public class BattleHUD : MonoBehaviour
         {
             _hpBar.SetHP((float)_battler.Hp / _battler.MaxHp);
         }
-
         if (_hpText != null)
         {
             _hpText.text = $"{_battler.Hp} / {_battler.MaxHp}";
         }
 
         SetExp();
-        ToggleAffinityBar(false);
+        SetLevel();
+
+        if (_affinityBar != null && _affinityBar.transform.parent != null)
+        {
+            _affinityBar.transform.parent.gameObject.SetActive(false);
+        }
         SetAffinity();
 
         SetStatusText();
@@ -98,41 +99,40 @@ public class BattleHUD : MonoBehaviour
         _battler.OnHPChanged += UpdateHP;
     }
 
-    private void SetStatusText() // TODO: Tween in and out the status texts.
+    private void SetStatusText()
     {
         if (_battler == null)
         {
             return;
         }
 
-        if (_brnText != null)
+        (GameObject uiElement, ConditionID condition)[] statusMappings = new (GameObject uiElement, ConditionID condition)[]
         {
-            _brnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Brn));
-        }
+            (_brnText, ConditionID.Brn),
+            (_psnText, ConditionID.Psn),
+            (_frzText, ConditionID.Frz),
+            (_slpText, ConditionID.Slp),
+            (_parText, ConditionID.Par),
+            (_conText, ConditionID.Con),
+        };
 
-        if (_psnText != null)
+        foreach ((GameObject uiElement, ConditionID condition) in statusMappings)
         {
-            _psnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Psn));
-        }
+            if (uiElement == null)
+            {
+                continue;
+            }
 
-        if (_frzText != null)
-        {
-            _frzText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Frz));
-        }
+            bool hasStatus = _battler.Statuses.ContainsKey(condition);
 
-        if (_slpText != null)
-        {
-            _slpText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Slp));
-        }
-
-        if (_parText != null)
-        {
-            _parText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Par));
-        }
-
-        if (_conText != null)
-        {
-            _conText.SetActive(_battler.VolatileStatuses.ContainsKey(ConditionID.Con));
+            if (gameObject.activeInHierarchy)
+            {
+                _ = StartCoroutine(ObjectUtil.ScaleInOut(uiElement, hasStatus));
+            }
+            else
+            {
+                uiElement.SetActive(hasStatus);
+            }
         }
     }
 
@@ -210,7 +210,7 @@ public class BattleHUD : MonoBehaviour
             return;
         }
 
-        _affinityBar.transform.parent.gameObject.SetActive(toggle); // TODO: Tween in and out the bar.
+        _ = StartCoroutine(ObjectUtil.ScaleInOut(_affinityBar.transform.parent.gameObject, toggle));
     }
 
     public void SetAffinity()
@@ -339,7 +339,8 @@ public class BattleHUD : MonoBehaviour
         {
             if (arrowPrefab != null && arrowContainer != null)
             {
-                _ = Instantiate(arrowPrefab, arrowContainer); // TODO: Tween in the arrows.
+                GameObject arrow = Instantiate(arrowPrefab, arrowContainer);
+                _ = StartCoroutine(ObjectUtil.ScaleIn(arrow));
             }
         }
     }
@@ -348,7 +349,12 @@ public class BattleHUD : MonoBehaviour
     {
         for (int i = arrowContainer.childCount - 1; i >= 0; i--)
         {
-            Destroy(arrowContainer.GetChild(i).gameObject); // TODO: Tween out the arrows.
+            Transform child = arrowContainer.GetChild(i);
+            if (child != null)
+            {
+                _ = StartCoroutine(ObjectUtil.ScaleOut(child.gameObject));
+                Destroy(child.gameObject, 0.1f);
+            }
         }
     }
 

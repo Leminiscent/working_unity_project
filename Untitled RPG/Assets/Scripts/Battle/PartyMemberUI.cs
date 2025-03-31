@@ -27,7 +27,7 @@ public class PartyMemberUI : MonoBehaviour
 
     private Battler _battler;
 
-    private void Oestroy()
+    private void OnDestroy()
     {
         ClearData();
     }
@@ -120,31 +120,39 @@ public class PartyMemberUI : MonoBehaviour
         }
     }
 
-    private void SetStatusText() // TODO: Tween in and out the status texts.
+    private void SetStatusText()
     {
-        if (_brnText != null)
+        if (_battler == null)
         {
-            _brnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Brn));
+            return;
         }
 
-        if (_psnText != null)
+        (GameObject uiElement, ConditionID condition)[] statusMappings = new (GameObject uiElement, ConditionID condition)[]
         {
-            _psnText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Psn));
-        }
+            (_brnText, ConditionID.Brn),
+            (_psnText, ConditionID.Psn),
+            (_frzText, ConditionID.Frz),
+            (_slpText, ConditionID.Slp),
+            (_parText, ConditionID.Par),
+        };
 
-        if (_frzText != null)
+        foreach ((GameObject uiElement, ConditionID condition) in statusMappings)
         {
-            _frzText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Frz));
-        }
+            if (uiElement == null)
+            {
+                continue;
+            }
 
-        if (_slpText != null)
-        {
-            _slpText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Slp));
-        }
+            bool hasStatus = _battler.Statuses.ContainsKey(condition);
 
-        if (_parText != null)
-        {
-            _parText.SetActive(_battler.Statuses.ContainsKey(ConditionID.Par));
+            if (gameObject.activeInHierarchy)
+            {
+                _ = StartCoroutine(ObjectUtil.ScaleInOut(uiElement, hasStatus));
+            }
+            else
+            {
+                uiElement.SetActive(hasStatus);
+            }
         }
     }
 

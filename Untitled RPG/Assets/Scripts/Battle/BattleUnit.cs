@@ -339,9 +339,10 @@ public class BattleUnit : MonoBehaviour
         _currentPos = IsPlayerUnit
             ? new Vector3(_currentPos.x - GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z)
             : new Vector3(_currentPos.x + GUARD_OFFSET_X, _originalPos.y - GUARD_OFFSET_Y, _currentPos.z);
+            
+        AudioManager.Instance.PlaySFX(AudioID.Guard);
         _ = sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
         _ = sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));
-        AudioManager.Instance.PlaySFX(AudioID.Guard);
         yield return sequence.WaitForCompletion();
     }
 
