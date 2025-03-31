@@ -189,7 +189,8 @@ public enum AudioID
     BattlerObtained,
     SetStatus,
     Spotted,
-    LevelUp
+    LevelUp,
+    MoveLearned
 }
 
 [System.Serializable]

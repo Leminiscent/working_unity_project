@@ -98,6 +98,8 @@ public class BattleParty : MonoBehaviour
         {
             battler.RestoreBattler();
         }
+
+        AudioManager.Instance.PlaySFX(AudioID.Heal);
     }
 
     public static BattleParty GetPlayerParty()
