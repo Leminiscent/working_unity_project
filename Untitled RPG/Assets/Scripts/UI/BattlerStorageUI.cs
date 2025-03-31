@@ -99,8 +99,9 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
 
         if (_transferImage.gameObject.activeSelf)
         {
-            _transferImage.transform.position = _storageSlotImages[_selectedItem].transform.position +
-                                                (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
+            Vector3 startPosition = _transferImage.transform.position;
+            Vector3 endPosition = _storageSlotImages[_selectedItem].transform.position + (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
+            _ = StartCoroutine(ObjectUtil.TweenPosition(_transferImage.gameObject, startPosition, endPosition));
         }
     }
 
@@ -145,14 +146,15 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
         return prevSelectedDepot != SelectedDepot || Input.GetButtonDown("Back");
     }
 
-    // Updates the transfer image's sprite, position, and visibility.
+    // Displays the transfer image at the specified slot index.
     private void ShowTransferImage(int slotIndex)
     {
         _transferImage.sprite = _storageSlotImages[slotIndex].sprite;
-        _transferImage.transform.position = _storageSlotImages[slotIndex].transform.position +
-                                            (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
         _storageSlotImages[slotIndex].color = new Color(1, 1, 1, 0);
-        _transferImage.gameObject.SetActive(true); // TODO: Tween in the image.
+
+        Vector3 startPosition = _storageSlotImages[slotIndex].transform.position;
+        Vector3 endPosition = startPosition + (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
+        _ = StartCoroutine(ObjectUtil.TweenOutwards(_transferImage.gameObject, startPosition, endPosition));
     }
 
     public Battler PeekBattlerInSlot(int slotIndex)
@@ -183,7 +185,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
         return -1;
     }
 
-    public Battler TakeBattlerFromSlot(int slotIndex)
+    public Battler TakeBattlerFromSlot(int slotIndex, bool isSwap = false)
     {
         Battler battler;
         if (IsPartySlot(slotIndex))
@@ -214,7 +216,11 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
             _storage.RemoveBattler(SelectedDepot, depotSlotIndex);
         }
 
-        ShowTransferImage(slotIndex);
+        if (!isSwap)
+        {
+            ShowTransferImage(slotIndex);
+        }
+        
         return battler;
     }
 
@@ -238,7 +244,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
             _storage.AddBattler(battler, SelectedDepot, depotSlotIndex);
         }
 
-        _transferImage.gameObject.SetActive(false); // TODO: Tween out the image.
+        _transferImage.gameObject.SetActive(false);
     }
 
     public List<Battler> GetAllBattlers()

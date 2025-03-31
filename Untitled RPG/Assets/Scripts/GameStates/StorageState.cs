@@ -33,6 +33,7 @@ public class StorageState : State<GameController>
     {
         _gameController = owner;
         _storageUI.gameObject.SetActive(true);
+        _storageUI.ResetSelection();
         _storageUI.EnableInput(true);
         _storageUI.SetPartyData();
         _storageUI.SetStorageData();
@@ -84,7 +85,7 @@ public class StorageState : State<GameController>
             _isMovingBattler = false;
             int firstSlotIndex = _selectedSlotToMove;
             int secondSlotIndex = slotIndex;
-            Battler secondBattler = _storageUI.TakeBattlerFromSlot(secondSlotIndex);
+            Battler secondBattler = _storageUI.TakeBattlerFromSlot(secondSlotIndex, true);
 
             // If the target slot is empty and both slots are party slots, move the battler to the end of the party.
             if (secondBattler == null && _storageUI.IsPartySlot(firstSlotIndex) && _storageUI.IsPartySlot(secondSlotIndex))
@@ -190,7 +191,6 @@ public class StorageState : State<GameController>
         }
         else
         {
-            _storageUI.ResetSelection();
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             _ = StartCoroutine(LeaveState());
         }
@@ -203,7 +203,7 @@ public class StorageState : State<GameController>
 
         _gameController.StateMachine.ChangeState(CutsceneState.Instance);
         yield return Fader.Instance.FadeOut(0.5f);
-        
+
         _gameController.StateMachine.Pop();
     }
 

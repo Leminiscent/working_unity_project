@@ -33,6 +33,35 @@ public static class ObjectUtil
             yield return target.transform.DOScale(Vector3.zero, duration).SetDelay(delay).SetEase(Ease.Flash).OnComplete(() => target.SetActive(false)).WaitForCompletion();
         }
     }
+
+    public static IEnumerator TweenOutwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
+    {
+        yield return TweenPosition(target, startPosition, endPosition, true, duration, delay);
+    }
+
+    public static IEnumerator TweenInwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
+    {
+        yield return TweenPosition(target, startPosition, endPosition, false, duration, delay);
+    }
+
+    public static IEnumerator TweenPosition(GameObject target, Vector3 startPosition, Vector3 endPosition, bool? active = null, float duration = 0.1f, float delay = 0f)
+    {
+        if (target == null)
+        {
+            yield break;
+        }
+
+        target.transform.position = startPosition;
+        if (!target.activeSelf)
+        {
+            target.SetActive(true);
+        }
+        yield return target.transform.DOMove(endPosition, duration).SetDelay(delay).SetEase(Ease.Flash).WaitForCompletion();
+        if (active != null && target.activeSelf != active)
+        {
+            target.SetActive(active.Value);
+        }
+    }
 }
 
 public static class TextUtil
