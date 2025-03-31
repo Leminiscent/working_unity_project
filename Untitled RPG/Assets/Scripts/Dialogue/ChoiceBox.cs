@@ -29,7 +29,7 @@ public class ChoiceBox : SelectionUI<TextSlot>
         SetSelectionSettings(SelectionType.List, 1);
         SetItems(items);
 
-        gameObject.SetActive(true); // TODO: Tween in the choice box.
+        yield return ObjectUtil.ScaleIn(gameObject);
 
         bool choiceMade = false;
         int selectedIndex = -1;
@@ -65,7 +65,7 @@ public class ChoiceBox : SelectionUI<TextSlot>
         OnBack -= onBackHandler;
 
         onChoiceSelected?.Invoke(selectedIndex);
-        gameObject.SetActive(false); // TODO: Tween out the choice box.
+        yield return ObjectUtil.ScaleOut(gameObject);
         ResetSelection();
     }
 
