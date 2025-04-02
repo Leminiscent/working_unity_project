@@ -7,11 +7,13 @@ public static class ObjectUtil
 {
     public static IEnumerator ScaleIn(GameObject target, float duration = 0.1f, float delay = 0f)
     {
+        // Scales the target object into view
         yield return ScaleInOut(target, true, duration, delay);
     }
 
     public static IEnumerator ScaleOut(GameObject target, float duration = 0.1f, float delay = 0f)
     {
+        // Scales the target object out of view
         yield return ScaleInOut(target, false, duration, delay);
     }
 
@@ -48,17 +50,7 @@ public static class ObjectUtil
         }
     }
 
-    public static IEnumerator ShiftOutwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
-    {
-        yield return TweenPosition(target, startPosition, endPosition, true, duration, delay);
-    }
-
-    public static IEnumerator ShiftInwards(GameObject target, Vector3 startPosition, Vector3 endPosition, float duration = 0.1f, float delay = 0f)
-    {
-        yield return TweenPosition(target, startPosition, endPosition, false, duration, delay);
-    }
-
-    public static IEnumerator TweenPosition(GameObject target, Vector3 startPosition, Vector3 endPosition, bool? active = null, float duration = 0.1f, float delay = 0f)
+    public static IEnumerator TweenPosition(GameObject target, Vector3 startPosition, Vector3 endPosition, bool active, float duration = 0.1f, float delay = 0f)
     {
         if (target == null)
         {
@@ -71,9 +63,9 @@ public static class ObjectUtil
             target.SetActive(true);
         }
         yield return target.transform.DOMove(endPosition, duration).SetDelay(delay).SetEase(Ease.Flash).WaitForCompletion();
-        if (active != null && target.activeSelf != active)
+        if (target.activeSelf != active)
         {
-            target.SetActive(active.Value);
+            target.SetActive(active);
         }
     }
 }

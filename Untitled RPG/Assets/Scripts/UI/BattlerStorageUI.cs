@@ -101,7 +101,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
         {
             Vector3 startPosition = _transferImage.transform.position;
             Vector3 endPosition = _storageSlotImages[_selectedItem].transform.position + (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
-            _ = StartCoroutine(ObjectUtil.TweenPosition(_transferImage.gameObject, startPosition, endPosition));
+            _ = StartCoroutine(ObjectUtil.TweenPosition(_transferImage.gameObject, startPosition, endPosition, true));
         }
     }
 
@@ -154,7 +154,7 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
 
         Vector3 startPosition = _storageSlotImages[slotIndex].transform.position;
         Vector3 endPosition = startPosition + (Vector3.up * TRANSFER_IMAGE_VERTICAL_OFFSET);
-        _ = StartCoroutine(ObjectUtil.ShiftOutwards(_transferImage.gameObject, startPosition, endPosition));
+        _ = StartCoroutine(ObjectUtil.TweenPosition(_transferImage.gameObject, startPosition, endPosition, true));
     }
 
     public Battler PeekBattlerInSlot(int slotIndex)
