@@ -191,6 +191,7 @@ public class StorageState : State<GameController>
         }
         else
         {
+            _storageUI.EnableInput(false);
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             _ = StartCoroutine(LeaveState());
         }
@@ -198,7 +199,6 @@ public class StorageState : State<GameController>
 
     private IEnumerator LeaveState()
     {
-        _storageUI.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
 
         _gameController.StateMachine.ChangeState(CutsceneState.Instance);

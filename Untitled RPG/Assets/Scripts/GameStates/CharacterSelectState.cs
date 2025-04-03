@@ -57,6 +57,7 @@ public class CharacterSelectState : State<GameController>
         if (_characterSelectScreen != null)
         {
             _characterSelectScreen.OnSelected -= OnCharacterSelected;
+            _characterSelectScreen.OnBack -= OnBack;
             _characterSelectScreen.gameObject.SetActive(false);
         }
     }
@@ -69,6 +70,7 @@ public class CharacterSelectState : State<GameController>
             _characterSelectScreen.gameObject.SetActive(true);
             _characterSelectScreen.SetAvailableBattlers(_availableBattlers);
             _characterSelectScreen.OnSelected += OnCharacterSelected;
+            _characterSelectScreen.OnBack += OnBack;
 
             yield return Fader.Instance.FadeOut(0.5f);
             _characterSelectScreen.EnableInput(true);
@@ -100,6 +102,12 @@ public class CharacterSelectState : State<GameController>
         _characterSelectScreen.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
 
+        MainMenuController mainMenu = FindObjectOfType<MainMenuController>();
+        if (mainMenu != null)
+        {
+            Destroy(mainMenu.gameObject);
+        }
+
         _gameController.StateMachine.ChangeState(CutsceneState.Instance);
         SavingSystem.Instance.Delete("saveSlot1");
         SceneManager.LoadScene(1);
@@ -108,5 +116,26 @@ public class CharacterSelectState : State<GameController>
         yield return Fader.Instance.FadeOut(0.5f);
 
         _gameController.StateMachine.ChangeState(FreeRoamState.Instance);
+    }
+
+    private void OnBack()
+    {
+        _ = StartCoroutine(ReturnToMainMenu());
+    }
+
+    private IEnumerator ReturnToMainMenu()
+    {
+        _characterSelectScreen.EnableInput(false);
+        AudioManager.Instance.PlaySFX(AudioID.UIReturn);
+        yield return Fader.Instance.FadeIn(0.5f);
+
+        _gameController.StateMachine.ChangeState(PauseState.Instance);
+        yield return Fader.Instance.FadeOut(0.5f);
+
+        MainMenuController mainMenu = FindObjectOfType<MainMenuController>();
+        if (mainMenu != null)
+        {
+            mainMenu.EnableInput(true);
+        }
     }
 }

@@ -79,17 +79,11 @@ public class MainMenuController : SelectionUI<TextSlot>
 #endif
     }
 
-    private IEnumerator PrepareSceneChange()
-    {
-        EnableInput(false);
-        yield return Fader.Instance.FadeIn(0.5f);
-        transform.SetParent(null);
-        DontDestroyOnLoad(gameObject);
-    }
-
     private IEnumerator ContinueSelected()
     {
         yield return PrepareSceneChange();
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
 
         GameController.Instance.StateMachine.ChangeState(CutsceneState.Instance);
         SceneManager.LoadScene(1);
@@ -105,8 +99,12 @@ public class MainMenuController : SelectionUI<TextSlot>
     private IEnumerator NewGameSelected()
     {
         yield return PrepareSceneChange();
-
         GameController.Instance.StateMachine.ChangeState(CharacterSelectState.Instance);
-        Destroy(gameObject);
+    }
+
+    private IEnumerator PrepareSceneChange()
+    {
+        EnableInput(false);
+        yield return Fader.Instance.FadeIn(0.5f);
     }
 }
