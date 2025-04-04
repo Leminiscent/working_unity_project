@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class BattleUnit : MonoBehaviour
 {
     [SerializeField] private GameObject _moveAnimationPrefab;
+    [SerializeField] private GameObject _floatingNumberPrefab;
 
     [field: SerializeField, FormerlySerializedAs("_isPlayerUnit")] public bool IsPlayerUnit { get; private set; }
     [field: SerializeField, FormerlySerializedAs("_hud")] public BattleHUD Hud { get; private set; }
@@ -131,7 +132,7 @@ public class BattleUnit : MonoBehaviour
         instance.transform.localPosition = Vector3.zero;
         if (instance.TryGetComponent(out MoveAnimationController controller))
         {
-            controller.Initialize(sprites, ANIMATION_FRAME_RATE);
+            controller.Init(sprites, ANIMATION_FRAME_RATE);
         }
         if (sfx.HasValue)
         {
@@ -360,5 +361,24 @@ public class BattleUnit : MonoBehaviour
         _ = sequence.Append(_image.DOColor(_currentColor, GUARD_COLOR_DURATION));
         _ = sequence.Join(_image.transform.DOLocalMove(_currentPos, GUARD_MOVE_DURATION));
         yield return sequence.WaitForCompletion();
+    }
+
+    public IEnumerator ShowFloatingNumber(int number, Color color)
+    {
+        if (_floatingNumberPrefab == null)
+        {
+            Debug.LogError("FloatingNumberPrefab is not assigned in BattleUnit.");
+            yield break;
+        }
+
+        GameObject instance = Instantiate(_floatingNumberPrefab, transform);
+        instance.transform.localPosition = Vector3.zero;
+        instance.transform.rotation = Quaternion.identity;
+        instance.transform.SetAsLastSibling();
+        if (instance.TryGetComponent(out FloatingNumberController controller))
+        {
+            controller.Init(number, color);
+        }
+        yield return new WaitForSeconds(1.75f);
     }
 }

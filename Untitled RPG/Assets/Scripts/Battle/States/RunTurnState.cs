@@ -297,6 +297,7 @@ public class RunTurnState : State<BattleSystem>
                     {
                         damageDetails = targetUnit.Battler.TakeDamage(move, sourceUnit.Battler, _field.Weather);
                         _ = StartCoroutine(targetUnit.PlayDamageAnimation());
+                        _ = StartCoroutine(targetUnit.ShowFloatingNumber(damageDetails.ActualDamageDealt, Color.red));
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -453,11 +454,13 @@ public class RunTurnState : State<BattleSystem>
             {
                 unit.Battler.DecreaseHP((int)statusEvent.Value);
                 _ = StartCoroutine(unit.PlayDamageAnimation());
+                _ = StartCoroutine(unit.ShowFloatingNumber(-(int)statusEvent.Value, Color.red));
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {
                 unit.Battler.IncreaseHP((int)statusEvent.Value);
                 _ = StartCoroutine(unit.PlayHealAnimation());
+                _ = StartCoroutine(unit.ShowFloatingNumber((int)statusEvent.Value, Color.green));
             }
             else if (statusEvent.Type == StatusEventType.SetCondition)
             {
@@ -595,6 +598,7 @@ public class RunTurnState : State<BattleSystem>
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Battler.Exp += expGain;
                     _ = StartCoroutine(playerUnit.PlayExpGainAnimation());
+                    _ = StartCoroutine(playerUnit.ShowFloatingNumber(expGain, Color.blue));
                     yield return playerUnit.Hud.SetExpSmooth();
                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} XP!");
 

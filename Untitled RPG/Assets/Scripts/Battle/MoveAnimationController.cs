@@ -10,7 +10,7 @@ public class MoveAnimationController : MonoBehaviour
     private List<Sprite> _frames;
     private float _frameRate;
 
-    public void Initialize(List<Sprite> frames, float frameRate)
+    public void Init(List<Sprite> frames, float frameRate)
     {
         if (frames == null || frames.Count == 0)
         {
