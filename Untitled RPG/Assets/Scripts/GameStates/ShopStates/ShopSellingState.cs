@@ -40,8 +40,16 @@ public class ShopSellingState : State<GameController>
     {
         while (true)
         {
+            yield return Fader.Instance.FadeIn(0.5f);
+
             // Push the InventoryState to allow the player to select an item to sell.
-            yield return _gameController.StateMachine.PushAndWait(InventoryState.Instance);
+            _gameController.StateMachine.Push(InventoryState.Instance);
+
+            _gameController.StateMachine.Push(CutsceneState.Instance);
+            yield return Fader.Instance.FadeOut(0.5f);
+
+            _gameController.StateMachine.Pop();
+            yield return new WaitUntil(() => _gameController.StateMachine.CurrentState == Instance);
 
             ItemBase selectedItem = InventoryState.Instance.SelectedItem;
 

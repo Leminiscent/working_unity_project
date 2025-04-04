@@ -84,7 +84,7 @@ public class InventoryState : State<GameController>
         }
         else
         {
-            _gameController.StateMachine.Pop();
+            _ = StartCoroutine(LeaveState());
         }
     }
 
@@ -92,7 +92,7 @@ public class InventoryState : State<GameController>
     {
         SelectedItem = null;
         AudioManager.Instance.PlaySFX(AudioID.UIReturn);
-        StartCoroutine(LeaveState());
+        _ = StartCoroutine(LeaveState());
     }
 
     private IEnumerator LeaveState()
