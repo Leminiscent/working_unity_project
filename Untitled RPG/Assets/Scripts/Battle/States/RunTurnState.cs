@@ -598,7 +598,7 @@ public class RunTurnState : State<BattleSystem>
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Battler.Exp += expGain;
                     _ = StartCoroutine(playerUnit.PlayExpGainAnimation());
-                    yield return playerUnit.ShowFloatingText($"+ {expGain} XP!", GlobalSettings.Instance.ExpTextColor);
+                    _ = StartCoroutine(playerUnit.ShowFloatingText($"+ {expGain} XP!", GlobalSettings.Instance.ExpTextColor));
                     yield return playerUnit.Hud.SetExpSmooth();
 
                     while (playerUnit.Battler.CheckForLevelUp())
