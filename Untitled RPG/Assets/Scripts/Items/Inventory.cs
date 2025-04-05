@@ -6,7 +6,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour, ISavable
 {
     [SerializeField] private List<ItemSlot> _recoveryItemSlots;
-    [SerializeField] private List<ItemSlot> _materialSlots;
+    [SerializeField] private List<ItemSlot> _ingredientSlots;
     [SerializeField] private List<ItemSlot> _transformationItemSlots;
     [SerializeField] private List<ItemSlot> _skillBookSlots;
     [SerializeField] private List<ItemSlot> _keyItemSlots;
@@ -18,7 +18,7 @@ public class Inventory : MonoBehaviour, ISavable
     public static List<string> ItemCategories { get; set; } = new List<string>()
     {
         "RECOVERY ITEMS",
-        "MATERIALS",
+        "INGREDIENTS",
         "TRANSFORMATION ITEMS",
         "SKILL BOOKS",
         "KEY ITEMS"
@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour, ISavable
         _allSlots = new List<List<ItemSlot>>()
         {
             _recoveryItemSlots,
-            _materialSlots,
+            _ingredientSlots,
             _transformationItemSlots,
             _skillBookSlots,
             _keyItemSlots
@@ -117,7 +117,7 @@ public class Inventory : MonoBehaviour, ISavable
         return item switch
         {
             RecoveryItem => ItemCategory.RecoveryItems,
-            Material => ItemCategory.Materials,
+            Ingredient => ItemCategory.Ingredients,
             TransformationItem => ItemCategory.TransformationItems,
             SkillBook => ItemCategory.SkillBooks,
             _ => ItemCategory.KeyItems,
@@ -134,7 +134,7 @@ public class Inventory : MonoBehaviour, ISavable
         InventorySaveData saveData = new()
         {
             RecoveryItems = _recoveryItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
-            Materials = _materialSlots.Select(static slot => slot.GetSaveData()).ToList(),
+            Ingredients = _ingredientSlots.Select(static slot => slot.GetSaveData()).ToList(),
             TransformationItems = _transformationItemSlots.Select(static slot => slot.GetSaveData()).ToList(),
             SkillBooks = _skillBookSlots.Select(static slot => slot.GetSaveData()).ToList(),
             KeyItems = _keyItemSlots.Select(static slot => slot.GetSaveData()).ToList()
@@ -147,7 +147,7 @@ public class Inventory : MonoBehaviour, ISavable
         InventorySaveData saveData = state as InventorySaveData;
 
         _recoveryItemSlots = saveData.RecoveryItems.Select(static data => new ItemSlot(data)).ToList();
-        _materialSlots = saveData.Materials.Select(static data => new ItemSlot(data)).ToList();
+        _ingredientSlots = saveData.Ingredients.Select(static data => new ItemSlot(data)).ToList();
         _transformationItemSlots = saveData.TransformationItems.Select(static data => new ItemSlot(data)).ToList();
         _skillBookSlots = saveData.SkillBooks.Select(static data => new ItemSlot(data)).ToList();
         _keyItemSlots = saveData.KeyItems.Select(static data => new ItemSlot(data)).ToList();
@@ -155,7 +155,7 @@ public class Inventory : MonoBehaviour, ISavable
         _allSlots = new List<List<ItemSlot>>()
         {
             _recoveryItemSlots,
-            _materialSlots,
+            _ingredientSlots,
             _transformationItemSlots,
             _skillBookSlots,
             _keyItemSlots
@@ -195,7 +195,7 @@ public class ItemSlot
 public enum ItemCategory
 {
     RecoveryItems,
-    Materials,
+    Ingredients,
     TransformationItems,
     SkillBooks,
     KeyItems
@@ -212,7 +212,7 @@ public class ItemSaveData
 public class InventorySaveData
 {
     public List<ItemSaveData> RecoveryItems;
-    public List<ItemSaveData> Materials;
+    public List<ItemSaveData> Ingredients;
     public List<ItemSaveData> TransformationItems;
     public List<ItemSaveData> SkillBooks;
     public List<ItemSaveData> KeyItems;

@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/Create new material")]
-public class Material : ItemBase
+[CreateAssetMenu(menuName = "Items/Create new ingredient")]
+public class Ingredient : ItemBase
 {
     public override bool DirectlyUsable => false;
     public override bool UsableInBattle => false;
