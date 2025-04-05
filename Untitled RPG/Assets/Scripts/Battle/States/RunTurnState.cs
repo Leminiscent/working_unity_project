@@ -297,7 +297,7 @@ public class RunTurnState : State<BattleSystem>
                     {
                         damageDetails = targetUnit.Battler.TakeDamage(move, sourceUnit.Battler, _field.Weather);
                         _ = StartCoroutine(targetUnit.PlayDamageAnimation());
-                        _ = StartCoroutine(targetUnit.ShowFloatingNumber(damageDetails.ActualDamageDealt, GlobalSettings.Instance.DamageTextColor));
+                        _ = StartCoroutine(targetUnit.ShowFloatingNumber(-damageDetails.ActualDamageDealt, GlobalSettings.Instance.DamageTextColor));
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -454,7 +454,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 unit.Battler.DecreaseHP((int)statusEvent.Value);
                 _ = StartCoroutine(unit.PlayDamageAnimation());
-                _ = StartCoroutine(unit.ShowFloatingNumber((int)statusEvent.Value, GlobalSettings.Instance.DamageTextColor));
+                _ = StartCoroutine(unit.ShowFloatingNumber(-(int)statusEvent.Value, GlobalSettings.Instance.DamageTextColor));
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {

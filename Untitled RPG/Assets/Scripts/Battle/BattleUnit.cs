@@ -372,13 +372,13 @@ public class BattleUnit : MonoBehaviour
         }
 
         GameObject instance = Instantiate(_floatingNumberPrefab, transform);
-        instance.transform.localPosition = Vector3.zero;
+        instance.transform.localPosition = new Vector3(0, 25, 0);
         instance.transform.rotation = Quaternion.identity;
         instance.transform.SetAsLastSibling();
         if (instance.TryGetComponent(out FloatingNumberController controller))
         {
             controller.Init(number, color);
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
     }
 }
