@@ -167,10 +167,10 @@ public class RecruitmentState : State<BattleSystem>
     {
         string name = RecruitTarget.Battler.Base.Name;
         return affinityScore == 2
-            ? $"{name} seems to love your answer!"
+            ? $"The rogue {name} seems to love your answer!"
             : affinityScore == 1
-                ? $"{name} seems to like your answer."
-                : affinityScore == -1 ? $"{name} seems to dislike your answer..." : $"{name} seems to hate your answer!";
+                ? $"The rogue {name} seems to like your answer."
+                : affinityScore == -1 ? $"The rogue {name} seems to dislike your answer..." : $"The rogue {name} seems to hate your answer!";
     }
 
     private IEnumerator AttemptRecruitment()
@@ -179,7 +179,7 @@ public class RecruitmentState : State<BattleSystem>
 
         if (canRecruit)
         {
-            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} wants to join your cause! Will you accept?");
+            yield return _dialogueBox.TypeDialogue($"The rogue {RecruitTarget.Battler.Base.Name} wants to join your cause! Will you accept?");
 
             // Present choice to accept or reject.
             _dialogueBox.EnableDialogueText(false);
@@ -189,7 +189,7 @@ public class RecruitmentState : State<BattleSystem>
         }
         else
         {
-            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} refused to join you.");
+            yield return _dialogueBox.TypeDialogue($"The rogue {RecruitTarget.Battler.Base.Name} refused to join you.");
             if (RecruitTarget.Battler.AffinityLevel == 0)
             {
                 RecruitTarget.Hud.ToggleAffinityBar(false);
@@ -223,7 +223,7 @@ public class RecruitmentState : State<BattleSystem>
         if (selection == 0)
         {
             // Recruitment accepted.
-            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} was recruited!");
+            yield return _dialogueBox.TypeDialogue($"The rogue {RecruitTarget.Battler.Base.Name} was recruited!");
             _ = StartCoroutine(RecruitTarget.PlayExitAnimation());
             RecruitTarget.ClearData();
             _ = _battleSystem.EnemyUnits.Remove(RecruitTarget);
@@ -253,7 +253,7 @@ public class RecruitmentState : State<BattleSystem>
         else
         {
             // Recruitment rejected.
-            yield return _dialogueBox.TypeDialogue($"{RecruitTarget.Battler.Base.Name} was rejected.");
+            yield return _dialogueBox.TypeDialogue($"The rogue {RecruitTarget.Battler.Base.Name} was rejected.");
             if (RecruitTarget.Battler.AffinityLevel == 0)
             {
                 RecruitTarget.Hud.ToggleAffinityBar(false);

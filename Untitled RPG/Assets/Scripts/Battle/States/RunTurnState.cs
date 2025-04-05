@@ -136,7 +136,8 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator ProcessGuardAction(BattleAction action)
     {
         _ = StartCoroutine(action.SourceUnit.StartGuarding());
-        yield return _dialogueBox.TypeDialogue($"{action.SourceUnit.Battler.Base.Name} has begun guarding!");
+        yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(action.SourceUnit, _isCommanderBattle)} has begun guarding!");
+
     }
 
     private IEnumerator ProcessSwitchBattlerAction(BattleAction action)
@@ -261,10 +262,10 @@ public class RunTurnState : State<BattleSystem>
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
         {
-            yield return _dialogueBox.TypeDialogue($"{sourceUnitName} has no SP left!");
+            yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(sourceUnit, _isCommanderBattle)} has no SP left!");
         }
 
-        yield return _dialogueBox.TypeDialogue($"{sourceUnitName} used {move.Base.Name}!");
+        yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(sourceUnit, _isCommanderBattle)} used {move.Base.Name}!");
         yield return sourceUnit.PlayMoveCastAnimation(move.Base);
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
@@ -328,7 +329,7 @@ public class RunTurnState : State<BattleSystem>
 
                 if (hit > 1)
                 {
-                    yield return _dialogueBox.TypeDialogue($"{targetUnitName} was hit {hit} times!");
+                    yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} was hit {hit} times!");
                 }
 
                 if (targetUnit.Battler.Hp <= 0)
@@ -411,7 +412,7 @@ public class RunTurnState : State<BattleSystem>
         {
             if (targetUnit.Battler.Statuses.ContainsKey(effects.Status))
             {
-                yield return _dialogueBox.TypeDialogue($"{targetUnit.Battler.Base.Name} {ConditionsDB.Conditions[effects.Status].FailMessage}");
+                yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {ConditionsDB.Conditions[effects.Status].FailMessage}");
             }
             else
             {
@@ -422,7 +423,7 @@ public class RunTurnState : State<BattleSystem>
         {
             if (targetUnit.Battler.VolatileStatuses.ContainsKey(effects.VolatileStatus))
             {
-                yield return _dialogueBox.TypeDialogue($"{targetUnit.Battler.Base.Name} {ConditionsDB.Conditions[effects.VolatileStatus].FailMessage}");
+                yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {ConditionsDB.Conditions[effects.VolatileStatus].FailMessage}");
             }
             else
             {
@@ -480,7 +481,7 @@ public class RunTurnState : State<BattleSystem>
                 }
             }
 
-            yield return _dialogueBox.TypeDialogue($"{unit.Battler.Base.Name}{statusEvent.Message}");
+            yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(unit, _isCommanderBattle)}{statusEvent.Message}");
         }
     }
 
@@ -502,7 +503,7 @@ public class RunTurnState : State<BattleSystem>
             yield break;
         }
         _ = StartCoroutine(sourceUnit.PlayMoveCastAnimation()); // TODO: Decouple move and item casting animations
-        yield return _dialogueBox.TypeDialogue($"{sourceUnit.Battler.Base.Name} used {TextUtil.GetArticle(item.Name)} {item.Name}!");
+        yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(sourceUnit, _isCommanderBattle)} used {TextUtil.GetArticle(item.Name)} {item.Name}!");
 
         List<BattleUnit> targetUnitsCopy = new(targetUnits);
         foreach (BattleUnit targetUnit in targetUnitsCopy)
@@ -512,14 +513,14 @@ public class RunTurnState : State<BattleSystem>
             {
                 if (item is RecoveryItem)
                 {
-                    yield return _dialogueBox.TypeDialogue($"{targetUnit.Battler.Base.Name} {item.Message}!");
+                    yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {item.Message}!");
                 }
             }
             else
             {
                 if (item is RecoveryItem)
                 {
-                    yield return _dialogueBox.TypeDialogue($"The {item.Name} didn't have any effect on {targetUnit.Battler.Base.Name}!");
+                    yield return _dialogueBox.TypeDialogue($"The {item.Name} didn't have any effect on {TextUtil.FormatUnitName(targetUnit, _isCommanderBattle, false)}!");
                 }
             }
         }
@@ -533,7 +534,7 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator HandleUnitDefeat(BattleUnit defeatedUnit)
     {
         _ = StartCoroutine(defeatedUnit.PlayDefeatAnimation());
-        yield return _dialogueBox.TypeDialogue($"{defeatedUnit.Battler.Base.Name} has been defeated!");
+        yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(defeatedUnit, _isCommanderBattle)} has been defeated!");
 
         if (!defeatedUnit.IsPlayerUnit)
         {
@@ -560,7 +561,7 @@ public class RunTurnState : State<BattleSystem>
                         if (quantity > 0)
                         {
                             ItemBase item = itemDrop.Item;
-                            lootDescriptions.Add($"{quantity}x {TextUtil.GetPlural(item.Name, quantity)}");
+                            lootDescriptions.Add($"{quantity} {TextUtil.GetPlural(item.Name, quantity)}");
                             Inventory.GetInventory().AddItem(item, quantity);
                         }
                     }
@@ -569,7 +570,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (lootDescriptions.Count > 0)
             {
-                string initialMessage = $"{defeatedUnit.Battler.Base.Name} dropped";
+                string initialMessage = $"{TextUtil.FormatUnitName(defeatedUnit, _isCommanderBattle)} has dropped";
                 foreach (string loot in lootDescriptions)
                 {
                     AudioManager.Instance.PlaySFX(AudioID.ItemObtained);

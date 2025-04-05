@@ -165,4 +165,18 @@ public static class TextUtil
             _ => "a"
         };
     }
+
+    public static string FormatUnitName(BattleUnit unit, bool isCommanderBattle = false, bool isFirstWord = true)
+    {
+        string name = unit.Battler.Base.Name;
+        if (!unit.IsPlayerUnit)
+        {
+            bool isCommander = unit.Battler.IsCommander;
+            string descriptor = isCommanderBattle
+                ? (!isCommander ? (isFirstWord ? $"The opposing" : "the opposing") : (isFirstWord ? "Opposing commander" : "opposing commander"))
+                : (isFirstWord ? "The rogue" : "the rogue");
+            return $"{descriptor} {name}";
+        }
+        return $"{name}";
+    }
 }
