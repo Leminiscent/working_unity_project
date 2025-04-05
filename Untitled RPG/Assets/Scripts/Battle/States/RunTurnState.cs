@@ -292,15 +292,16 @@ public class RunTurnState : State<BattleSystem>
                     {
                         yield return typeEffectiveness > 0f
                             ? RunMoveEffects(move.Base.Effects, sourceUnit, targetUnit, move.Base.Target)
-                            : _dialogueBox.TypeDialogue($"{move.Base.Name} has no effect on {targetUnitName}!");
+                            : targetUnit.ShowFloatingText("No effect!", Color.white);
                     }
                     else
                     {
                         damageDetails = targetUnit.Battler.TakeDamage(move, sourceUnit.Battler, _field.Weather);
                         _ = StartCoroutine(targetUnit.PlayDamageAnimation());
-                        _ = StartCoroutine(targetUnit.ShowFloatingText($"- {damageDetails.TotalDamageDealt}", GlobalSettings.Instance.DamageTextColor));
+                        yield return targetUnit.ShowFloatingText($"- {damageDetails.ActualDamageDealt} HP!", GlobalSettings.Instance.DamageTextColor);
+                        yield return ShowDamageDetails(targetUnit, damageDetails);
+                        yield return ShowEffectiveness(targetUnit, typeEffectiveness);
                         yield return targetUnit.Hud.WaitForHPUpdate();
-                        yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
                     }
 
@@ -324,10 +325,6 @@ public class RunTurnState : State<BattleSystem>
                         break;
                     }
                 }
-                if (move.Base.Category != MoveCategory.Status)
-                {
-                    yield return ShowEffectiveness(typeEffectiveness);
-                }
 
                 if (hit > 1)
                 {
@@ -346,8 +343,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                _ = StartCoroutine(targetUnit.ShowFloatingText("Miss!", Color.white));
-                yield return _dialogueBox.TypeDialogue($"{targetUnitName} evaded {TextUtil.GetPossessive(sourceUnitName)} attack!");
+                yield return targetUnit.ShowFloatingText("Miss!", Color.white);
             }
         }
     }
@@ -457,14 +453,14 @@ public class RunTurnState : State<BattleSystem>
                 int damage = (int)statusEvent.Value;
                 unit.Battler.DecreaseHP(damage);
                 _ = StartCoroutine(unit.PlayDamageAnimation());
-                _ = StartCoroutine(unit.ShowFloatingText($"- {damage}", GlobalSettings.Instance.DamageTextColor));
+                yield return unit.ShowFloatingText($"- {damage} HP!", GlobalSettings.Instance.DamageTextColor);
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {
                 int heal = (int)statusEvent.Value;
                 unit.Battler.IncreaseHP(heal);
                 _ = StartCoroutine(unit.PlayHealAnimation());
-                _ = StartCoroutine(unit.ShowFloatingText($"+ {heal}", GlobalSettings.Instance.HealTextColor));
+                yield return unit.ShowFloatingText($"+ {heal} HP!", GlobalSettings.Instance.HealTextColor);
             }
             else if (statusEvent.Type == StatusEventType.SetCondition)
             {
@@ -602,9 +598,8 @@ public class RunTurnState : State<BattleSystem>
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Battler.Exp += expGain;
                     _ = StartCoroutine(playerUnit.PlayExpGainAnimation());
-                    _ = StartCoroutine(playerUnit.ShowFloatingText($"+ {expGain}", GlobalSettings.Instance.ExpTextColor));
+                    yield return playerUnit.ShowFloatingText($"+ {expGain} XP!", GlobalSettings.Instance.ExpTextColor);
                     yield return playerUnit.Hud.SetExpSmooth();
-                    yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} XP!");
 
                     while (playerUnit.Battler.CheckForLevelUp())
                     {
@@ -750,27 +745,27 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    private IEnumerator ShowDamageDetails(DamageDetails damageDetails)
+    private IEnumerator ShowDamageDetails(BattleUnit targetUnit, DamageDetails damageDetails)
     {
         if (damageDetails.Critical > 1f)
         {
-            yield return _dialogueBox.TypeDialogue("A critical hit!");
+            yield return targetUnit.ShowFloatingText("Critical hit!", Color.white);
         }
     }
 
-    private IEnumerator ShowEffectiveness(float typeEffectiveness)
+    private IEnumerator ShowEffectiveness(BattleUnit targetUnit, float typeEffectiveness)
     {
         if (typeEffectiveness > 1f)
         {
-            yield return _dialogueBox.TypeDialogue("It's super effective!");
+            yield return targetUnit.ShowFloatingText("Super effective!", Color.white);
         }
         else if (typeEffectiveness > 0f)
         {
-            yield return _dialogueBox.TypeDialogue("It's not very effective!");
+            yield return targetUnit.ShowFloatingText("Not very effective!", Color.white);
         }
         else if (typeEffectiveness == 0f)
         {
-            yield return _dialogueBox.TypeDialogue("It has no effect!");
+            yield return targetUnit.ShowFloatingText("No effect!", Color.white);
         }
     }
 

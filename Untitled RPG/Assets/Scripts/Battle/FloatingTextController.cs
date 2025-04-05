@@ -7,10 +7,10 @@ public class FloatingTextController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _floatingText;
 
-    private float _floatDuration = 0.5f;
-    private float _floatDistance = 25f;
-    private float _hangDuration = 0.5f;
-    private float _fadeDuration = 0.5f;
+    private float _floatDuration = 0.35f;
+    private float _floatDistance = 15f;
+    private float _hangDuration = 0.4f;
+    private float _fadeDuration = 0.25f;
 
 
     public void Init(string text, Color color)
@@ -22,7 +22,7 @@ public class FloatingTextController : MonoBehaviour
 
             Material mat = new(_floatingText.fontMaterial);
             mat.SetColor("_OutlineColor", Color.black);
-            mat.SetFloat("_OutlineWidth", 0.2f);
+            mat.SetFloat("_OutlineWidth", 0.25f);
             _floatingText.fontMaterial = mat;
 
         }
