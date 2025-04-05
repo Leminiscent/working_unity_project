@@ -258,7 +258,6 @@ public class RunTurnState : State<BattleSystem>
 
         yield return ShowStatusChanges(sourceUnit);
         move.Sp--;
-        string sourceUnitName = sourceUnit.Battler.Base.Name;
 
         if (move.Base == GlobalSettings.Instance.BackupMove)
         {
@@ -276,7 +275,6 @@ public class RunTurnState : State<BattleSystem>
                 yield break;
             }
 
-            string targetUnitName = targetUnit.Battler.Base.Name;
             if (CheckIfMoveHits(move, sourceUnit.Battler, targetUnit.Battler))
             {
                 int hitCount = move.Base.GetHitCount();
