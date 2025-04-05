@@ -6,10 +6,10 @@ using System.Collections;
 public class FloatingNumberController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _floatingText;
-    [SerializeField] private float _floatDuration = 1.25f;
-    [SerializeField] private float _floatDistance = 40f;
+    [SerializeField] private float _floatDuration = 0.25f;
+    [SerializeField] private float _floatDistance = 25f;
     [SerializeField] private float _hangDuration = 0.15f;
-    [SerializeField] private float _fadeDuration = 0.35f;
+    [SerializeField] private float _fadeDuration = 0.1f;
 
 
     public void Init(int number, Color color)
@@ -21,7 +21,7 @@ public class FloatingNumberController : MonoBehaviour
 
             Material mat = new(_floatingText.fontMaterial);
             mat.SetColor("_OutlineColor", Color.black);
-            mat.SetFloat("_OutlineWidth", 0.2f);
+            mat.SetFloat("_OutlineWidth", 0.25f);
             _floatingText.fontMaterial = mat;
 
         }

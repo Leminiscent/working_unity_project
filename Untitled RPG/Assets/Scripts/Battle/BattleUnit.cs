@@ -379,6 +379,6 @@ public class BattleUnit : MonoBehaviour
         {
             controller.Init(number, color);
         }
-        yield return new WaitForSeconds(1.75f);
+        yield return new WaitForSeconds(0.5f);
     }
 }

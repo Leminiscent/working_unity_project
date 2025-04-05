@@ -9,6 +9,9 @@ public class GlobalSettings : MonoBehaviour
     [field: SerializeField, FormerlySerializedAs("_inactiveColor")] public Color InactiveColor { get; private set; }
     [field: SerializeField, FormerlySerializedAs("_emptyColor")] public Color EmptyColor { get; private set; }
     [field: SerializeField, FormerlySerializedAs("_bgHighlightColor")] public Color BgHighlightColor { get; private set; }
+    [field: SerializeField] public Color DamageTextColor { get; private set; }
+    [field: SerializeField] public Color HealTextColor { get; private set; }
+    [field: SerializeField] public Color ExpTextColor { get; private set; }
 
     [field: Header("Battler Details")]
     [field: SerializeField, FormerlySerializedAs("_maxPvs")] public int MaxPvs { get; private set; }
