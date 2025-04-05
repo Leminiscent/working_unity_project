@@ -363,7 +363,7 @@ public class BattleUnit : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
 
-    public IEnumerator ShowFloatingNumber(int number, Color color)
+    public IEnumerator ShowFloatingText(string text, Color color)
     {
         if (_floatingNumberPrefab == null)
         {
@@ -375,9 +375,9 @@ public class BattleUnit : MonoBehaviour
         instance.transform.localPosition = new Vector3(0, 25, 0);
         instance.transform.rotation = Quaternion.identity;
         instance.transform.SetAsLastSibling();
-        if (instance.TryGetComponent(out FloatingNumberController controller))
+        if (instance.TryGetComponent(out FloatingTextController controller))
         {
-            controller.Init(number, color);
+            controller.Init(text, color);
         }
         yield return new WaitForSeconds(1.5f);
     }

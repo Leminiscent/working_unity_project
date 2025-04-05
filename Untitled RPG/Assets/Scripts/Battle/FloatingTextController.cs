@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using System.Collections;
 
-public class FloatingNumberController : MonoBehaviour
+public class FloatingTextController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _floatingText;
 
@@ -13,11 +13,11 @@ public class FloatingNumberController : MonoBehaviour
     private float _fadeDuration = 0.5f;
 
 
-    public void Init(int number, Color color)
+    public void Init(string text, Color color)
     {
         if (_floatingText != null)
         {
-            _floatingText.text = number >= 0 ? $"+ {number}" : $"- {Mathf.Abs(number)}";
+            _floatingText.text = text;
             _floatingText.color = color;
 
             Material mat = new(_floatingText.fontMaterial);

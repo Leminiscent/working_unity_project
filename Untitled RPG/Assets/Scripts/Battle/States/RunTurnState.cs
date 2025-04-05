@@ -275,6 +275,7 @@ public class RunTurnState : State<BattleSystem>
                 yield break;
             }
 
+            string targetUnitName = targetUnit.Battler.Base.Name;
             if (CheckIfMoveHits(move, sourceUnit.Battler, targetUnit.Battler))
             {
                 int hitCount = move.Base.GetHitCount();
@@ -291,13 +292,13 @@ public class RunTurnState : State<BattleSystem>
                     {
                         yield return typeEffectiveness > 0f
                             ? RunMoveEffects(move.Base.Effects, sourceUnit, targetUnit, move.Base.Target)
-                            : _dialogueBox.TypeDialogue("It has no effect!");
+                            : _dialogueBox.TypeDialogue($"{move.Base.Name} has no effect on {targetUnitName}!");
                     }
                     else
                     {
                         damageDetails = targetUnit.Battler.TakeDamage(move, sourceUnit.Battler, _field.Weather);
                         _ = StartCoroutine(targetUnit.PlayDamageAnimation());
-                        _ = StartCoroutine(targetUnit.ShowFloatingNumber(-damageDetails.ActualDamageDealt, GlobalSettings.Instance.DamageTextColor));
+                        _ = StartCoroutine(targetUnit.ShowFloatingText($"- {damageDetails.TotalDamageDealt}", GlobalSettings.Instance.DamageTextColor));
                         yield return targetUnit.Hud.WaitForHPUpdate();
                         yield return ShowDamageDetails(damageDetails);
                         typeEffectiveness = damageDetails.TypeEffectiveness;
@@ -330,7 +331,7 @@ public class RunTurnState : State<BattleSystem>
 
                 if (hit > 1)
                 {
-                    yield return _dialogueBox.TypeDialogue($"Hit {hit} times!");
+                    yield return _dialogueBox.TypeDialogue($"{targetUnitName} was hit {hit} times!");
                 }
 
                 if (targetUnit.Battler.Hp <= 0)
@@ -345,7 +346,8 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                yield return _dialogueBox.TypeDialogue($"{TextUtil.GetPossessive(sourceUnitName)} attack missed!");
+                _ = StartCoroutine(targetUnit.ShowFloatingText("Miss!", Color.white));
+                yield return _dialogueBox.TypeDialogue($"{targetUnitName} evaded {TextUtil.GetPossessive(sourceUnitName)} attack!");
             }
         }
     }
@@ -452,15 +454,17 @@ public class RunTurnState : State<BattleSystem>
 
             if (statusEvent.Type == StatusEventType.Damage)
             {
-                unit.Battler.DecreaseHP((int)statusEvent.Value);
+                int damage = (int)statusEvent.Value;
+                unit.Battler.DecreaseHP(damage);
                 _ = StartCoroutine(unit.PlayDamageAnimation());
-                _ = StartCoroutine(unit.ShowFloatingNumber(-(int)statusEvent.Value, GlobalSettings.Instance.DamageTextColor));
+                _ = StartCoroutine(unit.ShowFloatingText($"- {damage}", GlobalSettings.Instance.DamageTextColor));
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {
-                unit.Battler.IncreaseHP((int)statusEvent.Value);
+                int heal = (int)statusEvent.Value;
+                unit.Battler.IncreaseHP(heal);
                 _ = StartCoroutine(unit.PlayHealAnimation());
-                _ = StartCoroutine(unit.ShowFloatingNumber((int)statusEvent.Value, GlobalSettings.Instance.HealTextColor));
+                _ = StartCoroutine(unit.ShowFloatingText($"+ {heal}", GlobalSettings.Instance.HealTextColor));
             }
             else if (statusEvent.Type == StatusEventType.SetCondition)
             {
@@ -598,7 +602,7 @@ public class RunTurnState : State<BattleSystem>
                     expGain = Mathf.Min(expGain, expNeeded);
                     playerUnit.Battler.Exp += expGain;
                     _ = StartCoroutine(playerUnit.PlayExpGainAnimation());
-                    _ = StartCoroutine(playerUnit.ShowFloatingNumber(expGain, GlobalSettings.Instance.ExpTextColor));
+                    _ = StartCoroutine(playerUnit.ShowFloatingText($"+ {expGain}", GlobalSettings.Instance.ExpTextColor));
                     yield return playerUnit.Hud.SetExpSmooth();
                     yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} gained {expGain} XP!");
 
