@@ -658,6 +658,8 @@ public class RunTurnState : State<BattleSystem>
             defeatedUnitAction.IsValid = false;
         }
 
+        defeatedUnit.ClearData();
+
         if (defeatedUnit.IsPlayerUnit)
         {
             List<Battler> activeBattlers = _battleSystem.PlayerUnits.Select(u => u.Battler).Where(b => b.Hp > 0).ToList();
@@ -670,7 +672,6 @@ public class RunTurnState : State<BattleSystem>
             else if (nextBattler == null && activeBattlers.Count > 0)
             {
                 _ = _battleSystem.PlayerUnits.Remove(defeatedUnit);
-                defeatedUnit.ClearData();
                 AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.PlayerUnits);
             }
             else if (nextBattler != null)
@@ -692,7 +693,6 @@ public class RunTurnState : State<BattleSystem>
                 else
                 {
                     _ = _battleSystem.EnemyUnits.Remove(defeatedUnit);
-                    defeatedUnit.ClearData();
                     AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.EnemyUnits);
                 }
             }
@@ -706,7 +706,6 @@ public class RunTurnState : State<BattleSystem>
                 else if (nextBattler == null && activeBattlers.Count > 0)
                 {
                     _ = _battleSystem.EnemyUnits.Remove(defeatedUnit);
-                    defeatedUnit.ClearData();
                     AdjustBattleActionsForDefeatedUnit(defeatedUnit, _battleSystem.EnemyUnits);
                 }
                 else if (nextBattler != null)
