@@ -29,13 +29,13 @@ public class Healer : MonoBehaviour
             yield return Fader.Instance.FadeOut(FadeDuration);
 
             yield return DialogueManager.Instance.ShowDialogueText(
-                "All healthy! Come back if you need more healing!");
+                "All rested! Come back whenever you feel weary.");
         }
         // If player selects "No"
         else if (choiceIndex == 1)
         {
             yield return DialogueManager.Instance.ShowDialogueText(
-                "Come back if you need healing!");
+                "Alright, but don't push yourself too hard!");
         }
     }
 }
