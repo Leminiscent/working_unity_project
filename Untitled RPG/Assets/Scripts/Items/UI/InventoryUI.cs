@@ -37,15 +37,18 @@ public class InventoryUI : SelectionUI<TextSlot>
         _moneyText.text = $"{Wallet.Instance.Money} GP";
         SelectedCategory = GetFirstNonEmptyCategory();
         UpdateCategoriesAndItemList();
-        _inventory.OnUpdated += UpdateCategoriesAndItemList;
+        _inventory.OnUpdated += ResetInventoryScreen;
         Wallet.Instance.OnMoneyChanged += UpdateMoneyText;
     }
 
     private void OnDestroy()
     {
-        _inventory.OnUpdated -= UpdateCategoriesAndItemList;
+        _inventory.OnUpdated -= ResetInventoryScreen;
         Wallet.Instance.OnMoneyChanged -= UpdateMoneyText;
-        _categorySelectionUI.OnIndexChanged -= OnCategoryChanged;
+        if (_categorySelectionUI != null)
+        {
+            _categorySelectionUI.OnIndexChanged -= OnCategoryChanged;
+        }
     }
 
     private void UpdateCategoriesAndItemList()
