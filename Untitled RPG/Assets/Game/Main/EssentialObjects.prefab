@@ -1795,21 +1795,21 @@ MonoBehaviour:
   _characterSelectScreen: {fileID: 6859684935092990284}
   _availableBattlers:
   - _base: {fileID: 11400000, guid: 8828bdfbed71b3244b3bebcd6136437c, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: 8423c3e6476d9074db97c442e74113f1, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: 3293ce413feecd64183c11fae6881e68, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: 5c21cd70622631e4093e492b47a64910, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: 9184bfa55e4f3bc42b3320abbdb68779, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: 50210373159e0cc4d93016e48450780f, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: c983343b40a1a6d4cb98f30e91c86b2b, type: 2}
-    _level: 1
+    _level: 5
   - _base: {fileID: 11400000, guid: e57d84efd3da99b428402b0dc926d98f, type: 2}
-    _level: 1
+    _level: 5
 --- !u!1 &2645154843083156218
 GameObject:
   m_ObjectHideFlags: 0
@@ -15295,13 +15295,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2808156341160974150}
     m_Modifications:
+    - target: {fileID: 986390993288586152, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: <Money>k__BackingField
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 2578888366133796218, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2578888366133796218, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2578888366133796218, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15341,7 +15345,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6813441202777455123, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: _skillBookSlots.Array.size
-      value: 13
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813441202777455123, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: _recoveryItemSlots.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813441202777455123, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: _transformationItemSlots.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6813441202777455123, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
       propertyPath: _skillBookSlots.Array.data[10]._item
@@ -15403,11 +15415,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 937609591130240954, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 937609591130240954, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 937609591130240954, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
       propertyPath: m_LocalPosition.z
