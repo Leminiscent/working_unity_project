@@ -60,7 +60,7 @@ public class ShopMenuState : State<GameController>
             }
             else if (menuChoice == 2) // Leave
             {
-                yield return DialogueManager.Instance.ShowDialogueText("Thank you for visiting my shop! Come back soon!");
+                yield return DialogueManager.Instance.ShowDialogueText("Thank you for stopping in! Come back soon!");
                 _gameController.StateMachine.Pop();
                 break;
             }

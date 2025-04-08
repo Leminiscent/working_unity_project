@@ -111,6 +111,7 @@ public class ShopBuyingState : State<GameController>
             {
                 Wallet.Instance.SpendMoney(totalPrice);
                 _playerInventory.AddItem(item, countToBuy);
+                AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
                 yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
             }
         }

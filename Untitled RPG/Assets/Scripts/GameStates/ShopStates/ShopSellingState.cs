@@ -117,6 +117,7 @@ public class ShopSellingState : State<GameController>
         {
             _playerInventory.RemoveItem(item, countToSell);
             Wallet.Instance.AddMoney(totalSellingPrice);
+            AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
             yield return DialogueManager.Instance.ShowDialogueText("Thank you for your business!");
         }
         _walletUI.Close();
