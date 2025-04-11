@@ -13,6 +13,7 @@ public class SummaryState : State<GameController>
     private GameController _gameController;
     private DummySelectionUI _battlerSelectionUI;
     private DummySelectionUI _pageSelectionUI;
+    private bool _isProcessingBack = false;
 
     public int SelectedBattlerIndex { get; set; }
     public List<Battler> BattlersList { get; set; }
@@ -61,6 +62,7 @@ public class SummaryState : State<GameController>
         // Activate the summary UI and show initial details.
         _summaryScreenUI.gameObject.SetActive(true);
         _summaryScreenUI.EnableInput(true);
+        _isProcessingBack = false;
         if (_currentBattlerList.Count > 0)
         {
             _summaryScreenUI.SetBasicDetails(_currentBattlerList[SelectedBattlerIndex]);
@@ -73,6 +75,11 @@ public class SummaryState : State<GameController>
 
     public override void Execute()
     {
+        if (_isProcessingBack)
+        {
+            return;
+        }
+
         // Only update the selection UIs if the summary UI isn't in move selection mode.
         if (!_summaryScreenUI.InMoveSelection)
         {
@@ -137,6 +144,7 @@ public class SummaryState : State<GameController>
 
     private IEnumerator LeaveState()
     {
+        _isProcessingBack = true;
         _summaryScreenUI.EnableInput(false);
         _battlerSelectionUI.EnableInput(false);
         _pageSelectionUI.EnableInput(false);
