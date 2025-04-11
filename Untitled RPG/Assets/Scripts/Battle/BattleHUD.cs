@@ -322,11 +322,10 @@ public class BattleHUD : MonoBehaviour
 
         Transform arrowContainer = boostContainer.transform.GetChild(1);
 
-        // Clear existing arrow indicators.
-        ClearArrowIndicators(arrowContainer);
-
         if (boostValue == 0)
         {
+            // Remove all arrows when no boost is applied.
+            ClearAllArrows(arrowContainer);
             boostText.color = Color.white;
             return;
         }
@@ -336,28 +335,66 @@ public class BattleHUD : MonoBehaviour
         }
 
         GameObject arrowPrefab = boostValue > 0 ? _upArrowPrefab : _downArrowPrefab;
-        int count = Mathf.Abs(boostValue);
-        for (int i = 0; i < count; i++)
+        int requiredCount = Mathf.Abs(boostValue);
+
+        // Check if existing arrows are of the correct type.
+        bool typeMismatch = false;
+        for (int i = 0; i < arrowContainer.childCount; i++)
         {
-            if (arrowPrefab != null && arrowContainer != null)
+            GameObject arrowChild = arrowContainer.GetChild(i).gameObject;
+            // Using Contains as instantiated object names may include "(Clone)".
+            if (!arrowChild.name.Contains(arrowPrefab.name))
             {
-                GameObject arrow = Instantiate(arrowPrefab, arrowContainer);
-                _ = StartCoroutine(ObjectUtil.ScaleIn(arrow));
+                typeMismatch = true;
+                break;
+            }
+        }
+        if (typeMismatch)
+        {
+            ClearAllArrows(arrowContainer);
+        }
+
+        int currentCount = arrowContainer.childCount;
+        if (currentCount < requiredCount)
+        {
+            int deficit = requiredCount - currentCount;
+            for (int i = 0; i < deficit; i++)
+            {
+                if (arrowPrefab != null)
+                {
+                    GameObject arrow = Instantiate(arrowPrefab, arrowContainer);
+                    StartCoroutine(ObjectUtil.ScaleIn(arrow));
+                }
+            }
+        }
+        else if (currentCount > requiredCount)
+        {
+            int surplus = currentCount - requiredCount;
+            // Remove surplus arrows, starting from the last child.
+            for (int i = 0; i < surplus; i++)
+            {
+                Transform arrowToRemove = arrowContainer.GetChild(arrowContainer.childCount - 1);
+                StartCoroutine(RemoveArrow(arrowToRemove.gameObject));
             }
         }
     }
 
-    private void ClearArrowIndicators(Transform arrowContainer)
+    private void ClearAllArrows(Transform arrowContainer)
     {
         for (int i = arrowContainer.childCount - 1; i >= 0; i--)
         {
             Transform child = arrowContainer.GetChild(i);
             if (child != null)
             {
-                _ = StartCoroutine(ObjectUtil.ScaleOut(child.gameObject));
-                Destroy(child.gameObject, 0.1f);
+                StartCoroutine(RemoveArrow(child.gameObject));
             }
         }
+    }
+
+    private IEnumerator RemoveArrow(GameObject arrow)
+    {
+        yield return StartCoroutine(ObjectUtil.ScaleOut(arrow));
+        Destroy(arrow);
     }
 
     public void ClearData()
