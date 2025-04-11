@@ -7,13 +7,13 @@ public class StorageState : State<GameController>
 {
     [SerializeField] private BattlerStorageUI _storageUI;
 
-    private bool _isMovingBattler = false;
     private int _selectedSlotToMove = 0;
     private Battler _selectedBattlerToMove;
     private GameController _gameController;
     private BattleParty _party;
 
     public static StorageState Instance { get; private set; }
+    public bool IsMovingBattler = false;
 
     private void Awake()
     {
@@ -32,6 +32,7 @@ public class StorageState : State<GameController>
     public override void Enter(GameController owner)
     {
         _gameController = owner;
+        _storageUI.SelectedDepot = 0;
         _storageUI.gameObject.SetActive(true);
         _storageUI.ResetSelection();
         _storageUI.EnableInput(true);
@@ -55,7 +56,7 @@ public class StorageState : State<GameController>
 
     private void OnSlotSelected(int slotIndex)
     {
-        if (!_isMovingBattler)
+        if (!IsMovingBattler)
         {
             // No battler is currently being moved; handle battler selection from the chosen slot.
             _ = StartCoroutine(HandleBattlerSelection(slotIndex));
@@ -75,14 +76,14 @@ public class StorageState : State<GameController>
             // If the selected slot is the same as the one being moved, place the battler back in its original slot.
             if (slotIndex == _selectedSlotToMove)
             {
-                _isMovingBattler = false;
+                IsMovingBattler = false;
                 _storageUI.PlaceBattlerIntoSlot(slotIndex, _selectedBattlerToMove);
                 RefreshUI(AudioID.UISelect);
                 return;
             }
 
             // Otherwise, attempt to swap battlers.
-            _isMovingBattler = false;
+            IsMovingBattler = false;
             int firstSlotIndex = _selectedSlotToMove;
             int secondSlotIndex = slotIndex;
             Battler secondBattler = _storageUI.TakeBattlerFromSlot(secondSlotIndex, true);
@@ -122,7 +123,7 @@ public class StorageState : State<GameController>
 
     private IEnumerator HandlePlayerMoveAttempt()
     {
-        _isMovingBattler = false;
+        IsMovingBattler = false;
         _storageUI.RestoreSelection();
         RefreshUI(AudioID.UIReturn);
         yield return DialogueManager.Instance.ShowDialogueText($"{PlayerController.Instance.Name} cannot be moved to the barracks.");
@@ -152,7 +153,7 @@ public class StorageState : State<GameController>
                 Battler removedBattler = _storageUI.TakeBattlerFromSlot(slotIndex);
                 if (removedBattler != null)
                 {
-                    _isMovingBattler = true;
+                    IsMovingBattler = true;
                     _selectedSlotToMove = slotIndex;
                     _selectedBattlerToMove = removedBattler;
                     _storageUI.SaveSelection();
@@ -182,9 +183,9 @@ public class StorageState : State<GameController>
 
     private void OnBack()
     {
-        if (_isMovingBattler)
+        if (IsMovingBattler)
         {
-            _isMovingBattler = false;
+            IsMovingBattler = false;
             _storageUI.RestoreSelection();
             _storageUI.PlaceBattlerIntoSlot(_selectedSlotToMove, _selectedBattlerToMove);
             RefreshUI(AudioID.UIReturn);
