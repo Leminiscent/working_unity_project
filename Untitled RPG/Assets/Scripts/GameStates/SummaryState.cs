@@ -89,7 +89,7 @@ public class SummaryState : State<GameController>
 
         if (Input.GetButtonDown("Action"))
         {
-            // If on page 1 and not already in move selection, enter move selection mode.
+            // If on Move Details page and not already in move selection, enter move selection.
             if (_selectedPage == 1 && !_summaryScreenUI.InMoveSelection)
             {
                 _summaryScreenUI.InMoveSelection = true;
