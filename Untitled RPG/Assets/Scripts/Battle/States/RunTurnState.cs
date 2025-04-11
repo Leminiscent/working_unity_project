@@ -136,7 +136,7 @@ public class RunTurnState : State<BattleSystem>
     private IEnumerator ProcessGuardAction(BattleAction action)
     {
         _ = StartCoroutine(action.SourceUnit.StartGuarding());
-        yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(action.SourceUnit, _isCommanderBattle)} has begun guarding!");
+        yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(action.SourceUnit, _isCommanderBattle)} began guarding!");
 
     }
 
@@ -174,7 +174,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     _field.Weather = null;
                     _field.WeatherDuration = null;
-                    yield return _dialogueBox.TypeDialogue("The weather has returned to normal.");
+                    yield return _dialogueBox.TypeDialogue("The weather returned to normal.");
                 }
             }
         }
@@ -568,7 +568,7 @@ public class RunTurnState : State<BattleSystem>
 
             if (lootDescriptions.Count > 0)
             {
-                string initialMessage = $"{TextUtil.FormatUnitName(defeatedUnit, _isCommanderBattle)} has dropped";
+                string initialMessage = $"{TextUtil.FormatUnitName(defeatedUnit, _isCommanderBattle)} dropped";
                 foreach (string loot in lootDescriptions)
                 {
                     AudioManager.Instance.PlaySFX(AudioID.ItemObtained);
@@ -613,7 +613,7 @@ public class RunTurnState : State<BattleSystem>
                             if (playerUnit.Battler.Moves.Count < BattlerBase.MaxMoveCount)
                             {
                                 playerUnit.Battler.LearnMove(newMove.Base);
-                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} has learned {newMove.Base.Name}!");
+                                yield return _dialogueBox.TypeDialogue($"{playerUnit.Battler.Base.Name} learned {newMove.Base.Name}!");
                                 _dialogueBox.SetMoveNames(playerUnit.Battler.Moves);
                             }
                             else

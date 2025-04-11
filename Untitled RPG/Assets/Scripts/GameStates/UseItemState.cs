@@ -136,7 +136,7 @@ public class UseItemState : State<GameController>
         if (battler.Moves.Count < BattlerBase.MaxMoveCount)
         {
             battler.LearnMove(skillBook.Move);
-            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} has learned {skillBook.Move.Name}!");
+            yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} learned {skillBook.Move.Name}!");
         }
         else
         {
@@ -161,7 +161,7 @@ public class UseItemState : State<GameController>
             else
             {
                 Move selectedMove = battler.Moves[moveIndex];
-                yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} forgot {selectedMove.Base.Name} and has learned {skillBook.Move.Name}!");
+                yield return DialogueManager.Instance.ShowDialogueText($"{battler.Base.Name} forgot {selectedMove.Base.Name} and learned {skillBook.Move.Name}!");
                 battler.Moves[moveIndex] = new Move(skillBook.Move);
             }
         }

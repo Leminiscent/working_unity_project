@@ -82,7 +82,7 @@ public class TransformationState : State<GameController>
             _battlerImage.sprite = battler.Base.Sprite;
         }
 
-        yield return DialogueManager.Instance.ShowDialogueText($"{oldBattler.Name} has transformed into {battler.Base.Name}!");
+        yield return DialogueManager.Instance.ShowDialogueText($"{oldBattler.Name} transformed into {battler.Base.Name}!");
 
         if (_transformationUI != null)
         {
