@@ -314,7 +314,7 @@ public class BattleHUD : MonoBehaviour
             return;
         }
 
-        // The arrow container is the second child (index 1)
+        // The arrow container is the second child (index 1).
         if (boostContainer.transform.childCount < 2)
         {
             return;
