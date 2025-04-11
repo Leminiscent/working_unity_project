@@ -533,6 +533,7 @@ public class RunTurnState : State<BattleSystem>
     {
         _ = StartCoroutine(defeatedUnit.PlayDefeatAnimation());
         yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(defeatedUnit, _isCommanderBattle)} has been defeated!");
+        defeatedUnit.ClearData();
 
         if (!defeatedUnit.IsPlayerUnit)
         {
@@ -657,8 +658,6 @@ public class RunTurnState : State<BattleSystem>
         {
             defeatedUnitAction.IsValid = false;
         }
-
-        defeatedUnit.ClearData();
 
         if (defeatedUnit.IsPlayerUnit)
         {
