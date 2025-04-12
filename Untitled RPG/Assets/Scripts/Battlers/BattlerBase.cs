@@ -96,6 +96,11 @@ public class BattlerBase : ScriptableObject
 
     public static int MaxMoveCount { get; } = 4;
 
+    private void OnEnable()
+    {
+        RecalculateStats();
+    }
+
     private void OnValidate()
     {
         ValidateRarity();
