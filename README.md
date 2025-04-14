@@ -20,9 +20,9 @@
 
 ## About The Project
 
-![Main Menu](Media\Images\main_menu.png)
-![Overworld](Media\Images\gameplay_village.png)
-![Battle](Media\Images\gameplay_battle_3.png)
+![Main Menu](Media/Images/main_menu.png)
+![Overworld](Media/Images/gameplay_village.png)
+![Battle](Media/Images/gameplay_battle_3.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
