@@ -20,7 +20,7 @@
 
 ## About the Project
 
-This prototype is a 2D monster-taming, turn-based role-playing game built in Unity. You control a party led by a "Commander," a special battler who fights alongside up to five other companions. Opposing Commanders and other NPCs populate the world, and you can engage them in battle, trade with merchants, and interact with various services. The battle system includes multiple actions such as attacking, guarding, talking to recruit rogue battlers, and more. The focus of this prototype is party management, exploration, and showcasing a unique approach to turn-based combat that features a personal Commander at its core.
+This prototype is a 2D monster-taming, turn-based RPG built in Unity. You control a party led by a "Commander," a unique battler who fights alongside up to five other companions. Rival Commanders and other NPCs that populate the world can be engaged in battle, traded with, and more. The battle system includes multiple actions such as attacking, guarding, talking to recruit rogue battlers, and more. The focus of this prototype is party management, exploration, and showcasing a unique approach to turn-based combat that features a personal Commander at its core.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -63,7 +63,7 @@ This prototype is a 2D monster-taming, turn-based role-playing game built in Uni
   Organizes items by category and shows your GP (in-game currency). You can use specific items from this screen.
 
 - **Barracks Organization**  
-  Provides a storage area for extra battlers, split into depots of 48 slots each. You can move battlers between your party and these depots, but the Commander must remain in the party.
+  Provides a storage area for extra battlers, split into depots for organizational purposes. You can move battlers between your party and these depots, but the Commander must remain in the party.
 
   ![Barracks](Media/Images/barracks.png)
 
