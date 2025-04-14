@@ -22,6 +22,8 @@
 
 This project is a demonstration of a 2D monster-taming role-playing game developed in Unity. The game assigns the role of Commander to the player to control a group of battlers. Gameplay includes world exploration, combat, and party management. The game world contains rival Commanders and non-player characters. The battle system supports multiple actions and includes a process to recruit opposing battlers under specified conditions.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Features
 
 - **Main Menu:**  
