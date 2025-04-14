@@ -113,35 +113,38 @@ This prototype is a 2D monster-taming, turn-based RPG built in Unity. You contro
 
 ## How to Play
 
-1. **Launch the Game**  
+1. **Download the Game**  
+   - Download the game from [itch.io](https://leminiscent.itch.io/prototype-portfolio-rpg)
+
+2. **Launch the Game**  
    - Continue from an existing save or start a new game from the main menu.
 
-2. **Choose a Commander**  
+3. **Choose a Commander**  
    - Pick from the available characters, each with specific types and stats.
 
-3. **Explore the World**  
+4. **Explore the World**  
    - Move around the demo's Village and Shop areas, interacting with NPCs and items.
    - Use the in-game menu to access the party, inventory, barracks, save/load options, and game exit.
 
-4. **Manage Your Party**  
+5. **Manage Your Party**  
    - View your active battlers, reorder their positions, and check each one’s detailed stats.
 
-5. **Inventory Usage**  
+6. **Inventory Usage**  
    - Check your items and see your current GP total.
    - Use applicable items directly from this menu.
 
-6. **Barracks Maintenance**  
+7. **Barracks Maintenance**  
    - Store extra battlers in depots and transfer them to or from your active party.
    - The Commander is kept in your party, as they represent you.
 
-7. **Engage in Battles**  
+8. **Engage in Battles**  
    - Encounter rival Commanders or rogue battlers during exploration.
    - Commander Battles prohibit recruitment and escaping.
    - Rogue Battles allow you to talk to potential allies for recruitment.
    - Choose from Fight, Talk (Commander only), Item, Guard, Switch, or Run actions.
    - Defeat or recruit opposing battlers to gain XP and items.
 
-8. **Defeats and Game Over**  
+9. **Defeats and Game Over**  
    - If all your party members are defeated, the game ends and you return to the main menu.  
    - You may continue from your last save, start anew, or exit at that point.
 
