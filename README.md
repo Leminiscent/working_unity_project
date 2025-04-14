@@ -18,132 +18,145 @@
   </ol>
 </details>
 
-## About The Project
+## About the Project
 
-This project is a demonstration of a 2D monster-taming role-playing game developed in Unity. The game assigns the role of Commander to the player to control a group of battlers. Gameplay includes world exploration, combat, and party management. The game world contains rival Commanders and non-player characters. The battle system supports multiple actions and includes a process to recruit opposing battlers under specified conditions.
+This prototype is a 2D monster-taming, turn-based role-playing game built in Unity. You control a party led by a "Commander," a special battler who fights alongside up to five other companions. Opposing Commanders and other NPCs populate the world, and you can engage them in battle, trade with merchants, and interact with various services. The battle system includes multiple actions such as attacking, guarding, talking to recruit rogue battlers, and more. The focus of this prototype is party management, exploration, and showcasing a unique approach to turn-based combat that features a personal Commander at its core.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Features
 
-- **Main Menu:**  
+- **Main Menu**  
+  Provides options to continue from your last save, begin a new game, or quit.
 
-  Provides options to resume saved progress, start a new session, or exit the game.  
-  
   ![Main Menu](Media/Images/main_menu.png)
 
-- **Character Selection:**  
+- **Character Selection**  
+  Lets you pick a Commander from a set of predefined characters, each with assigned types and stats. This chosen character remains central to your party throughout the game.
 
-  Provides a selection screen listing characters with assigned types and statistics. The chosen character represents the Commander.  
-
-  ![Character Selection Screen](Media/Images/character_select_screen.png)  
+  ![Character Selection Screen](Media/Images/character_select_screen.png)
 
   ![Game Start](Media/GIFs/game_start.gif)
 
-- **World Exploration and Interaction:**  
+- **World Exploration and Interaction**  
+  Gives you the ability to move freely in a 2D environment and interact with NPCs, merchants, innkeepers, quest givers, and more. You can open the in-game menu to view your party, inventory, and barracks, or to save/load the game.
 
-  Allows navigation of the game world and interaction with non-player characters, merchants, innkeepers, and quest givers.  
+  ![Overworld](Media/Images/gameplay_village.png)
 
-  ![Overworld](Media/Images/gameplay_village.png)  
+  ![Item Obtained](Media/Images/gameplay_item_obtained.png)
 
-  ![Item Obtained](Media/Images/gameplay_item_obtained.png)  
-
-  ![Gameplay](Media/GIFs/gameplay.gif)  
+  ![Gameplay](Media/GIFs/gameplay.gif)
 
   ![Shopping](Media/GIFs/shopping.gif)
 
-- **Party Management:**  
+- **Party Management**  
+  Supports a maximum of six battlers (one Commander and up to five others). You can reorder the party and view detailed summaries of each member.
 
-  Displays the party configuration with a maximum of six battlers (one Commander and up to five additional battlers). Provides functionality to reorder battlers and view summaries.  
-
-  ![Party Screen](Media/Images/party_screen.png)  
+  ![Party Screen](Media/Images/party_screen.png)
 
   ![Summary Screen](Media/Images/summary_screen.png)
 
-- **Deputy Mechanics:**  
+- **Deputy Mechanic**  
+  Designates the second battler (or the first if the Commander has been moved from the first slot) as the deputy who follows the Commander around. Future plans include giving the deputy unique abilities to influence exploration and battles.
 
-  Designates the second battler (or the first in certain configurations) as deputy, who follows the Commander.
+- **Inventory System**  
+  Organizes items by category and shows your GP (in-game currency). You can use specific items from this screen.
 
-- **Inventory System:**  
-
-  Organizes items by category, displays the current GP (gold pieces), and allows item usage from the menu.
-
-- **Barracks Organization:**  
-
-  Manages recruited battlers using depots with 48 slots each. Permits movement of battlers between the party and storage while preserving the Commander’s position.  
+- **Barracks Organization**  
+  Provides a storage area for extra battlers, split into depots of 48 slots each. You can move battlers between your party and these depots, but the Commander must remain in the party.
 
   ![Barracks](Media/Images/barracks.png)
 
-- **Battle System:**  
+- **Battle System**  
+  Utilizes a turn-based combat flow with six actions:
+  - **Fight:** Choose a move at the cost of SP. If SP of all moves is depleted, a weaker fallback move is used.
+  - **Talk:** Available only to the Commander in rogue battles to attempt recruiting an opposing battler.
+  - **Item:** Opens the inventory to use recovery items.
+  - **Guard:** Temporarily reduces damage taken during the round.
+  - **Switch:** Reorders party members during combat.
+  - **Run:** Attempts to flee the encounter.
 
-  Implements a turn-based combat system with six actions:
+  ![Commander Battle](Media/Images/gameplay_battle_3.png)
 
-  - **Fight:** Select moves that consume SP; if SP is insufficient, a fallback move is executed.
-  - **Talk:** Initiates a recruitment process in which the target battler questions the player.
-  - **Item:** Opens the inventory for item usage.
-  - **Guard:** Lowers damage received during the round.
-  - **Switch:** Permits switching battlers during combat.
-  - **Run:** Attempts to exit the battle.
+  ![Move Target Selection](Media/Images/gameplay_battle_target_selection.png)
   
-  ![Commander Battle](Media/Images/gameplay_battle_3.png)  
-
-  ![Move Target Selection](Media/Images/gameplay_battle_target_selection.png)  
-
   ![Rogue Battle](Media/GIFs/battle.gif)
 
-- **Battle Variants:**  
-
-  Differentiates between Commander and Rogue battles. Rogue battles include a recruitment mechanism through dialogue.  
+- **Battle Variants**  
+  Commander Battles and Rogue Battles differ in recruitment rules and escape restrictions. In Commander Battles, you cannot recruit opposing battlers and cannot flee.
 
   ![Recruitment](Media/Images/gameplay_battle_recruitment.png)
 
-- **Experience and Leveling:**  
+- **Experience and Leveling**  
+  XP is awarded for defeating enemies. Battlers can level up, learn new moves, and transform into stronger forms.
 
-  Awards XP for defeated enemies and supports leveling up, move acquisition, and transformations under specific conditions.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Controls
+
+- **Movement/Menu Navigation (Up, Down, Left, and Right Arrow keys):**  
+  Use the up, down, left, and right arrow keys to move your character in the world and navigate menus.
+
+- **Interaction/Selection (Z key):**  
+  Use **Z** to interact with objects or NPCs, confirm actions in menus, speed up text, and progress dialogue.
+
+- **Cancel/Back (X key):**  
+  Use **X** to close menus, return to previous screens, or quickly select negative or exiting dialogue choices. Like **Z**, it can also be used to speed up text and progress dialogue.
+
+- **In-Game Menu (Enter key):**  
+  Press **Enter** to open the in-game menu while exploring.
+
+- **Barracks Depot Navigation (Q and E keys):**  
+  Use **Q** and **E** to move between depot pages in the barracks.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## How to Play
 
-1. **Launch the Game:**  
-   - Access the main menu. Options include resuming saved progress, starting a new session, or exiting.
+1. **Launch the Game**  
+   - Continue from an existing save or start a new game from the main menu.
 
-2. **Character Selection:**  
-   - Select a Commander from the list of characters with assigned types and statistics.
+2. **Choose a Commander**  
+   - Pick from the available characters, each with specific types and stats.
 
-3. **Exploration:**  
-   - Navigate the game world and interact with non-player characters for services, quests, and information.
-   - Open the in-game menu outside battles or cutscenes to access the party, inventory, and barracks.
+3. **Explore the World**  
+   - Move around the demo's Village and Shop areas, interacting with NPCs and items.
+   - Use the in-game menu to access the party, inventory, barracks, save/load options, and game exit.
 
-4. **Party and Inventory Management:**  
-   - Use the party screen to view battler details and reorder the lineup.
-   - Access the inventory to view items by category and the current GP balance.
-   - Use the barracks screen to manage additional battlers; navigate among depots and slots using keyboard inputs.
+4. **Manage Your Party**  
+   - View your active battlers, reorder their positions, and check each one’s detailed stats.
 
-5. **Battle Operations:**  
-   - Initiate battles by encountering enemy Commanders or rogue battlers.
-   - Select battle actions from the following options: Fight, Talk, Item, Guard, Switch, and Run.
-   - During the Talk action in rogue battles, answer the questions posed by opposing battlers.
-   - When using the Fight action, manage move selection relative to SP consumption; execute a fallback move if SP is insufficient.
-   - Enemy battlers act randomly until advanced AI is implemented.
-   - Victories award XP, possible item drops, and may trigger transformations for eligible battlers.
+5. **Inventory Usage**  
+   - Check your items and see your current GP total.
+   - Use applicable items directly from this menu.
 
-6. **Game Over and Save Operations:**  
-   - After all player battlers are defeated, return to the main menu.
-   - Use save options available within the in-game menu during exploration.
+6. **Barracks Maintenance**  
+   - Store extra battlers in depots and transfer them to or from your active party.
+   - The Commander is kept in your party, as they represent you.
+
+7. **Engage in Battles**  
+   - Encounter rival Commanders or rogue battlers during exploration.
+   - Commander Battles prohibit recruitment and escaping.
+   - Rogue Battles allow you to talk to potential allies for recruitment.
+   - Choose from Fight, Talk (Commander only), Item, Guard, Switch, or Run actions.
+   - Defeat or recruit opposing battlers to gain XP and items.
+
+8. **Defeats and Game Over**  
+   - If all your party members are defeated, the game ends and you return to the main menu.  
+   - You may continue from your last save, start anew, or exit at that point.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Roadmap
 
-- [ ] Relocate the battler storage screen from the game menu to a dedicated barracks facility.
-- [ ] Integrate commander and deputy abilities.
-- [ ] Implement a crafting system for creating items from battle loot.
-- [ ] Develop sorting methods for the barracks and inventory.
-- [ ] Improve dialogue visualization using camera offset/zoom, overhead icons, and portraits.
-- [ ] Extend recruitment mechanics with additional dialogue options.
-- [ ] Implement enemy AI that evaluates battle state and battler personality profiles.
-- [ ] Expand the game world with more areas and interactive elements.
+- [ ] Transfer barracks functionality from the menu to a dedicated in-world facility
+- [ ] Incorporate commander and deputy-specific abilities
+- [ ] Add a crafting system using loot from battles
+- [ ] Improve sorting features for both barracks and inventory
+- [ ] Enhance dialogue visuals with camera adjustments, overhead icons, and portraits
+- [ ] Expand recruitment interactions with more dialogue and scenario elements
+- [ ] Introduce enemy AI that factors in current battle conditions and individual personality
+- [ ] Grow the world map with new locations and interactive features
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
