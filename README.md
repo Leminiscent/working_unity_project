@@ -20,7 +20,7 @@
 
 ## About the Project
 
-This prototype is a 2D monster-taming, turn-based RPG built in Unity. You control a party led by a "Commander," a unique battler who fights alongside up to five other companions. Rival Commanders and other NPCs that populate the world can be engaged in battle, traded with, and more. The battle system includes multiple actions such as attacking, guarding, talking to recruit rogue battlers, and more. The focus of this prototype is party management, exploration, and showcasing a unique approach to turn-based combat that features a personal Commander at its core.
+This project is a 2D monster-taming, turn-based RPG built in Unity. You control a party of battlers led by a "Commander," a unique battler who inspires and leads others into battle. Rival Commanders and other NPCs that populate the world can be engaged with in battle, traded with, and more. The battle system includes multiple actions such as attacking, guarding, talking to recruit other battlers, using items, and more. The focus of this prototype is on developing and refining the core gameplay mechanics to achieve engaging and intuitive interactions. After these foundational systems are fully implemented and refined, future iterations will concentrate on world-building, narrative development, and visual design.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
