@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,11 +16,13 @@ public class Character : MonoBehaviour
     private const float JUMP_POWER = 1.42f;
     private const int NUM_JUMPS = 1;
     private const float JUMP_DURATION = 0.34f;
+    private static readonly HashSet<Vector2Int> _reservedTiles = new();
+    private bool _hasReservedTile = false;
+    private Vector2Int _reservedTile;
 
     public float MoveSpeed;
     public bool IsMoving { get; private set; }
     public float OffsetY { get; private set; } = 0.3f;
-
     public CharacterAnimator Animator { get; private set; }
     public event Action<Vector3> OnMoveStart;
 
@@ -58,6 +61,19 @@ public class Character : MonoBehaviour
             yield break;
         }
 
+        // Reserve the target tile to prevent simultaneous moves
+        Vector2Int gridPos = new(
+            Mathf.FloorToInt(targetPos.x),
+            Mathf.FloorToInt(targetPos.y)
+        );
+        if (_reservedTiles.Contains(gridPos))
+        {
+            yield break;
+        }
+        _ = _reservedTiles.Add(gridPos);
+        _hasReservedTile = true;
+        _reservedTile = gridPos;
+
         StartMovement(transform.position);
 
         // Smoothly move towards the target position
@@ -74,15 +90,31 @@ public class Character : MonoBehaviour
 
     public IEnumerator JumpRoutine(Vector2 moveDir, Action OnMoveOver = null)
     {
+        // Compute jump destination
+        Vector3 jumpDestination = transform.position + (new Vector3(moveDir.x, moveDir.y) * LEDGE_JUMP_MULTIPLIER);
+
+        // Reserve landing tile
+        Vector2Int landingGrid = new(
+            Mathf.FloorToInt(jumpDestination.x),
+            Mathf.FloorToInt(jumpDestination.y)
+        );
+        if (_reservedTiles.Contains(landingGrid))
+        {
+            yield break;
+        }
+        _ = _reservedTiles.Add(landingGrid);
+        _hasReservedTile = true;
+        _reservedTile = landingGrid;
+
         StartMovement(transform.position);
         Animator.IsJumping = true;
-
-        Vector3 jumpDestination = transform.position + (new Vector3(moveDir.x, moveDir.y) * LEDGE_JUMP_MULTIPLIER);
 
         yield return transform.DOJump(jumpDestination, JUMP_POWER, NUM_JUMPS, JUMP_DURATION)
                                 .WaitForCompletion();
 
         Animator.IsJumping = false;
+        transform.position = jumpDestination;
+
         EndMovement();
         OnMoveOver?.Invoke();
     }
@@ -139,5 +171,11 @@ public class Character : MonoBehaviour
     private void EndMovement()
     {
         IsMoving = false;
+        // Release reservation
+        if (_hasReservedTile)
+        {
+            _ = _reservedTiles.Remove(_reservedTile);
+            _hasReservedTile = false;
+        }
     }
 }

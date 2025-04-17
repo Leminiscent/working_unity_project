@@ -15392,6 +15392,34 @@ PrefabInstance:
       propertyPath: _skillBookSlots.Array.data[12]._count
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_Size.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_Size.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_CallbackLayers.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_ForceSendLayers.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_ForceReceiveLayers.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861237823873326999, guid: 6d9f9b89a6fefd5429c6a2d953585204, type: 3}
+      propertyPath: m_ContactCaptureLayers.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15426,6 +15454,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2808156341160974150}
     m_Modifications:
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_Size.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_CallbackLayers.m_Bits
+      value: 63287
+      objectReference: {fileID: 0}
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_ForceSendLayers.m_Bits
+      value: 63287
+      objectReference: {fileID: 0}
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_ForceReceiveLayers.m_Bits
+      value: 63287
+      objectReference: {fileID: 0}
+    - target: {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_ContactCaptureLayers.m_Bits
+      value: 63287
+      objectReference: {fileID: 0}
     - target: {fileID: 937609591130240954, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -15470,7 +15526,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Deputy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 2951097735671239233, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 391805763210708518, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
+    - {fileID: 5351007817226393625, guid: d22c1db399214fc46b7a0cf25908c6f7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
