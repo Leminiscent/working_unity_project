@@ -129,7 +129,6 @@ public class DeputyController : MonoBehaviour, ISavable
                 ? new Vector2(Mathf.Sign(diff.x), 0)
                 : new Vector2(0, Mathf.Sign(diff.y));
 
-            // Hand off to Character.MoveRoutine for all collisions/ledge jumps/etc.
             yield return StartCoroutine(_character.MoveRoutine(moveVec));
         }
     }
