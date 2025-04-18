@@ -12,6 +12,7 @@
   <ol>
     <li><a href="#about-the-project">About the Project</a></li>
     <li><a href="#features">Features</a></li>
+    <li><a href="#controls">Controls</a></li>
     <li><a href="#how-to-play">How to Play</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
