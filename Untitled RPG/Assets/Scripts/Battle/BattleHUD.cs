@@ -363,7 +363,7 @@ public class BattleHUD : MonoBehaviour
                 if (arrowPrefab != null)
                 {
                     GameObject arrow = Instantiate(arrowPrefab, arrowContainer);
-                    StartCoroutine(ObjectUtil.ScaleIn(arrow));
+                    _ = StartCoroutine(ObjectUtil.ScaleIn(arrow));
                 }
             }
         }
@@ -374,7 +374,7 @@ public class BattleHUD : MonoBehaviour
             for (int i = 0; i < surplus; i++)
             {
                 Transform arrowToRemove = arrowContainer.GetChild(arrowContainer.childCount - 1);
-                StartCoroutine(RemoveArrow(arrowToRemove.gameObject));
+                _ = StartCoroutine(RemoveArrow(arrowToRemove.gameObject));
             }
         }
     }
@@ -386,7 +386,7 @@ public class BattleHUD : MonoBehaviour
             Transform child = arrowContainer.GetChild(i);
             if (child != null)
             {
-                StartCoroutine(RemoveArrow(child.gameObject));
+                _ = StartCoroutine(RemoveArrow(child.gameObject));
             }
         }
     }

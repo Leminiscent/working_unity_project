@@ -192,7 +192,7 @@ public class BattleSystem : MonoBehaviour
             Field.SetWeather(weather);
             yield return DialogueBox.TypeDialogue(Field.Weather.StartMessage);
         }
-        
+
         BattleIsOver = false;
         EscapeAttempts = 0;
         _selectingUnitIndex = 0;
