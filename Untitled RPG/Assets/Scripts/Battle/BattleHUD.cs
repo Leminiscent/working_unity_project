@@ -106,24 +106,24 @@ public class BattleHUD : MonoBehaviour
             return;
         }
 
-        (GameObject uiElement, ConditionID condition)[] statusMappings = new (GameObject uiElement, ConditionID condition)[]
+        (GameObject uiElement, StatusConditionID condition)[] statusMappings = new (GameObject uiElement, StatusConditionID condition)[]
         {
-            (_brnText, ConditionID.Brn),
-            (_psnText, ConditionID.Psn),
-            (_frzText, ConditionID.Frz),
-            (_slpText, ConditionID.Slp),
-            (_parText, ConditionID.Par),
-            (_conText, ConditionID.Con),
+            (_brnText, StatusConditionID.Brn),
+            (_psnText, StatusConditionID.Psn),
+            (_frzText, StatusConditionID.Frz),
+            (_slpText, StatusConditionID.Slp),
+            (_parText, StatusConditionID.Par),
+            (_conText, StatusConditionID.Con),
         };
 
-        foreach ((GameObject uiElement, ConditionID condition) in statusMappings)
+        foreach ((GameObject uiElement, StatusConditionID condition) in statusMappings)
         {
             if (uiElement == null)
             {
                 continue;
             }
 
-            bool hasStatus = condition == ConditionID.Con
+            bool hasStatus = condition == StatusConditionID.Con
                 ? _battler.VolatileStatuses.ContainsKey(condition)
                 : _battler.Statuses.ContainsKey(condition);
 
@@ -393,7 +393,10 @@ public class BattleHUD : MonoBehaviour
 
     private IEnumerator RemoveArrow(GameObject arrow)
     {
-        yield return StartCoroutine(ObjectUtil.ScaleOut(arrow));
+        if (gameObject.activeInHierarchy)
+        {
+            yield return StartCoroutine(ObjectUtil.ScaleOut(arrow));
+        }
         Destroy(arrow);
     }
 

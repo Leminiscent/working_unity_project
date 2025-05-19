@@ -64,7 +64,7 @@ public class BattleSystem : MonoBehaviour
     public BattleParty PlayerParty { get; private set; }
     public BattleParty EnemyParty { get; private set; }
     public List<Battler> RogueBattlers { get; private set; }
-    public Field Field { get; private set; }
+    public BattleField Field { get; private set; }
     public bool IsCommanderBattle { get; private set; }
     public int EscapeAttempts { get; set; }
     public CommanderController Enemy { get; private set; }
@@ -89,7 +89,7 @@ public class BattleSystem : MonoBehaviour
         };
     }
 
-    public void StartRogueBattle(BattleParty playerParty, List<Battler> rogueBattlers, BattleTrigger trigger, int unitCount = 1)
+    public void StartRogueBattle(BattleParty playerParty, List<Battler> rogueBattlers, BattleTrigger trigger, WeatherConditionID weather = WeatherConditionID.None, int unitCount = 1)
     {
         IsCommanderBattle = false;
         PlayerParty = playerParty;
@@ -97,10 +97,10 @@ public class BattleSystem : MonoBehaviour
         _enemyUnitCount = unitCount;
         _battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(_rogueBattleMusic);
-        _ = StartCoroutine(SetupBattle());
+        _ = StartCoroutine(SetupBattle(weather));
     }
 
-    public void StartCommanderBattle(BattleParty playerParty, BattleParty enemyParty, BattleTrigger trigger, int unitCount = 1)
+    public void StartCommanderBattle(BattleParty playerParty, BattleParty enemyParty, BattleTrigger trigger, WeatherConditionID weather = WeatherConditionID.None, int unitCount = 1)
     {
         IsCommanderBattle = true;
         PlayerParty = playerParty;
@@ -110,10 +110,10 @@ public class BattleSystem : MonoBehaviour
         Enemy = enemyParty.GetComponent<CommanderController>();
         _battleTrigger = trigger;
         AudioManager.Instance.PlayMusic(_commanderBattleMusic);
-        _ = StartCoroutine(SetupBattle());
+        _ = StartCoroutine(SetupBattle(weather));
     }
 
-    public IEnumerator SetupBattle()
+    public IEnumerator SetupBattle(WeatherConditionID weather)
     {
         _ = StartCoroutine(Fader.Instance.FadeOut(0.5f));
         StateMachine = new StateMachine<BattleSystem>(this);
@@ -186,7 +186,13 @@ public class BattleSystem : MonoBehaviour
             yield return DialogueBox.TypeDialogue($"Commander {Enemy.Name} wants to battle!");
         }
 
-        Field = new Field();
+        Field = new BattleField();
+        if (weather != WeatherConditionID.None)
+        {
+            Field.SetWeather(weather);
+            yield return DialogueBox.TypeDialogue(Field.Weather.StartMessage);
+        }
+        
         BattleIsOver = false;
         EscapeAttempts = 0;
         _selectingUnitIndex = 0;

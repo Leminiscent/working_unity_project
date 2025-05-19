@@ -11,7 +11,7 @@ public class RunTurnState : State<BattleSystem>
     private BattleParty _playerParty;
     private BattleParty _enemyParty;
     private bool _isCommanderBattle;
-    private Field _field;
+    private BattleField _field;
 
     public static RunTurnState Instance { get; private set; }
     public List<BattleAction> BattleActions { get; set; }
@@ -158,7 +158,7 @@ public class RunTurnState : State<BattleSystem>
 
             foreach (BattleUnit unit in sortedUnits)
             {
-                _field.Weather.OnWeather?.Invoke(unit.Battler);
+                _field.Weather.OnWeatherEffect?.Invoke(unit.Battler);
                 yield return ShowStatusChanges(unit);
                 yield return unit.Hud.WaitForHPUpdate();
                 if (unit.Battler.Hp <= 0)
@@ -174,7 +174,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     _field.Weather = null;
                     _field.WeatherDuration = null;
-                    yield return _dialogueBox.TypeDialogue("The weather returned to normal.");
+                    yield return _dialogueBox.TypeDialogue(_field.Weather.EndMessage);
                 }
             }
         }
@@ -406,22 +406,22 @@ public class RunTurnState : State<BattleSystem>
         }
 
         // Status Conditions
-        if (effects.Status != ConditionID.None)
+        if (effects.Status != StatusConditionID.None)
         {
             if (targetUnit.Battler.Statuses.ContainsKey(effects.Status))
             {
-                yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {ConditionsDB.Conditions[effects.Status].FailMessage}");
+                yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {StatusConditionDB.Conditions[effects.Status].FailMessage}");
             }
             else
             {
                 targetUnit.Battler.SetStatus(effects.Status);
             }
         }
-        if (effects.VolatileStatus != ConditionID.None)
+        if (effects.VolatileStatus != StatusConditionID.None)
         {
             if (targetUnit.Battler.VolatileStatuses.ContainsKey(effects.VolatileStatus))
             {
-                yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {ConditionsDB.Conditions[effects.VolatileStatus].FailMessage}");
+                yield return _dialogueBox.TypeDialogue($"{TextUtil.FormatUnitName(targetUnit, _isCommanderBattle)} {StatusConditionDB.Conditions[effects.VolatileStatus].FailMessage}");
             }
             else
             {
@@ -430,7 +430,7 @@ public class RunTurnState : State<BattleSystem>
         }
 
         // Weather effects
-        if (effects.Weather != ConditionID.None)
+        if (effects.Weather != WeatherConditionID.None)
         {
             _field.SetWeather(effects.Weather);
             _field.WeatherDuration = 5;
@@ -449,14 +449,14 @@ public class RunTurnState : State<BattleSystem>
 
             if (statusEvent.Type == StatusEventType.Damage)
             {
-                int damage = (int)statusEvent.Value;
+                int damage = Mathf.Max((int)statusEvent.Value, 1);
                 unit.Battler.DecreaseHP(damage);
                 _ = StartCoroutine(unit.PlayDamageAnimation());
                 yield return unit.ShowFloatingText($"- {damage} HP!", GlobalSettings.Instance.DamageTextColor);
             }
             else if (statusEvent.Type == StatusEventType.Heal)
             {
-                int heal = (int)statusEvent.Value;
+                int heal = Mathf.Max((int)statusEvent.Value, 1);
                 unit.Battler.IncreaseHP(heal);
                 _ = StartCoroutine(unit.PlayHealAnimation());
                 yield return unit.ShowFloatingText($"+ {heal} HP!", GlobalSettings.Instance.HealTextColor);

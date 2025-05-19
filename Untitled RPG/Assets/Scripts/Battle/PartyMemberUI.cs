@@ -127,16 +127,16 @@ public class PartyMemberUI : MonoBehaviour
             return;
         }
 
-        (GameObject uiElement, ConditionID condition)[] statusMappings = new (GameObject uiElement, ConditionID condition)[]
+        (GameObject uiElement, StatusConditionID condition)[] statusMappings = new (GameObject uiElement, StatusConditionID condition)[]
         {
-            (_brnText, ConditionID.Brn),
-            (_psnText, ConditionID.Psn),
-            (_frzText, ConditionID.Frz),
-            (_slpText, ConditionID.Slp),
-            (_parText, ConditionID.Par),
+            (_brnText, StatusConditionID.Brn),
+            (_psnText, StatusConditionID.Psn),
+            (_frzText, StatusConditionID.Frz),
+            (_slpText, StatusConditionID.Slp),
+            (_parText, StatusConditionID.Par),
         };
 
-        foreach ((GameObject uiElement, ConditionID condition) in statusMappings)
+        foreach ((GameObject uiElement, StatusConditionID condition) in statusMappings)
         {
             if (uiElement == null)
             {

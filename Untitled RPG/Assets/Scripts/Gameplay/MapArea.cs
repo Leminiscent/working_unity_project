@@ -8,6 +8,7 @@ public class MapArea : MonoBehaviour
     [SerializeField] private List<BattlerEncounterRecord> _rogueBattlers;
     [SerializeField, HideInInspector] private int _totalChance = 0;
     [field: SerializeField, FormerlySerializedAs("_terrain")] public BattleTrigger Terrain { get; private set; }
+    [field: SerializeField] public WeatherConditionID Weather { get; private set; }
 
     private void OnValidate()
     {

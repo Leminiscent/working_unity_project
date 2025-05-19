@@ -47,16 +47,17 @@ public class BattleState : State<GameController>
             return;
         }
 
+        // Retrieve the MapArea component from the current scene.
+        if (!_gameController.CurrentScene.TryGetComponent(out MapArea mapArea))
+        {
+            Debug.LogError("CurrentScene is missing a MapArea component.");
+            return;
+        }
+
         // Start either a rogue battle or a commander battle based on whether Commander is set.
         if (Commander == null)
         {
             // Get a list of random rogue battlers from the current scene.
-            if (!_gameController.CurrentScene.TryGetComponent(out MapArea mapArea))
-            {
-                Debug.LogError("CurrentScene is missing a MapArea component.");
-                return;
-            }
-
             List<Battler> rogueBattlers = mapArea.GetRandomRogueBattlers(Random.Range(1, 4));
             List<Battler> rogueBattlerCopies = new();
 
@@ -66,7 +67,7 @@ public class BattleState : State<GameController>
                 rogueBattlerCopies.Add(new Battler(battler.Base, battler.Level));
             }
 
-            BattleSystem.StartRogueBattle(playerParty, rogueBattlerCopies, Trigger, rogueBattlers.Count);
+            BattleSystem.StartRogueBattle(playerParty, rogueBattlerCopies, Trigger, mapArea.Weather, rogueBattlers.Count);
         }
         else
         {
@@ -77,7 +78,7 @@ public class BattleState : State<GameController>
                 return;
             }
             int maxBattlers = Mathf.Min(enemyParty.Battlers.Count, 3);
-            BattleSystem.StartCommanderBattle(playerParty, enemyParty, Trigger, maxBattlers);
+            BattleSystem.StartCommanderBattle(playerParty, enemyParty, Trigger, mapArea.Weather, maxBattlers);
         }
 
         // Subscribe to the battle over event.

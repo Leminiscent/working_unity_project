@@ -37,7 +37,8 @@ public class GameController : MonoBehaviour
         MoveDB.Init();
         ItemDB.Init();
         QuestDB.Init();
-        ConditionsDB.Init();
+        StatusConditionDB.Init();
+        WeatherConditionDB.Init();
     }
 
     private void Start()

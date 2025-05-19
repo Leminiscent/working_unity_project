@@ -203,7 +203,7 @@ public class RecruitmentState : State<BattleSystem>
         float a = Mathf.Min(Mathf.Max(RecruitTarget.Battler.AffinityLevel - 3, 0), 3) *
                   ((3 * RecruitTarget.Battler.MaxHp) - (2 * RecruitTarget.Battler.Hp)) *
                   RecruitTarget.Battler.Base.RecruitRate *
-                  ConditionsDB.GetStatusBonus(RecruitTarget.Battler.Statuses) /
+                  StatusConditionDB.GetStatusBonus(RecruitTarget.Battler.Statuses) /
                   (3 * RecruitTarget.Battler.MaxHp);
         if (a >= 255)
         {

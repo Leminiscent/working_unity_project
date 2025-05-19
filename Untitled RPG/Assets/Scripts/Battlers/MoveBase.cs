@@ -49,14 +49,14 @@ public class MoveBase : ScriptableObject
 public class MoveEffects
 {
     [SerializeField] private List<StatBoost> _boosts;
-    [SerializeField] private ConditionID _status;
-    [SerializeField] private ConditionID _volatileStatus;
-    [SerializeField] private ConditionID _weather;
+    [SerializeField] private StatusConditionID _status;
+    [SerializeField] private StatusConditionID _volatileStatus;
+    [SerializeField] private WeatherConditionID _weather;
 
     public List<StatBoost> Boosts => _boosts;
-    public ConditionID Status => _status;
-    public ConditionID VolatileStatus => _volatileStatus;
-    public ConditionID Weather => _weather;
+    public StatusConditionID Status => _status;
+    public StatusConditionID VolatileStatus => _volatileStatus;
+    public WeatherConditionID Weather => _weather;
 }
 
 [System.Serializable]

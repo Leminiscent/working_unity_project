@@ -20,8 +20,8 @@ public class Battler
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public bool IsGuarding { get; set; }
-    public Dictionary<ConditionID, ConditionStatus> Statuses { get; private set; }
-    public Dictionary<ConditionID, ConditionStatus> VolatileStatuses { get; private set; }
+    public Dictionary<StatusConditionID, ConditionStatus> Statuses { get; private set; }
+    public Dictionary<StatusConditionID, ConditionStatus> VolatileStatuses { get; private set; }
     public Queue<StatusEvent> StatusChanges { get; private set; }
     public int AffinityLevel { get; set; }
     public event Action OnStatusChanged;
@@ -58,13 +58,13 @@ public class Battler
         InitCommon();
 
         // Load saved statuses if any
-        Statuses = new Dictionary<ConditionID, ConditionStatus>();
-        VolatileStatuses = new Dictionary<ConditionID, ConditionStatus>();
+        Statuses = new Dictionary<StatusConditionID, ConditionStatus>();
+        VolatileStatuses = new Dictionary<StatusConditionID, ConditionStatus>();
         if (saveData.Statuses != null && saveData.Statuses.Count > 0)
         {
             foreach (ConditionSaveData statusSave in saveData.Statuses)
             {
-                Condition condition = ConditionsDB.Conditions[statusSave.ConditionId];
+                StatusCondition condition = StatusConditionDB.Conditions[statusSave.ConditionId];
                 Statuses.Add(statusSave.ConditionId, new ConditionStatus(condition, statusSave.Timer));
             }
         }
@@ -85,8 +85,8 @@ public class Battler
         Moves ??= new List<Move>();
         StatusChanges = new Queue<StatusEvent>();
         ResetStatBoosts();
-        Statuses = new Dictionary<ConditionID, ConditionStatus>();
-        VolatileStatuses = new Dictionary<ConditionID, ConditionStatus>();
+        Statuses = new Dictionary<StatusConditionID, ConditionStatus>();
+        VolatileStatuses = new Dictionary<StatusConditionID, ConditionStatus>();
         AffinityLevel = 0;
 
         // Initialize performance values for all stats with 0
@@ -323,7 +323,7 @@ public class Battler
         AudioManager.Instance.PlaySFX(AudioID.Heal);
     }
 
-    public DamageDetails TakeDamage(Move move, Battler attacker, Condition weather)
+    public DamageDetails TakeDamage(Move move, Battler attacker, WeatherCondition weather)
     {
         // One-hit KO move handling
         if (move.Base.OneHitKO.IsOneHitKO)
@@ -336,7 +336,7 @@ public class Battler
         float critMultiplier = CalculateCriticalMultiplier(move, attacker);
         float typeEffectiveness = TypeChart.GetEffectiveness(move.Base.Type, Base.Type1) *
                                   TypeChart.GetEffectiveness(move.Base.Type, Base.Type2);
-        float weatherMod = weather?.OnDamageModify?.Invoke(this, attacker, move) ?? 1f;
+        float weatherMod = weather?.OnDamageModify?.Invoke(move) ?? 1f;
         int damage = CalculateDamageOutput(move, attacker, critMultiplier, typeEffectiveness, weatherMod);
 
         DamageDetails details = new()
@@ -402,10 +402,10 @@ public class Battler
     public bool OnStartOfTurn()
     {
         bool canAct = true;
-        foreach (ConditionID key in Statuses.Keys.ToList())
+        foreach (StatusConditionID key in Statuses.Keys.ToList())
         {
             ConditionStatus status = Statuses[key];
-            Condition condition = status.Condition;
+            StatusCondition condition = status.Condition;
             int timer = status.Timer;
 
             if (condition.OnBeginningOfTurnTimed != null)
@@ -438,7 +438,7 @@ public class Battler
 
     public void OnEndOfTurn()
     {
-        foreach (KeyValuePair<ConditionID, ConditionStatus> kvp in Statuses.ToList())
+        foreach (KeyValuePair<StatusConditionID, ConditionStatus> kvp in Statuses.ToList())
         {
             kvp.Value.Condition.OnEndOfTurn?.Invoke(this);
         }
@@ -451,20 +451,20 @@ public class Battler
         CalculateStats();
     }
 
-    public void AddCondition(ConditionID conditionId, bool isVolatile = false)
+    public void AddCondition(StatusConditionID conditionId, bool isVolatile = false)
     {
-        if (conditionId == ConditionID.None)
+        if (conditionId == StatusConditionID.None)
         {
             return;
         }
 
-        Dictionary<ConditionID, ConditionStatus> targetStatuses = isVolatile ? VolatileStatuses : Statuses;
+        Dictionary<StatusConditionID, ConditionStatus> targetStatuses = isVolatile ? VolatileStatuses : Statuses;
         if (targetStatuses.ContainsKey(conditionId))
         {
             return;
         }
 
-        Condition condition = ConditionsDB.Conditions[conditionId];
+        StatusCondition condition = StatusConditionDB.Conditions[conditionId];
         int timer = condition.OnStartTimed != null ? condition.OnStartTimed(this) : 0;
         targetStatuses.Add(conditionId, new ConditionStatus(condition, timer));
 
@@ -476,17 +476,17 @@ public class Battler
         OnStatusChanged?.Invoke();
     }
 
-    public void SetStatus(ConditionID conditionId)
+    public void SetStatus(StatusConditionID conditionId)
     {
         AddCondition(conditionId);
     }
 
-    public void SetVolatileStatus(ConditionID conditionId)
+    public void SetVolatileStatus(StatusConditionID conditionId)
     {
         AddCondition(conditionId, true);
     }
 
-    public void RemoveCondition(ConditionID conditionId)
+    public void RemoveCondition(StatusConditionID conditionId)
     {
         if (Statuses.ContainsKey(conditionId))
         {

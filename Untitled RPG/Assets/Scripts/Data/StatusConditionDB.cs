@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ConditionsDB
+public static class StatusConditionDB
 {
-    public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>()
+    public static Dictionary<StatusConditionID, StatusCondition> Conditions { get; set; } = new Dictionary<StatusConditionID, StatusCondition>()
     {
         // Non-volatile status conditions
         {
-            ConditionID.Psn,
-            new Condition
+            StatusConditionID.Psn,
+            new StatusCondition
             {
                 Name = "Poison",
                 StartMessage = " has been poisoned!",
@@ -20,8 +20,8 @@ public static class ConditionsDB
             }
         },
         {
-            ConditionID.Brn,
-            new Condition
+            StatusConditionID.Brn,
+            new StatusCondition
             {
                 Name = "Burn",
                 StartMessage = " has been burned!",
@@ -33,8 +33,8 @@ public static class ConditionsDB
             }
         },
         {
-            ConditionID.Slp,
-            new Condition
+            StatusConditionID.Slp,
+            new StatusCondition
             {
                 Name = "Sleep",
                 StartMessage = " has been put to sleep!",
@@ -54,8 +54,8 @@ public static class ConditionsDB
             }
         },
         {
-            ConditionID.Par,
-            new Condition
+            StatusConditionID.Par,
+            new StatusCondition
             {
                 Name = "Paralyzed",
                 StartMessage = " has been paralyzed!",
@@ -72,8 +72,8 @@ public static class ConditionsDB
             }
         },
         {
-            ConditionID.Frz,
-            new Condition
+            StatusConditionID.Frz,
+            new StatusCondition
             {
                 Name = "Frozen",
                 StartMessage = " has been frozen solid!",
@@ -97,8 +97,8 @@ public static class ConditionsDB
 
         // Volatile status conditions
         {
-            ConditionID.Con,
-            new Condition
+            StatusConditionID.Con,
+            new StatusCondition
             {
                 Name = "Confusion",
                 StartMessage = " has been confused!",
@@ -121,91 +121,21 @@ public static class ConditionsDB
                 }
             }
         },
-
-        // Weather conditions
-        {
-            ConditionID.Sun,
-            new Condition
-            {
-                Name = "Harsh Sunlight",
-                StartMessage = "The sunlight turned harsh!",
-                EffectMessage = "The sunlight is harsh!",
-                OnDamageModify = static (source, target, move) =>
-                {
-                    if (move.Base.Type == BattlerType.Fire)
-                    {
-                        return 1.5f;
-                    }
-                    else if (move.Base.Type == BattlerType.Water)
-                    {
-                        return 0.5f;
-                    }
-                    return 1f;
-                }
-            }
-        },
-        {
-            ConditionID.Rain,
-            new Condition
-            {
-                Name = "Heavy Rain",
-                StartMessage = "It started to rain!",
-                EffectMessage = "The rain is falling!",
-                OnDamageModify = static (source, target, move) =>
-                {
-                    if (move.Base.Type == BattlerType.Water)
-                    {
-                        return 1.5f;
-                    }
-                    else if (move.Base.Type == BattlerType.Fire)
-                    {
-                        return 0.5f;
-                    }
-                    return 1f;
-                }
-            }
-        },
-        {
-            ConditionID.Sandstorm,
-            new Condition
-            {
-                Name = "Sandstorm",
-                StartMessage = "A sandstorm kicked up!",
-                EffectMessage = "The sandstorm rages!",
-                OnWeather = static battler =>
-                {
-                    battler.AddStatusEvent(StatusEventType.Damage, " is buffeted by the sandstorm!", battler.MaxHp / 16);
-                }
-            }
-        },
-        {
-            ConditionID.Hail,
-            new Condition
-            {
-                Name = "Hail",
-                StartMessage = "It started to hail!",
-                EffectMessage = "The hail is falling!",
-                OnWeather = static battler =>
-                {
-                    battler.AddStatusEvent(StatusEventType.Damage, " is buffeted by the hail!", battler.MaxHp / 16);
-                }
-            }
-        }
     };
 
     public static void Init()
     {
-        foreach (KeyValuePair<ConditionID, Condition> kvp in Conditions)
+        foreach (KeyValuePair<StatusConditionID, StatusCondition> kvp in Conditions)
         {
-            Condition condition = kvp.Value;
-            ConditionID conditionId = kvp.Key;
+            StatusCondition condition = kvp.Value;
+            StatusConditionID conditionId = kvp.Key;
 
             // Assign the key as the condition's ID.
             condition.ID = conditionId;
         }
     }
 
-    public static float GetStatusBonus(Dictionary<ConditionID, ConditionStatus> statuses)
+    public static float GetStatusBonus(Dictionary<StatusConditionID, ConditionStatus> statuses)
     {
         if (statuses == null || statuses.Count == 0)
         {
@@ -213,14 +143,14 @@ public static class ConditionsDB
         }
 
         float bonus = 1f;
-        foreach (KeyValuePair<ConditionID, ConditionStatus> entry in statuses)
+        foreach (KeyValuePair<StatusConditionID, ConditionStatus> entry in statuses)
         {
-            Condition condition = entry.Value.Condition;
-            if (condition.ID is ConditionID.Slp or ConditionID.Frz)
+            StatusCondition condition = entry.Value.Condition;
+            if (condition.ID is StatusConditionID.Slp or StatusConditionID.Frz)
             {
                 bonus += 1f;
             }
-            else if (condition.ID is ConditionID.Psn or ConditionID.Brn or ConditionID.Par)
+            else if (condition.ID is StatusConditionID.Psn or StatusConditionID.Brn or StatusConditionID.Par)
             {
                 bonus += 0.5f;
             }
@@ -229,7 +159,7 @@ public static class ConditionsDB
     }
 }
 
-public enum ConditionID
+public enum StatusConditionID
 {
     None,
     Psn,
@@ -238,8 +168,4 @@ public enum ConditionID
     Par,
     Frz,
     Con,
-    Sun,
-    Rain,
-    Sandstorm,
-    Hail
 }

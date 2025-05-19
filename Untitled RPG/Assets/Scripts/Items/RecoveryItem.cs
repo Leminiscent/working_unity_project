@@ -12,7 +12,7 @@ public class RecoveryItem : ItemBase
     [SerializeField] private bool _restoreMaxSP;
 
     [Header("Status Conditions")]
-    [SerializeField] private ConditionID _status;
+    [SerializeField] private StatusConditionID _status;
     [SerializeField] private bool _recoverAllStatus;
 
     [Header("Revive")]
@@ -54,7 +54,7 @@ public class RecoveryItem : ItemBase
         }
 
         // Attempt status condition recovery if applicable.
-        if (_recoverAllStatus || _status != ConditionID.None)
+        if (_recoverAllStatus || _status != StatusConditionID.None)
         {
             bool hasStatuses = (battler.Statuses != null && battler.Statuses.Count > 0) ||
                                (battler.VolatileStatuses != null && battler.VolatileStatuses.Count > 0);
