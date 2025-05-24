@@ -189,8 +189,9 @@ public class BattleSystem : MonoBehaviour
         Field = new BattleField();
         if (weather != WeatherConditionID.None)
         {
+            Field.DefaultWeather = WeatherConditionDB.Conditions[weather];
             Field.SetWeather(weather);
-            yield return DialogueBox.TypeDialogue(Field.Weather.StartMessage);
+            yield return DialogueBox.TypeDialogue(Field.Weather.FieldStartMessage);
         }
 
         BattleIsOver = false;

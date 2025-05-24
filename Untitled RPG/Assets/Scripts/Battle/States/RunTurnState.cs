@@ -172,7 +172,7 @@ public class RunTurnState : State<BattleSystem>
                 _field.WeatherDuration--;
                 if (_field.WeatherDuration == 0)
                 {
-                    _field.Weather = null;
+                    _field.Weather = _field.DefaultWeather;
                     _field.WeatherDuration = null;
                     yield return _dialogueBox.TypeDialogue(_field.Weather.EndMessage);
                 }
@@ -432,9 +432,8 @@ public class RunTurnState : State<BattleSystem>
         // Weather effects
         if (effects.Weather != WeatherConditionID.None)
         {
-            _field.SetWeather(effects.Weather);
-            _field.WeatherDuration = 5;
-            yield return _dialogueBox.TypeDialogue(_field.Weather.StartMessage);
+            _field.SetWeather(effects.Weather, 5);
+            yield return _dialogueBox.TypeDialogue(_field.Weather.MoveStartMessage);
         }
 
         yield return ShowStatusChanges(sourceUnit);

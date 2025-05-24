@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class BattleField
 {
+    public WeatherCondition DefaultWeather { get; set; } = null;
     public WeatherCondition Weather { get; set; }
     public int? WeatherDuration { get; set; }
 
-    public void SetWeather(WeatherConditionID conditionID)
+    public void SetWeather(WeatherConditionID conditionID, int? duration = null)
     {
         if (WeatherConditionDB.Conditions.TryGetValue(conditionID, out WeatherCondition condition))
         {
             Weather = condition;
-            Weather.ID = conditionID;
+            WeatherDuration = duration;
         }
         else
         {

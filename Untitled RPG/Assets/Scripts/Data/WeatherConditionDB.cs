@@ -10,8 +10,9 @@ public class WeatherConditionDB
             new WeatherCondition
             {
                 Name = "Harsh Sunlight",
-                StartMessage = "The sunlight turned harsh!",
-                EffectMessage = "The sunlight is harsh!",
+                FieldStartMessage = "Sunlight is beaming down!",
+                MoveStartMessage = "It started to shine harshly!",
+                EffectMessage = "The sunlight is strong!",
                 EndMessage = "The sunlight faded!",
                 OnDamageModify = static (move) =>
                 {
@@ -32,9 +33,10 @@ public class WeatherConditionDB
             new WeatherCondition
             {
                 Name = "Heavy Rain",
-                StartMessage = "It started to rain!",
-                EffectMessage = "The rain is falling!",
-                EndMessage = "The rain stopped!",
+                FieldStartMessage = "Rain is pouring down!",
+                MoveStartMessage = "It began to rain heavily!",
+                EffectMessage = "The rain continues to fall!",
+                EndMessage = "It stopped raining!",
                 OnDamageModify = static (move) =>
                 {
                     if (move.Base.Type == BattlerType.Water)
@@ -54,8 +56,9 @@ public class WeatherConditionDB
             new WeatherCondition
             {
                 Name = "Sandstorm",
-                StartMessage = "A sandstorm kicked up!",
-                EffectMessage = "The sandstorm rages!",
+                FieldStartMessage = "A sandstorm is swirling!",
+                MoveStartMessage = "A sandstorm was kicked up!",
+                EffectMessage = "The sandstorm is raging!",
                 EndMessage = "The sandstorm subsided!",
                 OnWeatherEffect = static battler =>
                 {
@@ -71,8 +74,9 @@ public class WeatherConditionDB
             new WeatherCondition
             {
                 Name = "Hail",
-                StartMessage = "It started to hail!",
-                EffectMessage = "The hail is falling!",
+                FieldStartMessage = "Hail is falling!",
+                MoveStartMessage = "It started to hail!",
+                EffectMessage = "The hail continues to fall!",
                 EndMessage = "The hail stopped!",
                 OnWeatherEffect = static battler =>
                 {
@@ -102,7 +106,8 @@ public class WeatherCondition
 {
     public WeatherConditionID ID { get; set; }
     public string Name { get; set; }
-    public string StartMessage { get; set; }
+    public string FieldStartMessage { get; set; }
+    public string MoveStartMessage { get; set; }
     public string EffectMessage { get; set; }
     public string EndMessage { get; set; }
 
