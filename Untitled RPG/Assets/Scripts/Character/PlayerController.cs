@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour, ISavable
         }
 
         Character = GetComponent<Character>();
-        Deputy = FindObjectOfType<DeputyController>();
+        Deputy = FindAnyObjectByType<DeputyController>();
     }
 
     public void HandleUpdate()

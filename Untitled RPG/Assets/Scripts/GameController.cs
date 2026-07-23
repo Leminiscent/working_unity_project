@@ -218,7 +218,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-        EssentialObjects essentialObjects = FindObjectOfType<EssentialObjects>();
+        EssentialObjects essentialObjects = FindAnyObjectByType<EssentialObjects>();
         if (essentialObjects != null)
         {
             Destroy(essentialObjects.gameObject);

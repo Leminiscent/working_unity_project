@@ -7,7 +7,7 @@ public class EssentialObjectsSpawner : MonoBehaviour
     private void Awake()
     {
         // Check if any EssentialObjects exist in the scene.
-        EssentialObjects[] existingObjects = FindObjectsOfType<EssentialObjects>();
+        EssentialObjects[] existingObjects = FindObjectsByType<EssentialObjects>();
 
         if (existingObjects.Length == 0)
         {
@@ -15,7 +15,7 @@ public class EssentialObjectsSpawner : MonoBehaviour
             Vector3 spawnPos = Vector3.zero;
 
             // Attempt to find a Grid in the scene and use its position.
-            Grid grid = FindObjectOfType<Grid>();
+            Grid grid = FindAnyObjectByType<Grid>();
             if (grid != null)
             {
                 spawnPos = grid.transform.position;
