@@ -38,7 +38,7 @@ public class QuestList : MonoBehaviour, ISavable
 
     public static QuestList GetQuestList()
     {
-        PlayerController player = FindObjectOfType<PlayerController>();
+        PlayerController player = FindAnyObjectByType<PlayerController>();
         if (player == null)
         {
             Debug.LogError("PlayerController not found in the scene.");

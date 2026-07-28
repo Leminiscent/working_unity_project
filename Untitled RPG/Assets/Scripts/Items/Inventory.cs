@@ -126,7 +126,7 @@ public class Inventory : MonoBehaviour, ISavable
 
     public static Inventory GetInventory()
     {
-        return FindObjectOfType<PlayerController>().GetComponent<Inventory>();
+        return FindAnyObjectByType<PlayerController>().GetComponent<Inventory>();
     }
 
     public object CaptureState()

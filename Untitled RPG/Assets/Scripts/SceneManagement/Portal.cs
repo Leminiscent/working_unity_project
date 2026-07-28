@@ -31,7 +31,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
 
     private void Start()
     {
-        _fader = FindObjectOfType<Fader>();
+        _fader = FindAnyObjectByType<Fader>();
         if (_fader == null)
         {
             Debug.LogError("Fader component not found in the scene.", this);
@@ -64,7 +64,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
 
     private Portal FindDestinationPortal()
     {
-        return FindObjectsOfType<Portal>()
+        return FindObjectsByType<Portal>()
             .FirstOrDefault(x => x != this && x._destinationPortal == _destinationPortal);
     }
 }

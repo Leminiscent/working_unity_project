@@ -43,7 +43,7 @@ public class BattlerStorage : MonoBehaviour, ISavable
 
     public static BattlerStorage GetPlayerStorage()
     {
-        return FindObjectOfType<PlayerController>().GetComponent<BattlerStorage>();
+        return FindAnyObjectByType<PlayerController>().GetComponent<BattlerStorage>();
     }
 
     public object CaptureState()

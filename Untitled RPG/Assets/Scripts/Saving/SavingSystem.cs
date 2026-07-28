@@ -66,7 +66,7 @@ public class SavingSystem : MonoBehaviour
     // Used to capture states of all savable objects in the game
     private void CaptureState(Dictionary<string, object> state)
     {
-        foreach (SavableEntity savable in FindObjectsOfType<SavableEntity>())
+        foreach (SavableEntity savable in FindObjectsByType<SavableEntity>())
         {
             state[savable.UniqueId] = savable.CaptureState();
         }
@@ -75,7 +75,7 @@ public class SavingSystem : MonoBehaviour
     // Used to restore states of all savable objects in the game
     private void RestoreState(Dictionary<string, object> state)
     {
-        foreach (SavableEntity savable in FindObjectsOfType<SavableEntity>())
+        foreach (SavableEntity savable in FindObjectsByType<SavableEntity>())
         {
             string id = savable.UniqueId;
             if (state.ContainsKey(id))

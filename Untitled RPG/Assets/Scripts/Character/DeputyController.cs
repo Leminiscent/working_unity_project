@@ -15,7 +15,7 @@ public class DeputyController : MonoBehaviour, ISavable
     private void Awake()
     {
         _character = GetComponent<Character>();
-        _player = FindObjectOfType<PlayerController>();
+        _player = FindAnyObjectByType<PlayerController>();
         _party = _player.GetComponent<BattleParty>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }

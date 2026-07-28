@@ -102,6 +102,6 @@ public class SceneDetails : MonoBehaviour
     public List<SavableEntity> GetSavableEntitiesInScene()
     {
         Scene currentScene = SceneManager.GetSceneByName(gameObject.name);
-        return FindObjectsOfType<SavableEntity>().Where(entity => entity.gameObject.scene == currentScene).ToList();
+        return FindObjectsByType<SavableEntity>().Where(entity => entity.gameObject.scene == currentScene).ToList();
     }
 }

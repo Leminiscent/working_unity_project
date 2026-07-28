@@ -102,7 +102,7 @@ public class CharacterSelectState : State<GameController>
         _characterSelectScreen.EnableInput(false);
         yield return Fader.Instance.FadeIn(0.5f);
 
-        MainMenuController mainMenu = FindObjectOfType<MainMenuController>();
+        MainMenuController mainMenu = FindAnyObjectByType<MainMenuController>();
         if (mainMenu != null)
         {
             Destroy(mainMenu.gameObject);
@@ -132,7 +132,7 @@ public class CharacterSelectState : State<GameController>
         _gameController.StateMachine.ChangeState(PauseState.Instance);
         yield return Fader.Instance.FadeOut(0.5f);
 
-        MainMenuController mainMenu = FindObjectOfType<MainMenuController>();
+        MainMenuController mainMenu = FindAnyObjectByType<MainMenuController>();
         if (mainMenu != null)
         {
             mainMenu.EnableInput(true);

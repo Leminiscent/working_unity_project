@@ -104,6 +104,6 @@ public class BattleParty : MonoBehaviour
 
     public static BattleParty GetPlayerParty()
     {
-        return FindObjectOfType<PlayerController>().GetComponent<BattleParty>();
+        return FindAnyObjectByType<PlayerController>().GetComponent<BattleParty>();
     }
 }

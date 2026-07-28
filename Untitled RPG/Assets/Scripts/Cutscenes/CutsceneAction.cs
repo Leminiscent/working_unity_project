@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[System.Serializable]
 public abstract class CutsceneAction
 {
     [field: SerializeField, FormerlySerializedAs("_actionName")] public string ActionName { get; set; }
