@@ -75,11 +75,11 @@ namespace Util.GenericSelectionUI
                 OnIndexChanged?.Invoke(_selectedItem);
                 PlayShiftAudio(prevSelection, _selectedItem);
             }
-            if (Input.GetButtonDown("Action"))
+            if (GlobalSettings.Actions.SelectAction.WasPressedThisFrame())
             {
                 OnSelected?.Invoke(_selectedItem);
             }
-            if (Input.GetButtonDown("Back"))
+            if (GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
             {
                 OnBack?.Invoke();
             }
@@ -87,7 +87,7 @@ namespace Util.GenericSelectionUI
 
         private void HandleListSelection()
         {
-            float v = IgnoreVerticalInput ? 0f : Input.GetAxisRaw("Vertical");
+            float v = IgnoreVerticalInput ? 0f : GlobalSettings.Actions.MoveAction.ReadValue<Vector2>().y;
 
             if (_selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
             {
@@ -107,8 +107,8 @@ namespace Util.GenericSelectionUI
 
         private void HandleGridSelection()
         {
-            float v = IgnoreVerticalInput ? 0f : Input.GetAxisRaw("Vertical");
-            float h = IgnoreHorizontalInput ? 0f : Input.GetAxisRaw("Horizontal");
+            float v = IgnoreVerticalInput ? 0f : GlobalSettings.Actions.MoveAction.ReadValue<Vector2>().y;
+            float h = IgnoreHorizontalInput ? 0f : GlobalSettings.Actions.MoveAction.ReadValue<Vector2>().x;
 
             if (_selectionTimer == 0 && (Mathf.Abs(v) > 0.2f || Mathf.Abs(h) > 0.2f))
             {

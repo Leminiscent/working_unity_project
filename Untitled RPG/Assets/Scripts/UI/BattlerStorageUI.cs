@@ -127,12 +127,12 @@ public class BattlerStorageUI : SelectionUI<ImageSlot>
     {
         int prevSelectedDepot = SelectedDepot;
 
-        if (Input.GetButtonDown("Page Left"))
+        if (GlobalSettings.Actions.PreviousPageAction.WasPressedThisFrame())
         {
             SelectedDepot = SelectedDepot > 0 ? SelectedDepot - 1 : _storage.NumberOfDepots - 1;
             AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
-        else if (Input.GetButtonDown("Page Right"))
+        else if (GlobalSettings.Actions.NextPageAction.WasPressedThisFrame())
         {
             SelectedDepot = (SelectedDepot + 1) % _storage.NumberOfDepots;
             AudioManager.Instance.PlaySFX(AudioID.UIShift);

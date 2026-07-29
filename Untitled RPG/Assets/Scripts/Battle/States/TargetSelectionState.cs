@@ -58,7 +58,7 @@ public class TargetSelectionState : State<BattleSystem>
     {
         UpdateSelectionTimer();
         int previousSelection = SelectedTarget;
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        float verticalInput = GlobalSettings.Actions.NavigateAction.ReadValue<Vector2>().y;
 
         // Process vertical input if timer has elapsed.
         if (_selectionTimer == 0 && Mathf.Abs(verticalInput) > INPUT_THRESHOLD)
@@ -87,14 +87,14 @@ public class TargetSelectionState : State<BattleSystem>
         }
 
         // Confirm selection.
-        if (Input.GetButtonDown("Action"))
+        if (GlobalSettings.Actions.SelectAction.WasPressedThisFrame())
         {
             SelectionMade = true;
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
             _battleSystem.StateMachine.Pop();
         }
         // Cancel selection.
-        else if (Input.GetButtonDown("Back"))
+        else if (GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
         {
             SelectionMade = false;
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);

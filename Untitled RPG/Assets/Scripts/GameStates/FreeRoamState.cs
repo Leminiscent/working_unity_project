@@ -36,7 +36,7 @@ public class FreeRoamState : State<GameController>
             Debug.LogError("PlayerController instance is missing in FreeRoamState.");
         }
 
-        if (Input.GetButtonDown("Submit"))
+        if (GlobalSettings.Actions.MenuAction.WasPressedThisFrame())
         {
             // Initiate the transition to the game menu.
             _ = StartCoroutine(OpenMenu());

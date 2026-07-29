@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class GlobalSettings : MonoBehaviour
@@ -38,6 +39,22 @@ public class GlobalSettings : MonoBehaviour
     [field: SerializeField, FormerlySerializedAs("_setStatusConditionAnimationSprites")] public List<Sprite> SetStatusConditionAnimationSprites { get; private set; }
     [field: SerializeField, FormerlySerializedAs("_cureStatusConditionAnimationSprites")] public List<Sprite> CureStatusConditionAnimationSprites { get; private set; }
 
+    public struct Actions
+    {
+        // Player
+        public static InputAction MoveAction { get; internal set; }
+        public static InputAction InteractAction { get; internal set; }
+        public static InputAction MenuAction { get; internal set; }
+
+        // UI
+        public static InputAction NavigateAction { get; internal set; }
+        public static InputAction SelectAction { get; internal set; }
+        public static InputAction CancelAction { get; internal set; }
+        public static InputAction NextPageAction { get; internal set; }
+        public static InputAction PreviousPageAction { get; internal set; }
+        public static InputAction FastForwardAction { get; internal set; }
+
+    }
     public static GlobalSettings Instance { get; private set; }
 
     private void Awake()
@@ -50,5 +67,16 @@ public class GlobalSettings : MonoBehaviour
         {
             Instance = this;
         }
+
+        // Initialize input actions
+        Actions.MoveAction = InputSystem.actions.FindAction("Move");
+        Actions.InteractAction = InputSystem.actions.FindAction("Interact");
+        Actions.MenuAction = InputSystem.actions.FindAction("Menu");
+        Actions.NavigateAction = InputSystem.actions.FindAction("Navigate");
+        Actions.SelectAction = InputSystem.actions.FindAction("Select");
+        Actions.CancelAction = InputSystem.actions.FindAction("Cancel");
+        Actions.NextPageAction = InputSystem.actions.FindAction("Next Page");
+        Actions.PreviousPageAction = InputSystem.actions.FindAction("Previous Page");
+        Actions.FastForwardAction = InputSystem.actions.FindAction("Fast-forward");
     }
 }

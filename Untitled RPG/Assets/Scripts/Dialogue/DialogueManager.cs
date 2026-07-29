@@ -39,7 +39,7 @@ public class DialogueManager : MonoBehaviour
 
         // Wait for input or a preset duration
         yield return waitForInput
-            ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+            ? new WaitUntil(static () => GlobalSettings.Actions.SelectAction.WasPressedThisFrame() || GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
             : new WaitForSeconds(waitTime);
 
         // Handle choice selection if provided
@@ -64,7 +64,7 @@ public class DialogueManager : MonoBehaviour
             yield return TypeDialogue(line);
 
             yield return waitForInput
-                ? new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"))
+                ? new WaitUntil(static () => GlobalSettings.Actions.SelectAction.WasPressedThisFrame() || GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
                 : new WaitForSeconds(waitTime);
         }
 

@@ -69,8 +69,8 @@ public class CountSelectorUI : SelectionUI<TextSlot>
             return;
         }
 
-        float verticalInput = Input.GetAxisRaw("Vertical");
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = GlobalSettings.Actions.NavigateAction.ReadValue<Vector2>().y;
+        float horizontalInput = GlobalSettings.Actions.NavigateAction.ReadValue<Vector2>().x;
 
         if (verticalInput > 0.2f)
         {
@@ -92,12 +92,12 @@ public class CountSelectorUI : SelectionUI<TextSlot>
 
     private void ProcessSelectionInput()
     {
-        if (Input.GetButtonDown("Action"))
+        if (GlobalSettings.Actions.SelectAction.WasPressedThisFrame())
         {
             _selected = true;
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
         }
-        else if (Input.GetButtonDown("Back"))
+        else if (GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
         {
             _currentCount = 0;
             _selected = true;

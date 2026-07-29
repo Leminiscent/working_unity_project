@@ -94,7 +94,7 @@ public class SummaryState : State<GameController>
             }
         }
 
-        if (Input.GetButtonDown("Action"))
+        if (GlobalSettings.Actions.SelectAction.WasPressedThisFrame())
         {
             // If on Move Details page and not already in move selection, enter move selection.
             if (_selectedPage == 1 && !_summaryScreenUI.InMoveSelection)
@@ -103,7 +103,7 @@ public class SummaryState : State<GameController>
                 AudioManager.Instance.PlaySFX(AudioID.UISelect);
             }
         }
-        else if (Input.GetButtonDown("Back"))
+        else if (GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
         {
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);
             if (_summaryScreenUI.InMoveSelection)

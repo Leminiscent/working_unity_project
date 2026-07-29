@@ -287,7 +287,7 @@ public class RecruitmentState : State<BattleSystem>
     private void HandleChoiceBoxInput()
     {
         const float SELECTION_SPEED = 5f;
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        float verticalInput = GlobalSettings.Actions.NavigateAction.ReadValue<Vector2>().y;
 
         // Countdown timer to control selection speed.
         if (_selectionTimer > 0)
@@ -303,7 +303,7 @@ public class RecruitmentState : State<BattleSystem>
             AudioManager.Instance.PlaySFX(AudioID.UIShift);
         }
 
-        if (Input.GetButtonDown("Action"))
+        if (GlobalSettings.Actions.SelectAction.WasPressedThisFrame())
         {
             _dialogueBox.EnableChoiceBox(false);
             AudioManager.Instance.PlaySFX(AudioID.UISelect);
@@ -311,7 +311,7 @@ public class RecruitmentState : State<BattleSystem>
             _ = StartCoroutine(ProcessAcceptReject(selection));
         }
 
-        if (Input.GetButtonDown("Back"))
+        if (GlobalSettings.Actions.CancelAction.WasPressedThisFrame())
         {
             _dialogueBox.EnableChoiceBox(false);
             AudioManager.Instance.PlaySFX(AudioID.UIReturn);

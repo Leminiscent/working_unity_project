@@ -90,7 +90,7 @@ public static class TextUtil
 
         while (letterIndex < textToType.Length)
         {
-            if (!isAccelerated && (Input.GetButtonDown("Action") || Input.GetButtonDown("Back")))
+            if (!isAccelerated && GlobalSettings.Actions.FastForwardAction.WasPressedThisFrame())
             {
                 isAccelerated = true;
                 currentDelay = acceleratedDelay;

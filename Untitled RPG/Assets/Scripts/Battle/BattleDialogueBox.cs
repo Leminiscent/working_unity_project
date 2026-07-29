@@ -39,8 +39,8 @@ public class BattleDialogueBox : MonoBehaviour
 
         if (waitForInput)
         {
-            yield return new WaitUntil(static () => Input.GetButtonDown("Action") || Input.GetButtonDown("Back"));
-            yield return new WaitUntil(static () => !Input.GetButton("Action") && !Input.GetButton("Back"));
+            yield return new WaitUntil(() => GlobalSettings.Actions.SelectAction.WasPressedThisFrame() || GlobalSettings.Actions.CancelAction.WasPressedThisFrame());
+            yield return new WaitUntil(() => !GlobalSettings.Actions.SelectAction.IsPressed() && !GlobalSettings.Actions.CancelAction.IsPressed());
         }
         else
         {

@@ -38,8 +38,8 @@ public class PlayerController : MonoBehaviour, ISavable
         if (!Character.IsMoving)
         {
             // Capture input values.
-            _input.x = Input.GetAxisRaw("Horizontal");
-            _input.y = Input.GetAxisRaw("Vertical");
+            _input.x = GlobalSettings.Actions.MoveAction.ReadValue<Vector2>().x;
+            _input.y = GlobalSettings.Actions.MoveAction.ReadValue<Vector2>().y;
 
             // Prioritize horizontal movement over vertical when both inputs are present.
             if (_input.x != 0)
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour, ISavable
         Character.UpdateAnimator();
 
         // Handle interaction input.
-        if (Input.GetButtonDown("Action") && !_isInteracting)
+        if (GlobalSettings.Actions.InteractAction.WasPressedThisFrame() && !_isInteracting)
         {
             _isInteracting = true;
             _ = StartCoroutine(Interact());
