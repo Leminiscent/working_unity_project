@@ -253,11 +253,14 @@ public class PartyState : State<GameController>
 
     private IEnumerator LeaveState()
     {
-        _partyScreen.EnableInput(false);
-        yield return Fader.Instance.FadeIn(0.5f);
+        if (_prevState != BattleState.Instance)
+        {
+            _partyScreen.EnableInput(false);
+            yield return Fader.Instance.FadeIn(0.5f);
 
-        _gameController.StateMachine.ChangeState(CutsceneState.Instance);
-        yield return Fader.Instance.FadeOut(0.5f);
+            _gameController.StateMachine.ChangeState(CutsceneState.Instance);
+            yield return Fader.Instance.FadeOut(0.5f);
+        }
 
         _gameController.StateMachine.Pop();
     }
